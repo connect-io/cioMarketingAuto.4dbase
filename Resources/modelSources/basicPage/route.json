@@ -1,0 +1,14 @@
+﻿{
+	"index": {
+		"parents": [
+			"layoutMain"
+		],
+		"route": {
+			"path": "/"
+		},
+		"titre": "Page index",
+		"viewPath": [
+			"basicPage/view/index.html"
+		]
+	}
+}

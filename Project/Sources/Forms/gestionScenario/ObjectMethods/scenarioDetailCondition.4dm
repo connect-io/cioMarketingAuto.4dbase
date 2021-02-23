@@ -1,0 +1,1 @@
+cwToolWindowsForm("configScenarioCondition"; "center"; Form:C1466)

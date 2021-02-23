@@ -1,0 +1,27 @@
+﻿{
+	"lib": "formHelloWorld",
+	"class": "m-t g-pa-10",
+	"action": "helloWorld",
+	"method": "POST",
+	"input": [
+		{
+			"lib": "hwNom",
+			"type": "text",
+			"label": "Qui es-tu ?",
+			"colLabel": 4,
+			"required": true
+		},
+
+
+		{
+			"lib": "token"
+		},
+
+		{
+			"lib": "hwSubmit",
+			"class": "btn btn-primary float-right",
+			"type": "submit",
+			"value": "Changer de nom"
+		}
+	]
+}

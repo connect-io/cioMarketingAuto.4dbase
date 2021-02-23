@@ -1,0 +1,14 @@
+﻿{
+	"helloWorld": {
+		"parents": [
+			"layoutDemo"
+		],
+		"route": {
+			"path": "/hello-world.html"
+		},
+		"titre": "Hello word",
+		"viewPath": [
+			"demo/view/helloWorld.html"
+		]
+	}
+}

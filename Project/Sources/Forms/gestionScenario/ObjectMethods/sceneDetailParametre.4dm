@@ -1,0 +1,1 @@
+cwToolWindowsForm("configSceneParam"; "center"; Form:C1466)  // Form est la class scénario
