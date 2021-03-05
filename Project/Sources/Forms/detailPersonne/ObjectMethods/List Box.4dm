@@ -3,7 +3,7 @@ If (Form event code:C388=Sur clic:K2:4) & (Form:C1466.ScenarioEnCoursCurrentElem
 	
 	Form:C1466.scenarioSelected:=Form:C1466.ScenarioEnCoursSelectedElement[0]  // Gestion du scènario sélectionné
 	
-	$class_o:=cwToolGetClass("MAScenario").new()
+	$class_o:=cmaToolGetClass("MAScenario").new()
 	$class_o.loadByPrimaryKey(Form:C1466.scenarioSelected.ID)
 	
 	$class_o.updateStringScenarioForm(1)

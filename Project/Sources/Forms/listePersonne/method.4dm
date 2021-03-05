@@ -5,7 +5,7 @@ If (Form event code:C388=Sur chargement:K2:1)
 	Form:C1466.personneCollectionInit:=Form:C1466.personneCollection.copy()
 	
 	// Instanciation de la class pour la gestion des filtres
-	Form:C1466.personneSelectionDisplayClass:=cwToolGetClass("MAPersonneSelectionDisplay").new()
+	Form:C1466.personneSelectionDisplayClass:=cmaToolGetClass("MAPersonneSelectionDisplay").new()
 	
 	Form:C1466.imageSortNom:=Storage:C1525.automation.image["sort"]
 	Form:C1466.imageSortPrenom:=Storage:C1525.automation.image["sort"]

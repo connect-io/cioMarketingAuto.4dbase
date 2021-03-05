@@ -179,7 +179,7 @@ Historique
 	ASSERT:C1129(This:C1470.personne#Null:C1517; "Impossible d'utiliser la fonction mailjetGetStat sans une personne de définie.")
 	
 	// Instanciation de la class
-	$class_o:=cwToolGetClass("MAMailjet").new()
+	$class_o:=cmaToolGetClass("MAMailjet").new()
 	
 	This:C1470.statMailjet:=$class_o.getStatistic(This:C1470.eMail)
 	
@@ -202,10 +202,10 @@ Historique
 	ASSERT:C1129(This:C1470.personne#Null:C1517; "Impossible d'utiliser la fonction mailjetGetDetailStat sans une personne de définie.")
 	
 	// Instanciation de la class
-	$class_o:=cwToolGetClass("MAMailjet").new()
+	$class_o:=cmaToolGetClass("MAMailjet").new()
 	
 	// Instanciation de la class
-	$personne_o:=cwToolGetClass("MAPersonne").new()
+	$personne_o:=cmaToolGetClass("MAPersonne").new()
 	
 	For ($i_el; 2; Count parameters:C259)
 		$class_o.getMessageEvent(${$i_el}; 0; cwTimestamp(Current date:C33; Current time:C178); ->$mailjet_o)
@@ -238,7 +238,7 @@ Function sendMailing
 	ASSERT:C1129(This:C1470.personne#Null:C1517; "Impossible d'utiliser la fonction sendMailing sans une personne de définie.")
 	
 	// Instanciation de la class
-	$class_o:=cwToolGetClass("MAMailing").new()
+	$class_o:=cmaToolGetClass("MAMailing").new()
 	
 	// On détermine le canal d'envoi du mailing
 	$canalEnvoi_t:=$class_o.sendGetType()

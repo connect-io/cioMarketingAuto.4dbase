@@ -135,7 +135,7 @@ Function cronosUpdateCaMarketing
 	C_COLLECTION:C1488($mailjetDetail_c)
 	
 	// Instanciation de la class
-	$class_o:=cwToolGetClass("MAPersonne").new()
+	$class_o:=cmaToolGetClass("MAPersonne").new()
 	
 	If (This:C1470.cronosMailjetClass#Null:C1517)
 		
@@ -169,7 +169,7 @@ Function loadCronos
 		This:C1470.cronosStop:=False:C215
 		This:C1470.cronosVerifTache:=True:C214
 		This:C1470.cronosVerifMailjet:=0
-		This:C1470.cronosMailjetClass:=cwToolGetClass("MAMailjet").new()
+		This:C1470.cronosMailjetClass:=cmaToolGetClass("MAMailjet").new()
 		
 		$process_el:=New process:C317("cwCronosDisplay"; 0; "cronos"; This:C1470; *)
 	End if 

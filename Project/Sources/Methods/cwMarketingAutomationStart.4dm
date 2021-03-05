@@ -18,7 +18,7 @@ If (Application type:C494=4D Server:K5:6) | (Application type:C494=4D mode local
 End if 
 
 // Instanciation de la class
-$0:=cwToolGetClass("MarketingAutomation").new($initComponent_b)
+$0:=cmaToolGetClass("MarketingAutomation").new($initComponent_b)
 
 If (Application type:C494=4D Server:K5:6) | (Application type:C494=4D mode local:K5:1)
 	$0.loadPasserelle("Personne")  // Création de la passerelle entre la class $marketingAutomation_o et la base hôte

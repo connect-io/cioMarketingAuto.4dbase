@@ -52,7 +52,7 @@ Function searchPersonToScenario
 	var $condition_o; $personne_o; $personneAEnlever_o; $table_o; $statut_o; $class_o : Object
 	var $cleValeur_c : Collection
 	
-	$class_o:=cwToolGetClass("MAPersonneSelection").new()
+	$class_o:=cmaToolGetClass("MAPersonneSelection").new()
 	$class_o.loadAll()
 	
 	$personne_o:=$class_o.personneSelection
@@ -141,7 +141,7 @@ Function searchPersonToScenario
 					
 				: ($cleValeur_o.key="email")
 					// Instanciation de la class
-					$class_o:=cwToolGetClass("MAPersonneSelection").new()
+					$class_o:=cmaToolGetClass("MAPersonneSelection").new()
 					$class_o.loadByField("eMail"; "#"; "")
 					
 					If ($class_o.personneSelection.length>0)  // Des personnes de ma sélection ont bien un email
@@ -397,7 +397,7 @@ Function saveFileActionScene
 	$texte_t:=WP Get text:C1575($3; wk expressions as source:K81:256)
 	$chemin_t:=Get 4D folder:C485(Dossier Resources courant:K5:16; *)+"cioMarketingAutomation"+Séparateur dossier:K24:12+"scenario"+Séparateur dossier:K24:12+$1+Séparateur dossier:K24:12
 	
-	$class_o:=cwToolGetClass("MarketingAutomation").new()
+	$class_o:=cmaToolGetClass("MarketingAutomation").new()
 	
 	$continue_b:=$class_o.createFolder($chemin_t)  // Création ou check du dossier scénario
 	

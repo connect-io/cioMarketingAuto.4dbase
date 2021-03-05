@@ -3,7 +3,7 @@
 var $marketingAutomation_o : Object
 
 // Instanciation de la class
-$marketingAutomation_o:=cwToolGetClass("MarketingAutomation").new()
+$marketingAutomation_o:=cmaToolGetClass("MarketingAutomation").new()
 $marketingAutomation_o.loadPasserelle("Personne")  // Création de la passerelle entre la class $marketingAutomation_o et la base hôte
 
 $marketingAutomation_o.loadCronos()

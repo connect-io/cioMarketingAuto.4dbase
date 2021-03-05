@@ -106,7 +106,7 @@ Historique
 	ASSERT:C1129(This:C1470.personneSelection#Null:C1517; "Impossible d'utiliser la fonction sendMailing sans une sélection de personne de définie.")
 	
 	// Instanciation de la class
-	$class_o:=cwToolGetClass("MAMailing").new()
+	$class_o:=cmaToolGetClass("MAMailing").new()
 	
 	// On détermine le canal d'envoi du mailing
 	$canalEnvoi_t:=$class_o.sendGetType()
@@ -122,7 +122,7 @@ Historique
 			$compteur_o:=New object:C1471("success"; 0; "fail"; 0)
 			
 			For each ($enregistrement_o; This:C1470.personneSelection)
-				$personne_o:=cwToolGetClass("MAPersonne").new()
+				$personne_o:=cmaToolGetClass("MAPersonne").new()
 				$personne_o.loadByPrimaryKey($enregistrement_o.getKey())
 				
 				If ($personne_o.personne#Null:C1517)
@@ -237,7 +237,7 @@ Historique
 	ASSERT:C1129(This:C1470.personneSelection#Null:C1517; "Impossible d'utiliser la fonction updateCaMarketingStatistic sans une sélection de personne de définie.")
 	
 	// Instanciation de la class
-	$class_o:=cwToolGetClass("MAPersonne").new()
+	$class_o:=cmaToolGetClass("MAPersonne").new()
 	
 	$progressBar_i:=Progress New
 	

@@ -5,9 +5,9 @@ var $1 : Collection
 var $marketingAutomation_o; $class_o : Object
 
 // Instanciation de la class
-$marketingAutomation_o:=cwToolGetClass("MarketingAutomation").new()
+$marketingAutomation_o:=cmaToolGetClass("MarketingAutomation").new()
 
-$class_o:=cwToolGetClass("MAPersonneSelection").new()
+$class_o:=cmaToolGetClass("MAPersonneSelection").new()
 $class_o.fromListPersonCollection($1)
 
 $class_o.sendMailing()

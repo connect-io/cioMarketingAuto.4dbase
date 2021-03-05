@@ -135,7 +135,7 @@ Historique
 	var $class_o : Object
 	var $collection_c : Collection
 	
-	$class_o:=cwToolGetClass("MAPersonne").new()
+	$class_o:=cmaToolGetClass("MAPersonne").new()
 	$class_o.loadByPrimaryKey(Form:C1466.PersonneCurrentElement.UID)
 	
 	// S'il y a eu une mise à jour il faut modifier l'entité dans la liste

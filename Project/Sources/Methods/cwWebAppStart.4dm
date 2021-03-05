@@ -33,4 +33,4 @@ If (Application type:C494=4D Server:K5:6) | (Application type:C494=4D mode local
 End if 
 
 // Démarrage de la config pour l'envoie d'email
-$0.eMailConfigLoad()
+cwEMailConfigLoad

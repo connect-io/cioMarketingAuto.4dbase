@@ -38,7 +38,7 @@ Function sendGetConfig($type_t : Text)->$config_o : Object
 			cwToolWindowsForm("selectValue"; "center"; New object:C1471("collection"; $transporter_c; "property"; "name"; "selectSubTitle"; "Merci de sélectionner un expéditeur"; "title"; "Choix de l'expéditeur :"))
 			
 			If (selectValue_t#"")
-				$eMail_o:=cwToolGetClass("EMail").new(selectValue_t)
+				$eMail_o:=cmaToolGetClass("EMail").new(selectValue_t)
 				
 				$eMail_o.subject:=Request:C163("Objet du mail ?"; ""; "Valider"; "Annuler l'envoi")
 				

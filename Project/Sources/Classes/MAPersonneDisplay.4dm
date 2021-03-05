@@ -1,7 +1,7 @@
 Class constructor
 	var $class_o : Object
 	
-	$class_o:=cwToolGetClass("MarketingAutomation").new()  // Instanciation de la class
+	$class_o:=cmaToolGetClass("MarketingAutomation").new()  // Instanciation de la class
 	$class_o.loadPasserelle("Personne")
 	
 Function updateScenarioListToPerson
@@ -11,7 +11,7 @@ Function updateScenarioListToPerson
 	
 	$0:=ds:C1482.CaScenario.newSelection()
 	
-	$class_o:=cwToolGetClass("MAPersonne").new()
+	$class_o:=cmaToolGetClass("MAPersonne").new()
 	$class_o.loadByPrimaryKey(Form:C1466.PersonneCurrentElement.UID)
 	
 	If ($class_o.personne#Null:C1517)
@@ -39,7 +39,7 @@ Function updateStringPersonneForm
 		: (Num:C11($1.modeSelection)=1) | (Num:C11($1.modeSelection)=2) & (Bool:C1537($1.multiSelection)=False:C215)  // Sélection unique OU Sélection multi-lignes mais qu'une seule ligne sélectionnée
 			$1.resume:=Choose:C955($civilite_t#""; $civilite_t+" "; "")+$1.nom+" "+$1.prenom+", habite à "+$1.ville+" ("+$1.codePostal+")."
 			
-			$class_o:=cwToolGetClass("MAPersonne").new()
+			$class_o:=cmaToolGetClass("MAPersonne").new()
 			$class_o.loadByPrimaryKey($1.UID)
 			
 			If ($class_o.personne#Null:C1517)
@@ -109,7 +109,7 @@ Function viewPersonList
 	var $class_o : Object
 	var entitySelection_o : Object
 	
-	$class_o:=cwToolGetClass("MAPersonneSelection").new()  // Instanciation de la class
+	$class_o:=cmaToolGetClass("MAPersonneSelection").new()  // Instanciation de la class
 	
 	entitySelection_o:=ds:C1482[Storage:C1525.automation.passerelle.tableHote].newSelection()
 	
