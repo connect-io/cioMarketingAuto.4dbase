@@ -1,3 +1,9 @@
 //%attributes = {"invisible":true}
-ARRAY TEXT:C222(HeaderNames_at;0)
-ARRAY TEXT:C222(HeaderValues_at;0)
+ARRAY TEXT:C222(HeaderNames_at; 0)
+ARRAY TEXT:C222(HeaderValues_at; 0)
+ARRAY TEXT:C222(Onglet; 0)
+ARRAY TEXT:C222(selectList_at; 0)
+ARRAY LONGINT:C221(tab_long_trouvée; 0)
+ARRAY LONGINT:C221(tab_pos_trouvée; 0)
+ARRAY TEXT:C222(templateListe_at; 0)
+ARRAY TEXT:C222(versionList_at; 0)
