@@ -22,5 +22,16 @@ $0:=cmaToolGetClass("MarketingAutomation").new($initComponent_b)
 
 If (Application type:C494=4D Server:K5:6) | (Application type:C494=4D mode local:K5:1)
 	$0.loadPasserelle("Personne")  // Création de la passerelle entre la class $marketingAutomation_o et la base hôte
-	$0.loadCronos()
+	
+	If (Application type:C494=4D mode local:K5:1)
+		CONFIRM:C162("Voulez-vous démarrer cronos ?"; "Oui"; "Non")
+		
+		If (OK=1)
+			$0.loadCronos()
+		End if 
+		
+	Else 
+		$0.loadCronos()
+	End if 
+	
 End if 
