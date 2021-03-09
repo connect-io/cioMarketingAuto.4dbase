@@ -82,7 +82,7 @@ Function loadByField
 	
 	If ($field_c.length=1)
 		
-		If ($field_c[0].directAccess=Null:C1517)  // La recherche doit se faire directement sur la table [Personne] de la base hôte
+		If ($field_c[0].personAccess#Null:C1517)  // La recherche doit se faire directement sur la table [Personne] de la base hôte
 			This:C1470.fieldName:=$field_c[0].personAccess
 			This:C1470.fieldSignComparaison:=$2
 			This:C1470.fieldValue:=$3
@@ -99,7 +99,16 @@ Function loadByField
 			OB REMOVE:C1226(This:C1470; "fieldSignComparaison")
 			OB REMOVE:C1226(This:C1470; "fieldValue")
 		Else   // Il faut faire la recherche sur une table [Enfant]
-			// ToDo
+			This:C1470.fieldValue:=$3
+			
+			$table_o:=Formula from string:C1601($field_c[0].directAccess).call(This:C1470)
+			
+			If ($table_o.length>0)
+				This:C1470.personne:=$table_o[$field_c[0].valueReturn]
+				
+				This:C1470.load()
+			End if 
+			
 		End if 
 		
 	End if 
