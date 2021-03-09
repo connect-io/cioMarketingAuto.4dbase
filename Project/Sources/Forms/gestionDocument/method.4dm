@@ -41,7 +41,7 @@ Case of
 						
 						$version_o.contenu4WP:=WParea
 						
-						$version_o.modifierLe:=cwTimestamp
+						$version_o.modifierLe:=cmaTimestamp
 						$version_o.modifierPar:=Current user:C182
 						
 						Form:C1466.donnee.sceneDetail.save()

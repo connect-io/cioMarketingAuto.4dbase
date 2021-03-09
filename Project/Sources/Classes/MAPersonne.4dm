@@ -217,10 +217,10 @@ Historique
 	$personne_o:=cmaToolGetClass("MAPersonne").new()
 	
 	For ($i_el; 2; Count parameters:C259)
-		$class_o.getMessageEvent(${$i_el}; 0; cwTimestamp(Current date:C33; Current time:C178); ->$mailjet_o)
+		$class_o.getMessageEvent(${$i_el}; 0; cmaTimestamp(Current date:C33; Current time:C178); ->$mailjet_o)
 		
 		If ($mailjet_o.errorHttp=Null:C1517)
-			$class_o.AnalysisMessageEvent($mailjet_o; ${$i_el}; 0; cwTimestamp(Current date:C33; Current time:C178); ->$mailjetDetail_c)
+			$class_o.AnalysisMessageEvent($mailjet_o; ${$i_el}; 0; cmaTimestamp(Current date:C33; Current time:C178); ->$mailjetDetail_c)
 		End if 
 		
 		If ($1#"")
@@ -369,7 +369,7 @@ Historique
 		: ($provenance_el=3)  // On souhaite mettre à jour l'historique des mailings envoyés à la personne
 			
 			$enregistrement_o.historique.detail.push(New object:C1471(\
-				"eventTs"; cwTimestamp(Current date:C33; Current time:C178); \
+				"eventTs"; cmaTimestamp(Current date:C33; Current time:C178); \
 				"eventUser"; Current user:C182; \
 				"eventDetail"; New object:C1471("type"; String:C10($detail_o.type); "contenu"; String:C10($detail_o.contenu); "statut"; String:C10($detail_o.statut))))
 			

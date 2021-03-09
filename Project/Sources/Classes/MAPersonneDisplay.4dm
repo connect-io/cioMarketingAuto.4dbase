@@ -66,19 +66,19 @@ Function updateStringPersonneForm
 					$1.resumeMarketing:=$1.resumeMarketing+"Dernière(s) activité(s) des mails envoyés :"+Char:C90(Retour à la ligne:K15:40)
 					
 					If ($table_o.lastOpened#0)
-						$1.resumeMarketing:=$1.resumeMarketing+"• Dernier mail ouvert : "+cwTimestampLire("date"; $table_o.lastOpened)+Char:C90(Retour à la ligne:K15:40)
+						$1.resumeMarketing:=$1.resumeMarketing+"• Dernier mail ouvert : "+cmaTimestampLire("date"; $table_o.lastOpened)+Char:C90(Retour à la ligne:K15:40)
 					Else 
 						$1.resumeMarketing:=$1.resumeMarketing+"• Aucun email ouvert"+Char:C90(Retour à la ligne:K15:40)
 					End if 
 					
 					If ($table_o.lastClicked#0)
-						$1.resumeMarketing:=$1.resumeMarketing+"• Dernier mail cliqué : "+cwTimestampLire("date"; $table_o.lastClicked)+Char:C90(Retour à la ligne:K15:40)
+						$1.resumeMarketing:=$1.resumeMarketing+"• Dernier mail cliqué : "+cmaTimestampLire("date"; $table_o.lastClicked)+Char:C90(Retour à la ligne:K15:40)
 					Else 
 						$1.resumeMarketing:=$1.resumeMarketing+"• Aucun email cliqué"+Char:C90(Retour à la ligne:K15:40)
 					End if 
 					
 					If ($table_o.lastBounce#0)
-						$1.resumeMarketing:=$1.resumeMarketing+"• Email détecté en bounce le : "+cwTimestampLire("date"; $table_o.lastBounce)+Char:C90(Retour à la ligne:K15:40)
+						$1.resumeMarketing:=$1.resumeMarketing+"• Email détecté en bounce le : "+cmaTimestampLire("date"; $table_o.lastBounce)+Char:C90(Retour à la ligne:K15:40)
 					Else 
 						$1.resumeMarketing:=$1.resumeMarketing+"• Aucun bounce"+Char:C90(Retour à la ligne:K15:40)
 					End if 

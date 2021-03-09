@@ -101,7 +101,7 @@ Historique
 Function cronosMessageDisplay
 	var $ts_el : Integer
 	
-	$ts_el:=cwTimestamp(Current date:C33; Current time:C178)
+	$ts_el:=cmaTimestamp(Current date:C33; Current time:C178)
 	
 	Case of 
 		: (This:C1470.cronosMessage="Vérification si une tâche doit être effectuée...")

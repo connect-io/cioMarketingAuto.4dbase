@@ -45,7 +45,7 @@ Function getHistoryRequestFile
 	If ($fichier_o.exists=False:C215)
 		
 		If ($fichier_o.create()=True:C214)
-			$config_o.lastRequest:=cwTimestamp(Current date:C33; Current time:C178)-604800  // Par défaut on met que la dernière requête a eu lieu il y a 7 jours
+			$config_o.lastRequest:=cmaTimestamp(Current date:C33; Current time:C178)-604800  // Par défaut on met que la dernière requête a eu lieu il y a 7 jours
 			
 			$fichier_o.setText(JSON Stringify:C1217($config_o; *); 2)
 		End if 
@@ -155,7 +155,7 @@ Function AnalysisMessageEvent
 						$dateArrivedAt_d:=Date:C102($arrivedAt_t)
 						$heureArrivedAt_h:=Time:C179($arrivedAt_t)
 						
-						$tsEvent_el:=cwTimestamp($dateArrivedAt_d; $heureArrivedAt_h)
+						$tsEvent_el:=cmaTimestamp($dateArrivedAt_d; $heureArrivedAt_h)
 						
 						$5->push(New object:C1471("email"; $email_t; "idContact"; $contactID_el; "tsEvent"; $tsEvent_el))
 					End if 

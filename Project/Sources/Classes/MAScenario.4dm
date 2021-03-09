@@ -102,7 +102,7 @@ Function searchPersonToScenario
 				: ($cleValeur_o.key="dateDebutMailClique")
 					
 					If ($cleValeur_o.value#!00-00-00!)
-						$ts_el:=cwTimestamp($cleValeur_o.value; ?00:00:00?)
+						$ts_el:=cmaTimestamp($cleValeur_o.value; ?00:00:00?)
 						
 						$table_o:=ds:C1482.CaPersonneMarketing.query("lastClicked # :1 AND lastClicked >= :2"; 0; $ts_el).OnePersonne
 						
@@ -112,7 +112,7 @@ Function searchPersonToScenario
 				: ($cleValeur_o.key="dateFinMailClique")
 					
 					If ($cleValeur_o.value#!00-00-00!)
-						$ts_el:=cwTimestamp($cleValeur_o.value; ?23:59:59?)
+						$ts_el:=cmaTimestamp($cleValeur_o.value; ?23:59:59?)
 						
 						$table_o:=ds:C1482.CaPersonneMarketing.query("lastClicked # :1 AND lastClicked <= :2"; 0; $ts_el).OnePersonne
 						
@@ -122,7 +122,7 @@ Function searchPersonToScenario
 				: ($cleValeur_o.key="dateDebutMailOuvert")
 					
 					If ($cleValeur_o.value#!00-00-00!)
-						$ts_el:=cwTimestamp($cleValeur_o.value; ?00:00:00?)
+						$ts_el:=cmaTimestamp($cleValeur_o.value; ?00:00:00?)
 						
 						$table_o:=ds:C1482.CaPersonneMarketing.query("lastOpened # :1 AND lastOpened >= :2"; 0; $ts_el).OnePersonne
 						
@@ -132,7 +132,7 @@ Function searchPersonToScenario
 				: ($cleValeur_o.key="dateFinMailOuvert")
 					
 					If ($cleValeur_o.value#!00-00-00!)
-						$ts_el:=cwTimestamp($cleValeur_o.value; ?23:59:59?)
+						$ts_el:=cmaTimestamp($cleValeur_o.value; ?23:59:59?)
 						
 						$table_o:=ds:C1482.CaPersonneMarketing.query("lastOpened # :1 AND lastOpened <= :2"; 0; $ts_el).OnePersonne
 						

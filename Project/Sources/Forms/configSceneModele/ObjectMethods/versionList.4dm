@@ -44,7 +44,7 @@ If (Form event code:C388=Sur données modifiées:K2:15)
 						OK:=1
 					End if 
 					
-					Form:C1466.sceneDetail.paramAction.modele[Lowercase:C14(Form:C1466.sceneTypeSelected)].version.push(New object:C1471("titre"; $titre_t; "actif"; (OK=1); "contenu4WP"; WP New:C1317; "creerPar"; Current user:C182; "creerLe"; cwTimestamp; "modifierPar"; Current user:C182; "modifierLe"; cwTimestamp))
+					Form:C1466.sceneDetail.paramAction.modele[Lowercase:C14(Form:C1466.sceneTypeSelected)].version.push(New object:C1471("titre"; $titre_t; "actif"; (OK=1); "contenu4WP"; WP New:C1317; "creerPar"; Current user:C182; "creerLe"; cmaTimestamp; "modifierPar"; Current user:C182; "modifierLe"; cmaTimestamp))
 					Form:C1466.sceneDetail.save()
 				Else 
 					ALERT:C41("Une version porte déjà ce nom, merci d'en choisir un différent")
@@ -62,8 +62,8 @@ If (Form event code:C388=Sur données modifiées:K2:15)
 		$elementSelected_o:=Form:C1466.sceneDetail.paramAction.modele[Lowercase:C14(Form:C1466.sceneTypeSelected)].version.query("titre = :1"; $titre_t)[0]
 		
 		Form:C1466.modeleDetail:="• Titre : "+$elementSelected_o.titre+Char:C90(Retour à la ligne:K15:40)
-		Form:C1466.modeleDetail:=Form:C1466.modeleDetail+"• Créer le "+cwTimestampLire("date"; $elementSelected_o.creerLe)+" par "+$elementSelected_o.creerPar+Char:C90(Retour à la ligne:K15:40)
-		Form:C1466.modeleDetail:=Form:C1466.modeleDetail+"• Dernière modification fait le "+cwTimestampLire("date"; $elementSelected_o.modifierLe)+" par "+$elementSelected_o.modifierPar
+		Form:C1466.modeleDetail:=Form:C1466.modeleDetail+"• Créer le "+cmaTimestampLire("date"; $elementSelected_o.creerLe)+" par "+$elementSelected_o.creerPar+Char:C90(Retour à la ligne:K15:40)
+		Form:C1466.modeleDetail:=Form:C1466.modeleDetail+"• Dernière modification fait le "+cmaTimestampLire("date"; $elementSelected_o.modifierLe)+" par "+$elementSelected_o.modifierPar
 		
 		If ($elementSelected_o.actif=True:C214)
 			Form:C1466.imageModeleActif:=Storage:C1525.automation.image["toggle-on"]
