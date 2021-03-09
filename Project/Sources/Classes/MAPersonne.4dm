@@ -99,7 +99,7 @@ Function loadByField
 			OB REMOVE:C1226(This:C1470; "fieldSignComparaison")
 			OB REMOVE:C1226(This:C1470; "fieldValue")
 		Else   // Il faut faire la recherche sur une table [Enfant]
-			This:C1470.fieldValue:=$3
+			This:C1470.childFieldValue:=$3
 			
 			$table_o:=Formula from string:C1601($field_c[0].directAccess).call(This:C1470)
 			
@@ -109,6 +109,7 @@ Function loadByField
 				This:C1470.load()
 			End if 
 			
+			OB REMOVE:C1226(This:C1470; "childFieldValue")
 		End if 
 		
 	End if 
