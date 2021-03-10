@@ -121,7 +121,11 @@ Historique
 			
 			$compteur_o:=New object:C1471("success"; 0; "fail"; 0)
 			
+			cmaProgressBar(0; "Initialisation"; True:C214)
+			
 			For each ($enregistrement_o; This:C1470.personneSelection)
+				cmaProgressBar(($enregistrement_o.indexOf(This:C1470.personneSelection)/This:C1470.personneSelection.length); "Envoi du mailing en cours...")
+				
 				$personne_o:=cmaToolGetClass("MAPersonne").new()
 				$personne_o.loadByPrimaryKey($enregistrement_o.getKey())
 				
@@ -178,6 +182,8 @@ Historique
 				CLEAR VARIABLE:C89($contenu_t)
 				CLEAR VARIABLE:C89($statut_b)
 			End for each 
+			
+			cmaProgressBar(1; "arrêt")
 			
 			If ($compteur_o.success>0)
 				ALERT:C41("Le mailing a bien été envoyé à "+String:C10($compteur_o.success)+" personne(s)")
