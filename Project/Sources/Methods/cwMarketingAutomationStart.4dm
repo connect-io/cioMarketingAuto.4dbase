@@ -24,7 +24,7 @@ If (Application type:C494=4D Server:K5:6) | (Application type:C494=4D mode local
 	$0.loadPasserelle("Personne")  // Création de la passerelle entre la class $marketingAutomation_o et la base hôte
 	
 	If (Application type:C494=4D mode local:K5:1)
-		CONFIRM:C162("Voulez-vous démarrer cronos ?"; "Oui"; "Non")
+		CONFIRM:C162("Voulez-vous démarrer cronos (cioMarketingAutomation) ?"; "Oui"; "Non")
 		
 		If (OK=1)
 			$0.loadCronos()

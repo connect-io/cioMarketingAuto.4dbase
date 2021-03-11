@@ -1,4 +1,4 @@
-//%attributes = {"shared":true}
+//%attributes = {"shared":true,"executedOnServer":true}
 /* -----------------------------------------------------------------------------
 Méthode : cwWebAppStart
 
@@ -11,26 +11,30 @@ Historique
 // Déclarations
 var $0 : Object
 
+var $function_o : Object
+
 // Instanciation de la class
-//$0:=cwToolGetClass("webApp").new()
+$0:=Formula from string:C1601("cwToolGetClass(\"webApp\").new()").call(This:C1470)
 
-//Si (Type application=4D Server) | (Type application=4D mode local)
-//MESSAGE("Arrêt du serveur web..."+Caractère(Retour chariot))
-//WEB ARRÊTER SERVEUR
+If (Application type:C494=4D Server:K5:6) | (Application type:C494=4D mode local:K5:1)
+	MESSAGE:C88("Arrêt du serveur web..."+Char:C90(Retour chariot:K15:38))
+	WEB STOP SERVER:C618
+	
+	MESSAGE:C88("Chargement de l'application web..."+Char:C90(Retour chariot:K15:38))
+	$0.serverStart()
+	
+	MESSAGE:C88("Redémarrage du serveur web..."+Char:C90(Retour chariot:K15:38))
+	WEB START SERVER:C617
+	
+	If (OK#1)
+		ALERT:C41("Le serveur web n'est pas correctement démarré.")
+	End if 
+	
+	// Démarrage des sessions.
+	$0.sessionWebStart()
+End if 
 
-//MESSAGE("Chargement de l'application web..."+Caractère(Retour chariot))
-//$0.serverStart()
-
-//MESSAGE("Redémarrage du serveur web..."+Caractère(Retour chariot))
-//WEB DÉMARRER SERVEUR
-
-//Si (OK#1)
-//ALERTE("Le serveur web n'est pas correctement démarré.")
-//Fin de si 
-
-//// Démarrage des sessions.
-//$0.sessionWebStart()
-//Fin de si 
-
-//// Démarrage de la config pour l'envoie d'email
-//cwEMailConfigLoad
+// Démarrage de la config pour l'envoie d'email
+If (cwStorage.eMail=Null:C1517)
+	$function_o:=Formula from string:C1601("cwEMailConfigLoad").call(This:C1470)
+End if 
