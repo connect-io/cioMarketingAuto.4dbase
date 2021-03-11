@@ -35,25 +35,37 @@ Function loadByField
 	var $2 : Text  // Signe de la recherche
 	var $3 : Variant  // Valeur à rechercher
 	
+	var $table_o : Object
 	var $field_c : Collection
 	
 	$field_c:=This:C1470.passerelle.champ.query("lib = :1"; $1)
 	
+	//This.newSelection()  // Par défaut je ré-initialise la propriété
+	
 	If ($field_c.length=1)
 		
-		If ($field_c[0].directAccess=Null:C1517)  // Il faut faire la recherche sur la table [Personne]
-			This:C1470.fieldName:=$field_c[0].personAccess
-			This:C1470.fieldSignComparaison:=$2
-			This:C1470.fieldValue:=$3
-			
-			This:C1470.personneSelection:=Formula from string:C1601("ds[\""+This:C1470.passerelle.tableHote+"\"].query(\""+This:C1470.fieldName+" "+This:C1470.fieldSignComparaison+" :1\";This.fieldValue)").call(This:C1470)
-			
-			OB REMOVE:C1226(This:C1470; "fieldName")
-			OB REMOVE:C1226(This:C1470; "fieldSignComparaison")
-			OB REMOVE:C1226(This:C1470; "fieldValue")
-		Else   // Il faut faire la recherche sur une table [Enfant]
-			// ToDo
-		End if 
+		Case of 
+			: ($field_c[0].personAccess#Null:C1517) & ($field_c[0].directAccess=Null:C1517)  // La recherche doit se faire directement sur la table [Personne] de la base hôte
+				This:C1470.fieldName:=$field_c[0].personAccess
+				This:C1470.fieldSignComparaison:=$2
+				This:C1470.fieldValue:=$3
+				
+				This:C1470.personneSelection:=Formula from string:C1601("ds[\""+This:C1470.passerelle.tableHote+"\"].query(\""+This:C1470.fieldName+" "+This:C1470.fieldSignComparaison+" :1\";This.fieldValue)").call(This:C1470)
+				
+				OB REMOVE:C1226(This:C1470; "fieldName")
+				OB REMOVE:C1226(This:C1470; "fieldSignComparaison")
+				OB REMOVE:C1226(This:C1470; "fieldValue")
+			: ($field_c[0].directAccess#Null:C1517)  // Il faut faire la recherche sur une table [Enfant]
+				This:C1470.childFieldValue:=$3
+				
+				$table_o:=Formula from string:C1601($field_c[0].directAccess).call(This:C1470)
+				
+				If ($table_o.length>0)
+					This:C1470.personneSelection:=$table_o[0][$field_c[0].valueReturn]
+				End if 
+				
+				OB REMOVE:C1226(This:C1470; "childFieldValue")
+		End case 
 		
 	Else 
 		This:C1470.newSelection()
@@ -218,11 +230,18 @@ Historique
 	End if 
 	
 	For each ($field_t; $field_c)
-		$fieldExtract_t:=$fieldExtract_t+Char:C90(Guillemets:K15:41)+String:C10(This:C1470.passerelle.champ[This:C1470.passerelle.champ.indices("lib = :1"; $field_t)[0]].personAccess)+Char:C90(Guillemets:K15:41)+"; "+Char:C90(Guillemets:K15:41)+$field_t+Char:C90(Guillemets:K15:41)
 		
-		If ($field_c.indexOf($field_t)#($field_c.length-1))
-			$fieldExtract_t:=$fieldExtract_t+";"
-		End if 
+		Case of 
+			: (This:C1470.passerelle.champ[This:C1470.passerelle.champ.indices("lib = :1"; $field_t)[0]].personAccess#Null:C1517) & (This:C1470.passerelle.champ[This:C1470.passerelle.champ.indices("lib = :1"; $field_t)[0]].directAccess=Null:C1517)  // L'extraction doit se faire directement sur la table [Personne] de la base hôte
+				$fieldExtract_t:=$fieldExtract_t+Char:C90(Guillemets:K15:41)+String:C10(This:C1470.passerelle.champ[This:C1470.passerelle.champ.indices("lib = :1"; $field_t)[0]].personAccess)+Char:C90(Guillemets:K15:41)+"; "+Char:C90(Guillemets:K15:41)+$field_t+Char:C90(Guillemets:K15:41)
+				
+				If ($field_c.indexOf($field_t)#($field_c.length-1))
+					$fieldExtract_t:=$fieldExtract_t+";"
+				End if 
+				
+			: (This:C1470.passerelle.champ[This:C1470.passerelle.champ.indices("lib = :1"; $field_t)[0]].directAccess#Null:C1517)  // Il faut faire l'extraction sur une table [Enfant]
+				
+		End case 
 		
 	End for each 
 	
