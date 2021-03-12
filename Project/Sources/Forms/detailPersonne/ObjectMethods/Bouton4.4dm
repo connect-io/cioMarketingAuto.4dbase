@@ -1,5 +1,6 @@
 var $table_o : Object
 
+//toDo boucler sur chaque propriete de Form et sauvegarder Form.personne
 Form:C1466.personne.save()
 
 // Sauvegarde de la table [CaMarketing]

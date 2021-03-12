@@ -225,7 +225,7 @@ Historique
 	var $field_t; $fieldExtract_t; $element_t; $chaineCompare_t : Text
 	var $extractFieldChild : Boolean
 	var $formule_o; $childElement_o; $element_o : Object
-	var $collection_c; $extraField_c : Collection
+	var $collection_c; $extraField_c; $autreCollection_c : Collection
 	
 	$collection_c:=New collection:C1472
 	$extraField_c:=New collection:C1472
@@ -233,7 +233,7 @@ Historique
 	If ($field_c=Null:C1517)
 		$field_c:=This:C1470.passerelle.champ.extract("lib")
 	End if 
-	TRACE:C157
+	
 	For each ($field_t; $field_c)
 		
 		Case of 
@@ -251,7 +251,8 @@ Historique
 				$collection_c.push(New object:C1471("field"; $field_t; "collectionToExtract"; Formula from string:C1601("This.personneSelection."+\
 					String:C10(This:C1470.passerelle.champ[This:C1470.passerelle.champ.indices("lib = :1"; $field_t)[0]].extractToCollection.formule)).call(This:C1470)))
 				
-				$extraField_c.push(String:C10(This:C1470.passerelle.champ[This:C1470.passerelle.champ.indices("lib = :1"; $field_t)[0]].extractToCollection.fieldInRelation))
+				$collection_c[$collection_c.length-1].fieldInRelation:=String:C10(This:C1470.passerelle.champ[This:C1470.passerelle.champ.indices("lib = :1"; $field_t)[0]].extractToCollection.fieldInRelation)
+				$extraField_c.push($collection_c[$collection_c.length-1].fieldInRelation)
 		End case 
 		
 	End for each 
@@ -285,8 +286,17 @@ Historique
 			For each ($element_o; This:C1470.personneCollection)
 				
 				If ($element_o[$childElement_o.field]=Null:C1517)  // Il s'agit d'un champ d'une table [Enfant]
-					// A finir...
-					//$element_o[$childElement_o.field]:=$childElement_o[$element_o.indexOf(This.personneCollection)]
+					$autreCollection_c:=$childElement_o.collectionToExtract.query($childElement_o.fieldInRelation+" = :1"; $element_o[$childElement_o.fieldInRelation])
+					
+					Case of 
+						: ($autreCollection_c.length=1)
+							$element_o[$childElement_o.field]:=$autreCollection_c[0][$childElement_o.field]
+						: ($autreCollection_c.length>1)
+							$element_o[$childElement_o.field]:="Erreur plusieurs personnes avec le même attribut "+$childElement_o.fieldInRelation
+						Else 
+							$element_o[$childElement_o.field]:=""
+					End case 
+					
 				End if 
 				
 			End for each 
