@@ -222,30 +222,78 @@ Permet de transformer l'entitySelection This.personneSelection à This.personneC
 Historique
 04/01/21 - Rémy Scanu <remy@connect-io.fr> - Création
 ------------------------------------------------------------------------------*/
-	var $field_t; $fieldExtract_t : Text
-	var $formule_o : Object
+	var $field_t; $fieldExtract_t; $element_t; $chaineCompare_t : Text
+	var $extractFieldChild : Boolean
+	var $formule_o; $childElement_o; $element_o : Object
+	var $collection_c; $extraField_c : Collection
+	
+	$collection_c:=New collection:C1472
+	$extraField_c:=New collection:C1472
 	
 	If ($field_c=Null:C1517)
 		$field_c:=This:C1470.passerelle.champ.extract("lib")
 	End if 
-	
+	TRACE:C157
 	For each ($field_t; $field_c)
 		
 		Case of 
-			: (This:C1470.passerelle.champ[This:C1470.passerelle.champ.indices("lib = :1"; $field_t)[0]].personAccess#Null:C1517) & (This:C1470.passerelle.champ[This:C1470.passerelle.champ.indices("lib = :1"; $field_t)[0]].directAccess=Null:C1517)  // L'extraction doit se faire directement sur la table [Personne] de la base hôte
-				$fieldExtract_t:=$fieldExtract_t+Char:C90(Guillemets:K15:41)+String:C10(This:C1470.passerelle.champ[This:C1470.passerelle.champ.indices("lib = :1"; $field_t)[0]].personAccess)+Char:C90(Guillemets:K15:41)+"; "+Char:C90(Guillemets:K15:41)+$field_t+Char:C90(Guillemets:K15:41)
+			: (This:C1470.passerelle.champ[This:C1470.passerelle.champ.indices("lib = :1"; $field_t)[0]].personAccess#Null:C1517) & (This:C1470.passerelle.champ[This:C1470.passerelle.champ.indices("lib = :1"; $field_t)[0]].extractToCollection=Null:C1517)  // L'extraction doit se faire directement sur la table [Personne] de la base hôte
+				$fieldExtract_t:=$fieldExtract_t+Char:C90(Guillemets:K15:41)+String:C10(This:C1470.passerelle.champ[This:C1470.passerelle.champ.indices("lib = :1"; $field_t)[0]].personAccess)+Char:C90(Guillemets:K15:41)+\
+					"; "+Char:C90(Guillemets:K15:41)+$field_t+Char:C90(Guillemets:K15:41)
 				
 				If ($field_c.indexOf($field_t)#($field_c.length-1))
 					$fieldExtract_t:=$fieldExtract_t+";"
 				End if 
 				
-			: (This:C1470.passerelle.champ[This:C1470.passerelle.champ.indices("lib = :1"; $field_t)[0]].directAccess#Null:C1517)  // Il faut faire l'extraction sur une table [Enfant]
+			: (This:C1470.passerelle.champ[This:C1470.passerelle.champ.indices("lib = :1"; $field_t)[0]].extractToCollection#Null:C1517)  // Il faut faire l'extraction sur une table [Enfant]
+				$extractFieldChild:=True:C214
 				
+				$collection_c.push(New object:C1471("field"; $field_t; "collectionToExtract"; Formula from string:C1601("This.personneSelection."+\
+					String:C10(This:C1470.passerelle.champ[This:C1470.passerelle.champ.indices("lib = :1"; $field_t)[0]].extractToCollection.formule)).call(This:C1470)))
+				
+				$extraField_c.push(String:C10(This:C1470.passerelle.champ[This:C1470.passerelle.champ.indices("lib = :1"; $field_t)[0]].extractToCollection.fieldInRelation))
 		End case 
 		
 	End for each 
 	
+	If ($extraField_c.length>0)
+		$extraField_c:=$extraField_c.distinct()
+		
+		For each ($element_t; $extraField_c)
+			$chaineCompare_t:="@"+$element_t+"@"
+			
+			If ($fieldExtract_t#$chaineCompare_t)
+				$fieldExtract_t:=$fieldExtract_t+";"+Char:C90(Guillemets:K15:41)+$element_t+Char:C90(Guillemets:K15:41)+\
+					"; "+Char:C90(Guillemets:K15:41)+$element_t+Char:C90(Guillemets:K15:41)+";"
+			End if 
+			
+		End for each 
+		
+		// Il y a eu une extraction d'un champ en plus
+		If (Substring:C12($fieldExtract_t; Length:C16($fieldExtract_t); 1)=";")
+			$fieldExtract_t:=Substring:C12($fieldExtract_t; 0; Length:C16($fieldExtract_t)-1)
+		End if 
+		
+	End if 
+	
 	This:C1470.personneCollection:=Formula from string:C1601("This.personneSelection.toCollection().extract("+$fieldExtract_t+")").call(This:C1470)
+	
+	If ($extractFieldChild=True:C214)
+		
+		For each ($childElement_o; $collection_c)
+			
+			For each ($element_o; This:C1470.personneCollection)
+				
+				If ($element_o[$childElement_o.field]=Null:C1517)  // Il s'agit d'un champ d'une table [Enfant]
+					// A finir...
+					//$element_o[$childElement_o.field]:=$childElement_o[$element_o.indexOf(This.personneCollection)]
+				End if 
+				
+			End for each 
+			
+		End for each 
+		
+	End if 
 	
 Function updateCaMarketingStatistic
 /*------------------------------------------------------------------------------

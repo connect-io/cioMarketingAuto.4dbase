@@ -36,7 +36,7 @@ $moitie_el:=$largeurForm_el/2
 Case of 
 	: (Value type:C1509($2)=Est un objet:K8:27)
 		$refFen_el:=Open window:C153(($largeur_el/2)-$moitie_el; $menu_el+Num:C11($2.ecartHautEcran); ($largeur_el/2)+$moitie_el; $hauteur_el-Num:C11($2.ecartBasEcran); Fenêtre standard:K34:13; ""; "cwToolCloseWindows")
-	: (Value type:C1509($2)=Est un entier long:K8:6)
+	: (Value type:C1509($2)=Est un entier long:K8:6) | (Value type:C1509($2)=Est un numérique:K8:4)
 		$refFen_el:=Open window:C153(($largeur_el/2)-$moitie_el; $menu_el+$2; ($largeur_el/2)+$moitie_el; $hauteur_el-$2; Fenêtre standard:K34:13; ""; "cwToolCloseWindows")
 	: (Value type:C1509($2)=Est un texte:K8:3)
 		
