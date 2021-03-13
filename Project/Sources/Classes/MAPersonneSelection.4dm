@@ -40,7 +40,7 @@ Function loadByField
 	
 	$field_c:=This:C1470.passerelle.champ.query("lib = :1"; $1)
 	
-	//This.newSelection()  // Par défaut je ré-initialise la propriété
+	This:C1470.newSelection()  // Par défaut je ré-initialise la propriété
 	
 	If ($field_c.length=1)
 		
@@ -56,15 +56,17 @@ Function loadByField
 				OB REMOVE:C1226(This:C1470; "fieldSignComparaison")
 				OB REMOVE:C1226(This:C1470; "fieldValue")
 			: ($field_c[0].directAccess#Null:C1517)  // Il faut faire la recherche sur une table [Enfant]
+				This:C1470.childFieldSignComparaison:=$2
 				This:C1470.childFieldValue:=$3
 				
 				$table_o:=Formula from string:C1601($field_c[0].directAccess).call(This:C1470)
 				
 				If ($table_o.length>0)
-					This:C1470.personneSelection:=$table_o[0][$field_c[0].valueReturn]
+					This:C1470.personneSelection:=$table_o[$field_c[0].valueReturn]
 				End if 
 				
 				OB REMOVE:C1226(This:C1470; "childFieldValue")
+				OB REMOVE:C1226(This:C1470; "childFieldSignComparaison")
 		End case 
 		
 	Else 
@@ -281,7 +283,10 @@ Historique
 	
 	If ($extractFieldChild=True:C214)
 		
+		cmaProgressBar(0; "Initialisation"; True:C214)
+		
 		For each ($childElement_o; $collection_c)
+			cmaProgressBar($collection_c.indexOf($childElement_o)/$collection_c.length; "Extraction du champ "+$childElement_o.field+" en cours...")
 			
 			For each ($element_o; This:C1470.personneCollection)
 				
@@ -303,6 +308,7 @@ Historique
 			
 		End for each 
 		
+		cmaProgressBar(1; "arrêt")
 	End if 
 	
 Function updateCaMarketingStatistic

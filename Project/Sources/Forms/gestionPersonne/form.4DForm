@@ -27,9 +27,9 @@
 					"type": "text",
 					"text": "Gestion des personnes",
 					"top": 17,
-					"left": 20,
-					"width": 341,
-					"height": 19,
+					"left": 25,
+					"width": 300,
+					"height": 21,
 					"fontWeight": "bold",
 					"fontSize": 16
 				},
@@ -37,7 +37,7 @@
 					"type": "text",
 					"text": "Appliquer des actions à la sélection...\rExemple : changer l'objectif, supprimer le scénario en cours, appliquer un nouveau scénario, ...",
 					"top": 614,
-					"left": 43,
+					"left": 48,
 					"width": 269,
 					"height": 169,
 					"borderStyle": "solid"
@@ -46,7 +46,7 @@
 					"type": "button",
 					"text": "Voir la fiche de la personne",
 					"top": 489,
-					"left": 354,
+					"left": 359,
 					"width": 250,
 					"height": 24,
 					"events": [
@@ -58,7 +58,7 @@
 					"type": "text",
 					"text": "Event de la scéne",
 					"top": 282,
-					"left": 1154,
+					"left": 1159,
 					"width": 218,
 					"height": 184,
 					"borderStyle": "solid"
@@ -67,7 +67,7 @@
 					"type": "button",
 					"text": "Forcer une action...",
 					"top": 489,
-					"left": 1154,
+					"left": 1159,
 					"width": 218,
 					"height": 24,
 					"events": [
@@ -76,7 +76,7 @@
 				},
 				"listePersonne": {
 					"type": "listbox",
-					"left": 20,
+					"left": 25,
 					"top": 98,
 					"width": 315,
 					"height": 456,
@@ -146,7 +146,7 @@
 					"type": "button",
 					"text": "Supprimer le scénario en cours",
 					"top": 574,
-					"left": 42,
+					"left": 47,
 					"width": 270,
 					"height": 25,
 					"events": [
@@ -156,7 +156,7 @@
 				},
 				"personneDetail": {
 					"type": "input",
-					"left": 354,
+					"left": 359,
 					"top": 98,
 					"width": 250,
 					"height": 171,
@@ -171,7 +171,7 @@
 				},
 				"personneDetailListeScenario": {
 					"type": "listbox",
-					"left": 645,
+					"left": 650,
 					"top": 98,
 					"width": 220,
 					"height": 368,
@@ -210,7 +210,7 @@
 					"type": "button",
 					"text": "Annuler",
 					"top": 530,
-					"left": 354,
+					"left": 359,
 					"width": 120,
 					"height": 24,
 					"events": [
@@ -222,7 +222,7 @@
 					"type": "button",
 					"text": "Valider",
 					"top": 530,
-					"left": 484,
+					"left": 489,
 					"width": 120,
 					"height": 24,
 					"events": [
@@ -232,7 +232,7 @@
 				},
 				"personneDetailMarketing": {
 					"type": "input",
-					"left": 354,
+					"left": 359,
 					"top": 295,
 					"width": 250,
 					"height": 171,
@@ -247,7 +247,7 @@
 				},
 				"personneDetailListeScene": {
 					"type": "listbox",
-					"left": 901,
+					"left": 906,
 					"top": 98,
 					"width": 220,
 					"height": 368,
@@ -284,7 +284,7 @@
 				},
 				"personneDetailScene": {
 					"type": "input",
-					"left": 1154,
+					"left": 1159,
 					"top": 98,
 					"width": 202,
 					"height": 171,
@@ -301,7 +301,7 @@
 					"type": "text",
 					"text": "Nom",
 					"top": 56,
-					"left": 20,
+					"left": 25,
 					"width": 150,
 					"height": 16,
 					"textAlign": "center",
@@ -311,7 +311,7 @@
 					"type": "text",
 					"text": "Prénom",
 					"top": 56,
-					"left": 170,
+					"left": 175,
 					"width": 150,
 					"height": 16,
 					"textAlign": "center",
@@ -320,24 +320,24 @@
 				"Ligne": {
 					"type": "line",
 					"top": 50,
-					"left": 169,
+					"left": 174,
 					"width": 1,
-					"height": 51,
+					"height": 48,
 					"stroke": "#A9A9A9"
 				},
 				"Ligne1": {
 					"type": "line",
 					"top": 50,
-					"left": 319,
+					"left": 324,
 					"width": 1,
-					"height": 51,
+					"height": 48,
 					"stroke": "#A9A9A9",
 					"startPoint": "topLeft"
 				},
 				"Ligne5": {
 					"type": "line",
 					"top": 50,
-					"left": 20,
+					"left": 25,
 					"width": 300,
 					"height": 1,
 					"startPoint": "topLeft"
@@ -345,14 +345,14 @@
 				"Ligne6": {
 					"type": "line",
 					"top": 50,
-					"left": 19,
+					"left": 24,
 					"width": 1,
-					"height": 51,
+					"height": 48,
 					"stroke": "#A9A9A9"
 				},
 				"filtreNom": {
 					"type": "input",
-					"left": 29,
+					"left": 34,
 					"top": 77,
 					"width": 135,
 					"height": 17,
@@ -362,7 +362,7 @@
 				},
 				"filtrePrenom": {
 					"type": "input",
-					"left": 179,
+					"left": 184,
 					"top": 77,
 					"width": 135,
 					"height": 17,
@@ -372,7 +372,7 @@
 				},
 				"sortNom": {
 					"type": "input",
-					"left": 147,
+					"left": 152,
 					"top": 56,
 					"width": 16,
 					"height": 16,
@@ -391,7 +391,7 @@
 				},
 				"sortPrenom": {
 					"type": "input",
-					"left": 297,
+					"left": 302,
 					"top": 56,
 					"width": 16,
 					"height": 16,
@@ -411,7 +411,7 @@
 			}
 		}
 	],
-	"geometryStamp": 239,
+	"geometryStamp": 259,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",

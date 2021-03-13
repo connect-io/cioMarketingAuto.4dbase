@@ -1,6 +1,22 @@
-var $table_o : Object
+var $propriete_t; $fieldName_t : Text
+var $class_o; $table_o : Object
+
+$class_o:=cmaToolGetClass("MAPersonne").new()
 
 //toDo boucler sur chaque propriete de Form et sauvegarder Form.personne
+For each ($propriete_t; Form:C1466)
+	$fieldName_t:=$class_o.getFieldName($propriete_t)
+	
+	If ($fieldName_t#"")
+		
+		If (OB Is defined:C1231(Form:C1466.personne; $fieldName_t)=True:C214)  // Si la propriété est un champ de la table [Personne] de la base hôte
+			Form:C1466.personne[$fieldName_t]:=Form:C1466[$propriete_t]
+		End if 
+		
+	End if 
+	
+End for each 
+
 Form:C1466.personne.save()
 
 // Sauvegarde de la table [CaMarketing]

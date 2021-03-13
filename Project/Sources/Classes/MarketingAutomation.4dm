@@ -148,7 +148,7 @@ Function cronosUpdateCaMarketing
 			
 			For each ($mailjetDetail_o; $mailjetDetail_c)
 				// On vérifie que l'email trouvé est bien dans la base du client
-				$class_o.loadByField("eMail"; "="; $mailjetDetail_o.email)  // Initialisation de l'entité sélection de la table [Personne] du client
+				$class_o.loadByField("eMail"; "="; $mailjetDetail_o.email)  // Initialisation de l'entité de la table [Personne] du client
 				
 				If ($class_o.personne#Null:C1517)  // On met à jour la table marketing avec les infos de mailjet
 					$class_o.updateCaMarketingStatistic(2; New object:C1471("eventNumber"; ${$i_el}; "eventTs"; Num:C11($mailjetDetail_o.tsEvent)))
