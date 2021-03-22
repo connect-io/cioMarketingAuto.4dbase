@@ -165,13 +165,13 @@ Function loadCronos
 	
 	If (This:C1470.loadImage("cronosSleep.png")=True:C214) & (This:C1470.loadImage("cronosWork.png")=True:C214)
 		This:C1470.cronosImage:=This:C1470.image["cronosSleep"]
-		This:C1470.cronosMessage:="Démarrage en cours de Cronos"
+		This:C1470.cronosMessage:="Démarrage en cours de Cronos (Marketing automation)"
 		This:C1470.cronosStop:=False:C215
 		This:C1470.cronosVerifTache:=True:C214
 		This:C1470.cronosVerifMailjet:=0
 		This:C1470.cronosMailjetClass:=cmaToolGetClass("MAMailjet").new()
 		
-		$process_el:=New process:C317("cwCronosDisplay"; 0; "cronos"; This:C1470; *)
+		$process_el:=New process:C317("cwCronosDisplay"; 0; "cronosMarketingAutomation"; This:C1470; *)
 	End if 
 	
 Function loadCurrentPeople
