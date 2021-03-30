@@ -16,7 +16,7 @@ var $function_o : Object
 // Instanciation de la class
 $0:=Formula from string:C1601("cwToolGetClass(\"webApp\").new()").call(This:C1470)
 
-If (Application type:C494=4D Server:K5:6) | (Application type:C494=4D mode local:K5:1)
+If (Application type:C494#4D mode distant:K5:5)
 	MESSAGE:C88("Arrêt du serveur web..."+Char:C90(Retour chariot:K15:38))
 	WEB STOP SERVER:C618
 	
