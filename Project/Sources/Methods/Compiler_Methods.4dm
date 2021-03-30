@@ -45,3 +45,36 @@ C_OBJECT:C1216(cwToolProprieteExisteDansObjet; $0)
 C_OBJECT:C1216(cwToolProprieteExisteDansObjet; $1)
 C_COLLECTION:C1488(cwToolProprieteExisteDansObjet; $2)
 C_LONGINT:C283(cwToolProprieteExisteDansObjet; $3)
+
+//cmaProgressBar
+C_REAL:C285(cmaProgressBar; $1)
+C_TEXT:C284(cmaProgressBar; $2)
+C_BOOLEAN:C305(cmaProgressBar; $3)
+
+//cmaStorage
+C_OBJECT:C1216(cmaStorage; $0)
+
+//cmaTimestamp
+C_LONGINT:C283(cmaTimestamp; $0)
+C_DATE:C307(cmaTimestamp; $1)
+C_TIME:C306(cmaTimestamp; $2)
+
+//cmaTimestampLire
+C_TEXT:C284(cmaTimestampLire; $0)
+C_TEXT:C284(cmaTimestampLire; $1)
+C_LONGINT:C283(cmaTimestampLire; $2)
+
+//cmaToolGetClass
+C_OBJECT:C1216(cmaToolGetClass; $0)
+C_TEXT:C284(cmaToolGetClass; $1)
+
+//cmaToolJetLag
+C_LONGINT:C283(cmaToolJetLag; $0)
+
+//cwMarketingAutomationStart
+C_BOOLEAN:C305(cwMarketingAutomationStart; $1)
+
+//cwToolExtractFileNameToPath
+C_TEXT:C284(cwToolExtractFileNameToPath; $0)
+C_TEXT:C284(cwToolExtractFileNameToPath; $1)
+C_BOOLEAN:C305(cwToolExtractFileNameToPath; $2)
