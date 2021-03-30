@@ -39,24 +39,30 @@ Historique
 -----------------------------------------------------------------------------*/
 	var $formule_t : Text
 	var $field_t : Text  // Lib du champ
+	var $collectionField_c; $collection_c : Collection
+	
+	$collection_c:=New collection:C1472
+	$collectionField_c:=New collection:C1472
 	
 	// On récupére la liste des champs que l'on souhaite intégrer à la personne.
-	If ($field_c=Null:C1517)
-		$field_c:=This:C1470.passerelle.champ.extract("lib")
+	If (Count parameters:C259=0)
+		$collectionField_c:=This:C1470.passerelle.champ.extract("lib")
+	Else 
+		$collectionField_c:=$field_c.copy()
 	End if 
 	
 	ASSERT:C1129(This:C1470.personne#Null:C1517; "Impossible d'utiliser cette fonction sans une personne de définie.")
-	ASSERT:C1129($field_c#Null:C1517; "Impossible de déterminer les champs d'une personne.")
+	ASSERT:C1129($collectionField_c.length#0; "Impossible de déterminer les champs d'une personne.")
 	
-	For each ($field_t; $field_c)
+	For each ($field_t; $collectionField_c)
 		// On récupére la config du champs.
-		$field_c:=This:C1470.passerelle.champ.query("lib is :1"; $field_t)
-		ASSERT:C1129($field_c.length#0; "Fonction load (Class MAPersonne) : Impossible de trouver la configuration du champ : "+$field_t)
+		$collection_c:=This:C1470.passerelle.champ.query("lib is :1"; $field_t)
+		ASSERT:C1129($collection_c.length#0; "Fonction load (Class MAPersonne) : Impossible de trouver la configuration du champ : "+$field_t)
 		
 		// Reset de la formule.
 		$formule_t:="This.personne"
 		
-		For each ($element_t; Split string:C1554($field_c[0].personAccess; ".")) Until (This:C1470[$field_t]=Null:C1517)
+		For each ($element_t; Split string:C1554($collection_c[0].personAccess; ".")) Until (This:C1470[$field_t]=Null:C1517)
 			// On concaténe la formule.
 			$formule_t:=$formule_t+"."+$element_t
 			

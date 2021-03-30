@@ -23,11 +23,14 @@ Historique
 			Storage:C1525.automation:=New shared object:C1526()
 		End use 
 		
-		If (Count parameters:C259=1) | (String:C10($configChemin_t)="")
-			This:C1470.configChemin:=Get 4D folder:C485(Dossier Resources courant:K5:16; *)+"cioMarketingAutomation"+Séparateur dossier:K24:12+"config.json"
-		Else 
-			This:C1470.configChemin:=$configChemin_t
-		End if 
+		Case of 
+			: (Count parameters:C259=1)
+				This:C1470.configChemin:=Get 4D folder:C485(Dossier Resources courant:K5:16; *)+"cioMarketingAutomation"+Séparateur dossier:K24:12+"config.json"
+			: (String:C10($configChemin_t)="")
+				This:C1470.configChemin:=Get 4D folder:C485(Dossier Resources courant:K5:16; *)+"cioMarketingAutomation"+Séparateur dossier:K24:12+"config.json"
+			Else 
+				This:C1470.configChemin:=$configChemin_t
+		End case 
 		
 		$fichierConfig_o:=File:C1566(This:C1470.configChemin; fk chemin plateforme:K87:2)
 		
