@@ -25,7 +25,7 @@
 				"Bouton": {
 					"type": "button",
 					"text": "Valider",
-					"top": 225,
+					"top": 345,
 					"left": 38,
 					"width": 202,
 					"height": 30,
@@ -58,7 +58,7 @@
 				"Texte1": {
 					"type": "text",
 					"text": "Information sur version du modèle sélectionné : ",
-					"top": 80,
+					"top": 200,
 					"left": 14,
 					"width": 250,
 					"height": 31,
@@ -68,14 +68,14 @@
 				"modeleDetail": {
 					"type": "input",
 					"left": 14,
-					"top": 130,
+					"top": 250,
 					"width": 250,
 					"height": 80,
 					"dataSource": "Form:C1466.modeleDetail",
 					"enterable": false,
 					"fill": "transparent",
 					"borderStyle": "none",
-					"bottom": 210
+					"bottom": 330
 				},
 				"sceneDetailApercuModele": {
 					"type": "pictureButton",
@@ -109,11 +109,55 @@
 						"onClick",
 						"onMouseMove"
 					]
+				},
+				"Texte2": {
+					"type": "text",
+					"text": "Objet de l'email :",
+					"top": 80,
+					"left": 14,
+					"width": 130,
+					"height": 20,
+					"fontWeight": "bold"
+				},
+				"modeleObjetEmail": {
+					"type": "input",
+					"left": 14,
+					"top": 110,
+					"width": 250,
+					"height": 20,
+					"dataSource": "Form:C1466.modeleObjetEmail",
+					"enterable": false,
+					"events": [
+						"onDataChange"
+					],
+					"method": "ObjectMethods/modeleObjetEmail.4dm"
+				},
+				"Texte3": {
+					"type": "text",
+					"text": "Choix de l'expéditeur :",
+					"top": 140,
+					"left": 14,
+					"width": 150,
+					"height": 20,
+					"fontWeight": "bold"
+				},
+				"expediteurList": {
+					"type": "dropdown",
+					"left": 14,
+					"top": 170,
+					"width": 229,
+					"height": 20,
+					"events": [
+						"onDataChange"
+					],
+					"dataSource": "expediteurList_at",
+					"method": "ObjectMethods/expediteurList.4dm",
+					"focusable": true
 				}
 			}
 		}
 	],
-	"geometryStamp": 395,
+	"geometryStamp": 436,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",

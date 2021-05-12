@@ -71,10 +71,24 @@ If (Form event code:C388=Sur données modifiées:K2:15)
 			Form:C1466.imageModeleActif:=Storage:C1525.automation.image["toggle-off"]
 		End if 
 		
+		If (Lowercase:C14(Form:C1466.sceneTypeSelected)="email")
+			Form:C1466.modeleObjetEmail:=$elementSelected_o.subject
+			
+			OBJECT SET ENTERABLE:C238(*; "modeleObjetEmail"; True:C214)
+			OBJECT SET ENTERABLE:C238(*; "expediteurList"; True:C214)
+		End if 
+		
 	Else 
 		versionList_at:=0
 		
 		Form:C1466.modeleDetail:=""
+		
+		If (Lowercase:C14(Form:C1466.sceneTypeSelected)="email")
+			Form:C1466.modeleObjetEmail:=""
+			
+			OBJECT SET ENTERABLE:C238(*; "modeleObjetEmail"; False:C215)
+		End if 
+		
 	End if 
 	
 	Form:C1466.sceneVersionSelected:=$titre_t

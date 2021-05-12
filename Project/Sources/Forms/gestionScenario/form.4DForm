@@ -426,15 +426,16 @@
 				"Texte12": {
 					"type": "text",
 					"text": "Condition d'action",
-					"top": 335,
+					"top": 438,
 					"left": 728,
 					"width": 195,
-					"height": 16
+					"height": 16,
+					"visibility": "visible"
 				},
 				"sceneDetailConditionAction": {
 					"type": "button",
 					"text": "Définir les conditions d'action",
-					"top": 358,
+					"top": 461,
 					"left": 728,
 					"width": 195,
 					"height": 25,
@@ -442,20 +443,22 @@
 						"onClick"
 					],
 					"style": "regular",
-					"method": "ObjectMethods/sceneDetailConditionAction.4dm"
+					"method": "ObjectMethods/sceneDetailConditionAction.4dm",
+					"visibility": "visible"
 				},
 				"Texte13": {
 					"type": "text",
 					"text": "Condition de saut",
-					"top": 393,
+					"top": 496,
 					"left": 728,
 					"width": 195,
-					"height": 16
+					"height": 16,
+					"visibility": "hidden"
 				},
 				"sceneDetailConditionSaut": {
 					"type": "button",
 					"text": "Définir les conditions de saut",
-					"top": 416,
+					"top": 519,
 					"left": 728,
 					"width": 195,
 					"height": 25,
@@ -463,12 +466,13 @@
 						"onClick"
 					],
 					"style": "regular",
-					"method": "ObjectMethods/sceneDetailConditionSaut.4dm"
+					"method": "ObjectMethods/sceneDetailConditionSaut.4dm",
+					"visibility": "hidden"
 				},
 				"sceneDetailPersonneEnCoursChaine": {
 					"type": "input",
-					"left": 725,
-					"top": 549,
+					"left": 726,
+					"top": 544,
 					"width": 156,
 					"height": 14,
 					"dataSource": "Form:C1466.scenePersonneEnCours",
@@ -482,8 +486,8 @@
 				"sceneDetailPersonneEnCours": {
 					"type": "button",
 					"text": "Voir",
-					"top": 546,
-					"left": 887,
+					"top": 541,
+					"left": 888,
 					"width": 36,
 					"height": 23,
 					"events": [
@@ -497,7 +501,8 @@
 					"top": 442,
 					"left": 223,
 					"width": 195,
-					"height": 16
+					"height": 16,
+					"visibility": "hidden"
 				},
 				"scenarioDetailDecor": {
 					"type": "button",
@@ -510,12 +515,13 @@
 						"onClick"
 					],
 					"style": "regular",
-					"method": "ObjectMethods/scenarioDetailDecor.4dm"
+					"method": "ObjectMethods/scenarioDetailDecor.4dm",
+					"visibility": "hidden"
 				},
 				"Texte6": {
 					"type": "text",
 					"text": "Paramètre de la scène",
-					"top": 277,
+					"top": 380,
 					"left": 728,
 					"width": 195,
 					"height": 16
@@ -523,7 +529,7 @@
 				"sceneDetailParametre": {
 					"type": "button",
 					"text": "Définir les paramètres",
-					"top": 300,
+					"top": 403,
 					"left": 728,
 					"width": 195,
 					"height": 25,
@@ -536,7 +542,7 @@
 				"Texte14": {
 					"type": "text",
 					"text": "Scène suivante",
-					"top": 217,
+					"top": 286,
 					"left": 728,
 					"width": 195,
 					"height": 16
@@ -544,7 +550,7 @@
 				"sceneDetailSceneSuivanteDelai": {
 					"type": "input",
 					"left": 730,
-					"top": 244,
+					"top": 313,
 					"width": 61,
 					"height": 17,
 					"dataSource": "Form:C1466.sceneSuivanteDelai",
@@ -554,7 +560,7 @@
 				"sceneDetailDelaiUp": {
 					"type": "pictureButton",
 					"left": 806,
-					"top": 239,
+					"top": 308,
 					"width": 13,
 					"height": 13,
 					"events": [
@@ -570,7 +576,7 @@
 				"sceneDetailDelaiDown": {
 					"type": "pictureButton",
 					"left": 806,
-					"top": 253,
+					"top": 322,
 					"width": 13,
 					"height": 13,
 					"events": [
@@ -586,7 +592,7 @@
 				"sceneDetailSceneSuivanteDelaiEchelle": {
 					"type": "input",
 					"left": 827,
-					"top": 244,
+					"top": 313,
 					"width": 69,
 					"height": 17,
 					"dataSource": "Form:C1466.sceneDetail.paramAction.echelleDelai",
@@ -597,7 +603,7 @@
 				"sceneDetailDelaiChangeEchelle": {
 					"type": "pictureButton",
 					"left": 906,
-					"top": 244,
+					"top": 313,
 					"width": 17,
 					"height": 17,
 					"events": [
@@ -628,11 +634,47 @@
 					"tooltip": {
 						"$ref": "/SOURCES/tips.json#/Aide pour rang"
 					}
+				},
+				"Texte15": {
+					"type": "text",
+					"text": "Numéro d'ordre",
+					"top": 218,
+					"left": 728,
+					"width": 195,
+					"height": 16
+				},
+				"sceneDetailNumOrdre": {
+					"type": "ruler",
+					"left": 728,
+					"top": 241,
+					"width": 195,
+					"height": 28,
+					"max": 10,
+					"events": [
+						"onDataChange"
+					],
+					"min": 1,
+					"dataSource": "Form:C1466.sceneDetail.numOrdre",
+					"labelsPlacement": "bottom",
+					"showGraduations": true,
+					"graduationStep": 1,
+					"method": "ObjectMethods/sceneDetailNumOrdre.4dm"
+				},
+				"sceneDetailSceneSuivanteID": {
+					"type": "dropdown",
+					"left": 728,
+					"top": 345,
+					"width": 195,
+					"height": 25,
+					"events": [
+						"onDataChange"
+					],
+					"dataSource": "sceneSuivante_at"
 				}
 			}
 		}
 	],
-	"geometryStamp": 535,
+	"geometryStamp": 654,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",

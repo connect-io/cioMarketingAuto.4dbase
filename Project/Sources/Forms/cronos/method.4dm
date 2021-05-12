@@ -3,8 +3,8 @@ If (Form event code:C388=Sur chargement:K2:1)
 End if 
 
 If (Form event code:C388=Sur minuteur:K2:25)
-	C_LONGINT:C283($tsFrom_el; $tsTo_el)
-	C_OBJECT:C1216($lastRequest_o)
+	var $tsFrom_el; $tsTo_el : Integer
+	var $lastRequest_o : Object
 	
 	Case of 
 		: (Form:C1466.cronosMessage="Récupération des données de mailjet en cours...")
@@ -25,6 +25,12 @@ If (Form event code:C388=Sur minuteur:K2:25)
 			
 			Form:C1466.cronosMessage:=""
 			Form:C1466.cronosVerifMailjet:=cmaTimestamp(Current date:C33; Current time:C178)+3600  // On incrémente d'1 heure
+		: (Form:C1466.cronosMessage="Gestion des scénarios...")
+			TRACE:C157
+			Form:C1466.cronosManageScenario()
+			
+			Form:C1466.cronosMessage:=""
+			Form:C1466.cronosVerifScenario:=cmaTimestamp(Current date:C33; Current time:C178)+3600  // On incrémente d'1 heure
 		Else 
 			Form:C1466.cronosMessageDisplay()
 	End case 

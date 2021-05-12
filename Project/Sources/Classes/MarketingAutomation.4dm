@@ -5,7 +5,7 @@ Class de gestion du marketing automation
 
 -----------------------------------------------------------------------------*/
 
-Class constructor($initialisation_b : Boolean; $configChemin_t : Text; )
+Class constructor($initialisation_b : Boolean; $configChemin_t : Text)
 /* -----------------------------------------------------------------------------
 Fonction : MarketingAutomation.constructor
 	
@@ -85,7 +85,7 @@ Historique
 -----------------------------------------------------------------------------*/
 	
 	Case of 
-		: ($action_t="verifTache") | ($action_t="mailjetRecup")
+		: ($action_t="verifTache") | ($action_t="mailjetRecup") | ($action_t="gestionScenario")
 			
 			If ($action_t="verifTache")
 				This:C1470.cronosMessage:=""
@@ -111,12 +111,18 @@ Function cronosMessageDisplay
 			This:C1470.cronosAction("verifTache")
 		: (This:C1470.cronosMessage="Récupération des données de mailjet en cours...")
 			This:C1470.cronosAction("mailjetRecup")
+		: (This:C1470.cronosMessage="Gestion des scénarios...")
+			This:C1470.cronosAction("gestionScenario")
 		: (This:C1470.cronosMessage="RAS, prochaine vérification dans 10 secondes.")
 			This:C1470.cronosAction("RAS")
 		: (This:C1470.cronosMessage="") & ($ts_el>This:C1470.cronosVerifMailjet)
 			This:C1470.cronosImage:=This:C1470.image["cronosWork"]
 			
 			This:C1470.cronosMessage:="Récupération des données de mailjet en cours..."
+		: (This:C1470.cronosMessage="") & ($ts_el>This:C1470.cronosVerifScenario)
+			This:C1470.cronosImage:=This:C1470.image["cronosWork"]
+			
+			This:C1470.cronosMessage:="Gestion des scénarios..."
 		: (This:C1470.cronosVerifTache=True:C214)
 			This:C1470.cronosImage:=This:C1470.image["cronosWork"]
 			
@@ -163,6 +169,130 @@ Function cronosUpdateCaMarketing
 		
 	End if 
 	
+Function cronosManageScenario
+	var $continue_b : Boolean
+	var $table_o; $enregistrement_o; $caScenarioEvent_o; $scene_o; $personne_o; $eMail_o; $config_o : Object
+	var $collection_c : Collection
+	
+	// On recherche toutes les personnes qui ont un scénario actif et dont le prochain check est dépassé
+	$table_o:=ds:C1482.CaPersonneScenario.query("actif = :1 AND tsProchainCheck <= :1"; True:C214; cmaTimestamp(Current date:C33; Current time:C178))
+	
+	For each ($enregistrement_o; $table_o)
+		$caScenarioEvent_o:=$enregistrement_o.AllCaScenarioEvent
+		
+		If ($caScenarioEvent_o.length=0)  // Il n'y a pas encore de scène exécutée
+			$scene_o:=ds:C1482.CaScene.query("scenarioID is :1 AND numOrdre = :2"; $enregistrement_o.scenarioID; 1)
+			
+			If ($scene_o.length=1)
+				$scene_o:=$scene_o.first()
+			Else 
+				CLEAR VARIABLE:C89($scene_o)
+			End if 
+			
+		Else   // S'il y a des logs pour le scénario de la personne, on va regarder parmis ceux-ci ceux qui ne sont pas terminés
+			$caScenarioEvent_o:=$caScenarioEvent_o.query("etat # :1"; "Terminé")
+			
+			// La dernière scène n'a pas pu être se terminer
+			If ($caScenarioEvent_o.length=1)
+				$caScenarioEvent_o:=$caScenarioEvent_o.first()
+				
+				Case of 
+					: ($caScenarioEvent_o.etat="En cours")
+						$caScenarioEvent_o.etat:="Terminé"
+						
+						$caScenarioEvent_o.save()
+						
+						// On cherche la scène suivante
+						If ($caScenarioEvent_o.OneCaScene.sceneSuivanteID#0)
+							$scene_o:=$caScenarioEvent_o.OneCaScene.AllCaSceneSuivante
+						End if 
+						
+				End case 
+				
+			End if 
+			
+		End if 
+		
+		If ($scene_o#Null:C1517)  // Je dois vérifier si la scène est exécutable
+			
+			If ($scene_o.conditionAction.elements=Null:C1517)  // Si pas de condition d'action, on exécute la scène
+				$continue_b:=True:C214
+			Else 
+				
+			End if 
+			
+			// On passe au condition d'action inhérente
+			Case of 
+				: ($continue_b=False:C215)
+				: ($scene_o.action="Envoi email")  // Si l'action de la scène est l'envoi d'un email, on doit faire des vérifications de base
+					$personne_o:=cmaToolGetClass("MAPersonne").new()
+					$personne_o.loadByPrimaryKey($enregistrement_o.personneID)
+					
+					If (String:C10($personne_o.eMail)#"") & (cmaToolRegexValidate(1; String:C10($personne_o.personne.eMail))=True:C214)  // Si la personne possède bien un email et qu'il est valide
+						$continue_b:=True:C214
+					Else 
+						$continue_b:=False:C215
+					End if 
+					
+					If ($continue_b=True:C214)  // Si la personne n'a pas un email en demande de désabonnement ou en bounce
+						$continue_b:=$personne_o.mailjetIsPossible()
+					End if 
+					
+					If ($continue_b=True:C214)  // Si l'email qui est programmé n'est pas vide
+						$collection_c:=$scene_o.paramAction.modele.email.version.query("actif = :1"; True:C214)
+						
+						If ($collection_c.length=1)  // S'il y a bien une version d'email actif
+							
+							If ($collection_c[0].contenu4WP#Null:C1517)
+								$continue_b:=(WP Get text:C1575($collection_c[0].contenu4WP; wk expressions as value:K81:255)#"")
+							Else   // Il n'y a pas de document 4DWP assigné à cette version
+								$continue_b:=False:C215
+							End if 
+							
+							If ($continue_b=True:C214)  // On vérifie qu'il y a bien un expéditeur et un objet d'email indiqué
+								$continue_b:=((String:C10($collection_c[0].subject)#"") & (String:C10($collection_c[0].expediteur)#""))
+							End if 
+							
+						Else   // Il n'y a aucune version d'email créée pour cette scène là
+							$continue_b:=False:C215
+						End if 
+						
+					End if 
+					
+			End case 
+			
+			If ($continue_b=True:C214)  // La scène est exécutable, on va voir ce qu'on doit... l'exécuter :D
+				
+				Case of 
+					: ($scene_o.action="Attente")  // L'action de la scène est juste une attente d'un certains délai... on créé donc le log
+						$caScenarioEvent_o:=ds:C1482.CaScenarioEvent.new()
+						
+						$caScenarioEvent_o.personneScenarioID:=$enregistrement_o.ID
+						$caScenarioEvent_o.sceneID:=$scene_o.ID
+						$caScenarioEvent_o.tsCreation:=cmaTimestamp(Current date:C33; Current time:C178)
+						$caScenarioEvent_o.etat:="En cours"
+						
+						$caScenarioEvent_o.save()
+					: ($scene_o.action="Envoi email")  // L'action de la scène est l'envoi d'un email
+						$eMail_o:=cmaToolGetClass("MAEMail").new($collection_c[0].expediteur)
+						$eMail_o.subject:=$collection_c[0].subject
+						
+						$config_o:=New object:C1471("success"; True:C214; "type"; "Email"; "eMailConfig"; $eMail_o; "contenu4WP"; WP Get text:C1575($collection_c[0].contenu4WP; wk expressions as value:K81:255))
+						
+						$personne_o.sendMailing($config_o)
+				End case 
+				
+				$enregistrement_o.tsProchainCheck:=cmaTimestamp(Current date:C33; Current time:C178)+$scene_o.tsAttente
+				$enregistrement_o.save()
+			Else   // Il faut envoyer un email pour prévenir que la scène ne peut pas être exécuter
+			End if 
+			
+		End if 
+		
+		CLEAR VARIABLE:C89($scene_o)
+		CLEAR VARIABLE:C89($continue_b)
+	End for each 
+	
 Function loadCronos
 	var $process_el : Integer
 	
@@ -171,8 +301,12 @@ Function loadCronos
 		This:C1470.cronosMessage:="Démarrage en cours de Cronos (Marketing automation)"
 		This:C1470.cronosStop:=False:C215
 		This:C1470.cronosVerifTache:=True:C214
+		
 		This:C1470.cronosVerifMailjet:=0
+		This:C1470.cronosVerifScenario:=0
 		This:C1470.cronosMailjetClass:=cmaToolGetClass("MAMailjet").new()
+		
+		This:C1470.cronosVerifScenario:=0
 		
 		$process_el:=New process:C317("cwCronosDisplay"; 0; "cronosMarketingAutomation"; This:C1470; *)
 	End if 

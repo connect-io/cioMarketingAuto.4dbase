@@ -184,6 +184,30 @@ Historique
 -----------------------------------------------------------------------------*/
 	cwToolWindowsForm("detailPersonne"; "center"; This:C1470)
 	
+Function mailjetIsPossible()->$isOk_b : Boolean
+/*-----------------------------------------------------------------------------
+Fonction : MAPersonne.mailjetIsPossible
+	
+Permet de savoir si on peut envoi un email à This.personne
+	
+Historique
+12/05/21 - Rémy Scanu remy@connect-io.fr> - Ajout entête
+-----------------------------------------------------------------------------*/
+	var $caPersonneMarketing_o : Object
+	
+	ASSERT:C1129(This:C1470.personne#Null:C1517; "Impossible d'utiliser la fonction mailjetIsPossible sans une personne de définie.")
+	
+	$caPersonneMarketing_o:=This:C1470.personne.AllCaPersonneMarketing
+	
+	If ($caPersonneMarketing_o.length=1)
+		$caPersonneMarketing_o:=$caPersonneMarketing_o.first()
+		
+		If ($caPersonneMarketing_o.desabonementMail=False:C215) & ($caPersonneMarketing_o.lastBounce=0)
+			$isOk_b:=True:C214
+		End if 
+		
+	End if 
+	
 Function mailjetGetStat
 /*-----------------------------------------------------------------------------
 Fonction : MAPersonne.mailjetGetStat
@@ -249,30 +273,41 @@ Historique
 		
 	End for 
 	
-Function sendMailing
+Function sendMailing($config_b : Object)
 	var $canalEnvoi_t; $corps_t; $mime_t; $propriete_t; $contenu_t : Text
 	var $statut_b : Boolean
 	var $class_o; $config_o; $mime_o; $statut_o : Object
 	
 	ASSERT:C1129(This:C1470.personne#Null:C1517; "Impossible d'utiliser la fonction sendMailing sans une personne de définie.")
 	
-	// Instanciation de la class
-	$class_o:=cmaToolGetClass("MAMailing").new()
-	
-	// On détermine le canal d'envoi du mailing
-	$canalEnvoi_t:=$class_o.sendGetType()
+	If (Count parameters:C259=0)
+		// Instanciation de la class
+		$class_o:=cmaToolGetClass("MAMailing").new()
+		
+		// On détermine le canal d'envoi du mailing
+		$canalEnvoi_t:=$class_o.sendGetType()
+	Else 
+		$canalEnvoi_t:=$config_b.type
+	End if 
 	
 	If ($canalEnvoi_t#"")
 		// On configure correctement le mailing
 		$config_o:=$class_o.sendGetConfig($canalEnvoi_t)
 		
 		If ($config_o.success=True:C214)
-			// On récupère le contenu
-			cwToolWindowsForm("gestionDocument"; New object:C1471("ecartHautEcran"; 30; "ecartBasEcran"; 70); New object:C1471("entree"; 1))
+			
+			If (Count parameters:C259=0)  // On récupère le contenu
+				cwToolWindowsForm("gestionDocument"; New object:C1471("ecartHautEcran"; 30; "ecartBasEcran"; 70); New object:C1471("entree"; 1))
+			End if 
 			
 			Case of 
 				: ($canalEnvoi_t="Email")
-					$corps_t:=WP Get text:C1575(WParea; wk expressions as value:K81:255)
+					
+					If (Count parameters:C259=0)
+						$corps_t:=WP Get text:C1575(WParea; wk expressions as value:K81:255)
+					Else 
+						$corps_t:=$config_b.contenu4WP
+					End if 
 					
 					If ($corps_t#"")
 						

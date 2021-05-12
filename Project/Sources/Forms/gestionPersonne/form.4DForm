@@ -54,15 +54,6 @@
 					],
 					"method": "ObjectMethods/personneDetailVoirFiche.4dm"
 				},
-				"Texte7": {
-					"type": "text",
-					"text": "Event de la scéne",
-					"top": 282,
-					"left": 1159,
-					"width": 218,
-					"height": 184,
-					"borderStyle": "solid"
-				},
 				"Bouton2": {
 					"type": "button",
 					"text": "Forcer une action...",
@@ -188,6 +179,7 @@
 					"currentItemPositionSource": "Form:C1466.ScenarioPersonneCurrentPosition",
 					"selectedItemsSource": "Form:C1466.ScenarioPersonneSelectedElement",
 					"selectionMode": "single",
+					"headerHeight": "17px",
 					"columns": [
 						{
 							"header": {
@@ -264,6 +256,7 @@
 					"currentItemPositionSource": "Form:C1466.SceneCurrentPosition",
 					"selectedItemsSource": "Form:C1466.SceneSelectedElement",
 					"selectionMode": "single",
+					"headerHeight": "17px",
 					"columns": [
 						{
 							"header": {
@@ -407,11 +400,57 @@
 						"onMouseMove"
 					],
 					"method": "ObjectMethods/sortPrenom.4dm"
+				},
+				"personneDetailListeSceneEvent": {
+					"type": "listbox",
+					"left": 1159,
+					"top": 282,
+					"width": 218,
+					"height": 184,
+					"events": [
+						"onClick",
+						"onHeaderClick",
+						"onDataChange",
+						"onSelectionChange"
+					],
+					"listboxType": "collection",
+					"dataSource": "Form:C1466.scenarioEvent",
+					"headerHeight": "17px",
+					"rowHeight": "30px",
+					"scrollbarHorizontal": "hidden",
+					"textAlign": "center",
+					"verticalAlign": "middle",
+					"columns": [
+						{
+							"header": {
+								"text": "Etat",
+								"name": "Entête6"
+							},
+							"name": "Colonne2",
+							"footer": {
+								"name": "Pied6"
+							},
+							"width": 101,
+							"dataSource": "This:C1470.etat"
+						},
+						{
+							"header": {
+								"name": "Entête7",
+								"text": "Crée le"
+							},
+							"name": "Colonne3",
+							"footer": {
+								"name": "Pied7"
+							},
+							"width": 102,
+							"dataSource": "\"Le \"+cmaTimestampLire(This:C1470.tsCreation; \"date\")+\"\\rà \"+cmaTimestampLire(This:C1470.tsCreation; \"heure\")"
+						}
+					]
 				}
 			}
 		}
 	],
-	"geometryStamp": 259,
+	"geometryStamp": 284,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",

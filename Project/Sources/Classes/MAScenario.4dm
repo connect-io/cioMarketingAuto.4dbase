@@ -1,6 +1,11 @@
-Class constructor
+Class constructor($entitySelectionToKeep_o : Object)
 	This:C1470.scenario:=ds:C1482.CaScenario.newSelection()
 	This:C1470.scenarioDetail:=New object:C1471()
+	
+	// Modifié par : Rémy Scanu (10/05/2021)
+	If ($entitySelectionToKeep_o#Null:C1517)
+		This:C1470.personneSelection:=$entitySelectionToKeep_o
+	End if 
 	
 Function newScenario
 	var $0 : Boolean
@@ -53,7 +58,13 @@ Function searchPersonToScenario
 	var $cleValeur_c : Collection
 	
 	$class_o:=cmaToolGetClass("MAPersonneSelection").new()
-	$class_o.loadAll()
+	
+	// Modifié par : Rémy Scanu (10/05/2021)
+	If (This:C1470.personneSelection#Null:C1517)
+		$class_o.fromEntitySelection(This:C1470.personneSelection)
+	Else 
+		$class_o.loadAll()
+	End if 
 	
 	$personne_o:=$class_o.personneSelection
 	$personneAEnlever_o:=ds:C1482[Storage:C1525.automation.passerelle.tableHote].newSelection()
@@ -144,6 +155,11 @@ Function searchPersonToScenario
 					$class_o:=cmaToolGetClass("MAPersonneSelection").new()
 					$class_o.loadByField("eMail"; "#"; "")
 					
+					// Modifié par : Rémy Scanu (10/05/2021)
+					If (This:C1470.personneSelection#Null:C1517)
+						$class_o.personneSelection:=This:C1470.personneSelection.and($class_o.personneSelection)
+					End if 
+					
 					If ($class_o.personneSelection.length>0)  // Des personnes de ma sélection ont bien un email
 						
 						If ($cleValeur_o.value=True:C214)  // Si dans les conditions, l'utisateur souhaite uniquement les personnes avec un email
@@ -209,7 +225,7 @@ Function searchPersonToScenario
 	This:C1470.scenarioPersonneEnCoursEntity:=$personneAEnlever_o
 	
 Function applyScenarioToPerson
-	var $enregistrement_o; $caPersonneScenario_o; $retour_o : Object
+	var $enregistrement_o; $caPersonneScenario_o; $retour_o; $table_o : Object
 	
 	If (This:C1470.scenarioSelectionPossiblePersonne#Null:C1517)
 		
@@ -220,6 +236,12 @@ Function applyScenarioToPerson
 			$caPersonneScenario_o.scenarioID:=This:C1470.scenarioDetail.getKey()
 			
 			$caPersonneScenario_o.actif:=This:C1470.scenarioDetail.actif
+			
+			If ($caPersonneScenario_o.actif=True:C214)
+				$table_o:=$enregistrement_o.AllCaPersonneScenario.query("actif = :1"; True:C214)
+				
+				$caPersonneScenario_o.actif:=($table_o.length=0)
+			End if 
 			
 			$retour_o:=$caPersonneScenario_o.save()
 		End for each 
@@ -332,7 +354,10 @@ Function newScene
 	$caScene_o.nom:="Nouvelle scène"
 	$caScene_o.scenarioID:=This:C1470.scenarioDetail.getKey()
 	$caScene_o.action:="Définir une nouvelle action..."
+	$caScene_o.numOrdre:=(This:C1470.scenarioDetail.AllCaScene.length)+1
+	
 	$caScene_o.paramAction:=New object:C1471("modele"; New object:C1471("email"; New object:C1471("version"; New collection:C1472); "sms"; New object:C1471("version"; New collection:C1472); "courrier"; New object:C1471("version"; New collection:C1472)))
+	
 	$caScene_o.conditionAction:=New object:C1471()
 	$caScene_o.conditionSaut:=New object:C1471()
 	

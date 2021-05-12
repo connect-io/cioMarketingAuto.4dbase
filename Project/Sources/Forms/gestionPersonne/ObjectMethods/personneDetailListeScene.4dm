@@ -5,12 +5,18 @@ If (Form event code:C388=Sur clic:K2:4) & (Form:C1466.SceneCurrentElement#Null:C
 	
 	Form:C1466.personneDetail.sceneResume:="Test"
 	
-	OBJECT SET ENABLED:C1123(*;"personneDetailScene";True:C214)
+	Form:C1466.scenarioEvent:=$table_o.AllCaScenarioEvent
+	
+	OBJECT SET ENABLED:C1123(*; "personneDetailScene@"; True:C214)
 Else 
 	
 	If (Form:C1466.personneDetail.sceneResume#Null:C1517)
 		Form:C1466.personneDetail.sceneResume:=Null:C1517
 	End if 
 	
-	OBJECT SET ENABLED:C1123(*;"personneDetailScene";False:C215)
+	If (Form:C1466.scenarioEvent#Null:C1517)
+		Form:C1466.scenarioEvent:=Null:C1517
+	End if 
+	
+	OBJECT SET ENABLED:C1123(*; "personneDetailScene@"; False:C215)
 End if 
