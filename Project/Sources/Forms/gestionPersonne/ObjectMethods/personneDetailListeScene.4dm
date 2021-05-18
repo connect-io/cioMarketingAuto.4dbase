@@ -1,5 +1,5 @@
 If (Form event code:C388=Sur clic:K2:4) & (Form:C1466.SceneCurrentElement#Null:C1517)
-	C_OBJECT:C1216($table_o)
+	var $table_o : Object
 	
 	$table_o:=Form:C1466.SceneCurrentElement  // Gestion de la scène sélectionnée
 	

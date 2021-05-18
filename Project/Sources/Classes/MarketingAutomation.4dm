@@ -44,6 +44,8 @@ Historique
 			End use 
 			
 			This:C1470.loadPasserelle("Personne")
+			
+			This:C1470.loadSceneConditionActionList()
 		Else 
 			ALERT:C41("Impossible d'intialiser le composant caMarketingAutomation")
 		End if 
@@ -192,7 +194,7 @@ Function cronosManageScenario
 		Else   // S'il y a des logs pour le scénario de la personne, on va regarder parmis ceux-ci ceux qui ne sont pas terminés
 			$caScenarioEvent_o:=$caScenarioEvent_o.query("etat # :1"; "Terminé")
 			
-			// La dernière scène n'a pas pu être se terminer
+			// La dernière scène n'a pas pu se finir
 			If ($caScenarioEvent_o.length=1)
 				$caScenarioEvent_o:=$caScenarioEvent_o.first()
 				
@@ -218,7 +220,7 @@ Function cronosManageScenario
 			If ($scene_o.conditionAction.elements=Null:C1517)  // Si pas de condition d'action, on exécute la scène
 				$continue_b:=True:C214
 			Else 
-				
+				// toDo
 			End if 
 			
 			// On passe au condition d'action inhérente
@@ -323,6 +325,7 @@ Function loadCurrentPeople
 	
 Function loadImage()->$return_b : Boolean
 	var ${1} : Text  // Nom de l'image
+	
 	var $fichier_o : 4D:C1709.File
 	var $dossier_o : 4D:C1709.Folder
 	var $blob_b : Blob
@@ -356,3 +359,24 @@ Function loadPasserelle
 	$0:=New object:C1471()
 	$0.passerelle:=Storage:C1525.automation.passerelle
 	$0.formule:=Storage:C1525.automation.formule
+	
+Function loadSceneConditionActionList
+/* -----------------------------------------------------------------------------
+Fonction : MarketingAutomation.loadSceneConditionActionList
+	
+Permet de charger la liste des conditions d'actions sélectionnable pour une scène
+	
+Historique
+17/05/21 - Rémy Scanu remy@connect-io.fr> - Création
+-----------------------------------------------------------------------------*/
+	var $fichierConfig_o : Object
+	
+	$fichierConfig_o:=File:C1566(Get 4D folder:C485(Dossier Resources courant:K5:16; *)+"cioMarketingAutomation"+Séparateur dossier:K24:12+"scene"+Séparateur dossier:K24:12+"conditionAction.json"; fk chemin plateforme:K87:2)
+	
+	If ($fichierConfig_o.exists=True:C214)
+		
+		Use (Storage:C1525.automation)
+			Storage:C1525.automation.sceneConditionAction:=OB Copy:C1225(JSON Parse:C1218($fichierConfig_o.getText()); ck shared:K85:29; Storage:C1525.automation)
+		End use 
+		
+	End if 

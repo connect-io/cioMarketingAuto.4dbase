@@ -145,7 +145,7 @@
 					"type": "dropdown",
 					"left": 14,
 					"top": 170,
-					"width": 229,
+					"width": 250,
 					"height": 20,
 					"events": [
 						"onDataChange"
@@ -157,7 +157,7 @@
 			}
 		}
 	],
-	"geometryStamp": 436,
+	"geometryStamp": 437,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",

@@ -7,7 +7,7 @@ If (Form event code:C388=Sur clic:K2:4) & (Form:C1466.ScenarioCurrentElement#Nul
 	
 	Form:C1466.updateStringScenarioForm(1)
 	
-	Form:C1466.scene:=Form:C1466.scenarioDetail.AllCaScene  // Gestion des scènes du scénario sélectionné
+	Form:C1466.scene:=Form:C1466.scenarioDetail.AllCaScene.orderBy("numOrdre asc")  // Gestion des scènes du scénario sélectionné
 	
 	OBJECT SET ENABLED:C1123(*; "scenarioListeBoutonSupprimer"; True:C214)
 	OBJECT SET ENABLED:C1123(*; "scenarioDetail@"; True:C214)

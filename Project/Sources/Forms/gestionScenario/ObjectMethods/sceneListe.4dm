@@ -3,6 +3,8 @@ var $table_o : Object
 var $collection_c : Collection
 
 ARRAY TEXT:C222(sceneSuivante_at; 0)
+ARRAY TEXT:C222(sceneAction_at; 0)
+
 ARRAY LONGINT:C221(sceneSuivante_ai; 0)
 
 If (Form event code:C388=Sur clic:K2:4) & (Form:C1466.SceneCurrentElement#Null:C1517)
@@ -22,6 +24,19 @@ If (Form event code:C388=Sur clic:K2:4) & (Form:C1466.SceneCurrentElement#Null:C
 		
 		sceneSuivante_ai:=$pos_el
 		sceneSuivante_ai{0}:=sceneSuivante_ai{$pos_el}
+	Else 
+		sceneSuivante_at{0}:="Sélection de la scène suivante"
+	End if 
+	
+	cmaToolAddToArray(->sceneAction_at; "Attente"; "Envoi email"; "Changement scénario"; "Fin du scénario")
+	
+	If (Form:C1466.sceneDetail.action#"")
+		$pos_el:=Find in array:C230(sceneAction_at; Form:C1466.sceneDetail.action)
+		
+		sceneAction_at:=$pos_el
+		sceneAction_at{0}:=sceneAction_at{$pos_el}
+	Else 
+		sceneSuivante_at{0}:="Sélection d'une action de scène"
 	End if 
 	
 	Form:C1466.updateStringSceneForm(1)

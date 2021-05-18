@@ -1,11 +1,16 @@
 If (Form:C1466.scenarioDetail#Null:C1517) & (Form:C1466.SceneCurrentElement#Null:C1517)
-	C_OBJECT:C1216($retour_o)
+	var $scenarioID_t : Text
+	var $retour_o; $class_o : Object
 	
+	$scenarioID_t:=Form:C1466.SceneSelectedElement[0].scenarioID
 	$retour_o:=Form:C1466.SceneSelectedElement[0].drop()
 	
 	If ($retour_o.success=False:C215)
-		  // Avertir l'utilisateur
+		// Avertir l'utilisateur
 	Else 
+		$class_o:=cmaToolGetClass("MAScene").new()
+		
+		$class_o.reArrangeNumOrdre($scenarioID_t)
 		Form:C1466.SceneSelectedElement:=Null:C1517
 	End if 
 	

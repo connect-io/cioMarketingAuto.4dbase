@@ -1,0 +1,124 @@
+﻿{
+	"$4d": {
+		"version": "1",
+		"kind": "form"
+	},
+	"windowSizingX": "variable",
+	"windowSizingY": "variable",
+	"windowMinWidth": 0,
+	"windowMinHeight": 0,
+	"windowMaxWidth": 32767,
+	"windowMaxHeight": 32767,
+	"rightMargin": 10,
+	"bottomMargin": 10,
+	"events": [
+		"onLoad"
+	],
+	"windowTitle": "Définition des conditions d'action",
+	"destination": "detailScreen",
+	"pages": [
+		{
+			"objects": {}
+		},
+		{
+			"objects": {
+				"Ligne": {
+					"type": "line",
+					"top": 10,
+					"left": 471,
+					"width": 0,
+					"height": 500
+				},
+				"Texte": {
+					"type": "text",
+					"text": "Sélection d'une condition d'action :",
+					"top": 10,
+					"left": 483,
+					"width": 230,
+					"height": 20,
+					"fontWeight": "bold"
+				},
+				"Popup Liste déroulante": {
+					"type": "dropdown",
+					"left": 483,
+					"top": 40,
+					"width": 250,
+					"height": 20,
+					"events": [
+						"onDataChange"
+					],
+					"dataSource": "conditionActionList_at",
+					"method": "ObjectMethods/Popup Liste déroulante.4dm"
+				},
+				"imageBooleen": {
+					"type": "input",
+					"left": 483,
+					"top": 80,
+					"width": 32,
+					"height": 32,
+					"dataSourceTypeHint": "picture",
+					"dataSource": "",
+					"enterable": false,
+					"contextMenu": "none",
+					"pictureFormat": "proportionalCenter",
+					"fill": "transparent",
+					"borderStyle": "none",
+					"events": [
+						"onClick",
+						"onMouseMove"
+					],
+					"method": "ObjectMethods/imageBooleen.4dm"
+				},
+				"deleteItem": {
+					"type": "pictureButton",
+					"left": 483,
+					"top": 122,
+					"width": 24,
+					"height": 24,
+					"events": [
+						"onClick",
+						"onMouseMove"
+					],
+					"dataSource": "",
+					"picture": "/RESOURCES/Images/delete-item.png",
+					"method": "ObjectMethods/deleteItem.4dm",
+					"visibility": "hidden",
+					"switchContinuously": false,
+					"switchWhenRollover": false,
+					"switchBackWhenReleased": true,
+					"loopBackToFirstFrame": true,
+					"useLastFrameAsDisabled": true
+				},
+				"deleteConditionAction": {
+					"type": "pictureButton",
+					"left": 743,
+					"top": 40,
+					"width": 20,
+					"height": 20,
+					"events": [
+						"onClick",
+						"onMouseMove"
+					],
+					"dataSource": "",
+					"picture": "/RESOURCES/Images/delete-item.png",
+					"method": "ObjectMethods/deleteConditionAction.4dm",
+					"visibility": "visible",
+					"switchContinuously": false,
+					"switchWhenRollover": false,
+					"switchBackWhenReleased": true,
+					"loopBackToFirstFrame": true,
+					"useLastFrameAsDisabled": true
+				}
+			}
+		}
+	],
+	"geometryStamp": 132,
+	"editor": {
+		"activeView": "View 1",
+		"defaultView": "View 1",
+		"views": {
+			"View 1": {}
+		}
+	},
+	"method": "method.4dm"
+}

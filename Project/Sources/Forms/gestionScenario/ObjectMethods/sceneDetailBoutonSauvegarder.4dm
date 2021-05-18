@@ -17,6 +17,10 @@ If (Form:C1466.SceneCurrentElement#Null:C1517) & (Form:C1466.ScenarioCurrentElem
 		Form:C1466.sceneDetail.sceneSuivanteID:=sceneSuivante_ai{sceneSuivante_at}
 	End if 
 	
+	If (sceneAction_at>0)
+		Form:C1466.sceneDetail.action:=sceneAction_at{sceneAction_at}
+	End if 
+	
 	$retour_o:=Form:C1466.sceneDetail.save()
 	
 	If ($retour_o.success=False:C215)
@@ -25,7 +29,7 @@ If (Form:C1466.SceneCurrentElement#Null:C1517) & (Form:C1466.ScenarioCurrentElem
 	
 	$retour_o:=Form:C1466.scenarioDetail.reload()
 	
-	Form:C1466.scene:=Form:C1466.scenarioDetail.AllCaScene
+	Form:C1466.scene:=Form:C1466.scenarioDetail.AllCaScene.orderBy("numOrdre asc")
 	
 	LISTBOX SELECT ROW:C912(*; "sceneListe"; Form:C1466.SceneCurrentPosition)
 Else 
