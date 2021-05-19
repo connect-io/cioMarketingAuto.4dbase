@@ -28,7 +28,7 @@ If (Form event code:C388=Sur clic:K2:4) & (Form:C1466.SceneCurrentElement#Null:C
 		sceneSuivante_at{0}:="Sélection de la scène suivante"
 	End if 
 	
-	cmaToolAddToArray(->sceneAction_at; "Attente"; "Envoi email"; "Changement scénario"; "Fin du scénario")
+	cmaToolAddToArray(->sceneAction_at; "Attente"; "Envoi email"; "Changement de scénario"; "Fin du scénario")
 	
 	If (Form:C1466.sceneDetail.action#"")
 		$pos_el:=Find in array:C230(sceneAction_at; Form:C1466.sceneDetail.action)

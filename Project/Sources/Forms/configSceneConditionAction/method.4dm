@@ -9,7 +9,10 @@ Case of
 		If (Storage:C1525.automation.sceneConditionAction#Null:C1517)
 			$collection_c:=Storage:C1525.automation.sceneConditionAction.elements.orderBy("titre asc")
 			
-			COLLECTION TO ARRAY:C1562($collection_c; conditionActionList_at; "titre")
+			If ($collection_c.length>0)
+				COLLECTION TO ARRAY:C1562($collection_c; conditionActionList_at; "titre")
+			End if 
+			
 		End if 
 		
 		conditionActionList_at{0}:="Sélection d'une condition d'action"
@@ -27,4 +30,6 @@ Case of
 		// On désactive les éléments qui servent à générer visuellement les conditions d'action
 		OBJECT SET ENABLED:C1123(*; "imageBooleen"; False:C215)
 		OBJECT SET ENABLED:C1123(*; "deleteItem"; False:C215)
+		
+		OBJECT SET ENABLED:C1123(*; "deleteConditionAction"; False:C215)
 End case 

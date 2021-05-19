@@ -237,11 +237,13 @@ Function applyScenarioToPerson
 			
 			$caPersonneScenario_o.actif:=This:C1470.scenarioDetail.actif
 			
-			If ($caPersonneScenario_o.actif=True:C214)
-				$table_o:=$enregistrement_o.AllCaPersonneScenario.query("actif = :1"; True:C214)
-				
-				$caPersonneScenario_o.actif:=($table_o.length=0)
-			End if 
+			// Modifié par : Rémy Scanu (19/05/2021)
+			// Je commente ça pour le moment...
+			//Si ($caPersonneScenario_o.actif=Vrai)
+			//$table_o:=$enregistrement_o.AllCaPersonneScenario.query("actif = :1"; Vrai)
+			
+			//$caPersonneScenario_o.actif:=($table_o.length=0)
+			//Fin de si 
 			
 			$retour_o:=$caPersonneScenario_o.save()
 		End for each 
@@ -353,7 +355,7 @@ Function newScene
 	
 	$caScene_o.nom:="Nouvelle scène"
 	$caScene_o.scenarioID:=This:C1470.scenarioDetail.getKey()
-	$caScene_o.action:="Définir une nouvelle action..."
+	$caScene_o.action:="Attente"
 	$caScene_o.numOrdre:=(This:C1470.scenarioDetail.AllCaScene.length)+1
 	
 	$caScene_o.paramAction:=New object:C1471("modele"; New object:C1471("email"; New object:C1471("version"; New collection:C1472); "sms"; New object:C1471("version"; New collection:C1472); "courrier"; New object:C1471("version"; New collection:C1472)))

@@ -102,7 +102,7 @@
 					"dataSource": "",
 					"picture": "/RESOURCES/Images/delete-item.png",
 					"method": "ObjectMethods/deleteConditionAction.4dm",
-					"visibility": "visible",
+					"visibility": "hidden",
 					"switchContinuously": false,
 					"switchWhenRollover": false,
 					"switchBackWhenReleased": true,
@@ -112,7 +112,7 @@
 			}
 		}
 	],
-	"geometryStamp": 132,
+	"geometryStamp": 133,
 	"editor": {
 		"activeView": "View 1",
 		"defaultView": "View 1",

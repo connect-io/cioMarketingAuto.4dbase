@@ -95,7 +95,7 @@
 				},
 				"Zone de saisie": {
 					"type": "input",
-					"left": 302,
+					"left": 304,
 					"top": 50,
 					"width": 20,
 					"height": 20,
@@ -153,11 +153,27 @@
 					"dataSource": "expediteurList_at",
 					"method": "ObjectMethods/expediteurList.4dm",
 					"focusable": true
+				},
+				"sceneDetailDeleteVersion": {
+					"type": "pictureButton",
+					"left": 334,
+					"top": 50,
+					"width": 20,
+					"height": 20,
+					"events": [
+						"onClick",
+						"onMouseMove"
+					],
+					"picture": "/RESOURCES/Images/delete-item.png",
+					"method": "ObjectMethods/sceneDetailDeleteVersion.4dm",
+					"loopBackToFirstFrame": true,
+					"switchBackWhenReleased": true,
+					"useLastFrameAsDisabled": true
 				}
 			}
 		}
 	],
-	"geometryStamp": 437,
+	"geometryStamp": 458,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",

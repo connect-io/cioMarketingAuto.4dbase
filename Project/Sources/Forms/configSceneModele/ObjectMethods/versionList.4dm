@@ -2,6 +2,7 @@ If (Form event code:C388=Sur données modifiées:K2:15)
 	//var $destinataire_t; $to_t : Text
 	//var $modele_o : Object
 	var $titre_t : Text
+	var $pos_el : Integer
 	var $titreUnique_b : Boolean
 	var $elementSelected_o; $version_o : Object
 	
@@ -73,6 +74,14 @@ If (Form event code:C388=Sur données modifiées:K2:15)
 		
 		If (Lowercase:C14(Form:C1466.sceneTypeSelected)="email")
 			Form:C1466.modeleObjetEmail:=$elementSelected_o.subject
+			
+			$pos_el:=Find in array:C230(expediteurList_at; String:C10($elementSelected_o.expediteur))
+			
+			If ($pos_el>0)
+				expediteurList_at:=$pos_el
+				
+				expediteurList_at{expediteurList_at}:=expediteurList_at{$pos_el}
+			End if 
 			
 			OBJECT SET ENTERABLE:C238(*; "modeleObjetEmail"; True:C214)
 			OBJECT SET ENTERABLE:C238(*; "expediteurList"; True:C214)

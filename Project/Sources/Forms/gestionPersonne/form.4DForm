@@ -15,7 +15,7 @@
 		"onLoad",
 		"onDataChange"
 	],
-	"windowTitle": "window title",
+	"windowTitle": "Gestion et/ou sélection des personnes pour les scénarios",
 	"destination": "detailScreen",
 	"pages": [
 		{

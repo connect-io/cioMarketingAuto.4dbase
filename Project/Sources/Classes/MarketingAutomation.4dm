@@ -172,8 +172,9 @@ Function cronosUpdateCaMarketing
 	End if 
 	
 Function cronosManageScenario
+	var $numOrdre_el : Integer
 	var $continue_b : Boolean
-	var $table_o; $enregistrement_o; $caScenarioEvent_o; $scene_o; $personne_o; $eMail_o; $config_o : Object
+	var $table_o; $enregistrement_o; $caScenarioEvent_o; $scene_o; $personne_o; $eMail_o; $config_o; $conditionAction_o; $scene_cs; $retour_o : Object
 	var $collection_c : Collection
 	
 	// On recherche toutes les personnes qui ont un scénario actif et dont le prochain check est dépassé
@@ -185,9 +186,9 @@ Function cronosManageScenario
 		If ($caScenarioEvent_o.length=0)  // Il n'y a pas encore de scène exécutée
 			$scene_o:=ds:C1482.CaScene.query("scenarioID is :1 AND numOrdre = :2"; $enregistrement_o.scenarioID; 1)
 			
-			If ($scene_o.length=1)
+			If ($scene_o.length=1)  // On a trouvé la première scène
 				$scene_o:=$scene_o.first()
-			Else 
+			Else   // Impossible de trouver la scène donc de la jouer...
 				CLEAR VARIABLE:C89($scene_o)
 			End if 
 			
@@ -201,12 +202,34 @@ Function cronosManageScenario
 				Case of 
 					: ($caScenarioEvent_o.etat="En cours")
 						$caScenarioEvent_o.etat:="Terminé"
+						$caScenarioEvent_o.tsMiseAJour:=cmaTimestamp(Current date:C33; Current time:C178)
 						
 						$caScenarioEvent_o.save()
 						
-						// On cherche la scène suivante
-						If ($caScenarioEvent_o.OneCaScene.sceneSuivanteID#0)
+						If ($caScenarioEvent_o.OneCaScene.sceneSuivanteID#0)  // On cherche la scène suivante
 							$scene_o:=$caScenarioEvent_o.OneCaScene.AllCaSceneSuivante
+						Else   // S'il n'y en a pas on regarde les deux différents cas
+							
+							If ($caScenarioEvent_o.OneCaScene.numOrdre=$caScenarioEvent_o.OneCaScene.OneCaScenario.AllCaScene.length)  // C'est la dernière scène du scénario et il manque la scène de fin, dommage pour le spectacle...
+								$scene_cs:=cmaToolGetClass("MAScene").new()
+								$scene_cs.loadByPrimaryKey($caScenarioEvent_o.OneCaScene.ID)
+								
+								// Ajout du log
+								$scene_cs.addScenarioEvent("Fin du scénario"; $enregistrement_o.ID)
+							Else   // L'utilisateur a oublié de programmer une scène suivante
+								CLEAR VARIABLE:C89($scene_o)
+								
+								$numOrdre_el:=$caScenarioEvent_o.OneCaScene.numOrdre
+								
+								// On recherche une scène jusqu'à trouver la bonne
+								Repeat 
+									$numOrdre_el:=$numOrdre_el+1
+									
+									$scene_o:=$caScenarioEvent_o.OneCaScene.OneCaScenario.AllCaScene.query("numOrdre = :1"; $numOrdre_el)
+								Until ($scene_o#Null:C1517) | ($numOrdre_el>100)
+								
+							End if 
+							
 						End if 
 						
 				End case 
@@ -220,10 +243,21 @@ Function cronosManageScenario
 			If ($scene_o.conditionAction.elements=Null:C1517)  // Si pas de condition d'action, on exécute la scène
 				$continue_b:=True:C214
 			Else 
-				// toDo
+				$personne_o:=$enregistrement_o.OnePersonne
+				
+				For each ($conditionAction_o; $scene_o.conditionAction.elements) Until ($continue_b=False:C215)
+					
+					If ($conditionAction_o.formule="")
+						//$continue_b:=$personne_o.manageConditionActionScene($conditionAction_o.titre; $enregistrement_o.ID)
+					Else 
+						// toDo
+					End if 
+					
+				End for each 
+				
 			End if 
 			
-			// On passe au condition d'action inhérente
+			// On passe aux conditions d'action inhérentes
 			Case of 
 				: ($continue_b=False:C215)
 				: ($scene_o.action="Envoi email")  // Si l'action de la scène est l'envoi d'un email, on doit faire des vérifications de base
@@ -264,17 +298,12 @@ Function cronosManageScenario
 			End case 
 			
 			If ($continue_b=True:C214)  // La scène est exécutable, on va voir ce qu'on doit... l'exécuter :D
+				$scene_cs:=cmaToolGetClass("MAScene").new()
+				$scene_cs.loadByPrimaryKey($scene_o.ID)
 				
 				Case of 
 					: ($scene_o.action="Attente")  // L'action de la scène est juste une attente d'un certains délai... on créé donc le log
-						$caScenarioEvent_o:=ds:C1482.CaScenarioEvent.new()
-						
-						$caScenarioEvent_o.personneScenarioID:=$enregistrement_o.ID
-						$caScenarioEvent_o.sceneID:=$scene_o.ID
-						$caScenarioEvent_o.tsCreation:=cmaTimestamp(Current date:C33; Current time:C178)
-						$caScenarioEvent_o.etat:="En cours"
-						
-						$caScenarioEvent_o.save()
+						$scene_cs.addScenarioEvent($scene_o.action; $enregistrement_o.ID)
 					: ($scene_o.action="Envoi email")  // L'action de la scène est l'envoi d'un email
 						$eMail_o:=cmaToolGetClass("MAEMail").new($collection_c[0].expediteur)
 						$eMail_o.subject:=$collection_c[0].subject
@@ -282,11 +311,26 @@ Function cronosManageScenario
 						$config_o:=New object:C1471("success"; True:C214; "type"; "Email"; "eMailConfig"; $eMail_o; "contenu4WP"; WP Get text:C1575($collection_c[0].contenu4WP; wk expressions as value:K81:255))
 						
 						$personne_o.sendMailing($config_o)
+						
+						// Ajout du log
+						$scene_cs.addScenarioEvent($scene_o.action; $enregistrement_o.ID)
+					: ($scene_o.action="Changement de scénario") | ($scene_o.action="Fin du scénario")  // L'action de la scène est qu'on arrête le scénario de la personne ou qu'on change de scénario
+						// On passe en inactif l'inscription au scénario
+						$enregistrement_o.actif:=False:C215
+						
+						// Ajout du log
+						$scene_cs.addScenarioEvent($scene_o.action; $enregistrement_o.ID)
 				End case 
 				
 				$enregistrement_o.tsProchainCheck:=cmaTimestamp(Current date:C33; Current time:C178)+$scene_o.tsAttente
-				$enregistrement_o.save()
+				$retour_o:=$enregistrement_o.save()
+				
+				If ($retour_o.success=False:C215)
+					// toDo
+				End if 
+				
 			Else   // Il faut envoyer un email pour prévenir que la scène ne peut pas être exécuter
+				//toDo
 			End if 
 			
 		End if 

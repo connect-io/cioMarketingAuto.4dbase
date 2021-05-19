@@ -4,6 +4,8 @@ If (Form event code:C388=Sur chargement:K2:1)
 	ARRAY TEXT:C222(versionList_at; 0)
 	ARRAY TEXT:C222(expediteurList_at; 0)
 	
+	Form:C1466.sceneDetail.reload()
+	
 	If (Form:C1466.sceneDetail.paramAction.modele[Lowercase:C14(Form:C1466.sceneTypeSelected)].version#Null:C1517)
 		COLLECTION TO ARRAY:C1562(Form:C1466.sceneDetail.paramAction.modele[Lowercase:C14(Form:C1466.sceneTypeSelected)].version.orderBy("titre asc"); versionList_at; "titre")
 	End if 

@@ -14,6 +14,42 @@ Historique
 -----------------------------------------------------------------------------*/
 	This:C1470.scene:=Null:C1517
 	
+Function addScenarioEvent($action_t : Text; $personneScenarioID_v : Variant)
+/* -----------------------------------------------------------------------------
+Fonction : MAScene.addScenarioEvent
+	
+Permet de faire l'ajout d'un log quand un évenement arrive sur une scène d'un scénario d'une personne
+	
+Historique
+19/05/21 - Rémy Scanu remy@connect-io.fr> - Création
+-----------------------------------------------------------------------------*/
+	var $caScenarioEvent_o : Object
+	
+	ASSERT:C1129(This:C1470.scene#Null:C1517; "Impossible d'utiliser la fonction addScenarioEvent sans une scène de définie.")
+	
+	$caScenarioEvent_o:=ds:C1482.CaScenarioEvent.new()
+	
+	$caScenarioEvent_o.personneScenarioID:=$personneScenarioID_v
+	$caScenarioEvent_o.sceneID:=This:C1470.scene.ID
+	$caScenarioEvent_o.tsCreation:=cmaTimestamp(Current date:C33; Current time:C178)
+	
+	Case of 
+		: ($action_t="Attente")
+			$caScenarioEvent_o.etat:="En cours"
+			
+			$caScenarioEvent_o.information:="Attente de la prochaine scène"
+		: ($action_t="Envoi email")
+			$caScenarioEvent_o.etat:="En cours"
+			
+			$caScenarioEvent_o.information:="Envoi d'un email"
+		: ($action_t="Changement de scénario") | ($action_t="Fin du scénario")
+			$caScenarioEvent_o.etat:="Terminé"
+			
+			$caScenarioEvent_o.information:=$action_t
+	End case 
+	
+	$caScenarioEvent_o.save()
+	
 Function loadByPrimaryKey($sceneID_i : Integer)->$isOk_b : Boolean
 /* -----------------------------------------------------------------------------
 Fonction : MAScene.loadByPrimaryKey
@@ -43,13 +79,14 @@ Historique
 	If (This:C1470.scene.conditionAction.elements#Null:C1517)
 		
 		For each ($conditionAction_o; This:C1470.scene.conditionAction.elements)
-			// On duplique l'objet standard "texte" et on le repositionne ensuite correctement
-			$pos_el:=$conditionAction_o.varName.indexOf("texteBooleen@")
-			
-			cmaToolDuplicateObjInForm($conditionAction_o.varName[$pos_el]; $conditionAction_o.titre; "Texte"; Est un texte:K8:3; True:C214; 10; $bas_el+10)
 			
 			Case of 
 				: ($conditionAction_o.type="boolean")
+					// On duplique l'objet standard "texte" et on le repositionne ensuite correctement
+					$pos_el:=$conditionAction_o.varName.indexOf("texteBooleen@")
+					
+					cmaToolDuplicateObjInForm($conditionAction_o.varName[$pos_el]; $conditionAction_o.titre; "Texte"; Est un texte:K8:3; True:C214; 10; $bas_el+10)
+					
 					$pos_el:=$conditionAction_o.varName.indexOf("imageBooleen@")
 					
 					// On duplique l'objet standard "booleen" et on le repositionne ensuite correctement
@@ -85,7 +122,7 @@ Historique
 		
 	End if 
 	
-Function manageConditionAction($nomObjet_t : Text; $pointeur_p : Pointer)
+Function manageConditionActionDisplay($entree_el : Integer; $nomObjet_t : Text; $pointeur_p : Pointer)
 /* -----------------------------------------------------------------------------
 Fonction : MAScene.manageConditionAction
 	
@@ -94,50 +131,89 @@ Permet de faire la gestion des différentes conditions d'action d'une scène
 Historique
 17/05/21 - Rémy Scanu remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
-	var $pos_el : Integer
+	var $element_t : Text
+	var $pos_el; $posBis_el : Integer
 	
-	ASSERT:C1129(This:C1470.scene#Null:C1517; "Impossible d'utiliser la fonction manageConditionAction sans une scène de définie.")
+	ASSERT:C1129(This:C1470.scene#Null:C1517; "Impossible d'utiliser la fonction manageConditionActionDisplay sans une scène de définie.")
 	
 	// On commence par faire un reload
 	This:C1470.scene.reload()
 	
-	If (This:C1470.scene.conditionAction.elements#Null:C1517)
-		
-		For each ($conditionAction_o; This:C1470.scene.conditionAction.elements)
-			$pos_el:=$conditionAction_o.varName.indexOf($nomObjet_t)
+	Case of 
+		: ($entree_el=0)  // Suppression d'une condition d'action
 			
-			If ($pos_el#-1)
+			If (This:C1470.scene.conditionAction.elements#Null:C1517)
 				
-				Case of 
-					: ($conditionAction_o.type="boolean")
+				For each ($conditionAction_o; This:C1470.scene.conditionAction.elements)
+					// On cherche dans quelle condition d'action se trouve le bouton suppr sur lequel l'utilisateur a cliqué
+					$pos_el:=$conditionAction_o.varName.indexOf($nomObjet_t)
+					
+					If ($pos_el#-1)  // Bingo c'est ici
 						
-						If (Num:C11($conditionAction_o.nombreEtat)=3)
-							
-							Case of 
-								: (Picture size:C356($pointeur_p->)=Picture size:C356(Storage:C1525.automation.image["toggle"]))
-									OBJECT SET DATA SOURCE:C1264(*; cmaToolMinuscFirstChar($nomObjet_t); ->toggleOn_i)
-									
-									$conditionAction_o.value:=1
-								: (Picture size:C356($pointeur_p->)=Picture size:C356(Storage:C1525.automation.image["toggle-on"]))
-									OBJECT SET DATA SOURCE:C1264(*; cmaToolMinuscFirstChar($nomObjet_t); ->toggleOff_i)
-									
-									$conditionAction_o.value:=0
-								Else 
-									OBJECT SET DATA SOURCE:C1264(*; cmaToolMinuscFirstChar($nomObjet_t); ->toggle_i)
-									
-									$conditionAction_o.value:=2
-							End case 
-							
-							This:C1470.scene.save()
-						End if 
+						// On va boucler sur chaque elément de la condition d'action et les virer un par un
+						For each ($element_t; $conditionAction_o.varName)
+							OBJECT SET COORDINATES:C1248(*; $element_t; -9999; -9999; -9999; -9999)
+						End for each 
 						
-				End case 
+						// Une fois cela fait on va virer la condition d'action de la propriété "elements"
+						$posBis_el:=This:C1470.scene.conditionAction.elements.indexOf($conditionAction_o)
+					End if 
+					
+				End for each 
+				
+				If ($posBis_el#-1)
+					This:C1470.scene.conditionAction.elements.remove($posBis_el)
+					
+					If (This:C1470.scene.conditionAction.elements.length=0)
+						This:C1470.scene.conditionAction:=New object:C1471
+					End if 
+					
+					This:C1470.scene.save()
+				End if 
 				
 			End if 
 			
-		End for each 
-		
-	End if 
+		: ($entree_el=1)  // Modification d'une condition d'action
+			
+			If (This:C1470.scene.conditionAction.elements#Null:C1517)
+				
+				For each ($conditionAction_o; This:C1470.scene.conditionAction.elements)
+					$pos_el:=$conditionAction_o.varName.indexOf($nomObjet_t)
+					
+					If ($pos_el#-1)
+						
+						Case of 
+							: ($conditionAction_o.type="boolean")
+								
+								If (Num:C11($conditionAction_o.nombreEtat)=3)
+									
+									Case of 
+										: (Picture size:C356($pointeur_p->)=Picture size:C356(Storage:C1525.automation.image["toggle"]))
+											OBJECT SET DATA SOURCE:C1264(*; cmaToolMinuscFirstChar($nomObjet_t); ->toggleOn_i)
+											
+											$conditionAction_o.value:=1
+										: (Picture size:C356($pointeur_p->)=Picture size:C356(Storage:C1525.automation.image["toggle-on"]))
+											OBJECT SET DATA SOURCE:C1264(*; cmaToolMinuscFirstChar($nomObjet_t); ->toggleOff_i)
+											
+											$conditionAction_o.value:=0
+										Else 
+											OBJECT SET DATA SOURCE:C1264(*; cmaToolMinuscFirstChar($nomObjet_t); ->toggle_i)
+											
+											$conditionAction_o.value:=2
+									End case 
+									
+									This:C1470.scene.save()
+								End if 
+								
+						End case 
+						
+					End if 
+					
+				End for each 
+				
+			End if 
+			
+	End case 
 	
 Function manageNumOrdre($numOrdre_el : Integer; $entree_el : Integer)->$return_t : Text
 /* -----------------------------------------------------------------------------
