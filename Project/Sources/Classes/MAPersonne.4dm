@@ -315,7 +315,7 @@ Function sendMailing($configPreCharge_o : Object)
 					If (Count parameters:C259=0)
 						$corps_t:=WP Get text:C1575(WParea; wk expressions as value:K81:255)
 					Else 
-						$corps_t:=WP Get text:C1575($configPreCharge_o.contenu4WP; wk expressions as value:K81:255)
+						$corps_t:=WP Get text:C1575($config_o.contenu4WP; wk expressions as value:K81:255)
 					End if 
 					
 					If ($corps_t#"")
@@ -325,7 +325,7 @@ Function sendMailing($configPreCharge_o : Object)
 							If (Count parameters:C259=0)
 								WP EXPORT VARIABLE:C1319(WParea; $mime_t; wk mime html:K81:1)  // Mime export of Write Pro document
 							Else 
-								WP EXPORT VARIABLE:C1319($configPreCharge_o.contenu4WP; $mime_t; wk mime html:K81:1)  // Mime export of Write Pro document
+								WP EXPORT VARIABLE:C1319($config_o.contenu4WP; $mime_t; wk mime html:K81:1)  // Mime export of Write Pro document
 							End if 
 							
 							$mime_o:=MAIL Convert from MIME:C1681($mime_t)
@@ -339,19 +339,20 @@ Function sendMailing($configPreCharge_o : Object)
 						End if 
 						
 						$config_o.eMailConfig.to:=This:C1470.eMail
-						
 						$statut_o:=$config_o.eMailConfig.send()
 						
-						$contenu_t:=$config_o.eMailConfig.subject
 						$statut_b:=(String:C10($statut_o.statusText)="ok@")
 						
-						If ($statut_b=True:C214)  // Statut de l'envoie du mail
-							ALERT:C41("Votre email a bien été envoyé")
-						Else 
-							ALERT:C41("Statut erreur envoi de l'e-mail : "+$statut_o.statusText)
+						If (Count parameters:C259=0)
+							
+							If ($statut_b=True:C214)  // Statut de l'envoie du mail
+								ALERT:C41("Votre email a bien été envoyé")
+							Else 
+								ALERT:C41("Statut erreur envoi de l'e-mail : "+$statut_o.statusText)
+							End if 
+							
 						End if 
 						
-						This:C1470.updateCaMarketingStatistic(3; New object:C1471("type"; $canalEnvoi_t; "contenu"; $config_o.eMailConfig.subject; "statut"; (String:C10($statut_o.statusText)="ok@")))
 					End if 
 					
 				: ($canalEnvoi_t="Courrier")
@@ -359,7 +360,7 @@ Function sendMailing($configPreCharge_o : Object)
 					If (Count parameters:C259=0)
 						WP PRINT:C1343(WParea; wk 4D Write Pro layout:K81:176)
 					Else 
-						WP PRINT:C1343($configPreCharge_o.contenu4WP; wk 4D Write Pro layout:K81:176)
+						WP PRINT:C1343($config_o.contenu4WP; wk 4D Write Pro layout:K81:176)
 					End if 
 					
 				: ($canalEnvoi_t="SMS")
@@ -367,7 +368,13 @@ Function sendMailing($configPreCharge_o : Object)
 			
 			// S'il s'agit d'un Courrier ou SMS ou un mail qui possède un corps non vide, on rajoute l'historique de l'envoi
 			If ($canalEnvoi_t#"Email") | (($canalEnvoi_t="Email") & ($corps_t#""))
-				$personne_o.updateCaMarketingStatistic(3; New object:C1471("type"; $canalEnvoi_t; "contenu"; $contenu_t; "statut"; $statut_b))
+				
+				If (Count parameters:C259=0)
+					This:C1470.updateCaMarketingStatistic(3; New object:C1471("type"; $canalEnvoi_t; "contenu4WP"; WParea; "statut"; $statut_b))
+				Else 
+					This:C1470.updateCaMarketingStatistic(3; New object:C1471("type"; $canalEnvoi_t; "contenu4WP"; $config_o.contenu4WP; "statut"; $statut_b))
+				End if 
+				
 			End if 
 			
 		End if 
@@ -437,7 +444,7 @@ Historique
 			$enregistrement_o.historique.detail.push(New object:C1471(\
 				"eventTs"; cmaTimestamp(Current date:C33; Current time:C178); \
 				"eventUser"; Current user:C182; \
-				"eventDetail"; New object:C1471("type"; String:C10($detail_o.type); "contenu"; String:C10($detail_o.contenu); "statut"; String:C10($detail_o.statut))))
+				"eventDetail"; New object:C1471("type"; String:C10($detail_o.type); "contenu4WP"; $detail_o.contenu4WP; "statut"; String:C10($detail_o.statut))))
 			
 	End case 
 	
