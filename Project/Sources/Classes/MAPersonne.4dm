@@ -273,7 +273,7 @@ Historique
 		
 	End for 
 	
-Function sendMailing($config_b : Object)
+Function sendMailing($configPreCharge_o : Object)
 	var $canalEnvoi_t; $corps_t; $mime_t; $propriete_t; $contenu_t : Text
 	var $statut_b : Boolean
 	var $class_o; $config_o; $mime_o; $statut_o : Object
@@ -287,12 +287,16 @@ Function sendMailing($config_b : Object)
 		// On détermine le canal d'envoi du mailing
 		$canalEnvoi_t:=$class_o.sendGetType()
 	Else 
-		$canalEnvoi_t:=$config_b.type
+		$canalEnvoi_t:=$configPreCharge_o.type
 	End if 
 	
 	If ($canalEnvoi_t#"")
-		// On configure correctement le mailing
-		$config_o:=$class_o.sendGetConfig($canalEnvoi_t)
+		
+		If (Count parameters:C259=0)  // On configure correctement le mailing
+			$config_o:=$class_o.sendGetConfig($canalEnvoi_t)
+		Else 
+			$config_o:=OB Copy:C1225($configPreCharge_o)
+		End if 
 		
 		If ($config_o.success=True:C214)
 			
@@ -306,7 +310,7 @@ Function sendMailing($config_b : Object)
 					If (Count parameters:C259=0)
 						$corps_t:=WP Get text:C1575(WParea; wk expressions as value:K81:255)
 					Else 
-						$corps_t:=$config_b.contenu4WP
+						$corps_t:=$configPreCharge_o.contenu4WP
 					End if 
 					
 					If ($corps_t#"")
