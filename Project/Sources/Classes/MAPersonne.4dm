@@ -295,7 +295,12 @@ Function sendMailing($configPreCharge_o : Object)
 		If (Count parameters:C259=0)  // On configure correctement le mailing
 			$config_o:=$class_o.sendGetConfig($canalEnvoi_t)
 		Else 
-			$config_o:=OB Copy:C1225($configPreCharge_o)
+			$config_o:=New object:C1471
+			
+			For each ($propriete_t; $configPreCharge_o)
+				$config_o[$propriete_t]:=$configPreCharge_o[$propriete_t]
+			End for each 
+			
 		End if 
 		
 		If ($config_o.success=True:C214)
@@ -343,7 +348,7 @@ Function sendMailing($configPreCharge_o : Object)
 						If ($statut_b=True:C214)  // Statut de l'envoie du mail
 							ALERT:C41("Votre email a bien été envoyé")
 						Else 
-							ALERT:C41("Une erreur est survenue lors de l'envoi de l'e-mail : "+$statut_o.statusText)
+							ALERT:C41("Statut erreur envoi de l'e-mail : "+$statut_o.statusText)
 						End if 
 						
 						This:C1470.updateCaMarketingStatistic(3; New object:C1471("type"; $canalEnvoi_t; "contenu"; $config_o.eMailConfig.subject; "statut"; (String:C10($statut_o.statusText)="ok@")))
