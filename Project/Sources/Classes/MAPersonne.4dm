@@ -310,13 +310,19 @@ Function sendMailing($configPreCharge_o : Object)
 					If (Count parameters:C259=0)
 						$corps_t:=WP Get text:C1575(WParea; wk expressions as value:K81:255)
 					Else 
-						$corps_t:=$configPreCharge_o.contenu4WP
+						$corps_t:=WP Get text:C1575($configPreCharge_o.contenu4WP; wk expressions as value:K81:255)
 					End if 
 					
 					If ($corps_t#"")
 						
 						If ($corps_t#"@<body@")  // Nouvelle façon d'envoyer des emails
-							WP EXPORT VARIABLE:C1319(WParea; $mime_t; wk mime html:K81:1)  // Mime export of Write Pro document
+							
+							If (Count parameters:C259=0)
+								WP EXPORT VARIABLE:C1319(WParea; $mime_t; wk mime html:K81:1)  // Mime export of Write Pro document
+							Else 
+								WP EXPORT VARIABLE:C1319($configPreCharge_o.contenu4WP; $mime_t; wk mime html:K81:1)  // Mime export of Write Pro document
+							End if 
+							
 							$mime_o:=MAIL Convert from MIME:C1681($mime_t)
 							
 							For each ($propriete_t; $mime_o)
@@ -344,7 +350,13 @@ Function sendMailing($configPreCharge_o : Object)
 					End if 
 					
 				: ($canalEnvoi_t="Courrier")
-					WP PRINT:C1343(WParea; wk 4D Write Pro layout:K81:176)
+					
+					If (Count parameters:C259=0)
+						WP PRINT:C1343(WParea; wk 4D Write Pro layout:K81:176)
+					Else 
+						WP PRINT:C1343($configPreCharge_o.contenu4WP; wk 4D Write Pro layout:K81:176)
+					End if 
+					
 				: ($canalEnvoi_t="SMS")
 			End case 
 			

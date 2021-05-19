@@ -308,7 +308,7 @@ Function cronosManageScenario
 						$eMail_o:=cmaToolGetClass("MAEMail").new($collection_c[0].expediteur)
 						$eMail_o.subject:=$collection_c[0].subject
 						
-						$config_o:=New object:C1471("success"; True:C214; "type"; "Email"; "eMailConfig"; $eMail_o; "contenu4WP"; WP Get text:C1575($collection_c[0].contenu4WP; wk expressions as value:K81:255))
+						$config_o:=New object:C1471("success"; True:C214; "type"; "Email"; "eMailConfig"; $eMail_o; "contenu4WP"; $collection_c[0].contenu4WP)
 						
 						$personne_o.sendMailing($config_o)
 						
