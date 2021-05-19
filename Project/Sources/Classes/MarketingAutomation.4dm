@@ -178,7 +178,7 @@ Function cronosManageScenario
 	var $collection_c : Collection
 	
 	// On recherche toutes les personnes qui ont un scénario actif et dont le prochain check est dépassé
-	$table_o:=ds:C1482.CaPersonneScenario.query("actif = :1 AND tsProchainCheck <= :1"; True:C214; cmaTimestamp(Current date:C33; Current time:C178))
+	$table_o:=ds:C1482.CaPersonneScenario.query("actif = :1 AND tsProchainCheck <= :2"; True:C214; cmaTimestamp(Current date:C33; Current time:C178))
 	
 	For each ($enregistrement_o; $table_o)
 		$caScenarioEvent_o:=$enregistrement_o.AllCaScenarioEvent
