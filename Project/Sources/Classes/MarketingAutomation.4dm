@@ -264,7 +264,7 @@ Function cronosManageScenario
 					$personne_o:=cmaToolGetClass("MAPersonne").new()
 					$personne_o.loadByPrimaryKey($enregistrement_o.personneID)
 					
-					If (String:C10($personne_o.eMail)#"") & (cmaToolRegexValidate(1; String:C10($personne_o.personne.eMail))=True:C214)  // Si la personne possède bien un email et qu'il est valide
+					If (String:C10($personne_o.eMail)#"") & (cmaToolRegexValidate(1; String:C10($personne_o.eMail))=True:C214)  // Si la personne possède bien un email et qu'il est valide
 						$continue_b:=True:C214
 					Else 
 						$continue_b:=False:C215
