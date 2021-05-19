@@ -63,7 +63,7 @@ Historique
 	
 	$isOk_b:=(This:C1470.scene#Null:C1517)
 	
-Function loadConditionActionDisplay
+Function loadConditionActionDisplay($entity_o : Object)
 /* -----------------------------------------------------------------------------
 Fonction : MAScene.loadConditionActionDisplay
 	
@@ -74,11 +74,9 @@ Historique
 -----------------------------------------------------------------------------*/
 	var $pos_el; $gauche_el; $haut_el; $droite_el; $bas_el; $hauteur_el : Integer
 	
-	ASSERT:C1129(This:C1470.scene#Null:C1517; "Impossible d'utiliser la fonction loadConditionActionDisplay sans une scène de définie.")
-	
-	If (This:C1470.scene.conditionAction.elements#Null:C1517)
+	If ($entity_o.conditionAction.elements#Null:C1517)
 		
-		For each ($conditionAction_o; This:C1470.scene.conditionAction.elements)
+		For each ($conditionAction_o; $entity_o.conditionAction.elements)
 			
 			Case of 
 				: ($conditionAction_o.type="boolean")
@@ -122,7 +120,7 @@ Historique
 		
 	End if 
 	
-Function manageConditionActionDisplay($entree_el : Integer; $nomObjet_t : Text; $pointeur_p : Pointer)
+Function manageConditionActionDisplay($entree_el : Integer; $nomObjet_t : Text; $pointeur_p : Pointer; $entity_o : Object)
 /* -----------------------------------------------------------------------------
 Fonction : MAScene.manageConditionAction
 	
@@ -134,17 +132,12 @@ Historique
 	var $element_t : Text
 	var $pos_el; $posBis_el : Integer
 	
-	ASSERT:C1129(This:C1470.scene#Null:C1517; "Impossible d'utiliser la fonction manageConditionActionDisplay sans une scène de définie.")
-	
-	// On commence par faire un reload
-	This:C1470.scene.reload()
-	
 	Case of 
 		: ($entree_el=0)  // Suppression d'une condition d'action
 			
-			If (This:C1470.scene.conditionAction.elements#Null:C1517)
+			If ($entity_o.conditionAction.elements#Null:C1517)
 				
-				For each ($conditionAction_o; This:C1470.scene.conditionAction.elements)
+				For each ($conditionAction_o; $entity_o.conditionAction.elements)
 					// On cherche dans quelle condition d'action se trouve le bouton suppr sur lequel l'utilisateur a cliqué
 					$pos_el:=$conditionAction_o.varName.indexOf($nomObjet_t)
 					
@@ -156,28 +149,27 @@ Historique
 						End for each 
 						
 						// Une fois cela fait on va virer la condition d'action de la propriété "elements"
-						$posBis_el:=This:C1470.scene.conditionAction.elements.indexOf($conditionAction_o)
+						$posBis_el:=$entity_o.conditionAction.elements.indexOf($conditionAction_o)
 					End if 
 					
 				End for each 
 				
 				If ($posBis_el#-1)
-					This:C1470.scene.conditionAction.elements.remove($posBis_el)
+					$entity_o.conditionAction.elements.remove($posBis_el)
 					
-					If (This:C1470.scene.conditionAction.elements.length=0)
-						This:C1470.scene.conditionAction:=New object:C1471
+					If ($entity_o.conditionAction.elements.length=0)
+						$entity_o.conditionAction:=New object:C1471
 					End if 
 					
-					This:C1470.scene.save()
 				End if 
 				
 			End if 
 			
 		: ($entree_el=1)  // Modification d'une condition d'action
 			
-			If (This:C1470.scene.conditionAction.elements#Null:C1517)
+			If ($entity_o.conditionAction.elements#Null:C1517)
 				
-				For each ($conditionAction_o; This:C1470.scene.conditionAction.elements)
+				For each ($conditionAction_o; $entity_o.conditionAction.elements)
 					$pos_el:=$conditionAction_o.varName.indexOf($nomObjet_t)
 					
 					If ($pos_el#-1)
@@ -202,7 +194,6 @@ Historique
 											$conditionAction_o.value:=2
 									End case 
 									
-									This:C1470.scene.save()
 								End if 
 								
 						End case 
@@ -215,7 +206,7 @@ Historique
 			
 	End case 
 	
-Function manageNumOrdre($numOrdre_el : Integer; $entree_el : Integer)->$return_t : Text
+Function manageNumOrdre($entity_o : Object; $entree_el : Integer)->$return_t : Text
 /* -----------------------------------------------------------------------------
 Fonction : MAScene.manageNumOrdre
 	
@@ -226,17 +217,15 @@ Historique
 -----------------------------------------------------------------------------*/
 	var $table_o; $enregistrement_o; $return_o : Object
 	
-	ASSERT:C1129(This:C1470.scene#Null:C1517; "Impossible d'utiliser la fonction manageNumOrdre sans une scène de définie.")
-	
 	$return_o:=New object:C1471("etat"; True:C214; "erreurDetail"; "")
 	
-	$table_o:=This:C1470.scene.OneCaScenario.AllCaScene.query("ID # :1 AND numOrdre is :2"; This:C1470.scene.ID; $numOrdre_el)
+	$table_o:=$entity_o.OneCaScenario.AllCaScene.query("ID # :1 AND numOrdre is :2"; $entity_o.ID; $entity_o.numOrdre)
 	
 	Case of 
 		: ($table_o.length=1)  // Il y a déjà une scène avec un numéro d'ordre identique
 			$return_o.etat:=False:C215
 			$return_o.erreurDetail:="conflitNumeroOrdre"
-		: ($numOrdre_el>Num:C11(This:C1470.scene.OneCaScenario.AllCaScene.length))  // Attribution d'un numéro plus haut que le nombre de scène
+		: ($entity_o.numOrdre>Num:C11($entity_o.OneCaScenario.AllCaScene.length))  // Attribution d'un numéro plus haut que le nombre de scène
 			$return_o.etat:=False:C215
 			$return_o.erreurDetail:="Le numéro d'ordre attribué est supérieur au nombre de scènes, impossible de lui attribué celui-ci"
 		Else   // Tout va bien
@@ -246,23 +235,26 @@ Historique
 				Case of 
 					: ($entree_el=1)  // Lors de la suppression d'une scène, on doit ré-attribuer les autres numéros d'ordre des autres scènes
 						
-						If ($numOrdre_el>1)
-							$table_o:=This:C1470.scene.OneCaScenario.AllCaScene.query("ID # :1 AND numOrdre is :2"; This:C1470.scene.ID; $numOrdre_el-1)
+						If ($entity_o.numOrdre>1)
+							$table_o:=$entity_o.OneCaScenario.AllCaScene.query("ID # :1 AND numOrdre is :2"; $entity_o.ID; $entity_o.numOrdre-1)
 							
 							If ($table_o.length=0)  // Problème le numéro d'ordre juste avant n'existe pas, on attribue donc celui-ci à celui sur lequel je suis en train de boucler
-								This:C1470.scene.numOrdre:=$numOrdre_el-1
-								
 								// Il faut également changer le numéro de la scène suivante dans la scène précédente, car la scène suivante a été supprimé... il faut vraiment penser à tout grrrr !
-								$table_o:=This:C1470.scene.OneCaScenario.AllCaScene.query("ID # :1 AND numOrdre is :2"; This:C1470.scene.ID; $numOrdre_el-2)
+								$table_o:=$entity_o.OneCaScenario.AllCaScene.query("ID # :1 AND numOrdre is :2"; $entity_o.ID; $entity_o.numOrdre-2)
+								
+								$entity_o.numOrdre:=$entity_o.numOrdre-1
+								$entity_o.save()
 								
 								If ($table_o.length=1)
 									$enregistrement_o:=$table_o.first()
 									
-									$enregistrement_o.sceneSuivanteID:=This:C1470.scene.ID
-									$enregistrement_o.save()
+									If ($enregistrement_o.sceneSuivanteID>0)
+										$enregistrement_o.sceneSuivanteID:=$entity_o.ID
+										$enregistrement_o.save()
+									End if 
+									
 								End if 
 								
-								This:C1470.scene.save()
 							End if 
 							
 						End if 
@@ -284,21 +276,15 @@ Permet de re-arranger les numéros d'ordre des différentes scènes d'un scénar
 Historique
 17/05/21 - Rémy Scanu remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
-	var $table_o; $enregistrement_o; $scene_o; $copy_o; $return_o : Object
-	
-	If (This:C1470.scene#Null:C1517)
-		$copy_o:=This:C1470.scene
-	End if 
+	var $table_o; $enregistrement_o; $scene_o; $return_o : Object
 	
 	$enregistrement_o:=ds:C1482.CaScenario.get($scenarioID_t)
 	
 	If ($enregistrement_o#Null:C1517)
-		$table_o:=$enregistrement_o.AllCaScene
+		$table_o:=$enregistrement_o.AllCaScene.orderBy("numOrdre asc")
 		
 		For each ($scene_o; $table_o)
-			This:C1470.scene:=$scene_o
-			
-			$return_o:=JSON Parse:C1218(This:C1470.manageNumOrdre($scene_o.numOrdre; 1))
+			$return_o:=JSON Parse:C1218(This:C1470.manageNumOrdre($scene_o; 1))
 			
 			If ($return_o.etat=False:C215)  // Il y aura toujours une erreur sur le dernier enregistrement car si ce n'est pas celui-ci qui a été supprimé, son numéro d'ordre sera supérieur aux nombres de scènes
 				$scene_o.numOrdre:=$table_o.length
@@ -310,11 +296,7 @@ Historique
 		
 	End if 
 	
-	If ($copy_o#Null:C1517)
-		This:C1470.scene:=$copy_o
-	End if 
-	
-Function updateStringActiveModel($type_t : Text)->$modeleActif_t : Text
+Function updateStringActiveModel($type_t : Text; $entity_o : Object)->$modeleActif_t : Text
 /* -----------------------------------------------------------------------------
 Fonction : MAScene.updateStringActiveModel
 	
@@ -325,12 +307,7 @@ Historique
 -----------------------------------------------------------------------------*/
 	var $collection_c : Collection
 	
-	ASSERT:C1129(This:C1470.scene#Null:C1517; "Impossible d'utiliser la fonction changeModeleActif sans une scène de définie.")
-	
-	// On le raffraichi car il y a pu avoir des modifications sur l'entité depuis son appel
-	This:C1470.scene.reload()
-	
-	$collection_c:=This:C1470.scene.paramAction.modele[$type_t].version.query("actif = :1"; True:C214)
+	$collection_c:=$entity_o.paramAction.modele[$type_t].version.query("actif = :1"; True:C214)
 	
 	If ($collection_c.length=1)
 		$modeleActif_t:="• Titre du modèle actif : "+$collection_c[0].titre+Char:C90(Retour à la ligne:K15:40)

@@ -649,7 +649,7 @@
 					"type": "dropdown",
 					"left": 728,
 					"top": 337,
-					"width": 195,
+					"width": 163,
 					"height": 25,
 					"events": [
 						"onDataChange"
@@ -682,11 +682,27 @@
 					"loopBackToFirstFrame": true,
 					"switchBackWhenReleased": true,
 					"useLastFrameAsDisabled": true
+				},
+				"sceneDetailDeleteSceneSuivante": {
+					"type": "pictureButton",
+					"left": 898,
+					"top": 337,
+					"width": 25,
+					"height": 25,
+					"events": [
+						"onClick",
+						"onMouseMove"
+					],
+					"picture": "/RESOURCES/Images/delete-item.png",
+					"method": "ObjectMethods/sceneDetailDeleteSceneSuivante.4dm",
+					"loopBackToFirstFrame": true,
+					"switchBackWhenReleased": true,
+					"useLastFrameAsDisabled": true
 				}
 			}
 		}
 	],
-	"geometryStamp": 682,
+	"geometryStamp": 689,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",

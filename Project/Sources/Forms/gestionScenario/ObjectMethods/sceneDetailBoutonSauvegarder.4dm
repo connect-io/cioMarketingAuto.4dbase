@@ -27,7 +27,9 @@ If (Form:C1466.SceneCurrentElement#Null:C1517) & (Form:C1466.ScenarioCurrentElem
 		// Avertir l'utilisateur
 	End if 
 	
-	$retour_o:=Form:C1466.scenarioDetail.reload()
+	// On rafraîchi les entités
+	Form:C1466.sceneDetail.reload()
+	Form:C1466.scenarioDetail.reload()
 	
 	Form:C1466.scene:=Form:C1466.scenarioDetail.AllCaScene.orderBy("numOrdre asc")
 	

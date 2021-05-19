@@ -19,11 +19,16 @@ If (Form event code:C388=Sur clic:K2:4) & (Form:C1466.SceneCurrentElement#Null:C
 	If (Form:C1466.sceneDetail.sceneSuivanteID>0)
 		$pos_el:=Find in array:C230(sceneSuivante_ai; Form:C1466.sceneDetail.sceneSuivanteID)
 		
-		sceneSuivante_at:=$pos_el
-		sceneSuivante_at{0}:=sceneSuivante_at{$pos_el}
+		If ($pos_el>0)
+			sceneSuivante_at:=$pos_el
+			sceneSuivante_at{0}:=sceneSuivante_at{$pos_el}
+			
+			sceneSuivante_ai:=$pos_el
+			sceneSuivante_ai{0}:=sceneSuivante_ai{$pos_el}
+		Else   // ID scène suivante inconnue...
+			TRACE:C157
+		End if 
 		
-		sceneSuivante_ai:=$pos_el
-		sceneSuivante_ai{0}:=sceneSuivante_ai{$pos_el}
 	Else 
 		sceneSuivante_at{0}:="Sélection de la scène suivante"
 	End if 

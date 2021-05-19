@@ -18,7 +18,6 @@ Case of
 						
 					End for each 
 					
-					Form:C1466.sceneDetail.save()
 					Form:C1466.imageModeleActif:=Storage:C1525.automation.image["toggle-on"]
 				: (Picture size:C356(Form:C1466.imageModeleActif)=Picture size:C356(Storage:C1525.automation.image["toggle-on"]))
 					
@@ -36,7 +35,6 @@ Case of
 									$version_o.actif:=True:C214
 								End if 
 								
-								Form:C1466.sceneDetail.save()
 							End for each 
 							
 							Form:C1466.imageModeleActif:=Storage:C1525.automation.image["toggle-off"]

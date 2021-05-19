@@ -2,9 +2,8 @@ var $numOrdre_el : Integer
 var $class_o; $return_o; $table_o : Object
 
 $class_o:=cmaToolGetClass("MAScene").new()
-$class_o.loadByPrimaryKey(Form:C1466.sceneDetail.ID)
 
-$return_o:=JSON Parse:C1218($class_o.manageNumOrdre(Form:C1466.sceneDetail.numOrdre))
+$return_o:=JSON Parse:C1218($class_o.manageNumOrdre(Form:C1466.sceneDetail))
 
 If ($return_o.etat=False:C215)
 	// On va rechercher l'ancien numéro d'ordre de la scène qu'on est en train de modifier
@@ -43,5 +42,3 @@ If ($return_o.etat=False:C215)
 	End if 
 	
 End if 
-
-Form:C1466.sceneDetail.save()

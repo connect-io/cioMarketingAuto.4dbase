@@ -19,7 +19,7 @@ Case of
 			selectList_at{0}:="Selection du canal d'envoi"
 			selectList_at:=$selectList_el
 			
-			Form:C1466.modeleActif:=Form:C1466.sceneClass.updateStringActiveModel(Lowercase:C14(Form:C1466.sceneTypeSelected))
+			Form:C1466.modeleActif:=Form:C1466.sceneClass.updateStringActiveModel(Lowercase:C14(Form:C1466.sceneTypeSelected); Form:C1466.sceneDetail)
 		Else 
 			ALERT:C41("Merci de sélectionner un canal d'envoi")
 		End if 

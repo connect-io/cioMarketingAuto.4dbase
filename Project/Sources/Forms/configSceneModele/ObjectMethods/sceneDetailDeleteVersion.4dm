@@ -7,12 +7,10 @@ Case of
 			$collection_c:=Form:C1466.sceneDetail.paramAction.modele[Lowercase:C14(Form:C1466.sceneTypeSelected)].version.indices("titre = :1"; versionList_at{versionList_at})
 			
 			If ($collection_c.length=1)
-				CONFIRM:C162("Souhaitez-vous vraiment supprimer la versio du modèle "+Lowercase:C14(Form:C1466.sceneTypeSelected)+" qui porte le nom "+versionList_at{versionList_at}+" (cette opération est irréversible) ?"; "Oui"; "Non")
+				CONFIRM:C162("Souhaitez-vous vraiment supprimer la version du modèle "+Lowercase:C14(Form:C1466.sceneTypeSelected)+" qui porte le nom "+versionList_at{versionList_at}+" ?"; "Oui"; "Non")
 				
 				If (OK=1)
 					Form:C1466.sceneDetail.paramAction.modele[Lowercase:C14(Form:C1466.sceneTypeSelected)].version.remove($collection_c[0])
-					
-					Form:C1466.sceneDetail.save()
 					
 					$pos_el:=Find in array:C230(versionList_at; versionList_at{versionList_at})
 					DELETE FROM ARRAY:C228(versionList_at; $pos_el)

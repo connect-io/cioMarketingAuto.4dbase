@@ -7,8 +7,6 @@ If (versionList_at>0)
 		OB REMOVE:C1226($elementSelected_o; "subject")
 	Else 
 		$elementSelected_o.subject:=Form:C1466.modeleObjetEmail
-		
-		Form:C1466.sceneDetail.save()
 	End if 
 	
 End if 

@@ -23,9 +23,7 @@ Case of
 		toggleOff_i:=Storage:C1525.automation.image["toggle-off"]
 		
 		Form:C1466.sceneClass:=cmaToolGetClass("MAScene").new()
-		Form:C1466.sceneClass.loadByPrimaryKey(Form:C1466.sceneDetail.ID)
-		
-		Form:C1466.sceneClass.loadConditionActionDisplay()
+		Form:C1466.sceneClass.loadConditionActionDisplay(Form:C1466.sceneDetail)
 		
 		// On désactive les éléments qui servent à générer visuellement les conditions d'action
 		OBJECT SET ENABLED:C1123(*; "imageBooleen"; False:C215)

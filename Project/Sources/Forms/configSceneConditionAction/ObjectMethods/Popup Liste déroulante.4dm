@@ -4,9 +4,6 @@ var $pointeur_p : Pointer
 var $conditionAction_o : Object
 var $collection_c : Collection
 
-// On commence par faire un reload
-Form:C1466.sceneDetail.reload()
-
 If (Form:C1466.sceneDetail.conditionAction.elements=Null:C1517)  // Il n'y a pas eu de conditions d'action ajouter pour cette scène
 	$ajout_b:=True:C214
 Else 
@@ -67,7 +64,6 @@ If ($ajout_b=True:C214)
 				"deleteItemBooleen"+String:C10($collection_c.length))
 	End case 
 	
-	Form:C1466.sceneDetail.save()
 Else 
 	ALERT:C41("Impossible de rajouter cette condition d'action car elle existe déjà")
 End if 
