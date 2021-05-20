@@ -33,37 +33,17 @@
 					"fontWeight": "bold",
 					"fontSize": 16
 				},
-				"Texte3": {
-					"type": "text",
-					"text": "Appliquer des actions à la sélection...\rExemple : changer l'objectif, supprimer le scénario en cours, appliquer un nouveau scénario, ...",
-					"top": 614,
-					"left": 48,
-					"width": 269,
-					"height": 169,
-					"borderStyle": "solid"
-				},
 				"personneDetailVoirFiche": {
 					"type": "button",
 					"text": "Voir la fiche de la personne",
 					"top": 489,
-					"left": 359,
+					"left": 360,
 					"width": 250,
 					"height": 24,
 					"events": [
 						"onClick"
 					],
 					"method": "ObjectMethods/personneDetailVoirFiche.4dm"
-				},
-				"Bouton2": {
-					"type": "button",
-					"text": "Forcer une action...",
-					"top": 489,
-					"left": 1159,
-					"width": 218,
-					"height": 24,
-					"events": [
-						"onClick"
-					]
 				},
 				"listePersonne": {
 					"type": "listbox",
@@ -147,7 +127,7 @@
 				},
 				"personneDetail": {
 					"type": "input",
-					"left": 359,
+					"left": 360,
 					"top": 98,
 					"width": 250,
 					"height": 171,
@@ -162,7 +142,7 @@
 				},
 				"personneDetailListeScenario": {
 					"type": "listbox",
-					"left": 650,
+					"left": 645,
 					"top": 98,
 					"width": 220,
 					"height": 368,
@@ -202,7 +182,7 @@
 					"type": "button",
 					"text": "Annuler",
 					"top": 530,
-					"left": 359,
+					"left": 360,
 					"width": 120,
 					"height": 24,
 					"events": [
@@ -214,7 +194,7 @@
 					"type": "button",
 					"text": "Valider",
 					"top": 530,
-					"left": 489,
+					"left": 490,
 					"width": 120,
 					"height": 24,
 					"events": [
@@ -224,7 +204,7 @@
 				},
 				"personneDetailMarketing": {
 					"type": "input",
-					"left": 359,
+					"left": 360,
 					"top": 295,
 					"width": 250,
 					"height": 171,
@@ -239,7 +219,7 @@
 				},
 				"personneDetailListeScene": {
 					"type": "listbox",
-					"left": 906,
+					"left": 885,
 					"top": 98,
 					"width": 220,
 					"height": 368,
@@ -274,21 +254,6 @@
 							"enterable": false
 						}
 					]
-				},
-				"personneDetailScene": {
-					"type": "input",
-					"left": 1159,
-					"top": 98,
-					"width": 202,
-					"height": 171,
-					"enterable": false,
-					"focusable": false,
-					"scrollbarHorizontal": "hidden",
-					"scrollbarVertical": "visible",
-					"dataSource": "Form:C1466.personneDetail.sceneResume",
-					"fontSize": 14,
-					"fontWeight": "bold",
-					"fill": "transparent"
 				},
 				"Texte1": {
 					"type": "text",
@@ -403,9 +368,9 @@
 				},
 				"personneDetailListeSceneEvent": {
 					"type": "listbox",
-					"left": 1159,
-					"top": 282,
-					"width": 218,
+					"left": 1125,
+					"top": 98,
+					"width": 220,
 					"height": 184,
 					"events": [
 						"onClick",
@@ -420,6 +385,9 @@
 					"scrollbarHorizontal": "hidden",
 					"textAlign": "center",
 					"verticalAlign": "middle",
+					"selectedItemsSource": "Form:C1466.SceneLogSelectedElement",
+					"currentItemPositionSource": "Form:C1466.SceneLogCurrentPosition",
+					"currentItemSource": "Form:C1466.SceneLogCurrentElement",
 					"columns": [
 						{
 							"header": {
@@ -430,7 +398,7 @@
 							"footer": {
 								"name": "Pied6"
 							},
-							"width": 101,
+							"width": 100,
 							"dataSource": "This:C1470.etat"
 						},
 						{
@@ -442,15 +410,31 @@
 							"footer": {
 								"name": "Pied7"
 							},
-							"width": 102,
-							"dataSource": "\"Le \"+cmaTimestampLire(This:C1470.tsCreation; \"date\")+\"\\rà \"+cmaTimestampLire(This:C1470.tsCreation; \"heure\")"
+							"width": 105,
+							"dataSource": "\"Le \"+cmaTimestampLire(\"date\"; This:C1470.tsCreation)+\"\\rà \"+cmaTimestampLire(\"heure\"; This:C1470.tsCreation)"
 						}
 					]
+				},
+				"personneDetailLogSceneEvent": {
+					"type": "input",
+					"left": 1125,
+					"top": 302,
+					"width": 205,
+					"height": 164,
+					"enterable": false,
+					"focusable": false,
+					"scrollbarHorizontal": "hidden",
+					"scrollbarVertical": "visible",
+					"dataSource": "Form:C1466.SceneLogSelectedElement[0].information",
+					"fontSize": 14,
+					"fontWeight": "bold",
+					"fill": "transparent",
+					"bottom": 466
 				}
 			}
 		}
 	],
-	"geometryStamp": 284,
+	"geometryStamp": 375,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",

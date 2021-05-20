@@ -207,7 +207,8 @@ Function cronosManageScenario
 						$caScenarioEvent_o.save()
 						
 						If ($caScenarioEvent_o.OneCaScene.sceneSuivanteID#0)  // On cherche la scène suivante
-							$scene_o:=$caScenarioEvent_o.OneCaScene.AllCaSceneSuivante
+							// On remonte du log à la scène puis à la scène suivante
+							$scene_o:=$caScenarioEvent_o.OneCaScene.OneCaScene
 						Else   // S'il n'y en a pas on regarde les deux différents cas
 							
 							If ($caScenarioEvent_o.OneCaScene.numOrdre=$caScenarioEvent_o.OneCaScene.OneCaScenario.AllCaScene.length)  // C'est la dernière scène du scénario et il manque la scène de fin, dommage pour le spectacle...

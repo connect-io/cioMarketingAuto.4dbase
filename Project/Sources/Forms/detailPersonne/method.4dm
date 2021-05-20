@@ -52,5 +52,5 @@ If (Form event code:C388=Sur chargement:K2:1)
 	
 	OBJECT SET HELP TIP:C1181(*; "rang"; "• Rang 1 : Suspect\r• Rang 2 : Prospect\r• Rang 3 : Client\r• Rang 4 : Client fidèle\r• Rang 5 : Ambassadeur")
 	
-	Form:C1466.scenarioEnCours:=Form:C1466.personne.AllCaPersonneScenario.OneCaScenario
+	Form:C1466.scenarioEnCours:=Form:C1466.personne.AllCaPersonneScenario
 End if 

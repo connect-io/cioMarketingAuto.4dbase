@@ -1,4 +1,17 @@
+/* -----------------------------------------------------------------------------
+Class : cs.MAScenario
+
+-----------------------------------------------------------------------------*/
+
 Class constructor($entitySelectionToKeep_o : Object)
+/*-----------------------------------------------------------------------------
+Fonction : MAScenario.constructor
+	
+Instanciation de la class MAScenario
+	
+Historique
+15/02/21 - Rémy Scanu remy@connect-io.fr> - Création
+-----------------------------------------------------------------------------*/
 	This:C1470.scenario:=ds:C1482.CaScenario.newSelection()
 	This:C1470.scenarioDetail:=New object:C1471()
 	

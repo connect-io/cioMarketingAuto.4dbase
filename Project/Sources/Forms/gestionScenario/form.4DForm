@@ -698,11 +698,43 @@
 					"loopBackToFirstFrame": true,
 					"switchBackWhenReleased": true,
 					"useLastFrameAsDisabled": true
+				},
+				"scenarioListeBoutonExport": {
+					"type": "pictureButton",
+					"left": 129,
+					"top": 589,
+					"width": 23,
+					"height": 23,
+					"events": [
+						"onClick",
+						"onMouseMove"
+					],
+					"picture": "/RESOURCES/Images/export-file.png",
+					"method": "ObjectMethods/scenarioListeBoutonExport.4dm",
+					"loopBackToFirstFrame": true,
+					"switchBackWhenReleased": true,
+					"useLastFrameAsDisabled": true
+				},
+				"scenarioListeBoutonImport": {
+					"type": "pictureButton",
+					"left": 101,
+					"top": 589,
+					"width": 23,
+					"height": 23,
+					"events": [
+						"onClick",
+						"onMouseMove"
+					],
+					"picture": "/RESOURCES/Images/import-file.png",
+					"method": "ObjectMethods/scenarioListeBoutonImport.4dm",
+					"loopBackToFirstFrame": true,
+					"switchBackWhenReleased": true,
+					"useLastFrameAsDisabled": true
 				}
 			}
 		}
 	],
-	"geometryStamp": 689,
+	"geometryStamp": 723,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",

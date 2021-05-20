@@ -65,7 +65,7 @@
 					"type": "button",
 					"text": "Valider",
 					"top": 605,
-					"left": 642,
+					"left": 645,
 					"width": 165,
 					"height": 25,
 					"events": [
@@ -77,7 +77,7 @@
 					"type": "button",
 					"text": "Annuler",
 					"top": 605,
-					"left": 442,
+					"left": 460,
 					"width": 165,
 					"height": 25,
 					"events": [
@@ -515,7 +515,7 @@
 							},
 							"alternateFill": "#D6D6D6",
 							"width": 150,
-							"dataSource": "This:C1470.nom",
+							"dataSource": "This:C1470.OneCaScenario.nom",
 							"enterable": false
 						},
 						{
@@ -660,12 +660,25 @@
 					"height": 23,
 					"events": [
 						"onClick"
-					]
+					],
+					"method": "ObjectMethods/detailPersonneScenarioEnleverPersonne.4dm"
+				},
+				"detailPersonneScenarioActifInactif": {
+					"type": "button",
+					"text": "Changer le statut",
+					"top": 574,
+					"left": 302,
+					"width": 116,
+					"height": 23,
+					"events": [
+						"onClick"
+					],
+					"method": "ObjectMethods/detailPersonneScenarioActifInactif.4dm"
 				}
 			}
 		}
 	],
-	"geometryStamp": 405,
+	"geometryStamp": 416,
 	"editor": {
 		"activeView": "View 1",
 		"defaultView": "View 1",

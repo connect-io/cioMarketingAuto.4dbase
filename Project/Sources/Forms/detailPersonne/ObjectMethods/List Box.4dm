@@ -1,7 +1,7 @@
 If (Form event code:C388=Sur clic:K2:4) & (Form:C1466.ScenarioEnCoursCurrentElement#Null:C1517)
 	var $class_o : Object
 	
-	Form:C1466.scenarioSelected:=Form:C1466.ScenarioEnCoursSelectedElement[0]  // Gestion du scènario sélectionné
+	Form:C1466.scenarioSelected:=Form:C1466.ScenarioEnCoursSelectedElement[0].OneCaScenario  // Gestion du scènario sélectionné
 	
 	$class_o:=cmaToolGetClass("MAScenario").new()
 	$class_o.loadByPrimaryKey(Form:C1466.scenarioSelected.ID)

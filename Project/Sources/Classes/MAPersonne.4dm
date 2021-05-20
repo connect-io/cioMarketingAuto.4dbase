@@ -276,25 +276,25 @@ Historique
 Function sendMailing($configPreCharge_o : Object)
 	var $canalEnvoi_t; $corps_t; $mime_t; $propriete_t; $contenu_t : Text
 	var $statut_b : Boolean
-	var $class_o; $config_o; $mime_o; $statut_o : Object
+	var $class_o; $config_o; $mime_o; $statut_o; $formule_o : Object
 	
 	ASSERT:C1129(This:C1470.personne#Null:C1517; "Impossible d'utiliser la fonction sendMailing sans une personne de définie.")
 	
-	If (Count parameters:C259=0)
+	If (Count parameters:C259=0)  // Le mailing ne part pas en automatique, on sélectionne le canal d'envoi
 		// Instanciation de la class
 		$class_o:=cmaToolGetClass("MAMailing").new()
 		
 		// On détermine le canal d'envoi du mailing
 		$canalEnvoi_t:=$class_o.sendGetType()
-	Else 
+	Else   // Le mail part en automatique via cronos, le canal est pré-programmé
 		$canalEnvoi_t:=$configPreCharge_o.type
 	End if 
 	
 	If ($canalEnvoi_t#"")
 		
-		If (Count parameters:C259=0)  // On configure correctement le mailing
+		If (Count parameters:C259=0)  // Le mailing ne part pas en automatique, on configure correctement le mailing
 			$config_o:=$class_o.sendGetConfig($canalEnvoi_t)
-		Else 
+		Else   // Le mail part en automatique via cronos, le mailing est pré-configuré
 			$config_o:=New object:C1471
 			
 			For each ($propriete_t; $configPreCharge_o)
@@ -305,12 +305,14 @@ Function sendMailing($configPreCharge_o : Object)
 		
 		If ($config_o.success=True:C214)
 			
-			If (Count parameters:C259=0)  // On récupère le contenu
+			If (Count parameters:C259=0)  // Le mailing ne part pas en automatique, on configure le contenu du mailing
 				cwToolWindowsForm("gestionDocument"; New object:C1471("ecartHautEcran"; 30; "ecartBasEcran"; 70); New object:C1471("entree"; 1))
 			End if 
 			
 			Case of 
 				: ($canalEnvoi_t="Email")
+					$formule_o:=Formula from string:C1601("CHERCHER:C277(["+This:C1470.passerelle.tableHote+"];["+This:C1470.passerelle.tableHote+"]"+This:C1470.getFieldName("UID")+"="+String:C10(This:C1470.personne.UID)+")")
+					$formule_o.call()
 					
 					If (Count parameters:C259=0)
 						$corps_t:=WP Get text:C1575(WParea; wk expressions as value:K81:255)
@@ -343,7 +345,7 @@ Function sendMailing($configPreCharge_o : Object)
 						
 						$statut_b:=(String:C10($statut_o.statusText)="ok@")
 						
-						If (Count parameters:C259=0)
+						If (Count parameters:C259=0)  // Le mailing ne part pas en automatique, on affiche l'alerte sur le statut d'envoi du mail 
 							
 							If ($statut_b=True:C214)  // Statut de l'envoie du mail
 								ALERT:C41("Votre email a bien été envoyé")
