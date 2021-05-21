@@ -52,7 +52,7 @@ If (Form event code:C388=Sur clic:K2:4) & (Form:C1466.SceneCurrentElement#Null:C
 	$collection_c:=$table_o.toCollection("nom,ID").orderBy("nom asc")
 	COLLECTION TO ARRAY:C1562($collection_c; scenarioSuivantNom_at; "nom"; scenarioSuivantID_at; "ID")
 	
-	If (Form:C1466.sceneDetail.scenarioSuivantID#"")
+	If (Form:C1466.sceneDetail.scenarioSuivantID#"00000000000000000000000000000000")
 		$pos_el:=Find in array:C230(scenarioSuivantID_at; Form:C1466.sceneDetail.scenarioSuivantID)
 		
 		If ($pos_el>0)
@@ -73,8 +73,13 @@ If (Form event code:C388=Sur clic:K2:4) & (Form:C1466.SceneCurrentElement#Null:C
 	
 	OBJECT SET ENABLED:C1123(*; "sceneDetail@"; True:C214)
 	
-	// Si l'action de la scène n'est pas le changement de scénario, on ne peut pas éditer cela
-	If (Form:C1466.sceneDetail.action#"Changement de scénario")
+	// Si l'action de la scène est le changement de scénario, on ne peut pas éditer les infos pour mettre une scène suivante
+	If (Form:C1466.sceneDetail.action="Changement de scénario")
+		OBJECT SET ENABLED:C1123(*; "sceneDetailSceneSuivanteID"; False:C215)
+		OBJECT SET ENABLED:C1123(*; "sceneDetailDeleteSceneSuivante"; False:C215)
+		
+		OBJECT SET ENABLED:C1123(*; "sceneDetailDelai@"; False:C215)
+	Else 
 		OBJECT SET ENABLED:C1123(*; "sceneDetailScenarioSuivant"; False:C215)
 		OBJECT SET ENABLED:C1123(*; "sceneDetailDeleteScenarioSuivant"; False:C215)
 	End if 

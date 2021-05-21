@@ -18,6 +18,10 @@ If (Form:C1466.SceneCurrentElement#Null:C1517) & (Form:C1466.ScenarioCurrentElem
 	
 	If (sceneSuivante_at>0)
 		Form:C1466.sceneDetail.sceneSuivanteID:=sceneSuivante_ai{sceneSuivante_at}
+	Else 
+		Form:C1466.sceneSuivanteDelai:="0"
+		
+		Form:C1466.sceneDetail.tsAttente:=0
 	End if 
 	
 	If (sceneAction_at>0)
@@ -27,7 +31,7 @@ If (Form:C1466.SceneCurrentElement#Null:C1517) & (Form:C1466.ScenarioCurrentElem
 	If (Form:C1466.sceneDetail.action="Changement de scénario")  // Si l'action de la scène est un changement de scénario
 		
 		If (scenarioSuivantNom_at>0)
-			Form:C1466.sceneDetail.scenarioSuivantID:=scenarioSuivantID_at{sceneSuivante_at}
+			Form:C1466.sceneDetail.scenarioSuivantID:=scenarioSuivantID_at{scenarioSuivantNom_at}
 		Else   // Aucun scénario suivant n'a été indiqué...
 			$continue_b:=False:C215
 		End if 

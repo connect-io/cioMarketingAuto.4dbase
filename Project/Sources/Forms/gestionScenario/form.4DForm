@@ -655,7 +655,8 @@
 					"events": [
 						"onDataChange"
 					],
-					"dataSource": "sceneSuivante_at"
+					"dataSource": "sceneSuivante_at",
+					"fontSize": 10
 				},
 				"sceneDetailAction": {
 					"type": "dropdown",
@@ -750,7 +751,8 @@
 					"events": [
 						"onDataChange"
 					],
-					"dataSource": "scenarioSuivantNom_at"
+					"dataSource": "scenarioSuivantNom_at",
+					"fontSize": 10
 				},
 				"sceneDetailDeleteScenarioSuivant": {
 					"type": "pictureButton",
