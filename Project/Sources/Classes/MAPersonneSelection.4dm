@@ -115,7 +115,7 @@ Historique
 ------------------------------------------------------------------------------*/
 	var $canalEnvoi_t; $corps_t; $mime_t; $propriete_t; $contenu_t : Text
 	var $statut_b : Boolean
-	var $class_o; $config_o; $mime_o; $statut_o; $enregistrement_o; $personne_o; $compteur_o : Object
+	var $class_o; $config_o; $mime_o; $statut_o; $enregistrement_o; $personne_o; $compteur_o; $wpVar_o : Object
 	
 	ASSERT:C1129(This:C1470.personneSelection#Null:C1517; "Impossible d'utiliser la fonction sendMailing sans une sélection de personne de définie.")
 	
@@ -145,6 +145,11 @@ Historique
 				
 				If ($personne_o.personne#Null:C1517)
 					$statut_b:=True:C214
+					
+					// Modifié par : Rémy Scanu (21/05/2021)
+					// Permet d'instancier la variable wpVar_o utilisée dans les documents 4WPRO créé depuis le composant
+					$wpVar_o:=$personne_o.personne
+					Formula from string:C1601("_cmaInit4WPVar(this)").call($wpVar_o)
 					
 					Case of 
 						: ($canalEnvoi_t="Email")

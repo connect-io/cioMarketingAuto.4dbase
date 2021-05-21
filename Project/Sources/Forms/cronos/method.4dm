@@ -26,7 +26,6 @@ If (Form event code:C388=Sur minuteur:K2:25)
 			Form:C1466.cronosMessage:=""
 			Form:C1466.cronosVerifMailjet:=cmaTimestamp(Current date:C33; Current time:C178)+3600  // On incrémente d'1 heure
 		: (Form:C1466.cronosMessage="Gestion des scénarios...")
-			TRACE:C157
 			Form:C1466.cronosManageScenario()
 			
 			Form:C1466.cronosMessage:=""

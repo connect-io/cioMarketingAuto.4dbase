@@ -276,7 +276,7 @@ Historique
 Function sendMailing($configPreCharge_o : Object)
 	var $canalEnvoi_t; $corps_t; $mime_t; $propriete_t; $contenu_t : Text
 	var $statut_b : Boolean
-	var $class_o; $config_o; $mime_o; $statut_o; $formule_o : Object
+	var $class_o; $config_o; $mime_o; $statut_o; $formule_o; $wpVar_o : Object
 	
 	ASSERT:C1129(This:C1470.personne#Null:C1517; "Impossible d'utiliser la fonction sendMailing sans une personne de définie.")
 	
@@ -309,10 +309,14 @@ Function sendMailing($configPreCharge_o : Object)
 				cwToolWindowsForm("gestionDocument"; New object:C1471("ecartHautEcran"; 30; "ecartBasEcran"; 70); New object:C1471("entree"; 1))
 			End if 
 			
+			// Modifié par : Rémy Scanu (21/05/2021)
+			// Permet d'instancier la variable wpVar_o utilisée dans les documents 4WPRO créé depuis le composant
+			$wpVar_o:=This:C1470.personne
+			
+			Formula from string:C1601("_cmaInit4WPVar(this)").call($wpVar_o)
+			
 			Case of 
 				: ($canalEnvoi_t="Email")
-					$formule_o:=Formula from string:C1601("CHERCHER:C277(["+This:C1470.passerelle.tableHote+"];["+This:C1470.passerelle.tableHote+"]"+This:C1470.getFieldName("UID")+"="+String:C10(This:C1470.personne.UID)+")")
-					$formule_o.call()
 					
 					If (Count parameters:C259=0)
 						$corps_t:=WP Get text:C1575(WParea; wk expressions as value:K81:255)

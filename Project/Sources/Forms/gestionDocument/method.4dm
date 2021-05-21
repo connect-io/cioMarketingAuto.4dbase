@@ -7,6 +7,8 @@ Case of
 		
 		WParea:=WP New:C1317()
 		
+		Form:C1466.voirVariable:=False:C215
+		
 		Case of 
 			: (Form:C1466.entree=1)  // Envoi d'un mailing à la table [Personne]
 				Form:C1466.imageSave:=Storage:C1525.automation.image["logout"]

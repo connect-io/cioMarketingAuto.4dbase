@@ -5,7 +5,7 @@ Méthode : cmaProgressBar
 Gestion d'une barre de progression
 
 Historique
-10/03/21 - Rémy Scanu remy@connect-io.fr> - Création
+10/03/21 - Rémy Scanu <remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
 var $1 : Real
 var $2 : Text
