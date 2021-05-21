@@ -1,6 +1,9 @@
 If (Form:C1466.SceneCurrentElement#Null:C1517) & (Form:C1466.ScenarioCurrentElement#Null:C1517)
 	var $pos_el : Integer
+	var $continue_b : Boolean
 	var $retour_o : Object
+	
+	$continue_b:=True:C214
 	
 	Case of 
 		: (String:C10(Form:C1466.sceneDetail.paramAction.echelleDelai)="jour(s)")
@@ -21,19 +24,34 @@ If (Form:C1466.SceneCurrentElement#Null:C1517) & (Form:C1466.ScenarioCurrentElem
 		Form:C1466.sceneDetail.action:=sceneAction_at{sceneAction_at}
 	End if 
 	
-	$retour_o:=Form:C1466.sceneDetail.save()
-	
-	If ($retour_o.success=False:C215)
-		// Avertir l'utilisateur
+	If (Form:C1466.sceneDetail.action="Changement de scénario")  // Si l'action de la scène est un changement de scénario
+		
+		If (scenarioSuivantNom_at>0)
+			Form:C1466.sceneDetail.scenarioSuivantID:=scenarioSuivantID_at{sceneSuivante_at}
+		Else   // Aucun scénario suivant n'a été indiqué...
+			$continue_b:=False:C215
+		End if 
+		
 	End if 
 	
-	// On rafraîchi les entités
-	Form:C1466.sceneDetail.reload()
-	Form:C1466.scenarioDetail.reload()
+	If ($continue_b=True:C214)
+		$retour_o:=Form:C1466.sceneDetail.save()
+		
+		If ($retour_o.success=False:C215)
+			// Avertir l'utilisateur
+		End if 
+		
+		// On rafraîchi les entités
+		Form:C1466.sceneDetail.reload()
+		Form:C1466.scenarioDetail.reload()
+		
+		Form:C1466.scene:=Form:C1466.scenarioDetail.AllCaScene.orderBy("numOrdre asc")
+		
+		LISTBOX SELECT ROW:C912(*; "sceneListe"; Form:C1466.SceneCurrentPosition)
+	Else 
+		ALERT:C41("Impossible de sauvegarder la scène, un scénario suivant est obligatoire !")
+	End if 
 	
-	Form:C1466.scene:=Form:C1466.scenarioDetail.AllCaScene.orderBy("numOrdre asc")
-	
-	LISTBOX SELECT ROW:C912(*; "sceneListe"; Form:C1466.SceneCurrentPosition)
 Else 
 	ALERT:C41("Impossible de sauvegarder, aucune scène de sélectionner !")
 End if 

@@ -5,6 +5,9 @@ var $collection_c : Collection
 ARRAY TEXT:C222(sceneSuivante_at; 0)
 ARRAY TEXT:C222(sceneAction_at; 0)
 
+ARRAY TEXT:C222(scenarioSuivantNom_at; 0)
+ARRAY TEXT:C222(scenarioSuivantID_at; 0)
+
 ARRAY LONGINT:C221(sceneSuivante_ai; 0)
 
 If (Form event code:C388=Sur clic:K2:4) & (Form:C1466.SceneCurrentElement#Null:C1517)
@@ -44,9 +47,38 @@ If (Form event code:C388=Sur clic:K2:4) & (Form:C1466.SceneCurrentElement#Null:C
 		sceneSuivante_at{0}:="Sélection d'une action de scène"
 	End if 
 	
+	$table_o:=ds:C1482.CaScenario.query("ID # :1"; Form:C1466.sceneDetail.scenarioID)
+	
+	$collection_c:=$table_o.toCollection("nom,ID").orderBy("nom asc")
+	COLLECTION TO ARRAY:C1562($collection_c; scenarioSuivantNom_at; "nom"; scenarioSuivantID_at; "ID")
+	
+	If (Form:C1466.sceneDetail.scenarioSuivantID#"")
+		$pos_el:=Find in array:C230(scenarioSuivantID_at; Form:C1466.sceneDetail.scenarioSuivantID)
+		
+		If ($pos_el>0)
+			scenarioSuivantNom_at:=$pos_el
+			scenarioSuivantNom_at{0}:=scenarioSuivantNom_at{$pos_el}
+			
+			scenarioSuivantID_at:=$pos_el
+			scenarioSuivantID_at{0}:=scenarioSuivantID_at{$pos_el}
+		Else   // ID scénario suivant inconnue...
+			TRACE:C157
+		End if 
+		
+	Else 
+		scenarioSuivantNom_at{0}:="Sélection du scénario suivant"
+	End if 
+	
 	Form:C1466.updateStringSceneForm(1)
 	
 	OBJECT SET ENABLED:C1123(*; "sceneDetail@"; True:C214)
+	
+	// Si l'action de la scène n'est pas le changement de scénario, on ne peut pas éditer cela
+	If (Form:C1466.sceneDetail.action#"Changement de scénario")
+		OBJECT SET ENABLED:C1123(*; "sceneDetailScenarioSuivant"; False:C215)
+		OBJECT SET ENABLED:C1123(*; "sceneDetailDeleteScenarioSuivant"; False:C215)
+	End if 
+	
 Else 
 	
 	If (Form:C1466.sceneDetail#Null:C1517)
