@@ -45,7 +45,9 @@ Historique
 			
 			This:C1470.loadPasserelle("Personne")
 			
+			// Chargement des conditions d'action et de saut pour les scènes d'un scénario
 			This:C1470.loadSceneConditionActionList()
+			This:C1470.loadSceneConditionSautList()
 		Else 
 			ALERT:C41("Impossible d'intialiser le composant caMarketingAutomation")
 		End if 
@@ -174,7 +176,7 @@ Function cronosUpdateCaMarketing
 Function cronosManageScenario
 	var $numOrdre_el : Integer
 	var $continue_b : Boolean
-	var $table_o; $enregistrement_o; $caScenarioEvent_o; $scene_o; $personne_o; $eMail_o; $config_o; $conditionAction_o; $scene_cs; $retour_o : Object
+	var $table_o; $enregistrement_o; $caScenarioEvent_o; $scene_o; $personne_o; $eMail_o; $config_o; $conditionAction_o; $scene_cs; $retour_o; $scenario_o : Object
 	var $collection_c : Collection
 	
 	// On recherche toutes les personnes qui ont un scénario actif et dont le prochain check est dépassé
@@ -206,32 +208,44 @@ Function cronosManageScenario
 						
 						$caScenarioEvent_o.save()
 						
-						If ($caScenarioEvent_o.OneCaScene.sceneSuivanteID#0)  // On cherche la scène suivante
-							// On remonte du log à la scène puis à la scène suivante
-							$scene_o:=$caScenarioEvent_o.OneCaScene.OneCaScene
-						Else   // S'il n'y en a pas on regarde les deux différents cas
-							
-							If ($caScenarioEvent_o.OneCaScene.numOrdre=$caScenarioEvent_o.OneCaScene.OneCaScenario.AllCaScene.length)  // C'est la dernière scène du scénario et il manque la scène de fin, dommage pour le spectacle...
-								$scene_cs:=cmaToolGetClass("MAScene").new()
-								$scene_cs.loadByPrimaryKey($caScenarioEvent_o.OneCaScene.ID)
+						Case of 
+							: ($caScenarioEvent_o.OneCaScene.sceneSuivanteID#0)  // On cherche la scène suivante
+								// On remonte du log à la scène puis à la scène suivante
+								$scene_o:=$caScenarioEvent_o.OneCaScene.OneCaSceneSuivante
 								
-								// Ajout du log
-								$scene_cs.addScenarioEvent("Fin du scénario"; $enregistrement_o.ID)
-							Else   // L'utilisateur a oublié de programmer une scène suivante
-								CLEAR VARIABLE:C89($scene_o)
+							: ($caScenarioEvent_o.OneCaScene.scenarioSuivantID#"00000000000000000000000000000000")  // On cherche le scénario suivant
+								// On remonte du log à la scène puis au scénario suivant puis à toutes les scènes
+								$scene_o:=$caScenarioEvent_o.OneCaScene.scenarioSuivantID.AllCaSceneScenarioSuivant.query("numOrdre = :1"; 1)
 								
-								$numOrdre_el:=$caScenarioEvent_o.OneCaScene.numOrdre
+								If ($scene_o.length=1)  // On a trouvé la première scène
+									$scene_o:=$scene_o.first()
+								Else   // Impossible de trouver la scène donc de la jouer...
+									CLEAR VARIABLE:C89($scene_o)
+								End if 
 								
-								// On recherche une scène jusqu'à trouver la bonne
-								Repeat 
-									$numOrdre_el:=$numOrdre_el+1
+							Else   // S'il n'y en a pas on regarde les deux différents cas
+								
+								If ($caScenarioEvent_o.OneCaScene.numOrdre=$caScenarioEvent_o.OneCaScene.OneCaScenario.AllCaScene.length)  // C'est la dernière scène du scénario et il manque la scène de fin, dommage pour le spectacle...
+									$scene_cs:=cmaToolGetClass("MAScene").new()
+									$scene_cs.loadByPrimaryKey($caScenarioEvent_o.OneCaScene.ID)
 									
-									$scene_o:=$caScenarioEvent_o.OneCaScene.OneCaScenario.AllCaScene.query("numOrdre = :1"; $numOrdre_el)
-								Until ($scene_o#Null:C1517) | ($numOrdre_el>100)
+									// Ajout du log
+									$scene_cs.addScenarioEvent("Fin du scénario"; $enregistrement_o.ID)
+								Else   // L'utilisateur a oublié de programmer une scène suivante
+									CLEAR VARIABLE:C89($scene_o)
+									
+									$numOrdre_el:=$caScenarioEvent_o.OneCaScene.numOrdre
+									
+									// On recherche une scène jusqu'à trouver la bonne
+									Repeat 
+										$numOrdre_el:=$numOrdre_el+1
+										
+										$scene_o:=$caScenarioEvent_o.OneCaScene.OneCaScenario.AllCaScene.query("numOrdre = :1"; $numOrdre_el)
+									Until ($scene_o#Null:C1517) | ($numOrdre_el>100)
+									
+								End if 
 								
-							End if 
-							
-						End if 
+						End case 
 						
 				End case 
 				
@@ -412,7 +426,7 @@ Fonction : MarketingAutomation.loadSceneConditionActionList
 Permet de charger la liste des conditions d'actions sélectionnable pour une scène
 	
 Historique
-17/05/21 - Rémy Scanu remy@connect-io.fr> - Création
+17/05/21 - Rémy Scanu <remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
 	var $fichierConfig_o : Object
 	
@@ -422,6 +436,27 @@ Historique
 		
 		Use (Storage:C1525.automation)
 			Storage:C1525.automation.sceneConditionAction:=OB Copy:C1225(JSON Parse:C1218($fichierConfig_o.getText()); ck shared:K85:29; Storage:C1525.automation)
+		End use 
+		
+	End if 
+	
+Function loadSceneConditionSautList
+/* -----------------------------------------------------------------------------
+Fonction : MarketingAutomation.loadSceneConditionSautList
+	
+Permet de charger la liste des conditions d'actions sélectionnable pour une scène
+	
+Historique
+25/05/21 - Rémy Scanu <remy@connect-io.fr> - Création
+-----------------------------------------------------------------------------*/
+	var $fichierConfig_o : Object
+	
+	$fichierConfig_o:=File:C1566(Get 4D folder:C485(Dossier Resources courant:K5:16; *)+"cioMarketingAutomation"+Séparateur dossier:K24:12+"scene"+Séparateur dossier:K24:12+"conditionSaut.json"; fk chemin plateforme:K87:2)
+	
+	If ($fichierConfig_o.exists=True:C214)
+		
+		Use (Storage:C1525.automation)
+			Storage:C1525.automation.sceneConditionSaut:=OB Copy:C1225(JSON Parse:C1218($fichierConfig_o.getText()); ck shared:K85:29; Storage:C1525.automation)
 		End use 
 		
 	End if 

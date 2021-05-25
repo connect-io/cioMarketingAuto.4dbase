@@ -70,9 +70,10 @@ Fonction : MAScene.loadConditionActionDisplay
 Permet de faire le chargement visuel des différentes conditions d'action d'une scène
 	
 Historique
-18/05/21 - Rémy Scanu remy@connect-io.fr> - Création
+18/05/21 - Rémy Scanu <remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
 	var $pos_el; $gauche_el; $haut_el; $droite_el; $bas_el; $hauteur_el : Integer
+	var $conditionAction_o : Object
 	
 	If ($entity_o.conditionAction.elements#Null:C1517)
 		
@@ -112,6 +113,64 @@ Historique
 						cmaToolDuplicateObjInForm($conditionAction_o.varName[$pos_el]; Null:C1517; "deleteItem"; Est un pointeur:K8:14; True:C214; 430; $haut_el-Round:C94(((24-$hauteur_el)/2); 0))
 					Else 
 						cmaToolDuplicateObjInForm($conditionAction_o.varName[$pos_el]; Null:C1517; "deleteItem"; Est un pointeur:K8:14; True:C214; 430; $haut_el+Round:C94(((24-$hauteur_el)/2); 0))
+					End if 
+					
+			End case 
+			
+		End for each 
+		
+	End if 
+	
+Function loadConditionSautDisplay($entity_o : Object)
+/* -----------------------------------------------------------------------------
+Fonction : MAScene.loadConditionSautDisplay
+	
+Permet de faire le chargement visuel des différentes conditions de saut d'une scène
+	
+Historique
+25/05/21 - Rémy Scanu <remy@connect-io.fr> - Création
+-----------------------------------------------------------------------------*/
+	var $pos_el; $gauche_el; $haut_el; $droite_el; $bas_el; $hauteur_el : Integer
+	var $conditionSaut_o : Object
+	
+	If ($entity_o.conditionSaut.elements#Null:C1517)
+		
+		For each ($conditionSaut_o; $entity_o.conditionSaut.elements)
+			
+			Case of 
+				: ($conditionSaut_o.type="boolean")
+					// On duplique l'objet standard "texte" et on le repositionne ensuite correctement
+					$pos_el:=$conditionSaut_o.varName.indexOf("texteBooleen@")
+					
+					cmaToolDuplicateObjInForm($conditionSaut_o.varName[$pos_el]; $conditionSaut_o.titre; "Texte"; Est un texte:K8:3; True:C214; 10; $bas_el+10)
+					
+					$pos_el:=$conditionSaut_o.varName.indexOf("imageBooleen@")
+					
+					// On duplique l'objet standard "booleen" et on le repositionne ensuite correctement
+					If (Num:C11($conditionSaut_o.nombreEtat)=3)
+						
+						Case of 
+							: ($conditionSaut_o.value=0)
+								cmaToolDuplicateObjInForm($conditionSaut_o.varName[$pos_el]; ->toggleOff_i; "imageBooleen"; Est une variable chaîne:K8:2; True:C214; 10; $bas_el+40)
+							: ($conditionSaut_o.value=1)
+								cmaToolDuplicateObjInForm($conditionSaut_o.varName[$pos_el]; ->toggleOn_i; "imageBooleen"; Est une variable chaîne:K8:2; True:C214; 10; $bas_el+40)
+							: ($conditionSaut_o.value=2)
+								cmaToolDuplicateObjInForm($conditionSaut_o.varName[$pos_el]; ->toggle_i; "imageBooleen"; Est une variable chaîne:K8:2; True:C214; 10; $bas_el+40)
+						End case 
+						
+					Else 
+						//toDo
+					End if 
+					
+					OBJECT GET COORDINATES:C663(*; $conditionSaut_o.varName[$pos_el]; $gauche_el; $haut_el; $droite_el; $bas_el)
+					$hauteur_el:=$bas_el-$haut_el
+					
+					$pos_el:=$conditionSaut_o.varName.indexOf("deleteItemBooleen@")
+					
+					If ($hauteur_el>24)
+						cmaToolDuplicateObjInForm($conditionSaut_o.varName[$pos_el]; Null:C1517; "deleteItem"; Est un pointeur:K8:14; True:C214; 430; $haut_el-Round:C94(((24-$hauteur_el)/2); 0))
+					Else 
+						cmaToolDuplicateObjInForm($conditionSaut_o.varName[$pos_el]; Null:C1517; "deleteItem"; Est un pointeur:K8:14; True:C214; 430; $haut_el+Round:C94(((24-$hauteur_el)/2); 0))
 					End if 
 					
 			End case 

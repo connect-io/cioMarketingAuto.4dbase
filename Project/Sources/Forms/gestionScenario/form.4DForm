@@ -439,7 +439,7 @@
 					"left": 728,
 					"width": 195,
 					"height": 16,
-					"visibility": "hidden"
+					"visibility": "visible"
 				},
 				"sceneDetailConditionSaut": {
 					"type": "button",
@@ -453,7 +453,7 @@
 					],
 					"style": "regular",
 					"method": "ObjectMethods/sceneDetailConditionSaut.4dm",
-					"visibility": "hidden"
+					"visibility": "visible"
 				},
 				"sceneDetailPersonneEnCoursChaine": {
 					"type": "input",
@@ -773,7 +773,7 @@
 			}
 		}
 	],
-	"geometryStamp": 766,
+	"geometryStamp": 768,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",
