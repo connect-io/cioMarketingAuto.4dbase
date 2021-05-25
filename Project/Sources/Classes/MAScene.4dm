@@ -181,15 +181,16 @@ Historique
 	
 Function manageConditionActionDisplay($entree_el : Integer; $nomObjet_t : Text; $pointeur_p : Pointer; $entity_o : Object)
 /* -----------------------------------------------------------------------------
-Fonction : MAScene.manageConditionAction
+Fonction : MAScene.manageConditionActionDisplay
 	
 Permet de faire la gestion des différentes conditions d'action d'une scène
 	
 Historique
-17/05/21 - Rémy Scanu remy@connect-io.fr> - Création
+17/05/21 - Rémy Scanu <remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
 	var $element_t : Text
 	var $pos_el; $posBis_el : Integer
+	var $conditionAction_o : Object
 	
 	Case of 
 		: ($entree_el=0)  // Suppression d'une condition d'action
@@ -251,6 +252,94 @@ Historique
 											OBJECT SET DATA SOURCE:C1264(*; cmaToolMinuscFirstChar($nomObjet_t); ->toggle_i)
 											
 											$conditionAction_o.value:=2
+									End case 
+									
+								End if 
+								
+						End case 
+						
+					End if 
+					
+				End for each 
+				
+			End if 
+			
+	End case 
+	
+Function manageConditionSautDisplay($entree_el : Integer; $nomObjet_t : Text; $pointeur_p : Pointer; $entity_o : Object)
+/* -----------------------------------------------------------------------------
+Fonction : MAScene.manageConditionSautDisplay
+	
+Permet de faire la gestion des différentes conditions de saut d'une scène
+	
+Historique
+25/05/21 - Rémy Scanu <remy@connect-io.fr> - Création
+-----------------------------------------------------------------------------*/
+	var $element_t : Text
+	var $pos_el; $posBis_el : Integer
+	var $conditionSaut_o : Object
+	
+	Case of 
+		: ($entree_el=0)  // Suppression d'une condition de saut
+			
+			If ($entity_o.conditionSaut.elements#Null:C1517)
+				
+				For each ($conditionSaut_o; $entity_o.conditionSaut.elements)
+					// On cherche dans quelle condition de saut se trouve le bouton suppr sur lequel l'utilisateur a cliqué
+					$pos_el:=$conditionSaut_o.varName.indexOf($nomObjet_t)
+					
+					If ($pos_el#-1)  // Bingo c'est ici
+						
+						// On va boucler sur chaque elément de la condition de saut et les virer un par un
+						For each ($element_t; $conditionSaut_o.varName)
+							OBJECT SET COORDINATES:C1248(*; $element_t; -9999; -9999; -9999; -9999)
+						End for each 
+						
+						// Une fois cela fait on va virer la condition de saut de la propriété "elements"
+						$posBis_el:=$entity_o.conditionSaut.elements.indexOf($conditionSaut_o)
+					End if 
+					
+				End for each 
+				
+				If ($posBis_el#-1)
+					$entity_o.conditionSaut.elements.remove($posBis_el)
+					
+					// S'il n'y a plus de conditions de saut on reset l'objet
+					If ($entity_o.conditionSaut.elements.length=0)
+						$entity_o.conditionSaut:=New object:C1471
+					End if 
+					
+				End if 
+				
+			End if 
+			
+		: ($entree_el=1)  // Modification d'une condition de saut
+			
+			If ($entity_o.conditionSaut.elements#Null:C1517)
+				
+				For each ($conditionSaut_o; $entity_o.conditionSaut.elements)
+					$pos_el:=$conditionSaut_o.varName.indexOf($nomObjet_t)
+					
+					If ($pos_el#-1)
+						
+						Case of 
+							: ($conditionSaut_o.type="boolean")
+								
+								If (Num:C11($conditionSaut_o.nombreEtat)=3)
+									
+									Case of 
+										: (Picture size:C356($pointeur_p->)=Picture size:C356(Storage:C1525.automation.image["toggle"]))
+											OBJECT SET DATA SOURCE:C1264(*; cmaToolMinuscFirstChar($nomObjet_t); ->toggleOn_i)
+											
+											$conditionSaut_o.value:=1
+										: (Picture size:C356($pointeur_p->)=Picture size:C356(Storage:C1525.automation.image["toggle-on"]))
+											OBJECT SET DATA SOURCE:C1264(*; cmaToolMinuscFirstChar($nomObjet_t); ->toggleOff_i)
+											
+											$conditionSaut_o.value:=0
+										Else 
+											OBJECT SET DATA SOURCE:C1264(*; cmaToolMinuscFirstChar($nomObjet_t); ->toggle_i)
+											
+											$conditionSaut_o.value:=2
 									End case 
 									
 								End if 
