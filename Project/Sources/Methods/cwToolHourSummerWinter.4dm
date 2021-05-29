@@ -1,14 +1,12 @@
 //%attributes = {"shared":true,"preemptive":"capable"}
-// ----------------------------------------------------
-// Nom utilisateur (OS) : Programmeur
-// Date et heure : 13/07/20, 16:31:05
-// ----------------------------------------------------
-// Méthode : cwToolHourSummerWinter
-// Description
-// 
-//
-// Paramètres
-// ----------------------------------------------------
+/* -----------------------------------------------------------------------------
+Méthode : c(io)w(eb)ToolHourSummerWinter
+
+Permet de savoir s'il faut rajouter ou enlever 1h suivant l'heure d'hiver ou d'été de la machine
+
+Historique
+13/07/20 - Rémy Scanu remy@connect-io.fr> - Création
+-----------------------------------------------------------------------------*/
 var $1 : Date
 var $0 : Integer
 

@@ -1,4 +1,12 @@
 //%attributes = {}
+/* -----------------------------------------------------------------------------
+Méthode : _test
+
+Méthode de test
+
+Historique
+29/05/21 - Rémy Scanu <remy@connect-io.fr> - Ajout entête
+-----------------------------------------------------------------------------*/
 var $corps_t : Text
 var $toto_o; $courrier_o : Object
 

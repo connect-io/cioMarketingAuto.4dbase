@@ -1,18 +1,16 @@
 //%attributes = {"shared":true,"preemptive":"capable"}
-// ----------------------------------------------------
-// Nom utilisateur (OS) : Scanu Rémy
-// Date et heure : 16/07/20, 18:19:53
-// ----------------------------------------------------
-// Méthode : caNumToDate
-// Description
-// 
-//
-// Paramètres
-// ----------------------------------------------------
+/* -----------------------------------------------------------------------------
+Méthode : caNumToDate
+
+Permet de faire des opérations sur une date
+
+Historique
+16/07/20 - Rémy Scanu <remy@connect-io.fr> - Création
+-----------------------------------------------------------------------------*/
+var $0 : Date
 var $1 : Integer
 var $2 : Text
 var $3 : Text
-var $0 : Date
 
 Case of 
 	: ($2="year")

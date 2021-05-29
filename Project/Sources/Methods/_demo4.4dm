@@ -1,29 +1,18 @@
 //%attributes = {"shared":true,"lang":"en"}
-// Dans cette démo on va montrer comment on gère les scénarios et scènes
+/* -----------------------------------------------------------------------------
+Méthode : _demo4
+
+Lance une démo qui consiste à montrer comment on gère les scénarios et scènes
+
+Historique
+29/05/21 - Rémy Scanu <remy@connect-io.fr> - Ajout entête
+-----------------------------------------------------------------------------*/
 var $marketingAutomation_o; $scenario_o : Object
 
 // Instanciation de la class
-$marketingAutomation_o:=cmaToolGetClass("MarketingAutomation").new()
+$marketingAutomation_o:=cmaToolGetClass("MarketingAutomation").new(True:C214)
 $marketingAutomation_o.loadPasserelle("Personne")  // Création de la passerelle entre la class $marketingAutomation_o et la base hôte
 
 // Instanciation de la class
 $scenario_o:=cmaToolGetClass("MAScenario").new()
 $scenario_o.loadScenarioDisplay()
-/*
-$scenario_o:=$marketingAutomation_o.scenario()
-
-$scenario_o.create($config)
-
-// Il faut définir ce qu'il faut mettre dans la config au depart et comment la structurer...
-$scenario_o.sceneAdd($config)
-
-$scenario_o.select($name)
-
-// Leur envoyer un mailing de masse ?
-$scenario_o.segnementation().applyPeople()
-
-$scenario_o.play($name)
-// On peut imaginer que s'il y a un param name, il va jouer un scénario, sinon il va jouer tout les scénarios.
-
-// Stocker l'information ?
-*/

@@ -1,14 +1,12 @@
 //%attributes = {}
-// ----------------------------------------------------
-// Nom utilisateur (OS) : Administrator
-// Date et heure : 07/03/21, 11:29:47
-// ----------------------------------------------------
-// Méthode : cmaToolRegexValidate
-// Description
-// 
-//
-// Paramètres
-// ----------------------------------------------------
+/* -----------------------------------------------------------------------------
+Méthode : cmaToolRegexValidate
+
+Permet de faire des vérification suivant le regex passant en paramètre
+
+Historique
+07/03/21 - Rémy Scanu <remy@connect-io.fr> - Création
+-----------------------------------------------------------------------------*/
 var $0 : Boolean
 var $1 : Integer
 var $2 : Variant

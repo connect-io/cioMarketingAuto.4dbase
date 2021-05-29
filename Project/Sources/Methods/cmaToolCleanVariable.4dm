@@ -1,17 +1,15 @@
 //%attributes = {}
-// ----------------------------------------------------
-// Nom utilisateur (OS) : Dev
-// Date et heure : 13/04/21, 15:51:56
-// ----------------------------------------------------
-// Méthode : cmaToolCleanVariable
-// Description
-// 
-//
-// Paramètres
-// ----------------------------------------------------
-C_POINTER:C301(${1})
+/* -----------------------------------------------------------------------------
+Méthode : cmaToolCleanVariable
 
-C_LONGINT:C283($i_el)
+Remise à zéro des variables mis en paramètre
+
+Historique
+29/05/21 - Rémy Scanu <remy@connect-io.fr> - Ajout entête
+-----------------------------------------------------------------------------*/
+var ${1} : Pointer
+
+var $i_el : Integer
 
 For ($i_el; 1; Count parameters:C259)
 	CLEAR VARIABLE:C89(${$i_el}->)

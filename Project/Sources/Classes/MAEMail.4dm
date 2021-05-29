@@ -1,32 +1,23 @@
-/* 
+/* -----------------------------------------------------------------------------
 Class : cs.MAEMail
 
-Gestion des e-mail
+-----------------------------------------------------------------------------*/
 
-Historique
-11/03/21 - Rémy Scanu remy@connect-io.fr> - Création
-*/
-
-Class constructor
+Class constructor($transporter_t : Text; $parametre_o : Object)
 /* -----------------------------------------------------------------------------
 Fonction : EMail.constructor
 	
-Initialisation de la page web.
-ATTENTION : L'instance de la class "page" doit se faire obligatoirement par la fonction : webApp.pageCurrent()
+Instanciation de la class avec le nom du transporter à utiliser en paramètre (voir fichier de config)
 	
 Historique
 02/01/20 - quentin@connect-io.fr - Création
 10/11/20 - Grégory Fromain <gregory@connect-io.fr> - Reprise du code
+29/05/21 - Rémy Scanu <remy@connect-io.fr> - Clean code
 -----------------------------------------------------------------------------*/
-	
-	// Déclaration
-	var $1 : Text  // Nom du transporteur
-	var $2 : Object  // Param optionnel pour le transporteur
-	
 	var $transporter_c : Collection  // Récupère la collection de plumeDemo
 	var $server_o; $function_o : Object  // Informations SMTP
 	
-	ASSERT:C1129($1#""; "EMail.constructor : le Param $1 est obligatoire.")
+	ASSERT:C1129($transporter_t#""; "EMail.constructor : le Param $transporter_t est obligatoire.")
 	
 	If (cwStorage.eMail=Null:C1517)
 		$function_o:=Formula from string:C1601("cwEMailConfigLoad").call(This:C1470)
@@ -35,7 +26,7 @@ Historique
 	$server_o:=New object:C1471()
 	
 	// Vérifie que le nom du transporteur soit bien dans la config
-	$transporter_c:=cwStorage.eMail.smtp.query("name IS :1"; $1)
+	$transporter_c:=cwStorage.eMail.smtp.query("name IS :1"; $transporter_t)
 	
 	If ($transporter_c.length=1)
 		$server_o:=$transporter_c[0]
@@ -43,7 +34,7 @@ Historique
 	
 	// Il est possible de surcharger le transporteur.
 	If (Count parameters:C259=2)
-		$server_o:=Formula from string:C1601("cwToolObjectMerge($server_o; $2)").call(This:C1470)
+		$server_o:=Formula from string:C1601("cwToolObjectMerge($server_o; $parametre_o)").call(This:C1470)
 	End if 
 	
 	If ($server_o#Null:C1517)
@@ -65,7 +56,7 @@ Historique
 		This:C1470.globalVar:=OB Copy:C1225(cwStorage.eMail.globalVar)
 	End if 
 	
-Function send
+Function send()->$retour_o : Object
 /* -----------------------------------------------------------------------------
 Méthode : EMail.send
 	
@@ -82,16 +73,15 @@ this.attachmentsPath_c -> Collection : Chemin des pièces jointes.
 	
 Historique
 11/11/20 - Grégory Fromain <gregory@connect-io.fr> - Reécriture du code du composant plume.
+29/05/21 - Rémy Scanu <remy@connect-io.fr> - Clean code
 -----------------------------------------------------------------------------*/
-	
-	// Déclaration
-	var $0 : Object  // Remonte les informations sur l'envoi d'e-mail 
-	
 	var $mailStatus_o : Object  // transporter, info sur mail et envoie de l'email
 	var $error_t : Text  // Info concernant les erreurs
 	var $cheminPj_v : Variant  // Chemin pièce jointe
 	
 	$mailStatus_o:=New object:C1471("success"; False:C215)
+	
+	ASSERT:C1129(This:C1470.transporter#Null:C1517; "Impossible d'utiliser la fonction send sans avoir initialisé un transporter")
 	
 	//On vérifie que l'on a bien notre transporter
 	If (This:C1470.transporter=Null:C1517)
@@ -169,43 +159,38 @@ Historique
 	End if 
 	
 	// Retourne les informations concernant l'envoie du mail
-	$0:=$mailStatus_o
+	$retour_o:=$mailStatus_o
 	
-Function sendModel
+Function sendModel($model_t : Text; $parametre_o : Object)->$retour_o : Object
 /* -----------------------------------------------------------------------------
 Méthode : EMail.sendModel
 	
-Envoi d'un e-mail depuis un modèle.
+Envoi d'un e-mail depuis un modèle du composant
 	
 Historique
 11/11/20 - Grégory Fromain <gregory@connect-io.fr> - Reécriture du code du composant plume.
+29/05/21 - Rémy Scanu <remy@connect-io.fr> - Clean code
 -----------------------------------------------------------------------------*/
-	
-	// Déclaration
-	var $1 : Text  // Var nom du modèle
-	var $2 : Object  // Var content
-	var $0 : Object  // retour sur le résultat de la fonction.
-	
 	var $error_t : Text  // Gestion des erreurs.
 	var $model_c : Collection  // Informations tableau JSON du modèle
 	var $model_o : Object  // Detail du modèle
 	var $returnVar_t : Text  // Retourne le texte si 3ème paramètre
 	var $mailStatus_o : Object  // Réponse de l'envoi du mail.
 	
-	ASSERT:C1129($1#""; "EMail.sendModel : le Param $1 est obligatoire (Nom du modèle.")
+	ASSERT:C1129($model_t#""; "EMail.sendModel : le Param $model_t est obligatoire (Nom du modèle)")
 	
 	$mailStatus_o:=New object:C1471("success"; False:C215)
 	
 	If (Count parameters:C259=2)
 		
-		For each ($propriete_t; $2)
-			This:C1470[$propriete_t]:=$2[$propriete_t]
+		For each ($propriete_t; $parametre_o)
+			This:C1470[$propriete_t]:=$parametre_o[$propriete_t]
 		End for each 
 		
 	End if 
 	
 	// Vérification fichier modèle
-	$model_c:=cwStorage.eMail.model.query("name IS :1"; $1)
+	$model_c:=cwStorage.eMail.model.query("name IS :1"; $model_t)
 	
 	// Retrouver les informations du modèle
 	If ($model_c.length=1)
@@ -221,7 +206,7 @@ Historique
 		End if 
 		
 	Else 
-		$error_t:="EMail.sendModel : Impossible de retrouver le modèle : "+$1
+		$error_t:="EMail.sendModel : Impossible de retrouver le modèle : "+$model_t
 	End if 
 	
 	If ($error_t="")
@@ -259,4 +244,4 @@ Historique
 	End if 
 	
 	// Retourne les informations concernant l'envoie du mail
-	$0:=$mailStatus_o
+	$retour_o:=$mailStatus_o

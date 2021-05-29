@@ -5,10 +5,8 @@ Méthode : cwWebAppStart
 Permet de faire l'éxécution de la partie WebApp du composant cioWeb
 
 Historique
-16/02/21 - Rémy Scanu remy@connect-io.fr> - Création
+16/02/21 - Rémy Scanu <remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
-
-// Déclarations
 var $0 : Object
 
 var $function_o : Object

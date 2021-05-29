@@ -1,21 +1,28 @@
 /* -----------------------------------------------------------------------------
 Class : cs.MAMailing
 
-Class de gestion du marketing automation pour un envoi de mailing
-
 -----------------------------------------------------------------------------*/
 
 Class constructor
 /*-----------------------------------------------------------------------------
 Fonction : MAMailing.constructor
 	
-Instanciation de la class MAMailing pour le marketing automotion
+Instanciation de la class pour permettre d'envoyer un mailing depuis le composant directement
 	
 Historique
 28/01/21 - RémyScanu remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
 	
 Function sendGetType()->$type_t : Text
+/* -----------------------------------------------------------------------------
+Fonction : MarketingAutomation.loadPasserelle
+	
+Permet à l'utilisateur de sélectionner le canal d'envoi du mailing
+	
+Historique
+29/01/21 - Rémy Scanu <remy@connect-io.fr> - Ajout entête
+-----------------------------------------------------------------------------*/
+	
 	// Choix du canal d'envoi
 	cwToolWindowsForm("selectValue"; "center"; New object:C1471("collection"; New collection:C1472(New object:C1471("type"; "Email"); New object:C1471("type"; "Courrier"); New object:C1471("type"; "SMS")); \
 		"property"; "type"; "selectSubTitle"; "Merci de sélectionner un type d'envoi"; "title"; "Choix du type de l'envoi :"))
@@ -23,11 +30,21 @@ Function sendGetType()->$type_t : Text
 	$type_t:=selectValue_t
 	
 Function sendGetConfig($type_t : Text)->$config_o : Object
+/* -----------------------------------------------------------------------------
+Fonction : MarketingAutomation.loadPasserelle
+	
+Permet à l'utilisateur de configurer son mailing suivant un type d'envoi
+	
+Historique
+29/01/21 - Rémy Scanu <remy@connect-io.fr> - Ajout entête
+-----------------------------------------------------------------------------*/
 	var $document_t : Text
 	var $eMail_o : Object
 	var $transporter_c : Collection
 	
 	ARRAY TEXT:C222($attachmentsFiles_at; 0)
+	
+	ASSERT:C1129($type_t#""; "MAMailing.sendGetConfig : le Param $type_t est obligatoire (type de l'envoi)")
 	
 	$config_o:=New object:C1471("success"; False:C215)
 	

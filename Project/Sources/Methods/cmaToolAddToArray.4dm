@@ -1,14 +1,12 @@
 //%attributes = {}
-// ----------------------------------------------------
-// Nom utilisateur (OS) : Rémy Scanu
-// Date et heure : 17/05/21, 15:21:17
-// ----------------------------------------------------
-// Méthode : cmaToolAddToArray
-// Description
-// 
-//
-// Paramètres
-// ----------------------------------------------------
+/* -----------------------------------------------------------------------------
+Méthode : cmaToolAddToArray
+
+Ajoute à un tableau les éléments mis en paramètre
+
+Historique
+29/05/21 - Rémy Scanu <remy@connect-io.fr> - Ajout entête
+-----------------------------------------------------------------------------*/
 var $1 : Pointer
 var ${2} : Variant
 

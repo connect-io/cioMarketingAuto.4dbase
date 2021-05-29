@@ -60,33 +60,41 @@ Historique
 		
 	End if 
 	
-Function createFolder
-	C_TEXT:C284($1)  // Chemin du dossier à créer
-	C_BOOLEAN:C305($0)
+Function createFolder($chemin_t : Text)->$isOk_b : Boolean
+/*-----------------------------------------------------------------------------
+Fonction : MAPersonne.createFolder
 	
-	C_OBJECT:C1216($dossier_o)
+Permet de créer un dossier si besoin
 	
-	$dossier_o:=Folder:C1567($1; fk chemin plateforme:K87:2)
+Historique
+27/05/21 - Rémy Scanu <remy@connect-io.fr> - Ajout entête
+-----------------------------------------------------------------------------*/
+	var $dossier_o : Object
 	
-	If ($dossier_o.exists=False:C215)  // Création du dossier du scénario
-		$0:=$dossier_o.create()
+	$dossier_o:=Folder:C1567($chemin_t; fk chemin plateforme:K87:2)
+	
+	If ($dossier_o.exists=False:C215)  // Création du dossier $chemin_t
+		$isOk_b:=$dossier_o.create()
 	Else 
-		$0:=True:C214
+		$isOk_b:=True:C214
 	End if 
 	
-	If ($0=False:C215)
-		ALERT:C41("Le dossier dont le chemin est « "+$1+" » n'a pas pu être créer !")
+	If ($isOk_b=False:C215)
+		ALERT:C41("Le dossier dont le chemin est « "+$chemin_t+" » n'a pas pu être créer !")
 	End if 
 	
 Function cronosAction($action_t : Text)
 /* -----------------------------------------------------------------------------
 Fonction : MarketingAutomation.cronosAction
 	
-Lancement d'une action dans cronos.
+Mise à jour de certaines propriétés de This suivant l'action mise en paramètre
+Va de paire avec la fonction cronosMessageDisplay
 	
 Historique
 26/01/21 - Grégory Fromain <gregory@connect-io.fr> - clean code
 -----------------------------------------------------------------------------*/
+	
+	ASSERT:C1129(This:C1470.cronosImage#Null:C1517; "Impossible d'utiliser la fonction cronosAction sans avoir lancer la fonction loadCronos avant")
 	
 	Case of 
 		: ($action_t="verifTache") | ($action_t="mailjetRecup") | ($action_t="gestionScenario")
@@ -106,7 +114,17 @@ Historique
 	End case 
 	
 Function cronosMessageDisplay
+/* -----------------------------------------------------------------------------
+Fonction : MarketingAutomation.cronosMessageDisplay
+	
+Lancement d'une action dans cronos.
+	
+Historique
+29/05/21 - Rémy Scanu <remy@connect-io.fr> - Ajout entête
+-----------------------------------------------------------------------------*/
 	var $ts_el : Integer
+	
+	ASSERT:C1129(This:C1470.cronosImage#Null:C1517; "Impossible d'utiliser la fonction cronosAction sans avoir lancer la fonction loadCronos avant")
 	
 	$ts_el:=cmaTimestamp(Current date:C33; Current time:C178)
 	
@@ -138,14 +156,24 @@ Function cronosMessageDisplay
 	End case 
 	
 Function cronosUpdateCaMarketing
-	C_LONGINT:C283($1)  // TS de début
-	C_LONGINT:C283($2)  // TS de fin
-	C_TEXT:C284(${3})  // Numéro chez mailjet de l'eventMessage à mettre à jour exemple : 3 -> Opened, 4 -> Clicked etc.
+/* -----------------------------------------------------------------------------
+Fonction : MarketingAutomation.cronosUpdateCaMarketing
 	
-	C_TEXT:C284($event_t)
-	C_LONGINT:C283($i_el)
-	C_OBJECT:C1216($mailjet_o; $mailjetDetail_o; $table_o; $class_o)
-	C_COLLECTION:C1488($mailjetDetail_c)
+Mise à jour depuis cronos des informations de la table [CaPersonneMarketing]
+	
+Historique
+29/05/21 - Rémy Scanu <remy@connect-io.fr> - Ajout entête
+-----------------------------------------------------------------------------*/
+	var $1 : Integer  // TS de début
+	var $2 : Integer  // TS de fin
+	var ${3} : Text  // Numéro chez mailjet de l'eventMessage à mettre à jour exemple : 3 -> Opened, 4 -> Clicked etc.
+	
+	var $event_t : Text
+	var $i_el : Integer
+	var $mailjet_o; $mailjetDetail_o; $table_o; $class_o : Object
+	var $mailjetDetail_c : Collection
+	
+	ASSERT:C1129(This:C1470.cronosImage#Null:C1517; "Impossible d'utiliser la fonction cronosAction sans avoir lancer la fonction loadCronos avant")
 	
 	// Instanciation de la class
 	$class_o:=cmaToolGetClass("MAPersonne").new()
@@ -174,10 +202,20 @@ Function cronosUpdateCaMarketing
 	End if 
 	
 Function cronosManageScenario
+/* -----------------------------------------------------------------------------
+Fonction : MarketingAutomation.cronosManageScenario
+	
+Gestion depuis la méthode formulaire "cronos" des scénarios des personnes
+	
+Historique
+29/01/21 - Rémy Scanu <remy@connect-io.fr> - Ajout entête
+-----------------------------------------------------------------------------*/
 	var $numOrdre_el : Integer
 	var $continue_b : Boolean
 	var $table_o; $enregistrement_o; $caScenarioEvent_o; $scene_o; $personne_o; $eMail_o; $config_o; $conditionAction_o; $scene_cs; $retour_o; $scenario_o : Object
 	var $collection_c : Collection
+	
+	ASSERT:C1129(This:C1470.cronosImage#Null:C1517; "Impossible d'utiliser la fonction cronosAction sans avoir lancer la fonction loadCronos avant")
 	
 	// On recherche toutes les personnes qui ont un scénario actif et dont le prochain check est dépassé
 	$table_o:=ds:C1482.CaPersonneScenario.query("actif = :1 AND tsProchainCheck <= :2"; True:C214; cmaTimestamp(Current date:C33; Current time:C178))
@@ -355,9 +393,20 @@ Function cronosManageScenario
 	End for each 
 	
 Function loadCronos
+/* -----------------------------------------------------------------------------
+Fonction : MarketingAutomation.loadCronos
+	
+Initialisation des propriétés de This nécessaire au bon fonctionnement de cronos
+Et lance le formulaire projet "cronos"
+	
+Historique
+29/01/21 - Rémy Scanu <remy@connect-io.fr> - Ajout entête
+-----------------------------------------------------------------------------*/
 	var $process_el : Integer
 	
-	If (This:C1470.loadImage("cronosSleep.png")=True:C214) & (This:C1470.loadImage("cronosWork.png")=True:C214)
+	ASSERT:C1129(This:C1470.image["cronosSleep"]#Null:C1517; "Impossible d'utiliser la fonction loadCronos sans avoir lancer la fonction loadImage avant")
+	
+	If (This:C1470.image["cronosSleep"]#Null:C1517) & (This:C1470.image["cronosWork"]#Null:C1517)
 		This:C1470.cronosImage:=This:C1470.image["cronosSleep"]
 		This:C1470.cronosMessage:="Démarrage en cours de Cronos (Marketing automation)"
 		This:C1470.cronosStop:=False:C215
@@ -372,23 +421,39 @@ Function loadCronos
 		$process_el:=New process:C317("cwCronosDisplay"; 0; "cronosMarketingAutomation"; This:C1470; *)
 	End if 
 	
-Function loadCurrentPeople
-	C_OBJECT:C1216($0)  // Toutes les entités en cours de la table [personne] du client
+Function loadCurrentPeople()->$entitySelection_o : Object
+/* -----------------------------------------------------------------------------
+Fonction : MarketingAutomation.loadCurrentPeople
 	
+Créer une entitySelection des enregistrements en cours de la table [personne] du client
+	
+Historique
+29/01/21 - Rémy Scanu <remy@connect-io.fr> - Ajout entête
+-----------------------------------------------------------------------------*/
 	var $formule_o : Object
 	
 	This:C1470.loadPasserelle("Personne")  // On change de passerelle de recherche
 	$formule_o:=New object:C1471("loadPeople"; Formula from string:C1601("Create entity selection:C1512(["+Storage:C1525.automation.passerelle.tableHote+"])"))
 	
-	$0:=$formule_o.loadPeople()
+	$entitySelection_o:=$formule_o.loadPeople()
 	
-Function loadImage()->$return_b : Boolean
+Function loadImage
+/* -----------------------------------------------------------------------------
+Fonction : MarketingAutomation.loadImage
+	
+Charge dans This, toutes les images mises dans le dossier /Resources/Images/ du composant
+	
+Historique
+29/01/21 - Rémy Scanu <remy@connect-io.fr> - Ajout entête
+-----------------------------------------------------------------------------*/
 	var ${1} : Text  // Nom de l'image
 	
 	var $fichier_o : 4D:C1709.File
 	var $dossier_o : 4D:C1709.Folder
 	var $blob_b : Blob
 	var $image_i : Picture
+	
+	ASSERT:C1129(Storage:C1525.automation#Null:C1517; "Impossible d'utiliser la fonction loadImage sans avoir fait une initialisation complète de la class MarketingAutomation")
 	
 	If (This:C1470.image=Null:C1517)
 		This:C1470.image:=New object:C1471()
@@ -404,31 +469,37 @@ Function loadImage()->$return_b : Boolean
 		This:C1470.image[$fichier_o.name]:=$image_i
 	End for each 
 	
-	$return_b:=True:C214
+Function loadPasserelle($passerelle_t : Text)->$marketingAutomation_o : Object
+/* -----------------------------------------------------------------------------
+Fonction : MarketingAutomation.loadPasserelle
 	
-Function loadPasserelle
-	C_TEXT:C284($1)  // Personne OU Telecom
-	C_OBJECT:C1216($0)
+Change suivant le besoin de passerelle "Personne OU Telecom" (voir fichier de config du composant)
+	
+Historique
+29/01/21 - Rémy Scanu <remy@connect-io.fr> - Ajout entête
+-----------------------------------------------------------------------------*/
+	
+	ASSERT:C1129(Storage:C1525.automation#Null:C1517; "Impossible d'utiliser la fonction loadPasserelle sans avoir fait une initialisation complète de la class MarketingAutomation")
 	
 	Use (Storage:C1525.automation)
-		Storage:C1525.automation.passerelle:=Storage:C1525.automation.config.passerelle.query("tableComposant = :1"; $1)[0]
-		Storage:C1525.automation.formule:=New shared object:C1526("getFieldName"; Formula:C1597($1.query("lib = :1"; $2)[0].personAccess))  // $1 contient le nom de la collection dans le fichier config où la recherche doit s'effectuer et $2 doit être la valeur du champ recherché
+		Storage:C1525.automation.passerelle:=Storage:C1525.automation.config.passerelle.query("tableComposant = :1"; $passerelle_t)[0]
+		Storage:C1525.automation.formule:=New shared object:C1526("getFieldName"; Formula:C1597($passerelle_t.query("lib = :1"; $2)[0].personAccess))  // $passerelle_t contient le nom de la collection dans le fichier config où la recherche doit s'effectuer et $2 doit être la valeur du champ recherché
 	End use 
 	
-	$0:=New object:C1471()
-	$0.passerelle:=Storage:C1525.automation.passerelle
-	$0.formule:=Storage:C1525.automation.formule
+	$marketingAutomation_o:=New object:C1471("passerelle"; Storage:C1525.automation.passerelle; "formule"; Storage:C1525.automation.formule)
 	
 Function loadSceneConditionActionList
 /* -----------------------------------------------------------------------------
 Fonction : MarketingAutomation.loadSceneConditionActionList
 	
-Permet de charger la liste des conditions d'actions sélectionnable pour une scène
+Permet de charger dans le Storage du composant la liste des conditions d'actions sélectionnable pour une scène
 	
 Historique
 17/05/21 - Rémy Scanu <remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
 	var $fichierConfig_o : Object
+	
+	ASSERT:C1129(Storage:C1525.automation#Null:C1517; "Impossible d'utiliser la fonction loadSceneConditionActionList sans avoir fait une initialisation complète de la class MarketingAutomation")
 	
 	$fichierConfig_o:=File:C1566(Get 4D folder:C485(Dossier Resources courant:K5:16; *)+"cioMarketingAutomation"+Séparateur dossier:K24:12+"scene"+Séparateur dossier:K24:12+"conditionAction.json"; fk chemin plateforme:K87:2)
 	
@@ -444,12 +515,14 @@ Function loadSceneConditionSautList
 /* -----------------------------------------------------------------------------
 Fonction : MarketingAutomation.loadSceneConditionSautList
 	
-Permet de charger la liste des conditions d'actions sélectionnable pour une scène
+Permet de charger dans le Storage du composant la liste des conditions d'actions sélectionnable pour une scène
 	
 Historique
 25/05/21 - Rémy Scanu <remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
 	var $fichierConfig_o : Object
+	
+	ASSERT:C1129(Storage:C1525.automation#Null:C1517; "Impossible d'utiliser la fonction loadSceneConditionSautList sans avoir fait une initialisation complète de la class MarketingAutomation")
 	
 	$fichierConfig_o:=File:C1566(Get 4D folder:C485(Dossier Resources courant:K5:16; *)+"cioMarketingAutomation"+Séparateur dossier:K24:12+"scene"+Séparateur dossier:K24:12+"conditionSaut.json"; fk chemin plateforme:K87:2)
 	

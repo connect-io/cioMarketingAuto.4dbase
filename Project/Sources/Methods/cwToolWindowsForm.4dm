@@ -1,22 +1,16 @@
 //%attributes = {"shared":true}
-// ----------------------------------------------------
-// Nom utilisateur (OS) : Scanu Rémy
-// Date et heure : 31/03/20, 18:24:39
-// ----------------------------------------------------
-// Méthode : caCreateWindowsFormCenter
-// Description
-// 
-//
-// Paramètres
-// $1 = Nom du formulaire
-// $2 = Espace en pixel entre le haut/bas de l'écran et le formulaire [numérique ou objet]
-// $3 = Entity Selection [optionnel]
-// $4 = Pointeur de la Table [optionnel]
-// ----------------------------------------------------
-var $1 : Text
-var $2 : Variant
-var $3 : Object
-var $4 : Pointer
+/* -----------------------------------------------------------------------------
+Méthode : caCreateWindowsFormCenter
+
+Méthode qui permet de centrer un formulaire
+
+Historique
+31/03/20 - Rémy Scanu <remy@connect-io.fr> - Création
+-----------------------------------------------------------------------------*/
+var $1 : Text  // $1 = Nom du formulaire
+var $2 : Variant  // $2 = Espace en pixel entre le haut/bas de l'écran et le formulaire [numérique ou objet ou texte]
+var $3 : Object  // $3 = Entity Selection [optionnel]
+var $4 : Pointer  // $4 = Pointeur de la Table [optionnel]
 
 var $hauteur_el; $largeur_el; $menu_el; $largeurForm_el; $hauteurForm_el; $moitie_el; $refFen_el : Integer
 

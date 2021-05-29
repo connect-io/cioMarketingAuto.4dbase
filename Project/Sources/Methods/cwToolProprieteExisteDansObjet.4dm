@@ -1,27 +1,23 @@
 //%attributes = {"preemptive":"capable"}
-// ======================================================================
-// Methode projet : cwToolProprieteExisteDansObjet
-// 
-// Méthode qui permet de vérifier l'existence d'une ou plusieurs propriétés dans un objet
-// ----------------------------------------------------------------------
+/* -----------------------------------------------------------------------------
+Méthode : cwToolProprieteExisteDansObjet
 
-If (False:C215)  // Historique
-	// 14/05/20 remy@connect-io.fr - Création
-	// 20/05/20 remy@connect-io.fr - Passage du second paramètre en collection
-	// 20/05/20 remy@connect-io.fr - Ajout de la possibilité d'extraire toutes les propriétés au lieu de la première occurence
-	// 02/06/20 remy@connect-io.fr - Correction bug cas où on souhaite toutes les occurences
-End if 
+Méthode qui permet de vérifier l'existence d'une ou plusieurs propriétés dans un objet
 
-If (True:C214)  // Déclarations
-	C_OBJECT:C1216($0)  // Objet qui contient les propriétés avec la mention Vrai ou Faux pour chacun si celui-ci est 
-	C_OBJECT:C1216($1)  // Objet qui sert de contrôle
-	C_COLLECTION:C1488($2)  // Collection qui contient les propriétés à vérifier
-	C_LONGINT:C283($3)  // Entier long qui contient le nombre d'occurence qu'on souhaite extraire [optionnel]
-	
-	C_TEXT:C284($variable_t)
-	C_BOOLEAN:C305($proprieteTrouver_b)
-	C_LONGINT:C283($i_el; $compteur_el)
-End if 
+Historique
+14/05/20 - Rémy Scanu <remy@connect-io.fr> - Création
+20/05/20 - Rémy Scanu <remy@connect-io.fr> - Passage du second paramètre en collection
+20/05/20 - Rémy Scanu <remy@connect-io.fr> - Ajout de la possibilité d'extraire toutes les propriétés au lieu de la première occurence
+02/06/20 - Rémy Scanu <remy@connect-io.fr> - Correction bug cas où on souhaite toutes les occurences
+-----------------------------------------------------------------------------*/
+var $0 : Object  // Objet qui contient les propriétés avec la mention Vrai ou Faux pour chacun si celui-ci est 
+var $1 : Object  // Objet qui sert de contrôle
+var $2 : Collection  // Collection qui contient les propriétés à vérifier
+var $3 : Integer  // Entier long qui contient le nombre d'occurence qu'on souhaite extraire [optionnel]
+
+var $variable_t : Text
+var $i_el; $compteur_el : Integer
+var $proprieteTrouver_b : Boolean
 
 $0:=New object:C1471()
 

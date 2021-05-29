@@ -5,7 +5,7 @@ Méthode : cmaToolResizeWindows
 Effectue le redimensionnement d'une fenêtre
 
 Historique
-12/05/21 - Rémy Scanu remy@connect-io.fr> - Création
+12/05/21 - Rémy Scanu <remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
 var $1 : Integer  // Ref fenêtre à redimensionner
 var $2 : Integer

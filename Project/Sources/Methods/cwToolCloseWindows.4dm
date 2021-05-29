@@ -1,12 +1,10 @@
 //%attributes = {"shared":true}
-  // ----------------------------------------------------
-  // Nom utilisateur (OS) : Scanu Rémy
-  // Date et heure : 15/07/20, 16:39:11
-  // ----------------------------------------------------
-  // Méthode : caCloseWindows
-  // Description
-  // A la fermerture d'une fenêtre
-  //
-  // Paramètres
-  // ----------------------------------------------------
+/* -----------------------------------------------------------------------------
+Méthode : caCloseWindows
+
+A la fermerture d'une fenêtre
+
+Historique
+5/07/20 - Rémy Scanu <remy@connect-io.fr> - Création
+-----------------------------------------------------------------------------*/
 CANCEL:C270

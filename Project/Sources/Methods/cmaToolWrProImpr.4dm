@@ -5,7 +5,7 @@ Méthode : cmaToolWrProImpr
 Permet d'effectuer des impressions papier depuis le composant cioMarketingAuto
 
 Historique
-21/05/21 - Rémy Scanu remy@connect-io.fr> - Création
+21/05/21 - Rémy Scanu <remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
 var $1 : Boolean  // Paramètre impression
 var $2 : Text  // Type d'impression demandé
@@ -30,8 +30,6 @@ End if
 If ($continue_b=True:C214)
 	OPEN PRINTING JOB:C995
 	
-	// Modifié par : Scanu Rémy (05/12/2019)
-	// Il faut que je procède différement pour l'impression d'un mailing destiné à plusieurs personnes par courier
 	Case of 
 		: ($2="flydocSilent")
 			WP SET TEXT:C1574($4; $3; wk prepend:K81:178)  //On insere notre tagLine dans notre lettre en début de lettre

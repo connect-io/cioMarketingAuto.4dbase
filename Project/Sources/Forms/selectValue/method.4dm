@@ -1,5 +1,5 @@
 If (Form event code:C388=Sur chargement:K2:1)
-	C_TEXT:C284(selectValue_t)
+	var selectValue_t : Text
 	
 	ARRAY TEXT:C222(selectList_at; 0)
 	

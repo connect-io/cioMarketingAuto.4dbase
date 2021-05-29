@@ -180,7 +180,7 @@ Fonction : MAPersonne.loadPersonDetailForm
 Permet de charger le formulaire détail dans la liste de la table [Personne]
 	
 Historique
-01/02/21 - Rémy Scanu remy@connect-io.fr> - Création
+01/02/21 - Rémy Scanu <remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
 	cwToolWindowsForm("detailPersonne"; "center"; This:C1470)
 	
@@ -191,7 +191,7 @@ Fonction : MAPersonne.mailjetIsPossible
 Permet de savoir si on peut envoi un email à This.personne
 	
 Historique
-12/05/21 - Rémy Scanu remy@connect-io.fr> - Ajout entête
+12/05/21 - Rémy Scanu <remy@connect-io.fr> -  Création
 -----------------------------------------------------------------------------*/
 	var $caPersonneMarketing_o : Object
 	

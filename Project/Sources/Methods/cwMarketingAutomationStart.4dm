@@ -5,10 +5,8 @@ Méthode : cwMarketingAutomationStart
 Permet de faire l'éxécution de la partie marketingAutomation du composant cioWeb
 
 Historique
-16/02/21 - Rémy Scanu remy@connect-io.fr> - Création
+16/02/21 - Rémy Scanu <remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
-
-// Déclarations
 var $0 : Object
 var $1 : Boolean
 
