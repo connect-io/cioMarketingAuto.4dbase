@@ -483,7 +483,7 @@ Historique
 	
 	Use (Storage:C1525.automation)
 		Storage:C1525.automation.passerelle:=Storage:C1525.automation.config.passerelle.query("tableComposant = :1"; $passerelle_t)[0]
-		Storage:C1525.automation.formule:=New shared object:C1526("getFieldName"; Formula:C1597($passerelle_t.query("lib = :1"; $2)[0].personAccess))  // $passerelle_t contient le nom de la collection dans le fichier config où la recherche doit s'effectuer et $2 doit être la valeur du champ recherché
+		Storage:C1525.automation.formule:=New shared object:C1526("getFieldName"; Formula:C1597($1.query("lib = :1"; $2)[0].personAccess))  // $passerelle_t contient le nom de la collection dans le fichier config où la recherche doit s'effectuer et $2 doit être la valeur du champ recherché
 	End use 
 	
 	$marketingAutomation_o:=New object:C1471("passerelle"; Storage:C1525.automation.passerelle; "formule"; Storage:C1525.automation.formule)
