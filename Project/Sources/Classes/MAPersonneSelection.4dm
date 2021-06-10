@@ -287,7 +287,6 @@ Historique
 	This:C1470.personneCollection:=Formula from string:C1601("This.personneSelection.toCollection().extract("+$fieldExtract_t+")").call(This:C1470)
 	
 	If ($extractFieldChild=True:C214)
-		
 		cmaProgressBar(0; "Initialisation"; True:C214)
 		
 		For each ($childElement_o; $collection_c)

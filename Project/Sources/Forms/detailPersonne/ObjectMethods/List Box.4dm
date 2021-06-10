@@ -6,7 +6,8 @@ If (Form event code:C388=Sur clic:K2:4) & (Form:C1466.ScenarioEnCoursCurrentElem
 	$class_o:=cmaToolGetClass("MAScenario").new()
 	$class_o.loadByPrimaryKey(Form:C1466.scenarioSelected.ID)
 	
-	$class_o.updateStringScenarioForm(1)
+	// Modifié par : Rémy Scanu (08/06/2021)
+	$class_o.updateStringScenarioForm(3)
 	
 	Form:C1466.scenarioPersonneEnCours:=$class_o.scenarioPersonneEnCours
 	

@@ -23,13 +23,24 @@ Historique
 Function newScenario
 	var $0 : Boolean
 	
-	var $caScenario_o; $retour_o : Object
+	var $caScenario_o; $retour_o; $class_o : Object
 	
 	$caScenario_o:=ds:C1482.CaScenario.new()
 	
 	$caScenario_o.nom:="Nouveau scénario"
 	$caScenario_o.actif:=True:C214
-	$caScenario_o.condition:=New object:C1471("ageMinimum"; 18; "ageMaximum"; 99; "rang"; 0; "dateDebutMailClique"; !00-00-00!; "dateFinMailClique"; !00-00-00!; "dateDebutMailOuvert"; !00-00-00!; "dateFinMailOuvert"; !00-00-00!)
+	
+	// Modifié par : Rémy Scanu (08/06/2021)
+	If (This:C1470.personneSelection#Null:C1517)
+		$class_o:=cmaToolGetClass("MAPersonneSelection").new()
+		$class_o.personneSelection:=This:C1470.personneSelection
+		
+		$class_o.toCollectionAndExtractField(New collection:C1472("UID"))
+		
+		$caScenario_o.condition:=New object:C1471("UIDCollection"; $class_o.personneCollection.extract("UID"))
+	Else 
+		$caScenario_o.condition:=New object:C1471("ageMinimum"; 18; "ageMaximum"; 99; "rang"; 0; "dateDebutMailClique"; !00-00-00!; "dateFinMailClique"; !00-00-00!; "dateDebutMailOuvert"; !00-00-00!; "dateFinMailOuvert"; !00-00-00!)
+	End if 
 	
 	$retour_o:=$caScenario_o.save()
 	
@@ -83,13 +94,13 @@ Function searchPersonToScenario
 	$personneAEnlever_o:=ds:C1482[Storage:C1525.automation.passerelle.tableHote].newSelection()
 	
 	Case of 
-		: ($1=1) | ($1=2)  // Gestion du scénario OU Après application d'un scénario à des personnes
+		: ($1=1) | ($1=2) | ($1=3)  // Gestion du scénario OU Après application d'un scénario à des personnes
 			
 			If (This:C1470.scenarioDetail#Null:C1517)
 				$condition_o:=This:C1470.scenarioDetail.condition
 				
 				If ($1=2)  // Application d'un scénario à des personnes
-					// On est obligé de sauver le scénartio sinon on n'aura pas les nouveaux enregistrements de la table [CaPersonneScenario]
+					// On est obligé de sauver le scénario sinon on n'aura pas les nouveaux enregistrements de la table [CaPersonneScenario]
 					This:C1470.scenarioDetail.save()
 					
 					$statut_o:=This:C1470.scenarioDetail.reload()
@@ -106,127 +117,139 @@ Function searchPersonToScenario
 	End case 
 	
 	If ($condition_o#Null:C1517)
-		$cleValeur_c:=OB Entries:C1720($condition_o)
 		
-		For each ($cleValeur_o; $cleValeur_c)
+		// Modifié par : Rémy Scanu (08/06/2021)
+		If ($1=2)  // Lors de l'application d'un scénario à une sélection de personne il faut que je rebascule sur l'entrée "Unicis"
+			$1:=3
+		End if 
+		
+		// Modifié par : Rémy Scanu (08/06/2021)
+		If ($1=3)
+			$personne_o:=ds:C1482[Storage:C1525.automation.passerelle.tableHote].query(Storage:C1525.automation.formule.getFieldName(Storage:C1525.automation.passerelle.champ; "UID")+" in :1"; $condition_o.UIDCollection)
+		Else 
+			$cleValeur_c:=OB Entries:C1720($condition_o)
 			
-			Case of 
-				: ($cleValeur_o.key="ageMinimum")
-					$lib_t:=Storage:C1525.automation.formule.getFieldName(Storage:C1525.automation.passerelle.champ; "dateNaissance")
-					
-					$table_o:=ds:C1482[Storage:C1525.automation.passerelle.tableHote].query($lib_t+" <= :1"; cwToolNumToDate($cleValeur_o.value; "year"; "less"))
-					
-					$personne_o:=$personne_o.and($table_o)  // Première propriété de ma collection d'objet $cleValeur_c
-				: ($cleValeur_o.key="ageMaximum")
-					$lib_t:=Storage:C1525.automation.formule.getFieldName(Storage:C1525.automation.passerelle.champ; "dateNaissance")
-					
-					$table_o:=ds:C1482[Storage:C1525.automation.passerelle.tableHote].query($lib_t+" >= :1"; cwToolNumToDate($cleValeur_o.value; "year"; "less"))
-					
-					$personne_o:=$personne_o.and($table_o)
-				: ($cleValeur_o.key="dateDebutMailClique")
-					
-					If ($cleValeur_o.value#!00-00-00!)
-						$ts_el:=cmaTimestamp($cleValeur_o.value; ?00:00:00?)
+			For each ($cleValeur_o; $cleValeur_c)
+				
+				Case of 
+					: ($cleValeur_o.key="ageMinimum")
+						$lib_t:=Storage:C1525.automation.formule.getFieldName(Storage:C1525.automation.passerelle.champ; "dateNaissance")
 						
-						$table_o:=ds:C1482.CaPersonneMarketing.query("lastClicked # :1 AND lastClicked >= :2"; 0; $ts_el).OnePersonne
+						$table_o:=ds:C1482[Storage:C1525.automation.passerelle.tableHote].query($lib_t+" <= :1"; cwToolNumToDate($cleValeur_o.value; "year"; "less"))
+						
+						$personne_o:=$personne_o.and($table_o)  // Première propriété de ma collection d'objet $cleValeur_c
+					: ($cleValeur_o.key="ageMaximum")
+						$lib_t:=Storage:C1525.automation.formule.getFieldName(Storage:C1525.automation.passerelle.champ; "dateNaissance")
+						
+						$table_o:=ds:C1482[Storage:C1525.automation.passerelle.tableHote].query($lib_t+" >= :1"; cwToolNumToDate($cleValeur_o.value; "year"; "less"))
 						
 						$personne_o:=$personne_o.and($table_o)
-					End if 
-					
-				: ($cleValeur_o.key="dateFinMailClique")
-					
-					If ($cleValeur_o.value#!00-00-00!)
-						$ts_el:=cmaTimestamp($cleValeur_o.value; ?23:59:59?)
+					: ($cleValeur_o.key="dateDebutMailClique")
 						
-						$table_o:=ds:C1482.CaPersonneMarketing.query("lastClicked # :1 AND lastClicked <= :2"; 0; $ts_el).OnePersonne
-						
-						$personne_o:=$personne_o.and($table_o)
-					End if 
-					
-				: ($cleValeur_o.key="dateDebutMailOuvert")
-					
-					If ($cleValeur_o.value#!00-00-00!)
-						$ts_el:=cmaTimestamp($cleValeur_o.value; ?00:00:00?)
-						
-						$table_o:=ds:C1482.CaPersonneMarketing.query("lastOpened # :1 AND lastOpened >= :2"; 0; $ts_el).OnePersonne
-						
-						$personne_o:=$personne_o.and($table_o)
-					End if 
-					
-				: ($cleValeur_o.key="dateFinMailOuvert")
-					
-					If ($cleValeur_o.value#!00-00-00!)
-						$ts_el:=cmaTimestamp($cleValeur_o.value; ?23:59:59?)
-						
-						$table_o:=ds:C1482.CaPersonneMarketing.query("lastOpened # :1 AND lastOpened <= :2"; 0; $ts_el).OnePersonne
-						
-						$personne_o:=$personne_o.and($table_o)
-					End if 
-					
-				: ($cleValeur_o.key="email")
-					// Instanciation de la class
-					$class_o:=cmaToolGetClass("MAPersonneSelection").new()
-					$class_o.loadByField("eMail"; "#"; "")
-					
-					// Modifié par : Rémy Scanu (10/05/2021)
-					If (This:C1470.personneSelection#Null:C1517)
-						$class_o.personneSelection:=This:C1470.personneSelection.and($class_o.personneSelection)
-					End if 
-					
-					If ($class_o.personneSelection.length>0)  // Des personnes de ma sélection ont bien un email
-						
-						If ($cleValeur_o.value=True:C214)  // Si dans les conditions, l'utisateur souhaite uniquement les personnes avec un email
-							$personne_o:=$personne_o.and($class_o.personneSelection)
-						Else 
-							$personne_o:=$personne_o.minus($class_o.personneSelection)
-						End if 
-						
-					Else 
-						
-						If ($cleValeur_o.value=True:C214)  // Si dans les conditions, l'utisateur souhaite uniquement les personnes avec un email
-							$personne_o:=ds:C1482[Storage:C1525.automation.passerelle.tableHote].newSelection()
-						End if 
-						
-					End if 
-					
-				: ($cleValeur_o.key="rang")
-					
-					If ($cleValeur_o.value#0)
-						$table_o:=ds:C1482.CaPersonneMarketing.query("rang = :1"; $cleValeur_o.value).OnePersonne
-						
-						$personne_o:=$personne_o.and($table_o)
-					End if 
-					
-				: ($cleValeur_o.key="sexe")
-					$lib_t:=Storage:C1525.automation.formule.getFieldName(Storage:C1525.automation.passerelle.champ; "sexe")
-					
-					$table_o:=ds:C1482[Storage:C1525.automation.passerelle.tableHote].query($lib_t+" = :1"; $cleValeur_o.value)
-					
-					$personne_o:=$personne_o.and($table_o)
-				: ($cleValeur_o.key="desabonnement")
-					
-					If ($cleValeur_o.value#Null:C1517)  // Si dans les conditions, l'utisateur souhaite ajouter un critère par rapport au statut de désabonnement
-						$table_o:=ds:C1482.CaPersonneMarketing.query("desabonementMail = :1"; $cleValeur_o.value).OnePersonne
-						
-						$personne_o:=$personne_o.and($table_o)
-					End if 
-					
-				: ($cleValeur_o.key="sansScenario")
-					
-					If ($cleValeur_o.value#Null:C1517)  // Si dans les conditions, l'utisateur souhaite ajouter un critère lié à la précense d'un scénario
-						$table_o:=ds:C1482.CaPersonneScenario.all().OnePersonne
-						
-						If ($cleValeur_o.value=True:C214)  // Si l'utilisateur souhaite uniquement celle qui n'ont pas de scénario en cours
-							$personne_o:=$personne_o.minus($table_o)
-						Else 
+						If ($cleValeur_o.value#!00-00-00!)
+							$ts_el:=cmaTimestamp($cleValeur_o.value; ?00:00:00?)
+							
+							$table_o:=ds:C1482.CaPersonneMarketing.query("lastClicked # :1 AND lastClicked >= :2"; 0; $ts_el).OnePersonne
+							
 							$personne_o:=$personne_o.and($table_o)
 						End if 
 						
-					End if 
-					
-			End case 
+					: ($cleValeur_o.key="dateFinMailClique")
+						
+						If ($cleValeur_o.value#!00-00-00!)
+							$ts_el:=cmaTimestamp($cleValeur_o.value; ?23:59:59?)
+							
+							$table_o:=ds:C1482.CaPersonneMarketing.query("lastClicked # :1 AND lastClicked <= :2"; 0; $ts_el).OnePersonne
+							
+							$personne_o:=$personne_o.and($table_o)
+						End if 
+						
+					: ($cleValeur_o.key="dateDebutMailOuvert")
+						
+						If ($cleValeur_o.value#!00-00-00!)
+							$ts_el:=cmaTimestamp($cleValeur_o.value; ?00:00:00?)
+							
+							$table_o:=ds:C1482.CaPersonneMarketing.query("lastOpened # :1 AND lastOpened >= :2"; 0; $ts_el).OnePersonne
+							
+							$personne_o:=$personne_o.and($table_o)
+						End if 
+						
+					: ($cleValeur_o.key="dateFinMailOuvert")
+						
+						If ($cleValeur_o.value#!00-00-00!)
+							$ts_el:=cmaTimestamp($cleValeur_o.value; ?23:59:59?)
+							
+							$table_o:=ds:C1482.CaPersonneMarketing.query("lastOpened # :1 AND lastOpened <= :2"; 0; $ts_el).OnePersonne
+							
+							$personne_o:=$personne_o.and($table_o)
+						End if 
+						
+					: ($cleValeur_o.key="email")
+						// Instanciation de la class
+						$class_o:=cmaToolGetClass("MAPersonneSelection").new()
+						$class_o.loadByField("eMail"; "#"; "")
+						
+						// Modifié par : Rémy Scanu (10/05/2021)
+						If (This:C1470.personneSelection#Null:C1517)
+							$class_o.personneSelection:=This:C1470.personneSelection.and($class_o.personneSelection)
+						End if 
+						
+						If ($class_o.personneSelection.length>0)  // Des personnes de ma sélection ont bien un email
+							
+							If ($cleValeur_o.value=True:C214)  // Si dans les conditions, l'utisateur souhaite uniquement les personnes avec un email
+								$personne_o:=$personne_o.and($class_o.personneSelection)
+							Else 
+								$personne_o:=$personne_o.minus($class_o.personneSelection)
+							End if 
+							
+						Else 
+							
+							If ($cleValeur_o.value=True:C214)  // Si dans les conditions, l'utisateur souhaite uniquement les personnes avec un email
+								$personne_o:=ds:C1482[Storage:C1525.automation.passerelle.tableHote].newSelection()
+							End if 
+							
+						End if 
+						
+					: ($cleValeur_o.key="rang")
+						
+						If ($cleValeur_o.value#0)
+							$table_o:=ds:C1482.CaPersonneMarketing.query("rang = :1"; $cleValeur_o.value).OnePersonne
+							
+							$personne_o:=$personne_o.and($table_o)
+						End if 
+						
+					: ($cleValeur_o.key="sexe")
+						$lib_t:=Storage:C1525.automation.formule.getFieldName(Storage:C1525.automation.passerelle.champ; "sexe")
+						
+						$table_o:=ds:C1482[Storage:C1525.automation.passerelle.tableHote].query($lib_t+" = :1"; $cleValeur_o.value)
+						
+						$personne_o:=$personne_o.and($table_o)
+					: ($cleValeur_o.key="desabonnement")
+						
+						If ($cleValeur_o.value#Null:C1517)  // Si dans les conditions, l'utisateur souhaite ajouter un critère par rapport au statut de désabonnement
+							$table_o:=ds:C1482.CaPersonneMarketing.query("desabonementMail = :1"; $cleValeur_o.value).OnePersonne
+							
+							$personne_o:=$personne_o.and($table_o)
+						End if 
+						
+					: ($cleValeur_o.key="sansScenario")
+						
+						If ($cleValeur_o.value#Null:C1517)  // Si dans les conditions, l'utisateur souhaite ajouter un critère lié à la précense d'un scénario
+							$table_o:=ds:C1482.CaPersonneScenario.all().OnePersonne
+							
+							If ($cleValeur_o.value=True:C214)  // Si l'utilisateur souhaite uniquement celle qui n'ont pas de scénario en cours
+								$personne_o:=$personne_o.minus($table_o)
+							Else 
+								$personne_o:=$personne_o.and($table_o)
+							End if 
+							
+						End if 
+						
+				End case 
+				
+			End for each 
 			
-		End for each 
+		End if 
 		
 	End if 
 	
@@ -265,11 +288,11 @@ Function applyScenarioToPerson
 	End if 
 	
 Function deleteScenarioToPerson
-	C_VARIANT:C1683($1)  // UID Personne
-	C_TEXT:C284($2)  // UID Scenario
-	C_BOOLEAN:C305($0)
+	var $1 : Variant  // UID Personne
+	var $2 : Text  // UID Scenario
+	var $0 : Boolean
 	
-	C_OBJECT:C1216($table_o; $statut_o)
+	var $table_o; $statut_o : Object
 	
 	$table_o:=ds:C1482.CaPersonneScenario.query("personneID is :1 AND scenarioID is :2"; $1; $2)
 	
@@ -334,19 +357,23 @@ Function loadImageScenarioCondition
 	End if 
 	
 Function updateStringScenarioForm
-	C_LONGINT:C283($1)  // Entier long qui indique l'endroit d'où est exécuté la fonction
+	var $1 : Integer  // Entier long qui indique l'endroit d'où est exécuté la fonction
 	
+	// Modifié par : Rémy Scanu (08/06/2021)
 	Case of 
 		: ($1=1)  // Gestion du scénario
 			This:C1470.searchPersonToScenario(1)
 		: ($1=2)  // Application scénario à une sélection de personne
 			This:C1470.searchPersonToScenario(2)
+		: ($1=3)  // Gestion du scénario (Unicis Version)
+			This:C1470.searchPersonToScenario(3)
 	End case 
 	
-	If ($1=1) | ($1=2)
+	// Modifié par : Rémy Scanu (08/06/2021)
+	If ($1=1) | ($1=2) | ($1=3)
 		This:C1470.scenarioPersonnePossible:="Applicable à "+String:C10(This:C1470.scenarioPersonnePossibleEntity.length)+" personne(s)."
 		
-		If (This:C1470.scenarioSelectionPossiblePersonne#Null:C1517) & ($1=1)
+		If (This:C1470.scenarioSelectionPossiblePersonne#Null:C1517) & (($1=1) | ($1=3))
 			This:C1470.scenarioPersonnePossible:=This:C1470.scenarioPersonnePossible+Char:C90(Retour chariot:K15:38)+String:C10(This:C1470.scenarioSelectionPossiblePersonne.length)+" personne(s) sélectionnée(s)."
 		Else 
 			This:C1470.scenarioPersonnePossible:=This:C1470.scenarioPersonnePossible+Char:C90(Retour chariot:K15:38)+"0 personne sélectionnée."

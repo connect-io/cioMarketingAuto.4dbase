@@ -235,18 +235,10 @@
 					"width": 140,
 					"height": 16
 				},
-				"Texte7": {
-					"type": "text",
-					"text": "Objectif",
-					"top": 152,
-					"left": 223,
-					"width": 195,
-					"height": 16
-				},
 				"scenarioDetailDescription": {
 					"type": "input",
 					"left": 223,
-					"top": 240,
+					"top": 175,
 					"width": 195,
 					"height": 129,
 					"contextMenu": "automatic",
@@ -256,7 +248,7 @@
 				"Texte8": {
 					"type": "text",
 					"text": "Description",
-					"top": 217,
+					"top": 152,
 					"left": 223,
 					"width": 195,
 					"height": 16
@@ -285,7 +277,7 @@
 				"Texte10": {
 					"type": "text",
 					"text": "Condition",
-					"top": 384,
+					"top": 319,
 					"left": 223,
 					"width": 195,
 					"height": 16
@@ -293,7 +285,7 @@
 				"scenarioDetailCondition": {
 					"type": "button",
 					"text": "Définir les conditions",
-					"top": 407,
+					"top": 342,
 					"left": 223,
 					"width": 195,
 					"height": 25,
@@ -484,7 +476,7 @@
 				"Texte5": {
 					"type": "text",
 					"text": "Configuration",
-					"top": 442,
+					"top": 377,
 					"left": 223,
 					"width": 195,
 					"height": 16,
@@ -493,7 +485,7 @@
 				"scenarioDetailDecor": {
 					"type": "button",
 					"text": "Définir la configuration",
-					"top": 465,
+					"top": 400,
 					"left": 223,
 					"width": 195,
 					"height": 25,
@@ -601,25 +593,6 @@
 					"loopBackToFirstFrame": true,
 					"switchBackWhenReleased": true,
 					"useLastFrameAsDisabled": true
-				},
-				"scenarioDetailObjectif": {
-					"type": "ruler",
-					"left": 223,
-					"top": 172,
-					"width": 195,
-					"height": 28,
-					"max": 5,
-					"events": [
-						"onDataChange"
-					],
-					"min": 0,
-					"dataSource": "Form:C1466.scenarioDetail.objectif",
-					"labelsPlacement": "bottom",
-					"showGraduations": true,
-					"graduationStep": 1,
-					"tooltip": {
-						"$ref": "/SOURCES/tips.json#/Aide pour rang"
-					}
 				},
 				"Texte15": {
 					"type": "text",
@@ -773,7 +746,7 @@
 			}
 		}
 	],
-	"geometryStamp": 768,
+	"geometryStamp": 781,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",

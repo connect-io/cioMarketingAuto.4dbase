@@ -7,5 +7,6 @@ cwToolWindowsForm("gestionPersonne"; "center"; $config_o)
 If (OK=1)
 	Form:C1466.scenarioSelectionPossiblePersonne:=entitySelection_o
 	
-	Form:C1466.updateStringScenarioForm(1)
+	// Modifié par : Rémy Scanu (08/06/2021)
+	Form:C1466.updateStringScenarioForm(3)
 End if 
