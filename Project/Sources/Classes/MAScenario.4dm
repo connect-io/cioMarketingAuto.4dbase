@@ -366,6 +366,10 @@ Function newScene
 	
 	$caScene_o:=ds:C1482.CaScene.new()
 	
+	// Modifié par : Rémy Scanu (10/06/2021)
+	// Je suis obligé d'attribuer un nouvel ID à la mano avec les imports possible de scénario sinon ça fou le bazarre dans l'index interne de 4D... vive les UUID moins de problème !
+	$caScene_o.ID:=cmaToolGetNewID("CaScene"; "ID")
+	
 	$caScene_o.nom:="Nouvelle scène"
 	$caScene_o.scenarioID:=This:C1470.scenarioDetail.getKey()
 	$caScene_o.action:="Attente"
