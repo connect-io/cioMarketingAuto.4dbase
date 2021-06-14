@@ -19,5 +19,6 @@ $table_o.refresh()
 If ($table_o.length=0)
 	$0:=1
 Else 
-	$0:=$table_o[$table_o.length-1][$2]+1
+	$table_o:=$table_o.orderBy($2+" desc")
+	$0:=$table_o[0][$2]+1
 End if 
