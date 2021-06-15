@@ -239,7 +239,7 @@ Historique
 	var ${2} : Text
 	
 	var $i_el : Integer
-	var $class_o; $mailjet_o; $mailjetDetail_o; $personne_o : Object
+	var $class_o; $mailjet_o; $mailjetDetail_o; $personne_o; $fichier_o : Object
 	var $mailjetDetail_c : Collection
 	
 	ASSERT:C1129(This:C1470.personne#Null:C1517; "Impossible d'utiliser la fonction mailjetGetDetailStat sans une personne de définie.")
@@ -276,7 +276,8 @@ Historique
 Function sendMailing($configPreCharge_o : Object)
 	var $canalEnvoi_t; $corps_t; $mime_t; $propriete_t; $contenu_t : Text
 	var $statut_b : Boolean
-	var $class_o; $config_o; $mime_o; $statut_o; $formule_o; $wpVar_o : Object
+	var $class_o; $config_o; $mime_o; $statut_o; $formule_o; $wpVar_o; $fichier_o; $signature_o; $document_o : Object
+	var $transporter_c : Collection
 	
 	ASSERT:C1129(This:C1470.personne#Null:C1517; "Impossible d'utiliser la fonction sendMailing sans une personne de définie.")
 	
@@ -319,22 +320,45 @@ Function sendMailing($configPreCharge_o : Object)
 				: ($canalEnvoi_t="Email")
 					
 					If (Count parameters:C259=0)
-						$corps_t:=WP Get text:C1575(WParea; wk expressions as value:K81:255)
+						$document_o:=WP New:C1317(WParea)
 					Else 
-						$corps_t:=WP Get text:C1575($config_o.contenu4WP; wk expressions as value:K81:255)
+						$document_o:=WP New:C1317($config_o.contenu4WP)
 					End if 
+					
+					$corps_t:=WP Get text:C1575($document_o; wk expressions as value:K81:255)
 					
 					If ($corps_t#"")
 						
 						If ($corps_t#"@<body@")  // Nouvelle façon d'envoyer des emails
+							// Ajout de la signature
+							$fichier_o:=File:C1566(Get 4D folder:C485(Dossier Resources courant:K5:16; *)+"cioMarketingAutomation"+Séparateur dossier:K24:12+"scene"+Séparateur dossier:K24:12+"signatureEmail.4wp"; fk chemin plateforme:K87:2)
 							
-							If (Count parameters:C259=0)
-								WP EXPORT VARIABLE:C1319(WParea; $mime_t; wk mime html:K81:1)  // Mime export of Write Pro document
-							Else 
-								WP EXPORT VARIABLE:C1319($config_o.contenu4WP; $mime_t; wk mime html:K81:1)  // Mime export of Write Pro document
+							If ($fichier_o.exists=True:C214)
+								WP INSERT BREAK:C1413($document_o; wk paragraph break:K81:259; wk append:K81:179)
+								
+								$signature_o:=WP Import document:C1318($fichier_o.platformPath)
+								WP INSERT DOCUMENT:C1411($document_o; $signature_o; wk append:K81:179)
 							End if 
 							
+							WP EXPORT VARIABLE:C1319($document_o; $mime_t; wk mime html:K81:1)  // Mime export of Write Pro document
+							
 							$mime_o:=MAIL Convert from MIME:C1681($mime_t)
+							
+							If ($fichier_o.exists=True:C214)
+								$transporter_c:=cwStorage.eMail.smtp.query("name = :1"; String:C10($config_o.expediteur))
+								
+								If ($transporter_c.length=1)
+									$mime_o.bodyValues.p0001.value:=Replace string:C233($mime_o.bodyValues.p0001.value; "nomVendeur"; $transporter_c[0].name)
+									
+									If ($transporter_c[0].from=Null:C1517)  // Si on utilise pas d'emetteur particulier
+										$mime_o.bodyValues.p0001.value:=Replace string:C233($mime_o.bodyValues.p0001.value; "emailVendeur"; $transporter_c[0].user)
+									Else 
+										$mime_o.bodyValues.p0001.value:=Replace string:C233($mime_o.bodyValues.p0001.value; "emailVendeur"; $transporter_c[0].from)
+									End if 
+									
+								End if 
+								
+							End if 
 							
 							For each ($propriete_t; $mime_o)
 								$config_o.eMailConfig[$propriete_t]:=$mime_o[$propriete_t]

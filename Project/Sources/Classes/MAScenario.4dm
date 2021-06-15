@@ -409,13 +409,13 @@ Function updateStringSceneForm
 				
 				Case of 
 					: (String:C10(This:C1470.sceneDetail.paramAction.echelleDelai)="jour(s)") | (String:C10(This:C1470.sceneDetail.paramAction.echelleDelai)="jour(s)")
-						This:C1470.sceneSuivanteDelai:=String:C10(Round:C94(This:C1470.sceneDetail.tsAttente/5184000; 0))
+						This:C1470.sceneSuivanteDelai:=String:C10(Round:C94(This:C1470.sceneDetail.tsAttente/86400; 0))
 					: (String:C10(This:C1470.sceneDetail.paramAction.echelleDelai)="semaine(s)")
-						This:C1470.sceneSuivanteDelai:=String:C10(Round:C94(This:C1470.sceneDetail.tsAttente/(5184000*7); 0))
+						This:C1470.sceneSuivanteDelai:=String:C10(Round:C94(This:C1470.sceneDetail.tsAttente/(86400*7); 0))
 					: (String:C10(This:C1470.sceneDetail.paramAction.echelleDelai)="mois(s)")
-						This:C1470.sceneSuivanteDelai:=String:C10(Round:C94(This:C1470.sceneDetail.tsAttente/(5184000*30); 0))
+						This:C1470.sceneSuivanteDelai:=String:C10(Round:C94(This:C1470.sceneDetail.tsAttente/(86400*30); 0))
 					: (String:C10(This:C1470.sceneDetail.paramAction.echelleDelai)="année(s)")
-						This:C1470.sceneSuivanteDelai:=String:C10(Round:C94(This:C1470.sceneDetail.tsAttente/(5184000*365); 0))
+						This:C1470.sceneSuivanteDelai:=String:C10(Round:C94(This:C1470.sceneDetail.tsAttente/(86400*365); 0))
 				End case 
 				
 			End if 
