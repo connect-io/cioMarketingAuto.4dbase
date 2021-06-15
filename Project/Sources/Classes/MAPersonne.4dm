@@ -316,15 +316,14 @@ Function sendMailing($configPreCharge_o : Object)
 			
 			Formula from string:C1601("_cmaInit4WPVar(this)").call($wpVar_o)
 			
+			If (Count parameters:C259=0)
+				$document_o:=WP New:C1317(WParea)
+			Else 
+				$document_o:=WP New:C1317($config_o.contenu4WP)
+			End if 
+			
 			Case of 
 				: ($canalEnvoi_t="Email")
-					
-					If (Count parameters:C259=0)
-						$document_o:=WP New:C1317(WParea)
-					Else 
-						$document_o:=WP New:C1317($config_o.contenu4WP)
-					End if 
-					
 					$corps_t:=WP Get text:C1575($document_o; wk expressions as value:K81:255)
 					
 					If ($corps_t#"")
@@ -386,13 +385,7 @@ Function sendMailing($configPreCharge_o : Object)
 					End if 
 					
 				: ($canalEnvoi_t="Courrier")
-					
-					If (Count parameters:C259=0)
-						WP PRINT:C1343(WParea; wk 4D Write Pro layout:K81:176)
-					Else 
-						WP PRINT:C1343($config_o.contenu4WP; wk 4D Write Pro layout:K81:176)
-					End if 
-					
+					WP PRINT:C1343($document_o; wk 4D Write Pro layout:K81:176)
 				: ($canalEnvoi_t="SMS")
 			End case 
 			
