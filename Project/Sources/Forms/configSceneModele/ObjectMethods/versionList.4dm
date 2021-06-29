@@ -45,7 +45,13 @@ If (Form event code:C388=Sur données modifiées:K2:15)
 						OK:=1
 					End if 
 					
-					Form:C1466.sceneDetail.paramAction.modele[Lowercase:C14(Form:C1466.sceneTypeSelected)].version.push(New object:C1471("titre"; $titre_t; "actif"; (OK=1); "contenu4WP"; WP New:C1317; "creerPar"; Current user:C182; "creerLe"; cmaTimestamp; "modifierPar"; Current user:C182; "modifierLe"; cmaTimestamp))
+					Form:C1466.sceneDetail.paramAction.modele[Lowercase:C14(Form:C1466.sceneTypeSelected)].version.push(New object:C1471("titre"; $titre_t; \
+						"actif"; (OK=1); \
+						"contenu4WP"; WP New:C1317; \
+						"creerPar"; Current user:C182; \
+						"creerLe"; cmaTimestamp-cwToolHourSummerWinter(Current date:C33); \
+						"modifierPar"; Current user:C182; \
+						"modifierLe"; cmaTimestamp-cwToolHourSummerWinter(Current date:C33)))
 				Else 
 					ALERT:C41("Une version porte déjà ce nom, merci d'en choisir un différent")
 				End if 

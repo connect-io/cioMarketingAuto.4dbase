@@ -112,3 +112,8 @@ C_OBJECT:C1216(cwToolProprieteExisteDansObjet; $0)
 C_OBJECT:C1216(cwToolProprieteExisteDansObjet; $1)
 C_COLLECTION:C1488(cwToolProprieteExisteDansObjet; $2)
 C_LONGINT:C283(cwToolProprieteExisteDansObjet; $3)
+
+//cmaToolGetNewID
+C_LONGINT:C283(cmaToolGetNewID; $0)
+C_TEXT:C284(cmaToolGetNewID; $1)
+C_TEXT:C284(cmaToolGetNewID; $2)

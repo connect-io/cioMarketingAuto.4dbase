@@ -98,6 +98,36 @@ Function getMessageEvent
 		$4->:=New object:C1471("errorHttp"; $resultatHttp_t)
 	End if 
 	
+Function getMessageEventDetail($mailjet_o : Object; $messageEvent_t : Text; $tsFrom_el : Integer; $tsTo_el : Integer)->$retour_o : Object
+	var $resultatHttp_t; $tsFrom_t; $tsTo_t : Text
+	var $countMessage_el; $nbBoucle_el; $i_el; $offset_el : Integer
+	var $blob_b : Blob
+	
+	$retour_o:=New object:C1471
+	
+	$tsFrom_t:="&FromTS="+String:C10($tsFrom_el)
+	$tsTo_t:="&ToTS="+String:C10($tsTo_el)
+	
+	If ($mailjet_o.Count#Null:C1517)
+		$countMessage_el:=Num:C11($mailjet_o.Count)
+		$nbBoucle_el:=Int:C8($countMessage_el/1000)+1
+		
+		For ($i_el; 1; $nbBoucle_el)
+			
+			If ($i_el>1)  // Il y a plus de 1000 résultats
+				$offset_el:=(1000*$i_el)+1
+			Else 
+				$offset_el:=0
+			End if 
+			
+			// Je demande dans un second temps les 1000 premiers mails de mon laps de temps recherché (entre $tsFrom_el et $tsTo_el) -> un jour à la fois normalement
+			cwToolWebHttpRequest("GET"; This:C1470.config.domainRequest+"/REST/message?MessageStatus="+$messageEvent_t+"&limit=1000"+$tsFrom_t+$tsTo_t+"&offset="+String:C10($offset_el)+"&ShowContactAlt=true&sort=ArrivedAt+desc"; ""; ->$resultatHttp_t)
+			
+			$retour_o[String:C10($offset_el)+"to"+String:C10($offset_el+Choose:C955($offset_el=0; 1000; 999))]:=$resultatHttp_t
+		End for 
+		
+	End if 
+	
 Function AnalysisMessageEvent
 	C_OBJECT:C1216($1)  // Réponse mailjet de la function getMessageEvent
 	C_TEXT:C284($2)  // Statut des emails qu'on souhaite avoir
@@ -112,6 +142,8 @@ Function AnalysisMessageEvent
 	C_OBJECT:C1216($mailStatut_o; $statut_o; $contactDetail_o)
 	
 	ARRAY TEXT:C222($email_at; 0)
+	ARRAY TEXT:C222($mesageID_at; 0)
+	
 	ARRAY OBJECT:C1221($dataStat_ao; 0)
 	
 	$5->:=New collection:C1472()
@@ -121,7 +153,6 @@ Function AnalysisMessageEvent
 	
 	If ($1.Count#Null:C1517)
 		$countMessage_el:=Num:C11($1.Count)
-		
 		$nbBoucle_el:=Int:C8($countMessage_el/1000)+1
 		
 		For ($i_el; 1; $nbBoucle_el)
@@ -132,8 +163,12 @@ Function AnalysisMessageEvent
 				$offset_el:=0
 			End if 
 			
-			// Je demande dans un second temps les 1000 premiers mails de mon laps de temps recherché (entre $1 et $2) -> un jour à la fois normalement
+			// Je demande dans un second temps les 1000 premiers mails de mon laps de temps recherché (entre $3 et $4) -> un jour à la fois normalement
 			cwToolWebHttpRequest("GET"; This:C1470.config.domainRequest+"/REST/message?MessageStatus="+$2+"&limit=1000"+$tsFrom_t+$tsTo_t+"&offset="+String:C10($offset_el)+"&ShowContactAlt=true&sort=ArrivedAt+desc"; ""; ->$resultatHttp_t)
+			
+			// Modifié par : Scanu Rémy (25/06/2021)
+			// Obligé de rajouter cela pour avoir les ID des messages...
+			This:C1470.getMessageID($resultatHttp_t; ->$mesageID_at)
 			
 			$mailStatut_o:=JSON Parse:C1218($resultatHttp_t)
 			
@@ -155,9 +190,9 @@ Function AnalysisMessageEvent
 						$dateArrivedAt_d:=Date:C102($arrivedAt_t)
 						$heureArrivedAt_h:=Time:C179($arrivedAt_t)
 						
-						$tsEvent_el:=cmaTimestamp($dateArrivedAt_d; $heureArrivedAt_h)
+						$tsEvent_el:=cmaTimestamp($dateArrivedAt_d; $heureArrivedAt_h)-cwToolHourSummerWinter($dateArrivedAt_d)
 						
-						$5->push(New object:C1471("email"; $email_t; "idContact"; $contactID_el; "tsEvent"; $tsEvent_el))
+						$5->push(New object:C1471("email"; $email_t; "idContact"; $contactID_el; "tsEvent"; $tsEvent_el; "mailjetID"; $mesageID_at{$j_el}))
 					End if 
 					
 				End for 
@@ -176,8 +211,8 @@ Function getMessageID
 	
 	// Petite galère qui fait bien chier, je vais devoir passer en revu ma chaine $resultatHTTP car l'ID du message est supérieur à la valeur autorisée par la commande JSON PARSE ±10.421e±10...
 	$demonteChaine_t:=$1
-	
 	$positionCrochet_el:=Position:C15("["; $demonteChaine_t)
+	
 	If ($positionCrochet_el>0)
 		$demonteChaine_t:=Delete string:C232($demonteChaine_t; 1; $positionCrochet_el+1)
 		
@@ -187,6 +222,7 @@ Function getMessageID
 			
 			// On devrait se retrouver avec une chaine comme ça : {...},{...},{...}
 			$positionAccolade_el:=Position:C15("}"; $demonteChaine_t)
+			
 			If ($positionAccolade_el>0)
 				
 				While ($positionAccolade_el>0)
@@ -194,10 +230,11 @@ Function getMessageID
 					
 					// $chaineObjet_t devrait ressembler à une chaine comme ça : {...}
 					$positionID_el:=Position:C15("\"ID\" :"; $chaineObjet_t)
+					
 					If ($positionID_el>0)
 						$chaineObjet_t:=Substring:C12($chaineObjet_t; $positionID_el+7)
-						
 						$positionVirgule_el:=Position:C15(","; $chaineObjet_t)
+						
 						If ($positionVirgule_el>0)
 							$messageID_t:=Substring:C12($chaineObjet_t; 1; $positionVirgule_el-1)
 							
@@ -216,3 +253,11 @@ Function getMessageID
 		End if 
 		
 	End if 
+	
+Function getMessageDetail($messageID_t : Text)->$messageDetail_o : Object
+	var $resultatHttp_t : Text
+	
+	// Je demande dans un second temps les 1000 premiers mails de mon laps de temps recherché (entre $3 et $4) -> un jour à la fois normalement
+	cwToolWebHttpRequest("GET"; This:C1470.config.domainRequest+"/REST/message/"+$messageID_t+"?ShowContactAlt=true"; ""; ->$resultatHttp_t)
+	
+	$messageDetail_o:=JSON Parse:C1218($resultatHttp_t)

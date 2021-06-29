@@ -115,7 +115,7 @@ Historique
 ------------------------------------------------------------------------------*/
 	var $canalEnvoi_t; $corps_t; $mime_t; $propriete_t; $contenu_t : Text
 	var $statut_b : Boolean
-	var $class_o; $config_o; $mime_o; $statut_o; $enregistrement_o; $personne_o; $compteur_o; $wpVar_o : Object
+	var $class_o; $config_o; $mime_o; $statut_o; $enregistrement_o; $personne_o; $compteur_o; $wpVar_o; $document_o; $signature_o : Object
 	
 	ASSERT:C1129(This:C1470.personneSelection#Null:C1517; "Impossible d'utiliser la fonction sendMailing sans une sélection de personne de définie.")
 	
@@ -151,15 +151,27 @@ Historique
 					$wpVar_o:=$personne_o.personne
 					Formula from string:C1601("_cmaInit4WPVar(this)").call($wpVar_o)
 					
+					$document_o:=WP New:C1317(WParea)
+					
 					Case of 
 						: ($canalEnvoi_t="Email")
-							$corps_t:=WP Get text:C1575(WParea; wk expressions as value:K81:255)
+							$corps_t:=WP Get text:C1575($document_o; wk expressions as value:K81:255)
 							
 							If ($corps_t#"")
 								// toDo charger enregistrement pour table [Personne] de la base hôte
 								
 								If ($corps_t#"@<body@")  // Nouvelle façon d'envoyer des emails
-									WP EXPORT VARIABLE:C1319(WParea; $mime_t; wk mime html:K81:1)  // Mime export of Write Pro document
+									// Ajout de la signature
+									$fichier_o:=File:C1566(Get 4D folder:C485(Dossier Resources courant:K5:16; *)+"cioMarketingAutomation"+Séparateur dossier:K24:12+"scene"+Séparateur dossier:K24:12+"signatureEmail.4wp"; fk chemin plateforme:K87:2)
+									
+									If ($fichier_o.exists=True:C214)
+										WP INSERT BREAK:C1413($document_o; wk paragraph break:K81:259; wk append:K81:179)
+										
+										$signature_o:=WP Import document:C1318($fichier_o.platformPath)
+										WP INSERT DOCUMENT:C1411($document_o; $signature_o; wk append:K81:179)
+									End if 
+									
+									WP EXPORT VARIABLE:C1319($document_o; $mime_t; wk mime html:K81:1)  // Mime export of Write Pro document
 									$mime_o:=MAIL Convert from MIME:C1681($mime_t)
 									
 									For each ($propriete_t; $mime_o)
@@ -185,7 +197,7 @@ Historique
 							End if 
 							
 						: ($canalEnvoi_t="Courrier")
-							WP PRINT:C1343(WParea; wk 4D Write Pro layout:K81:176)
+							WP PRINT:C1343($document_o; wk 4D Write Pro layout:K81:176)
 							
 							$compteur_o.success:=$compteur_o.success+1
 						: ($canalEnvoi_t="SMS")

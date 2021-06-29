@@ -147,7 +147,7 @@ Function searchPersonToScenario
 					: ($cleValeur_o.key="dateDebutMailClique")
 						
 						If ($cleValeur_o.value#!00-00-00!)
-							$ts_el:=cmaTimestamp($cleValeur_o.value; ?00:00:00?)
+							$ts_el:=cmaTimestamp($cleValeur_o.value; ?00:00:00?)-cwToolHourSummerWinter($cleValeur_o.value)
 							
 							$table_o:=ds:C1482.CaPersonneMarketing.query("lastClicked # :1 AND lastClicked >= :2"; 0; $ts_el).OnePersonne
 							
@@ -157,7 +157,7 @@ Function searchPersonToScenario
 					: ($cleValeur_o.key="dateFinMailClique")
 						
 						If ($cleValeur_o.value#!00-00-00!)
-							$ts_el:=cmaTimestamp($cleValeur_o.value; ?23:59:59?)
+							$ts_el:=cmaTimestamp($cleValeur_o.value; ?23:59:59?)-cwToolHourSummerWinter($cleValeur_o.value)
 							
 							$table_o:=ds:C1482.CaPersonneMarketing.query("lastClicked # :1 AND lastClicked <= :2"; 0; $ts_el).OnePersonne
 							
@@ -167,7 +167,7 @@ Function searchPersonToScenario
 					: ($cleValeur_o.key="dateDebutMailOuvert")
 						
 						If ($cleValeur_o.value#!00-00-00!)
-							$ts_el:=cmaTimestamp($cleValeur_o.value; ?00:00:00?)
+							$ts_el:=cmaTimestamp($cleValeur_o.value; ?00:00:00?)-cwToolHourSummerWinter($cleValeur_o.value)
 							
 							$table_o:=ds:C1482.CaPersonneMarketing.query("lastOpened # :1 AND lastOpened >= :2"; 0; $ts_el).OnePersonne
 							
@@ -177,7 +177,7 @@ Function searchPersonToScenario
 					: ($cleValeur_o.key="dateFinMailOuvert")
 						
 						If ($cleValeur_o.value#!00-00-00!)
-							$ts_el:=cmaTimestamp($cleValeur_o.value; ?23:59:59?)
+							$ts_el:=cmaTimestamp($cleValeur_o.value; ?23:59:59?)-cwToolHourSummerWinter($cleValeur_o.value)
 							
 							$table_o:=ds:C1482.CaPersonneMarketing.query("lastOpened # :1 AND lastOpened <= :2"; 0; $ts_el).OnePersonne
 							
@@ -392,6 +392,10 @@ Function newScene
 	C_OBJECT:C1216($caScene_o; $retour_o)
 	
 	$caScene_o:=ds:C1482.CaScene.new()
+	
+	// Modifié par : Rémy Scanu (10/06/2021)
+	// Je suis obligé d'attribuer un nouvel ID à la mano avec les imports possible de scénario sinon ça fou le bazarre dans l'index interne de 4D... vive les UUID moins de problème !
+	$caScene_o.ID:=cmaToolGetNewID("CaScene"; "ID")
 	
 	$caScene_o.nom:="Nouvelle scène"
 	$caScene_o.scenarioID:=This:C1470.scenarioDetail.getKey()

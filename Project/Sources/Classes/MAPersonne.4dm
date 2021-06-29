@@ -251,10 +251,10 @@ Historique
 	$personne_o:=cmaToolGetClass("MAPersonne").new()
 	
 	For ($i_el; 2; Count parameters:C259)
-		$class_o.getMessageEvent(${$i_el}; 0; cmaTimestamp(Current date:C33; Current time:C178); ->$mailjet_o)
+		$class_o.getMessageEvent(${$i_el}; 0; cmaTimestamp(Current date:C33; Current time:C178)-cwToolHourSummerWinter(Current date:C33); ->$mailjet_o)
 		
 		If ($mailjet_o.errorHttp=Null:C1517)
-			$class_o.AnalysisMessageEvent($mailjet_o; ${$i_el}; 0; cmaTimestamp(Current date:C33; Current time:C178); ->$mailjetDetail_c)
+			$class_o.AnalysisMessageEvent($mailjet_o; ${$i_el}; 0; cmaTimestamp(Current date:C33; Current time:C178)-cwToolHourSummerWinter(Current date:C33); ->$mailjetDetail_c)
 		End if 
 		
 		If ($1#"")
@@ -276,7 +276,8 @@ Historique
 Function sendMailing($configPreCharge_o : Object)
 	var $canalEnvoi_t; $corps_t; $mime_t; $propriete_t; $contenu_t : Text
 	var $statut_b : Boolean
-	var $class_o; $config_o; $mime_o; $statut_o; $formule_o; $wpVar_o : Object
+	var $class_o; $config_o; $mime_o; $statut_o; $formule_o; $wpVar_o; $fichier_o; $signature_o; $document_o : Object
+	var $transporter_c : Collection
 	
 	ASSERT:C1129(This:C1470.personne#Null:C1517; "Impossible d'utiliser la fonction sendMailing sans une personne de définie.")
 	
@@ -315,26 +316,48 @@ Function sendMailing($configPreCharge_o : Object)
 			
 			Formula from string:C1601("_cmaInit4WPVar(this)").call($wpVar_o)
 			
+			If (Count parameters:C259=0)
+				$document_o:=WP New:C1317(WParea)
+			Else 
+				$document_o:=WP New:C1317($config_o.contenu4WP)
+			End if 
+			
 			Case of 
 				: ($canalEnvoi_t="Email")
-					
-					If (Count parameters:C259=0)
-						$corps_t:=WP Get text:C1575(WParea; wk expressions as value:K81:255)
-					Else 
-						$corps_t:=WP Get text:C1575($config_o.contenu4WP; wk expressions as value:K81:255)
-					End if 
+					$corps_t:=WP Get text:C1575($document_o; wk expressions as value:K81:255)
 					
 					If ($corps_t#"")
 						
 						If ($corps_t#"@<body@")  // Nouvelle façon d'envoyer des emails
+							// Ajout de la signature
+							$fichier_o:=File:C1566(Get 4D folder:C485(Dossier Resources courant:K5:16; *)+"cioMarketingAutomation"+Séparateur dossier:K24:12+"scene"+Séparateur dossier:K24:12+"signatureEmail.4wp"; fk chemin plateforme:K87:2)
 							
-							If (Count parameters:C259=0)
-								WP EXPORT VARIABLE:C1319(WParea; $mime_t; wk mime html:K81:1)  // Mime export of Write Pro document
-							Else 
-								WP EXPORT VARIABLE:C1319($config_o.contenu4WP; $mime_t; wk mime html:K81:1)  // Mime export of Write Pro document
+							If ($fichier_o.exists=True:C214)
+								WP INSERT BREAK:C1413($document_o; wk paragraph break:K81:259; wk append:K81:179)
+								
+								$signature_o:=WP Import document:C1318($fichier_o.platformPath)
+								WP INSERT DOCUMENT:C1411($document_o; $signature_o; wk append:K81:179)
 							End if 
 							
+							WP EXPORT VARIABLE:C1319($document_o; $mime_t; wk mime html:K81:1)  // Mime export of Write Pro document
+							
 							$mime_o:=MAIL Convert from MIME:C1681($mime_t)
+							
+							If ($fichier_o.exists=True:C214)
+								$transporter_c:=cwStorage.eMail.smtp.query("name = :1"; String:C10($config_o.expediteur))
+								
+								If ($transporter_c.length=1)
+									$mime_o.bodyValues.p0001.value:=Replace string:C233($mime_o.bodyValues.p0001.value; "nomVendeur"; $transporter_c[0].name)
+									
+									If ($transporter_c[0].from=Null:C1517)  // Si on utilise pas d'emetteur particulier
+										$mime_o.bodyValues.p0001.value:=Replace string:C233($mime_o.bodyValues.p0001.value; "emailVendeur"; $transporter_c[0].user)
+									Else 
+										$mime_o.bodyValues.p0001.value:=Replace string:C233($mime_o.bodyValues.p0001.value; "emailVendeur"; $transporter_c[0].from)
+									End if 
+									
+								End if 
+								
+							End if 
 							
 							For each ($propriete_t; $mime_o)
 								$config_o.eMailConfig[$propriete_t]:=$mime_o[$propriete_t]
@@ -448,9 +471,17 @@ Historique
 		: ($provenance_el=3)  // On souhaite mettre à jour l'historique des mailings envoyés à la personne
 			
 			$enregistrement_o.historique.detail.push(New object:C1471(\
-				"eventTs"; cmaTimestamp(Current date:C33; Current time:C178); \
+				"eventTs"; cmaTimestamp(Current date:C33; Current time:C178)-cwToolHourSummerWinter(Current date:C33); \
 				"eventUser"; Current user:C182; \
-				"eventDetail"; New object:C1471("type"; String:C10($detail_o.type); "contenu4WP"; $detail_o.contenu4WP; "statut"; String:C10($detail_o.statut))))
+				"eventDetail"; New object:C1471("type"; String:C10($detail_o.type); \
+				"nomDocument"; String:C10($detail_o.nomDocument); \
+				"contenu4WP"; $detail_o.contenu4WP; \
+				"statut"; String:C10($detail_o.statut); \
+				"mailjetID"; "")))
+			
+			If ($detail_o.uuid#Null:C1517)
+				$enregistrement_o.historique.detail[$enregistrement_o.historique.detail.length-1].uuid:=$detail_o.uuid
+			End if 
 			
 	End case 
 	
