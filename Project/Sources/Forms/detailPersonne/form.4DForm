@@ -26,7 +26,7 @@
 					"top": 13,
 					"left": 97,
 					"width": 760,
-					"height": 627,
+					"height": 650,
 					"labels": [
 						"Infos générales",
 						"Marketing"
@@ -64,7 +64,7 @@
 				"Bouton4": {
 					"type": "button",
 					"text": "Valider",
-					"top": 605,
+					"top": 625,
 					"left": 645,
 					"width": 165,
 					"height": 25,
@@ -76,7 +76,7 @@
 				"Bouton1": {
 					"type": "button",
 					"text": "Annuler",
-					"top": 605,
+					"top": 625,
 					"left": 460,
 					"width": 165,
 					"height": 25,
@@ -454,7 +454,7 @@
 					"type": "input",
 					"left": 270,
 					"top": 179,
-					"width": 537,
+					"width": 200,
 					"height": 100,
 					"dataSource": "Form:C1466.resumeMarketing",
 					"enterable": false,
@@ -464,7 +464,7 @@
 				},
 				"Texte14": {
 					"type": "text",
-					"top": 299,
+					"top": 319,
 					"left": 147,
 					"width": 660,
 					"height": 16,
@@ -479,7 +479,7 @@
 				"Texte13": {
 					"type": "text",
 					"text": "Scénario(s) en cours :",
-					"top": 340,
+					"top": 360,
 					"left": 110,
 					"width": 150,
 					"height": 16,
@@ -488,7 +488,7 @@
 				"List Box": {
 					"type": "listbox",
 					"left": 110,
-					"top": 376,
+					"top": 396,
 					"width": 308,
 					"height": 159,
 					"events": [
@@ -554,7 +554,7 @@
 				"Texte15": {
 					"type": "text",
 					"text": "Scénario(s) possiblement applicable :",
-					"top": 340,
+					"top": 360,
 					"left": 492,
 					"width": 260,
 					"height": 16,
@@ -563,7 +563,7 @@
 				"List Box1": {
 					"type": "listbox",
 					"left": 492,
-					"top": 376,
+					"top": 396,
 					"width": 315,
 					"height": 159,
 					"events": [
@@ -577,6 +577,7 @@
 					"currentItemPositionSource": "Form:C1466.ScenarioPossibleCurrentPosition",
 					"selectedItemsSource": "Form:C1466.ScenarioPossibleSelectedElement",
 					"selectionMode": "single",
+					"rowHeight": "20px",
 					"columns": [
 						{
 							"header": {
@@ -628,7 +629,7 @@
 				"detailPersonneScenarioPersonneEnCoursString": {
 					"type": "input",
 					"left": 110,
-					"top": 555,
+					"top": 575,
 					"width": 156,
 					"height": 14,
 					"dataSource": "Form:C1466.scenarioPersonneEnCours",
@@ -642,7 +643,7 @@
 				"detailPersonneScenarioVoirModifier": {
 					"type": "button",
 					"text": "Voir/Modifier scénario",
-					"top": 574,
+					"top": 594,
 					"left": 110,
 					"width": 182,
 					"height": 23,
@@ -654,7 +655,7 @@
 				"detailPersonneScenarioEnleverPersonne": {
 					"type": "button",
 					"text": "Enlever du scénario",
-					"top": 607,
+					"top": 627,
 					"left": 110,
 					"width": 182,
 					"height": 23,
@@ -666,7 +667,7 @@
 				"detailPersonneScenarioActifInactif": {
 					"type": "button",
 					"text": "Changer le statut",
-					"top": 574,
+					"top": 594,
 					"left": 302,
 					"width": 116,
 					"height": 23,
@@ -674,11 +675,113 @@
 						"onClick"
 					],
 					"method": "ObjectMethods/detailPersonneScenarioActifInactif.4dm"
+				},
+				"List Box2": {
+					"type": "listbox",
+					"left": 490,
+					"top": 143,
+					"width": 317,
+					"height": 159,
+					"events": [
+						"onLoad",
+						"onClick"
+					],
+					"scrollbarHorizontal": "hidden",
+					"dataSource": "Form:C1466.envoiMailEnCours",
+					"listboxType": "collection",
+					"currentItemSource": "",
+					"currentItemPositionSource": "",
+					"selectedItemsSource": "",
+					"selectionMode": "single",
+					"rowHeight": "40px",
+					"headerHeight": "1em",
+					"textAlign": "center",
+					"columns": [
+						{
+							"header": {
+								"text": "Date & heure envoi",
+								"name": "Entête7"
+							},
+							"name": "Colonne7",
+							"footer": {
+								"name": "Pied7"
+							},
+							"alternateFill": "#D6D6D6",
+							"width": 127,
+							"dataSource": "\"Le \"+cmaTimestampLire(\"date\"; This:C1470.eventTs)+\"\\rà \"+cmaTimestampLire(\"heure\"; This:C1470.eventTs)",
+							"enterable": false,
+							"verticalAlign": "middle"
+						},
+						{
+							"header": {
+								"name": "Entête9",
+								"text": "Objet"
+							},
+							"name": "Colonne9",
+							"footer": {
+								"name": "Pied9"
+							},
+							"alternateFill": "#D6D6D6",
+							"dataSource": "This:C1470.eventDetail.subject",
+							"width": 100,
+							"enterable": false,
+							"wordwrap": "normal",
+							"verticalAlign": "middle"
+						},
+						{
+							"header": {
+								"name": "Entête8",
+								"text": "Statut"
+							},
+							"name": "Colonne8",
+							"footer": {
+								"name": "Pied8"
+							},
+							"alternateFill": "#D6D6D6",
+							"width": 75,
+							"dataSource": "This:C1470.eventDetail.statutLib",
+							"dataSourceTypeHint": "text",
+							"enterable": false,
+							"rowStrokeSource": "This:C1470.eventDetail.statutColor",
+							"verticalAlign": "middle"
+						}
+					]
+				},
+				"detailMessage": {
+					"type": "pictureButton",
+					"left": 816,
+					"top": 143,
+					"width": 23,
+					"height": 23,
+					"events": [
+						"onClick",
+						"onMouseMove"
+					],
+					"picture": "/RESOURCES/Images/magnifier.png",
+					"method": "ObjectMethods/detailMessage.4dm",
+					"loopBackToFirstFrame": true,
+					"switchBackWhenReleased": true,
+					"useLastFrameAsDisabled": true
+				},
+				"Texte17": {
+					"type": "text",
+					"top": 107,
+					"left": 490,
+					"width": 317,
+					"height": 16,
+					"fill": "#AAAAAA",
+					"stroke": "#0000FF",
+					"class": "",
+					"textAlign": "center",
+					"fontWeight": "bold",
+					"borderStyle": "solid",
+					"text": "H i s t o r i q u e  M a i l j e t",
+					"right": 807
 				}
 			}
 		}
 	],
-	"geometryStamp": 416,
+	"geometryStamp": 443,
 	"editor": {
 		"activeView": "View 1",
 		"defaultView": "View 1",

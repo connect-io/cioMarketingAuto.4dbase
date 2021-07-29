@@ -431,7 +431,7 @@ Historique
 		
 		$enregistrement_o.personneID:=This:C1470.UID
 		$enregistrement_o.rang:=1  // 1 pour Suspect
-		$enregistrement_o.historique:=New object:C1471("detail"; New collection:C1472)
+		$enregistrement_o.historique:=New object:C1471("mailjet"; New object:C1471("contactID"; 0); "detail"; New collection:C1472)
 	Else 
 		$enregistrement_o:=$table_o.first()
 	End if 
@@ -477,7 +477,10 @@ Historique
 				"nomDocument"; String:C10($detail_o.nomDocument); \
 				"contenu4WP"; $detail_o.contenu4WP; \
 				"statut"; String:C10($detail_o.statut); \
-				"mailjetID"; "")))
+				"statutLib"; cmaToolMailjetGetLib(String:C10($detail_o.statut)); \
+				"statutColor"; cmaToolMailjetGetColor(String:C10($detail_o.statut)); \
+				"subject"; String:C10($detail_o.subject); \
+				"messageID"; "")))
 			
 			If ($detail_o.uuid#Null:C1517)
 				$enregistrement_o.historique.detail[$enregistrement_o.historique.detail.length-1].uuid:=$detail_o.uuid
