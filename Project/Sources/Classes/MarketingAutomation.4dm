@@ -97,7 +97,7 @@ Historique
 	ASSERT:C1129(This:C1470.cronosImage#Null:C1517; "Impossible d'utiliser la fonction cronosAction sans avoir lancer la fonction loadCronos avant")
 	
 	Case of 
-		: ($action_t="verifTache") | ($action_t="mailjetRecup") | ($action_t="gestionScenario")
+		: ($action_t="verifTache") | ($action_t="mailjetRecup") | ($action_t="gestionScenario") | ($action_t="gestionProcessAutomatique")
 			
 			If ($action_t="verifTache")
 				This:C1470.cronosMessage:=""
@@ -135,6 +135,8 @@ Historique
 			This:C1470.cronosAction("mailjetRecup")
 		: (This:C1470.cronosMessage="Gestion des scénarios...")
 			This:C1470.cronosAction("gestionScenario")
+		: (This:C1470.cronosMessage="Gestion des process automatiques personnalisés journalier...")
+			This:C1470.cronosAction("gestionProcessAutomatique")
 		: (This:C1470.cronosMessage="RAS, prochaine vérification dans 10 secondes.")
 			This:C1470.cronosAction("RAS")
 		: (This:C1470.cronosMessage="") & ($ts_el>This:C1470.cronosVerifMailjet)
@@ -145,6 +147,10 @@ Historique
 			This:C1470.cronosImage:=This:C1470.image["cronosWork"]
 			
 			This:C1470.cronosMessage:="Gestion des scénarios..."
+		: (This:C1470.cronosMessage="") & ($ts_el>This:C1470.cronosVerifProcessAuto)
+			This:C1470.cronosImage:=This:C1470.image["cronosWork"]
+			
+			This:C1470.cronosMessage:="Gestion des process automatiques personnalisés journalier..."
 		: (This:C1470.cronosVerifTache=True:C214)
 			This:C1470.cronosImage:=This:C1470.image["cronosWork"]
 			
@@ -250,7 +256,6 @@ Historique
 							: ($caScenarioEvent_o.OneCaScene.sceneSuivanteID#0)  // On cherche la scène suivante
 								// On remonte du log à la scène puis à la scène suivante
 								$scene_o:=$caScenarioEvent_o.OneCaScene.OneCaSceneSuivante
-								
 							: ($caScenarioEvent_o.OneCaScene.scenarioSuivantID#"00000000000000000000000000000000")  // On cherche le scénario suivant
 								// On remonte du log à la scène puis au scénario suivant puis à toutes les scènes
 								$scene_o:=$caScenarioEvent_o.OneCaScene.scenarioSuivantID.AllCaSceneScenarioSuivant.query("numOrdre = :1"; 1)
@@ -414,9 +419,9 @@ Historique
 		
 		This:C1470.cronosVerifMailjet:=0
 		This:C1470.cronosVerifScenario:=0
-		This:C1470.cronosMailjetClass:=cmaToolGetClass("MAMailjet").new()
+		This:C1470.cronosVerifProcessAuto:=0
 		
-		This:C1470.cronosVerifScenario:=0
+		This:C1470.cronosMailjetClass:=cmaToolGetClass("MAMailjet").new()
 		
 		$process_el:=New process:C317("cwCronosDisplay"; 0; "cronosMarketingAutomation"; This:C1470; *)
 	End if 
