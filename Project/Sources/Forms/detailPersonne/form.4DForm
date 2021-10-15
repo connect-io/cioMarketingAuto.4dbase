@@ -1,4 +1,4 @@
-﻿{
+{
 	"$4d": {
 		"version": "1",
 		"kind": "form"
@@ -777,11 +777,27 @@
 					"borderStyle": "solid",
 					"text": "H i s t o r i q u e  M a i l j e t",
 					"right": 807
+				},
+				"previewMessage": {
+					"type": "pictureButton",
+					"left": 816,
+					"top": 179,
+					"width": 23,
+					"height": 23,
+					"events": [
+						"onClick",
+						"onMouseMove"
+					],
+					"picture": "/RESOURCES/Images/preview.png",
+					"method": "ObjectMethods/previewMessage.4dm",
+					"loopBackToFirstFrame": true,
+					"switchBackWhenReleased": true,
+					"useLastFrameAsDisabled": true
 				}
 			}
 		}
 	],
-	"geometryStamp": 443,
+	"geometryStamp": 446,
 	"editor": {
 		"activeView": "View 1",
 		"defaultView": "View 1",

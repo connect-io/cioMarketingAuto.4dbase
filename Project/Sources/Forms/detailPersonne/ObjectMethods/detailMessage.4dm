@@ -10,8 +10,8 @@ Case of
 			// Instanciation de la class
 			$class_o:=cmaToolGetClass("MAMailjet").new()
 			
-			If (String:C10(Form:C1466.envoiMailEnCours[$ligne_i-1].messageID)#"")
-				$commentaire_t:=$class_o.getMessageHistoryDetail(Form:C1466.envoiMailEnCours[$ligne_i-1].messageID)
+			If (String:C10(Form:C1466.envoiMailEnCours[$ligne_i-1].eventDetail.messageID)#"")
+				$commentaire_t:=$class_o.getMessageHistoryDetail(Form:C1466.envoiMailEnCours[$ligne_i-1].eventDetail.messageID)
 			Else 
 				$commentaire_t:="ID du message inconnu, impossible d'obtenir l'historique"
 			End if 

@@ -138,7 +138,9 @@ Function getHistoryRequestContent
 	End if 
 	
 Function getMessageEvent($statut_t : Text; $tsFrom_el : Integer; $tsTo_el : Integer; $mailjet_p : Pointer; $contactID_r : Real)
-	var $resultatHttp_t; $tsFrom_t; $tsTo_t; $contactID_t : Text
+	var $resultatHttp_t; $tsFrom_t; $tsTo_t; $contactID_t; $sort_t : Text
+	var $collection_c : Collection
+	var $element_o : Object
 	
 	$tsFrom_t:="&FromTS="+String:C10($tsFrom_el)
 	$tsTo_t:="&ToTS="+String:C10($tsTo_el)
@@ -182,7 +184,7 @@ Function getMessageEventDetail($mailjet_o : Object; $messageEvent_t : Text; $tsF
 			End if 
 			
 			// Je demande dans un second temps les 1000 premiers mails de mon laps de temps recherché (entre $tsFrom_el et $tsTo_el) -> un jour à la fois normalement
-			cwToolWebHttpRequest("GET"; This:C1470.config.domainRequest+"/REST/message?MessageStatus="+$messageEvent_t+"&limit=1000"+$tsFrom_t+$tsTo_t+Choose:C955($contactID_t#""; "&Contact="+$contactID_t; "")+"&offset="+String:C10($offset_el)+"&ShowContactAlt=true&sort=ArrivedAt+desc"; ""; ->$resultatHttp_t)
+			cwToolWebHttpRequest("GET"; This:C1470.config.domainRequest+"/REST/message?MessageStatus="+$messageEvent_t+"&limit=1000"+$tsFrom_t+$tsTo_t+Choose:C955($contactID_t#""; "&Contact="+$contactID_t; "")+"&offset="+String:C10($offset_el)+"&ShowContactAlt=true&Sort=ArrivedAt+desc"; ""; ->$resultatHttp_t)
 			
 			$retour_o[String:C10($offset_el)+"to"+String:C10($offset_el+Choose:C955($offset_el=0; 1000; 999))]:=$resultatHttp_t
 		End for 
@@ -209,19 +211,20 @@ Function getContactInformation($email_t : Text)->$contact_o : Object
 	
 Function getMessageID
 	var $1 : Text  // Chaine à analyser
-	var $2 : Pointer  // Pointeur tabeau texte qui contient les id des messages
+	var $2 : Pointer  // Pointeur [tabeau texte || collection] qui contient les id des messages (Si collection contient également les timeStamp de ces messages là)
 	
 	var $demonteChaine_t; $chaineObjet_t; $messageID_t : Text
 	var $positionCrochet_el; $positionAccolade_el; $positionID_el; $positionVirgule_el : Integer
+	var $detail_o : Object
 	
 	// Petite galère qui fait bien chier, je vais devoir passer en revu ma chaine $resultatHTTP car l'ID du message est supérieur à la valeur autorisée par la commande JSON PARSE ±10.421e±10...
 	$demonteChaine_t:=$1
 	$positionCrochet_el:=Position:C15("["; $demonteChaine_t)
 	
 	If ($positionCrochet_el>0)
-		$demonteChaine_t:=Delete string:C232($demonteChaine_t; 1; $positionCrochet_el+1)
-		
+		$demonteChaine_t:=Delete string:C232($demonteChaine_t; 1; $positionCrochet_el)
 		$positionCrochet_el:=Position:C15("]"; $demonteChaine_t)
+		
 		If ($positionCrochet_el>0)
 			$demonteChaine_t:=Substring:C12($demonteChaine_t; 1; $positionCrochet_el-1)
 			
@@ -234,6 +237,12 @@ Function getMessageID
 					$chaineObjet_t:=Substring:C12($demonteChaine_t; 1; $positionAccolade_el)
 					
 					// $chaineObjet_t devrait ressembler à une chaine comme ça : {...}
+					If (Value type:C1509($2->)=Est une collection:K8:32)
+						$detail_o:=JSON Parse:C1218($chaineObjet_t)
+						
+						$2->push(New object:C1471("arrivedAt"; cmaTimestamp(Date:C102($detail_o.ArrivedAt); Time:C179($detail_o.ArrivedAt)); "messageID"; ""))
+					End if 
+					
 					$positionID_el:=Position:C15("\"ID\" :"; $chaineObjet_t)
 					
 					If ($positionID_el>0)
@@ -244,7 +253,12 @@ Function getMessageID
 							$messageID_t:=Substring:C12($chaineObjet_t; 1; $positionVirgule_el-1)
 							
 							// Enfin on est arrivé au bout !
-							APPEND TO ARRAY:C911($2->; $messageID_t)
+							If (Value type:C1509($2->)=Est une collection:K8:32)
+								$2->[$2->length-1].messageID:=$messageID_t
+							Else 
+								APPEND TO ARRAY:C911($2->; $messageID_t)
+							End if 
+							
 						End if 
 						
 					End if 
