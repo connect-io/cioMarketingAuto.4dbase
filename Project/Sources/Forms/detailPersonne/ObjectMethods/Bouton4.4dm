@@ -3,7 +3,6 @@ var $class_o; $table_o : Object
 
 $class_o:=cmaToolGetClass("MAPersonne").new()
 
-//toDo boucler sur chaque propriete de Form et sauvegarder Form.personne
 For each ($propriete_t; Form:C1466)
 	$fieldName_t:=$class_o.getFieldName($propriete_t)
 	

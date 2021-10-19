@@ -205,7 +205,7 @@ Historique
 					
 					// S'il s'agit d'un Courrier ou SMS ou un mail qui possède un corps non vide, on rajoute l'historique de l'envoi
 					If ($canalEnvoi_t#"Email") | (($canalEnvoi_t="Email") & ($corps_t#""))
-						$personne_o.updateCaMarketingStatistic(3; New object:C1471("type"; $canalEnvoi_t; "contenu"; $contenu_t; "statut"; $statut_b))
+						$personne_o.updateCaMarketingStatistic(3; New object:C1471("type"; $canalEnvoi_t; "contenu"; $contenu_t; "statut"; "2"))
 					End if 
 					
 				End if 

@@ -30,6 +30,11 @@ If (Form event code:C388=Sur minuteur:K2:25)
 			
 			Form:C1466.cronosMessage:=""
 			Form:C1466.cronosVerifScenario:=cmaTimestamp(Current date:C33; Current time:C178)+3600  // On incrémente d'1 heure
+		: (Form:C1466.cronosMessage="Gestion des process automatiques personnalisés journalier...")
+			Formula from string:C1601("outilsGestionCronos(1)").call()
+			
+			Form:C1466.cronosMessage:=""
+			Form:C1466.cronosVerifProcessAuto:=cmaTimestamp(Current date:C33+1; ?00:00:00?)  // On incrémente de 24h
 		Else 
 			Form:C1466.cronosMessageDisplay()
 	End case 

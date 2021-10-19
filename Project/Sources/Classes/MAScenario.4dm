@@ -496,7 +496,6 @@ Function saveFileActionScene
 		Else 
 			$chemin_t:=Select document:C905(System folder:C487(Bureau:K41:16); ".4wp"; " title"; Saisie nom de fichier:K24:17)
 			
-			// ToDo
 			If ($chemin_t#"")
 				WP EXPORT DOCUMENT:C1337($3; document; wk 4wp:K81:4; wk normal:K81:7)
 			End if 
