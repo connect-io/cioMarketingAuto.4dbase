@@ -393,9 +393,9 @@ Function sendMailing($configPreCharge_o : Object)
 			If ($canalEnvoi_t#"Email") | (($canalEnvoi_t="Email") & ($corps_t#""))
 				
 				If (Count parameters:C259=0)
-					This:C1470.updateCaMarketingStatistic(3; New object:C1471("type"; $canalEnvoi_t; "contenu4WP"; WParea; "statut"; $statut_b))
+					This:C1470.updateCaMarketingStatistic(3; New object:C1471("type"; $canalEnvoi_t; "contenu4WP"; WParea; "statut"; "2"))
 				Else 
-					This:C1470.updateCaMarketingStatistic(3; New object:C1471("type"; $canalEnvoi_t; "contenu4WP"; $config_o.contenu4WP; "statut"; $statut_b))
+					This:C1470.updateCaMarketingStatistic(3; New object:C1471("type"; $canalEnvoi_t; "contenu4WP"; $config_o.contenu4WP; "statut"; "2"))
 				End if 
 				
 			End if 

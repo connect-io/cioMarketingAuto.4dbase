@@ -218,13 +218,15 @@ Historique
 -----------------------------------------------------------------------------*/
 	var $numOrdre_el : Integer
 	var $continue_b : Boolean
-	var $table_o; $enregistrement_o; $caScenarioEvent_o; $scene_o; $personne_o; $eMail_o; $config_o; $conditionAction_o; $scene_cs; $retour_o; $scenario_o : Object
+	var $table_o; $enregistrement_o; $caScenarioEvent_o; $scene_o; $personne_o; $eMail_o; $config_o; $conditionAction_o; $conditionSaut_o; $scene_cs; $retour_o; $scenario_o : Object
 	var $collection_c : Collection
 	
 	ASSERT:C1129(This:C1470.cronosImage#Null:C1517; "Impossible d'utiliser la fonction cronosAction sans avoir lancer la fonction loadCronos avant")
 	
 	// On recherche toutes les personnes qui ont un scénario actif et dont le prochain check est dépassé
 	$table_o:=ds:C1482.CaPersonneScenario.query("actif = :1 AND tsProchainCheck <= :2"; True:C214; cmaTimestamp(Current date:C33; Current time:C178))
+	
+	$scene_cs:=cmaToolGetClass("MAScene").new()
 	
 	For each ($enregistrement_o; $table_o)
 		$caScenarioEvent_o:=$enregistrement_o.AllCaScenarioEvent
@@ -269,7 +271,6 @@ Historique
 							Else   // S'il n'y en a pas on regarde les deux différents cas
 								
 								If ($caScenarioEvent_o.OneCaScene.numOrdre=$caScenarioEvent_o.OneCaScene.OneCaScenario.AllCaScene.length)  // C'est la dernière scène du scénario et il manque la scène de fin, dommage pour le spectacle...
-									$scene_cs:=cmaToolGetClass("MAScene").new()
 									$scene_cs.loadByPrimaryKey($caScenarioEvent_o.OneCaScene.ID)
 									
 									// Ajout du log
@@ -297,6 +298,7 @@ Historique
 		End if 
 		
 		If ($scene_o#Null:C1517)  // Je dois vérifier si la scène est exécutable
+			$scene_cs.loadByPrimaryKey($scene_o.ID)
 			
 			If ($scene_o.conditionAction.elements=Null:C1517)  // Si pas de condition d'action, on exécute la scène
 				$continue_b:=True:C214
@@ -305,13 +307,44 @@ Historique
 				
 				For each ($conditionAction_o; $scene_o.conditionAction.elements) Until ($continue_b=False:C215)
 					
-					If ($conditionAction_o.formule="")
+					If ($conditionAction_o.formule#"")
 						//$continue_b:=$personne_o.manageConditionActionScene($conditionAction_o.titre; $enregistrement_o.ID)
 					Else 
-						// toDo
+						$continue_b:=$scene_cs.manageConditionAction($conditionAction_o; $enregistrement_o)
 					End if 
 					
 				End for each 
+				
+				If ($continue_b=False:C215)  // Catastrophe, on ne peut pas jouer la scène car toutes les conditions ne sont pas réunis, il faut rappeler tous les comédiens :'(
+					$caScenarioEvent_o.etat:="En cours"
+					
+					$caScenarioEvent_o.save()
+				End if 
+				
+			End if 
+			
+			If ($continue_b=True:C214)
+				
+				If ($scene_o.conditionSaut.elements=Null:C1517)  // Si pas de condition de saut, on exécute la scène
+					$continue_b:=True:C214
+				Else 
+					$personne_o:=$enregistrement_o.OnePersonne
+					
+					For each ($conditionSaut_o; $scene_o.conditionSaut.elements) Until ($continue_b=False:C215)
+						
+						If ($conditionSaut_o.formule#"")
+							//$continue_b:=$personne_o.manageConditionActionScene($conditionSaut_o.titre; $enregistrement_o.ID)
+						Else 
+							$continue_b:=$scene_cs.manageConditionSaut($conditionSaut_o; $enregistrement_o)
+						End if 
+						
+					End for each 
+					
+					If ($continue_b=True:C214)  // Toutes les conditions sont réunis pour qu'on fasse... le grand Saut :D
+						// toDo
+					End if 
+					
+				End if 
 				
 			End if 
 			
@@ -356,7 +389,6 @@ Historique
 			End case 
 			
 			If ($continue_b=True:C214)  // La scène est exécutable, on va voir ce qu'on doit... l'exécuter :D
-				$scene_cs:=cmaToolGetClass("MAScene").new()
 				$scene_cs.loadByPrimaryKey($scene_o.ID)
 				
 				Case of 
