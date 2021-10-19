@@ -16,7 +16,7 @@
 		"onCloseBox",
 		"onTimer"
 	],
-	"windowTitle": "window title",
+	"windowTitle": "Gestion de cronos",
 	"destination": "detailScreen",
 	"pages": [
 		{

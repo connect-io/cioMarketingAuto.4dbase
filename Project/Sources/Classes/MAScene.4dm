@@ -342,6 +342,18 @@ Historique
 											$conditionSaut_o.value:=2
 									End case 
 									
+								Else 
+									
+									If (Picture size:C356($pointeur_p->)=Picture size:C356(Storage:C1525.automation.image["toggle-on"]))
+										OBJECT SET DATA SOURCE:C1264(*; cmaToolMinuscFirstChar($nomObjet_t); ->toggleOff_i)
+										
+										$conditionSaut_o.value:=0
+									Else 
+										OBJECT SET DATA SOURCE:C1264(*; cmaToolMinuscFirstChar($nomObjet_t); ->toggleOn_i)
+										
+										$conditionSaut_o.value:=1
+									End if 
+									
 								End if 
 								
 						End case 
