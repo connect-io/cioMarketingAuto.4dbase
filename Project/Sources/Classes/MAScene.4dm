@@ -73,10 +73,10 @@ Historique
 18/05/21 - Rémy Scanu <remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
 	var $pos_el; $gauche_el; $haut_el; $droite_el; $bas_el; $hauteur_el : Integer
-	var $conditionAction_o : Object
+	var $conditionAction_o; $paramExtra_o : Object
 	
 	If ($scene_o.conditionAction.elements#Null:C1517)
-		
+		TRACE:C157
 		For each ($conditionAction_o; $scene_o.conditionAction.elements)
 			
 			Case of 
@@ -110,6 +110,30 @@ Historique
 					End if 
 					
 			End case 
+			
+			If ($conditionAction_o.paramExtra.length>0)
+				// Je prends l'objet standard ["booleen";"int"...] pour avoir le $bas_el qui correspond bien
+				OBJECT GET COORDINATES:C663(*; $conditionAction_o.varName[$pos_el-1]; $gauche_el; $haut_el; $droite_el; $bas_el)
+				
+				For each ($paramExtra_o; $conditionAction_o.paramExtra)
+					
+					Case of 
+						: ($conditionAction_o.type="boolean")
+							
+							Case of 
+								: ($paramExtra_o.type="int")
+									// On duplique l'objet standard "texte" et on le repositionne ensuite correctement
+									$pos_el:=$conditionAction_o.paramExtra.indexOf($paramExtra_o)
+									
+									cmaToolDuplicateObjInForm($conditionAction_o.varParamExtra[$pos_el]; $paramExtra_o.label; "Texte"; Est un texte:K8:3; True:C214; 10; $bas_el+20)
+							End case 
+							
+					End case 
+					
+					OBJECT GET COORDINATES:C663(*; $conditionAction_o.varParamExtra[$pos_el]; $gauche_el; $haut_el; $droite_el; $bas_el)
+				End for each 
+				
+			End if 
 			
 		End for each 
 		
