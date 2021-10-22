@@ -1,4 +1,4 @@
-﻿{
+{
 	"$4d": {
 		"version": "1",
 		"kind": "form"
@@ -108,11 +108,27 @@
 					"switchBackWhenReleased": true,
 					"loopBackToFirstFrame": true,
 					"useLastFrameAsDisabled": true
+				},
+				"inputNum": {
+					"type": "input",
+					"left": 573,
+					"top": 80,
+					"width": 160,
+					"height": 20,
+					"dataSourceTypeHint": "number",
+					"entryFilter": "&9",
+					"placeholder": "Zone de saisie de numérique",
+					"numberFormat": "",
+					"method": "ObjectMethods/inputNum.4dm",
+					"visibility": "hidden",
+					"events": [
+						"onDataChange"
+					]
 				}
 			}
 		}
 	],
-	"geometryStamp": 133,
+	"geometryStamp": 134,
 	"editor": {
 		"activeView": "View 1",
 		"defaultView": "View 1",

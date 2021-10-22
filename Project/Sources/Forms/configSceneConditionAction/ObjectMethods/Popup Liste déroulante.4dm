@@ -1,8 +1,8 @@
 var $uuid_t : Text
 var $ajout_b : Boolean
 var $pointeur_p : Pointer
-var $conditionAction_o : Object
-var $collection_c : Collection
+var $conditionAction_o; $paramExtra_o : Object
+var $collection_c; $autreCollection_c : Collection
 
 If (Form:C1466.sceneDetail.conditionAction.elements=Null:C1517)  // Il n'y a pas eu de conditions d'action ajouter pour cette scène
 	$ajout_b:=True:C214
@@ -27,7 +27,14 @@ If ($ajout_b=True:C214)
 	Form:C1466.sceneDetail.conditionAction.elements.push(New object:C1471("titre"; conditionActionList_at{conditionActionList_at}; \
 		"value"; ""; \
 		"formule"; $conditionAction_o.formule; \
-		"type"; $conditionAction_o.type; "id"; $uuid_t))
+		"type"; $conditionAction_o.type; \
+		"id"; $uuid_t))
+	
+	If ($conditionAction_o.paramExtra#Null:C1517)
+		Form:C1466.sceneDetail.conditionAction.elements[Form:C1466.sceneDetail.conditionAction.elements.length-1].paramExtra:=$conditionAction_o.paramExtra
+	Else 
+		Form:C1466.sceneDetail.conditionAction.elements[Form:C1466.sceneDetail.conditionAction.elements.length-1].paramExtra:=New collection:C1472
+	End if 
 	
 	Case of 
 		: ($conditionAction_o.type="boolean")  // S'il s'agit d'une condition d'action "Booléen", on initialise certaines propriétés propre à ces conditions d'action
@@ -46,24 +53,36 @@ If ($ajout_b=True:C214)
 	
 	Case of 
 		: ($conditionAction_o.type="boolean")
-			// On duplique l'objet standard "texte" et on le repositionne ensuite correctement
-			cmaToolDuplicateObjInForm("texteBooleen"+String:C10($collection_c.length); $conditionAction_o.label; "Texte"; Est un texte:K8:3; True:C214; 10; 10)
-			
-			// On duplique l'objet standard "booleen" et on le repositionne ensuite correctement
-			If (Num:C11($conditionAction_o.nombreEtat)=3)
-				cmaToolDuplicateObjInForm("imageBooleen"+String:C10($collection_c.length); ->toggle_i; "imageBooleen"; Est une variable chaîne:K8:2; True:C214; 10; 40)
-			Else 
-				cmaToolDuplicateObjInForm("imageBooleen"+String:C10($collection_c.length); ->toggleOff_i; "imageBooleen"; Est une variable chaîne:K8:2; True:C214; 10; 40)
-			End if 
-			
-			cmaToolDuplicateObjInForm("deleteItemBooleen"+String:C10($collection_c.length); Null:C1517; "deleteItem"; Est un pointeur:K8:14; True:C214; 430; 44)
-			
 			// On sauvegarde le nom de la variable pour la restituer ensuite au chargement la prochaine fois
 			Form:C1466.sceneDetail.conditionAction.elements[Form:C1466.sceneDetail.conditionAction.elements.length-1].varName:=New collection:C1472("texteBooleen"+String:C10($collection_c.length); \
 				"imageBooleen"+String:C10($collection_c.length); \
 				"deleteItemBooleen"+String:C10($collection_c.length))
 	End case 
 	
+	If ($conditionAction_o.paramExtra#Null:C1517)
+		Form:C1466.sceneDetail.conditionAction.elements[Form:C1466.sceneDetail.conditionAction.elements.length-1].varParamExtra:=New collection:C1472
+		
+		Case of 
+			: ($conditionAction_o.type="boolean")
+				
+				For each ($paramExtra_o; $conditionAction_o.paramExtra)
+					Form:C1466.sceneDetail.conditionAction.elements[Form:C1466.sceneDetail.conditionAction.elements.length-1].varParamExtra.push("texteBooleen"+String:C10($collection_c.length)+"ParamExtra"+\
+						cmaToolMajuscFirstChar($paramExtra_o.type)+String:C10($conditionAction_o.paramExtra.indexOf($paramExtra_o)+1))
+					
+					If ($paramExtra_o.format="input")
+						Form:C1466.sceneDetail.conditionAction.elements[Form:C1466.sceneDetail.conditionAction.elements.length-1].varParamExtra.push("texteBooleen"+String:C10($collection_c.length)+"ParamExtra"+\
+							cmaToolMajuscFirstChar($paramExtra_o.type)+String:C10($conditionAction_o.paramExtra.indexOf($paramExtra_o)+1)+"Input")
+					End if 
+					
+				End for each 
+				
+		End case 
+		
+	End if 
+	
+	conditionActionList_at:=0
+	
+	Form:C1466.sceneClass.loadConditionActionDisplay(Form:C1466.sceneDetail)
 Else 
 	ALERT:C41("Impossible de rajouter cette condition d'action car elle existe déjà")
 End if 
