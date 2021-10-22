@@ -27,7 +27,8 @@ If ($ajout_b=True:C214)
 	Form:C1466.sceneDetail.conditionSaut.elements.push(New object:C1471("titre"; conditionSautList_at{conditionSautList_at}; \
 		"value"; ""; \
 		"formule"; $conditionSaut_o.formule; \
-		"type"; $conditionSaut_o.type; "id"; $uuid_t))
+		"type"; $conditionSaut_o.type; \
+		"id"; $uuid_t))
 	
 	Case of 
 		: ($conditionSaut_o.type="boolean")  // S'il s'agit d'une condition de saut "Booléen", on initialise certaines propriétés propre à ces conditions de saut
@@ -46,23 +47,15 @@ If ($ajout_b=True:C214)
 	
 	Case of 
 		: ($conditionSaut_o.type="boolean")
-			// On duplique l'objet standard "texte" et on le repositionne ensuite correctement
-			cmaToolDuplicateObjInForm("texteBooleen"+String:C10($collection_c.length); $conditionSaut_o.label; "Texte"; Est un texte:K8:3; True:C214; 10; 10)
-			
-			// On duplique l'objet standard "booleen" et on le repositionne ensuite correctement
-			If (Num:C11($conditionSaut_o.nombreEtat)=3)
-				cmaToolDuplicateObjInForm("imageBooleen"+String:C10($collection_c.length); ->toggle_i; "imageBooleen"; Est une variable chaîne:K8:2; True:C214; 10; 40)
-			Else 
-				cmaToolDuplicateObjInForm("imageBooleen"+String:C10($collection_c.length); ->toggleOff_i; "imageBooleen"; Est une variable chaîne:K8:2; True:C214; 10; 40)
-			End if 
-			
-			cmaToolDuplicateObjInForm("deleteItemBooleen"+String:C10($collection_c.length); Null:C1517; "deleteItem"; Est un pointeur:K8:14; True:C214; 430; 44)
-			
 			// On sauvegarde le nom de la variable pour la restituer ensuite au chargement la prochaine fois
 			Form:C1466.sceneDetail.conditionSaut.elements[Form:C1466.sceneDetail.conditionSaut.elements.length-1].varName:=New collection:C1472("texteBooleen"+String:C10($collection_c.length); \
 				"imageBooleen"+String:C10($collection_c.length); \
 				"deleteItemBooleen"+String:C10($collection_c.length))
 	End case 
+	
+	conditionSautList_at:=0
+	
+	Form:C1466.sceneClass.loadConditionSautDisplay(Form:C1466.sceneDetail)
 	
 Else 
 	ALERT:C41("Impossible de rajouter cette condition de saut car elle existe déjà")

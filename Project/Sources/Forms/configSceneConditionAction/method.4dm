@@ -28,6 +28,7 @@ Case of
 		// On désactive les éléments qui servent à générer visuellement les conditions d'action
 		OBJECT SET ENABLED:C1123(*; "imageBooleen"; False:C215)
 		OBJECT SET ENABLED:C1123(*; "deleteItem"; False:C215)
+		OBJECT SET ENABLED:C1123(*; "inputNum"; False:C215)
 		
 		OBJECT SET ENABLED:C1123(*; "deleteConditionAction"; False:C215)
 End case 
