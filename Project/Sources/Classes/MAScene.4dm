@@ -277,7 +277,7 @@ Permet de gérer les différents condition d'action possible
 Historique
 19/10/21 - Rémy Scanu <remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
-	var $table_o; $enregistrement_o; $autreTable_o; $autreEnregistrement_o : Object
+	var $table_o; $enregistrement_o; $autreTable_o; $autreEnregistrement_o; $paramExtra_o : Object
 	var $collection_c : Collection
 	
 	ASSERT:C1129(This:C1470.scene#Null:C1517; "Impossible d'utiliser la fonction manageConditionAction sans une scène de définie.")
@@ -306,6 +306,12 @@ Historique
 							Case of 
 								: ($conditionAction_o.value=1)  // Le mail doit avoir été ouvert
 									$continue_b:=($autreEnregistrement_o.lastOpened>$collection_c[0].eventTs) | ($autreEnregistrement_o.lastClicked>$collection_c[0].eventTs)
+									
+									// Ajout des paramètres de temps et de répétition
+									If ($continue_b=False:C215)
+										$continue_b:=(cmaTimestamp(Current date:C33; Current time:C178)>($collection_c[0].eventTs+($conditionAction_o.paramExtra[0].value*$conditionAction_o.paramExtra[1].value)))  // Le délai est dépassé, on peut passer outre et lancer les comédiens qui s'impatientaient...
+									End if 
+									
 								: ($conditionAction_o.value=0)  // Le mail ne doit pas avoir été ouvert ou cliqué
 									$continue_b:=Not:C34(($autreEnregistrement_o.lastOpened>$collection_c[0].eventTs) | ($autreEnregistrement_o.lastClicked>$collection_c[0].eventTs))
 							End case 
@@ -440,9 +446,15 @@ Historique
 								: ($conditionAction_o.paramExtra[$posBis_el-1].type="boolean")
 								: ($conditionAction_o.paramExtra[$posBis_el-1].type="int")
 									
-									Use ($conditionAction_o.paramExtra)
+									If (Application type:C494=4D mode local:K5:1)
+										
+										Use ($conditionAction_o.paramExtra)
+											$conditionAction_o.paramExtra[$posBis_el-1].value:=Num:C11($pointeur_p->)
+										End use 
+										
+									Else 
 										$conditionAction_o.paramExtra[$posBis_el-1].value:=Num:C11($pointeur_p->)
-									End use 
+									End if 
 									
 							End case 
 							
