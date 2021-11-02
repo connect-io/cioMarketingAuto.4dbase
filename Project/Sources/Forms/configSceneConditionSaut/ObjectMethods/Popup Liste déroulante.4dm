@@ -30,6 +30,13 @@ If ($ajout_b=True:C214)
 		"type"; $conditionSaut_o.type; \
 		"id"; $uuid_t))
 	
+	If ($conditionSaut_o.paramExtra#Null:C1517)
+		Form:C1466.sceneDetail.conditionSaut.elements[Form:C1466.sceneDetail.conditionSaut.elements.length-1].paramExtra:=$conditionSaut_o.paramExtra
+	Else 
+		Form:C1466.sceneDetail.conditionSaut.elements[Form:C1466.sceneDetail.conditionSaut.elements.length-1].paramExtra:=New collection:C1472
+	End if 
+	
+	
 	Case of 
 		: ($conditionSaut_o.type="boolean")  // S'il s'agit d'une condition de saut "Booléen", on initialise certaines propriétés propre à ces conditions de saut
 			
@@ -53,10 +60,31 @@ If ($ajout_b=True:C214)
 				"deleteItemBooleen"+String:C10($collection_c.length))
 	End case 
 	
-	conditionSautList_at:=0
+	If ($conditionSaut_o.paramExtra#Null:C1517)
+		Form:C1466.sceneDetail.conditionSaut.elements[Form:C1466.sceneDetail.conditionSaut.elements.length-1].varParamExtra:=New collection:C1472
+		
+		Case of 
+			: ($conditionSaut_o.type="boolean")
+				
+				For each ($paramExtra_o; $conditionSaut_o.paramExtra)
+					Form:C1466.sceneDetail.conditionSaut.elements[Form:C1466.sceneDetail.conditionSaut.elements.length-1].varParamExtra.push("texteBooleen"+String:C10($collection_c.length)+"ParamExtra"+\
+						cmaToolMajuscFirstChar($paramExtra_o.type)+String:C10($conditionSaut_o.paramExtra.indexOf($paramExtra_o)+1))
+					
+					If ($paramExtra_o.format="input")
+						Form:C1466.sceneDetail.conditionSaut.elements[Form:C1466.sceneDetail.conditionSaut.elements.length-1].varParamExtra.push("texteBooleen"+String:C10($collection_c.length)+"ParamExtra"+\
+							cmaToolMajuscFirstChar($paramExtra_o.type)+String:C10($conditionSaut_o.paramExtra.indexOf($paramExtra_o)+1)+"Input")
+					End if 
+					
+				End for each 
+				
+		End case 
+		
+	End if 
 	
+	conditionSautList_at:=0
 	Form:C1466.sceneClass.loadConditionSautDisplay(Form:C1466.sceneDetail)
 	
+	OBJECT SET ENABLED:C1123(sceneSaut_at; True:C214)
 Else 
 	ALERT:C41("Impossible de rajouter cette condition de saut car elle existe déjà")
 End if 

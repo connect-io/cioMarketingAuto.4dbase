@@ -39,19 +39,25 @@ If (Form:C1466.SceneCurrentElement#Null:C1517) & (Form:C1466.ScenarioCurrentElem
 	End if 
 	
 	If ($continue_b=True:C214)
-		$retour_o:=Form:C1466.sceneDetail.save()
 		
-		If ($retour_o.success=False:C215)
-			// Avertir l'utilisateur
+		If (Form:C1466.sceneDetail.conditionSaut.elements#Null:C1517) & (Num:C11(Form:C1466.sceneDetail.conditionSaut.sceneSautID)=0)
+			ALERT:C41("Aucune scène n'a été sélectionnée dans les conditions de saut, merci de sélectionner une scène OU supprimer toutes les conditions de saut !")
+		Else 
+			$retour_o:=Form:C1466.sceneDetail.save()
+			
+			If ($retour_o.success=False:C215)
+				// Avertir l'utilisateur
+			End if 
+			
+			// On rafraîchi les entités
+			Form:C1466.sceneDetail.reload()
+			Form:C1466.scenarioDetail.reload()
+			
+			Form:C1466.scene:=Form:C1466.scenarioDetail.AllCaScene.orderBy("numOrdre asc")
+			
+			LISTBOX SELECT ROW:C912(*; "sceneListe"; Form:C1466.SceneCurrentPosition)
 		End if 
 		
-		// On rafraîchi les entités
-		Form:C1466.sceneDetail.reload()
-		Form:C1466.scenarioDetail.reload()
-		
-		Form:C1466.scene:=Form:C1466.scenarioDetail.AllCaScene.orderBy("numOrdre asc")
-		
-		LISTBOX SELECT ROW:C912(*; "sceneListe"; Form:C1466.SceneCurrentPosition)
 	Else 
 		ALERT:C41("Impossible de sauvegarder la scène, un scénario suivant est obligatoire !")
 	End if 

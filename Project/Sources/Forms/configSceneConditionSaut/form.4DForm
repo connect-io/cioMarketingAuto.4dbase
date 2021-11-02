@@ -12,9 +12,10 @@
 	"rightMargin": 10,
 	"bottomMargin": 10,
 	"events": [
-		"onLoad"
+		"onLoad",
+		"onCloseBox"
 	],
-	"windowTitle": "Définition des conditions d'action",
+	"windowTitle": "Définition des conditions de saut",
 	"destination": "detailScreen",
 	"pages": [
 		{
@@ -89,7 +90,7 @@
 					"loopBackToFirstFrame": true,
 					"useLastFrameAsDisabled": true
 				},
-				"deleteConditionAction": {
+				"deleteConditionSaut": {
 					"type": "pictureButton",
 					"left": 743,
 					"top": 40,
@@ -101,8 +102,56 @@
 					],
 					"dataSource": "",
 					"picture": "/RESOURCES/Images/delete-item.png",
-					"method": "ObjectMethods/deleteConditionAction.4dm",
+					"method": "ObjectMethods/deleteConditionSaut.4dm",
 					"visibility": "hidden",
+					"switchContinuously": false,
+					"switchWhenRollover": false,
+					"switchBackWhenReleased": true,
+					"loopBackToFirstFrame": true,
+					"useLastFrameAsDisabled": true
+				},
+				"inputNum": {
+					"type": "input",
+					"left": 573,
+					"top": 80,
+					"width": 160,
+					"height": 20,
+					"dataSourceTypeHint": "number",
+					"entryFilter": "&9",
+					"placeholder": "Zone de saisie de numérique",
+					"numberFormat": "",
+					"method": "ObjectMethods/inputNum.4dm",
+					"visibility": "hidden",
+					"events": [
+						"onDataChange"
+					]
+				},
+				"selectSceneSaut": {
+					"type": "dropdown",
+					"left": 483,
+					"top": 166,
+					"width": 250,
+					"height": 20,
+					"events": [
+						"onDataChange"
+					],
+					"dataSource": "sceneSaut_at",
+					"method": "ObjectMethods/selectSceneSaut.4dm"
+				},
+				"deleteSceneSaut": {
+					"type": "pictureButton",
+					"left": 743,
+					"top": 166,
+					"width": 20,
+					"height": 20,
+					"events": [
+						"onClick",
+						"onMouseMove"
+					],
+					"dataSource": "",
+					"picture": "/RESOURCES/Images/delete-item.png",
+					"method": "ObjectMethods/deleteSceneSaut.4dm",
+					"visibility": "visible",
 					"switchContinuously": false,
 					"switchWhenRollover": false,
 					"switchBackWhenReleased": true,
@@ -112,7 +161,7 @@
 			}
 		}
 	],
-	"geometryStamp": 133,
+	"geometryStamp": 175,
 	"editor": {
 		"activeView": "View 1",
 		"defaultView": "View 1",

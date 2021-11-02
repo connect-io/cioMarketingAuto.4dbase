@@ -217,7 +217,7 @@ Historique
 29/01/21 - Rémy Scanu <remy@connect-io.fr> - Ajout entête
 -----------------------------------------------------------------------------*/
 	var $numOrdre_el : Integer
-	var $continue_b : Boolean
+	var $continue_b; $saut_b : Boolean
 	var $table_o; $enregistrement_o; $caScenarioEvent_o; $scene_o; $personne_o; $eMail_o; $config_o; $conditionAction_o; $conditionSaut_o; $scene_cs; $retour_o; $scenario_o : Object
 	var $collection_c : Collection
 	
@@ -298,32 +298,11 @@ Historique
 		End if 
 		
 		If ($scene_o#Null:C1517)  // Je dois vérifier si la scène est exécutable
-			$scene_cs.loadByPrimaryKey($scene_o.ID)
 			
-			If ($scene_o.conditionAction.elements=Null:C1517)  // Si pas de condition d'action, on exécute la scène
-				$continue_b:=True:C214
-			Else 
-				$personne_o:=$enregistrement_o.OnePersonne
+			Repeat   // Vérification des conditions de saut
+				$scene_cs.loadByPrimaryKey($scene_o.ID)
 				
-				For each ($conditionAction_o; $scene_o.conditionAction.elements) Until ($continue_b=False:C215)
-					
-					If ($conditionAction_o.formule#"")
-						//$continue_b:=$personne_o.manageConditionActionScene($conditionAction_o.titre; $enregistrement_o.ID)
-					Else 
-						$continue_b:=$scene_cs.manageConditionAction($conditionAction_o; $enregistrement_o)
-					End if 
-					
-				End for each 
-				
-				If ($continue_b=False:C215)  // Catastrophe, on ne peut pas jouer la scène car toutes les conditions ne sont pas réunis, il faut rappeler tous les comédiens :'(
-					$caScenarioEvent_o.etat:="En cours"
-					
-					$caScenarioEvent_o.save()
-				End if 
-				
-			End if 
-			
-			If ($continue_b=True:C214)
+				CLEAR VARIABLE:C89($saut_b)
 				
 				If ($scene_o.conditionSaut.elements=Null:C1517)  // Si pas de condition de saut, on exécute la scène
 					$continue_b:=True:C214
@@ -341,7 +320,43 @@ Historique
 					End for each 
 					
 					If ($continue_b=True:C214)  // Toutes les conditions sont réunis pour qu'on fasse... le grand Saut :D
-						// toDo
+						$scene_o:=ds:C1482.CaScene.get($scene_o.conditionSaut.sceneSautID)
+						
+						If ($scene_o#Null:C1517)  // La scène a bien été trouvé, on note qu'on change de scène dans les logs
+							$scene_cs.addScenarioEvent("Changement de scène"; $enregistrement_o.ID)
+							
+							$saut_b:=True:C214
+						Else 
+							$continue_b:=False:C215
+						End if 
+						
+					End if 
+					
+				End if 
+				
+			Until ($saut_b=False:C215)
+			
+			If ($continue_b=True:C214)  // Vérification des conditions d'action
+				
+				If ($scene_o.conditionAction.elements=Null:C1517)  // Si pas de condition d'action, on exécute la scène
+					$continue_b:=True:C214
+				Else 
+					$personne_o:=$enregistrement_o.OnePersonne
+					
+					For each ($conditionAction_o; $scene_o.conditionAction.elements) Until ($continue_b=False:C215)
+						
+						If ($conditionAction_o.formule#"")
+							//$continue_b:=$personne_o.manageConditionActionScene($conditionAction_o.titre; $enregistrement_o.ID)
+						Else 
+							$continue_b:=$scene_cs.manageConditionAction($conditionAction_o; $enregistrement_o)
+						End if 
+						
+					End for each 
+					
+					If ($continue_b=False:C215)  // Catastrophe, on ne peut pas jouer la scène car toutes les conditions ne sont pas réunis, il faut rappeler tous les comédiens :'(
+						$caScenarioEvent_o.etat:="En cours"
+						
+						$caScenarioEvent_o.save()
 					End if 
 					
 				End if 
