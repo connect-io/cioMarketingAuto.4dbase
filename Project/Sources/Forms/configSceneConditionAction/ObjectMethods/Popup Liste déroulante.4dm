@@ -16,7 +16,7 @@ If ($ajout_b=True:C214)
 	$uuid_t:=Generate UUID:C1066
 	
 	// On charge la condition d'action sélectionné par l'utilisateur depuis le fichier de config
-	$conditionAction_o:=Storage:C1525.automation.sceneConditionAction.elements.query("titre = :1"; conditionActionList_at{conditionActionList_at})[0]
+	$conditionAction_o:=OB Copy:C1225(Storage:C1525.automation.sceneConditionAction.elements.query("titre = :1"; conditionActionList_at{conditionActionList_at})[0])
 	
 	// S'il n'y a pas déjà eu d'ajout de condition d'action on initialise la collection
 	If (Form:C1466.sceneDetail.conditionAction.elements=Null:C1517)
@@ -69,9 +69,18 @@ If ($ajout_b=True:C214)
 					Form:C1466.sceneDetail.conditionAction.elements[Form:C1466.sceneDetail.conditionAction.elements.length-1].varParamExtra.push("texteBooleen"+String:C10($collection_c.length)+"ParamExtra"+\
 						cmaToolMajuscFirstChar($paramExtra_o.type)+String:C10($conditionAction_o.paramExtra.indexOf($paramExtra_o)+1))
 					
-					If ($paramExtra_o.format="input")
+					If ($paramExtra_o.format="input") | ($paramExtra_o.format="inputDelai")
 						Form:C1466.sceneDetail.conditionAction.elements[Form:C1466.sceneDetail.conditionAction.elements.length-1].varParamExtra.push("texteBooleen"+String:C10($collection_c.length)+"ParamExtra"+\
-							cmaToolMajuscFirstChar($paramExtra_o.type)+String:C10($conditionAction_o.paramExtra.indexOf($paramExtra_o)+1)+"Input")
+							cmaToolMajuscFirstChar($paramExtra_o.type)+String:C10($conditionAction_o.paramExtra.indexOf($paramExtra_o)+1)+Choose:C955($paramExtra_o.format="input"; "Input"; "InputDelai"))
+						
+						If ($paramExtra_o.format="inputDelai")
+							Form:C1466.sceneDetail.conditionAction.elements[Form:C1466.sceneDetail.conditionAction.elements.length-1].varParamExtra.push("texteBooleen"+String:C10($collection_c.length)+"ParamExtra"+\
+								cmaToolMajuscFirstChar($paramExtra_o.type)+String:C10($conditionAction_o.paramExtra.indexOf($paramExtra_o)+1)+"InputDelaiUp"; "texteBooleen"+String:C10($collection_c.length)+"ParamExtra"+\
+								cmaToolMajuscFirstChar($paramExtra_o.type)+String:C10($conditionAction_o.paramExtra.indexOf($paramExtra_o)+1)+"InputDelaiDown"; "texteBooleen"+String:C10($collection_c.length)+"ParamExtra"+\
+								cmaToolMajuscFirstChar($paramExtra_o.type)+String:C10($conditionAction_o.paramExtra.indexOf($paramExtra_o)+1)+"InputDelaiEchelle"; "texteBooleen"+String:C10($collection_c.length)+"ParamExtra"+\
+								cmaToolMajuscFirstChar($paramExtra_o.type)+String:C10($conditionAction_o.paramExtra.indexOf($paramExtra_o)+1)+"InputDelaiEchelleChange")
+						End if 
+						
 					End if 
 					
 				End for each 

@@ -42,9 +42,22 @@ Historique
 			$caScenarioEvent_o.etat:="En cours"
 			
 			$caScenarioEvent_o.information:="Envoi d'un email"
+		: ($action_t="Évènement mailjet@")
+			$caScenarioEvent_o.etat:="Évènement mailjet"
+			
+			$caScenarioEvent_o.tsMiseAJour:=cmaTimestamp(Current date:C33; Current time:C178)
+			
+			Case of 
+				: ($action_t="Évènement mailjet, mail ouvert")
+					$caScenarioEvent_o.information:="Mailing ouvert"
+				: ($action_t="Évènement mailjet, mail cliqué")
+					$caScenarioEvent_o.information:="Mailing cliqué"
+			End case 
+			
 		: ($action_t="Changement de scène")
 			$caScenarioEvent_o.etat:="Terminé"
 			
+			$caScenarioEvent_o.tsMiseAJour:=cmaTimestamp(Current date:C33; Current time:C178)
 			$caScenarioEvent_o.information:="Changement de scène à cause d'une condition de saut"
 		: ($action_t="Changement de scénario") | ($action_t="Fin du scénario")
 			$caScenarioEvent_o.etat:="Terminé"
@@ -76,8 +89,8 @@ Permet de faire le chargement visuel des différentes conditions d'action d'une 
 Historique
 18/05/21 - Rémy Scanu <remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
-	var $objectName_t; $objectNameParamExtra_t; $varName_t; $autreVarName_t : Text
-	var $pos_el; $gauche_el; $haut_el; $droite_el; $bas_el; $hauteur_el; $initInput_el; $indiceError_el; $posBis_el : Integer
+	var $objectName_t; $objectNameParamExtra_t; $varName_t; $autreVarName_t; $initInput_t : Text
+	var $pos_el; $gauche_el; $haut_el; $droite_el; $bas_el; $hauteur_el; $initInput_el; $indiceError_el; $posBis_el; $i_el : Integer
 	var $stop_b : Boolean
 	var $pointeur_p : Pointer
 	var $conditionAction_o; $paramExtra_o : Object
@@ -142,9 +155,12 @@ Historique
 								// On duplique l'objet standard "texte" et on le repositionne ensuite correctement
 								$pos_el:=$conditionAction_o.paramExtra.indexOf($paramExtra_o)
 								
-								If ($conditionAction_o.varParamExtra[$pos_el]="@Input@")  //Si le paramExtra précédent avait besoin d'un input
-									$pos_el:=$pos_el+1
-								End if 
+								Case of 
+									: ($conditionAction_o.varParamExtra[$pos_el]="@InputDelai@")  //Si le paramExtra précédent avait besoin d'un input délai
+										$pos_el:=$pos_el+5
+									: ($conditionAction_o.varParamExtra[$pos_el]="@Input@")  //Si le paramExtra précédent avait besoin d'un input
+										$pos_el:=$pos_el+1
+								End case 
 								
 								If (Mod:C98($conditionAction_o.paramExtra.indexOf($paramExtra_o)+1; 2)=0)  // Si l'indice du X° paramExtra est un nombre paire
 									cmaToolDuplicateObjInForm($conditionAction_o.varParamExtra[$pos_el]; $paramExtra_o.label; "Texte"; Est un texte:K8:3; True:C214; 250; $bas_el+20)
@@ -157,29 +173,85 @@ Historique
 								Case of 
 									: ($paramExtra_o.format="input")
 										
+										// On duplique la zone de saisie numérique
 										If (Mod:C98($conditionAction_o.paramExtra.indexOf($paramExtra_o)+1; 2)=0)  // Si l'indice du X° paramExtra est un nombre paire
 											cmaToolDuplicateObjInForm($conditionAction_o.varParamExtra[$pos_el+1]; ->$initInput_el; "inputNum"; Est un pointeur:K8:14; True:C214; 250; $bas_el+20)
 										Else 
 											cmaToolDuplicateObjInForm($conditionAction_o.varParamExtra[$pos_el+1]; ->$initInput_el; "inputNum"; Est un pointeur:K8:14; True:C214; 10; $bas_el+20)
 										End if 
 										
-										$pointeur_p:=OBJECT Get pointer:C1124(Objet nommé:K67:5; $conditionAction_o.varParamExtra[$pos_el+1])
+									: ($paramExtra_o.format="inputDelai")
 										
-										If (Is nil pointer:C315($pointeur_p)=False:C215)
-											$posBis_el:=Num:C11(Substring:C12($conditionAction_o.varParamExtra[$pos_el+1]; Position:C15("Param"; $conditionAction_o.varParamExtra[$pos_el+1])))
-											
-											$pointeur_p->:=$conditionAction_o.paramExtra[$posBis_el-1].value
+										// On duplique d'abord la zone de saisie numérique du délai
+										If (Mod:C98($conditionAction_o.paramExtra.indexOf($paramExtra_o)+1; 2)=0)  // Si l'indice du X° paramExtra est un nombre paire
+											cmaToolDuplicateObjInForm($conditionAction_o.varParamExtra[$pos_el+1]; ->$initInput_el; "inputDelai"; Est un pointeur:K8:14; True:C214; 250; $bas_el+20)
+										Else 
+											cmaToolDuplicateObjInForm($conditionAction_o.varParamExtra[$pos_el+1]; ->$initInput_el; "inputDelai"; Est un pointeur:K8:14; True:C214; 10; $bas_el+20)
 										End if 
+										
+										// Puis les boutons "inputDelaiUp, "inputDelaiDown", "inputDelaiEchelle" et "inputDelaiEchelleChange"
+										For ($i_el; 1; 4)
+											OBJECT GET COORDINATES:C663(*; $conditionAction_o.varParamExtra[$pos_el+$i_el]; $gauche_el; $haut_el; $droite_el; $bas_el)
+											
+											Case of 
+												: ($i_el=1)
+													cmaToolDuplicateObjInForm($conditionAction_o.varParamExtra[$pos_el+$i_el+1]; Null:C1517; "inputDelaiUp"; Est une image:K8:10; True:C214; $droite_el+15; $haut_el-5)
+												: ($i_el=2)
+													cmaToolDuplicateObjInForm($conditionAction_o.varParamExtra[$pos_el+$i_el+1]; Null:C1517; "inputDelaiDown"; Est une image:K8:10; True:C214; $gauche_el; $bas_el+1)
+												: ($i_el=3)
+													$initInput_t:="jour(s)"
+													
+													cmaToolDuplicateObjInForm($conditionAction_o.varParamExtra[$pos_el+$i_el+1]; "jour(s)"; "inputDelaiEchelleTexte"; Est un texte:K8:3; True:C214; $droite_el+8; $haut_el-9)
+												: ($i_el=4)
+													cmaToolDuplicateObjInForm($conditionAction_o.varParamExtra[$pos_el+$i_el+1]; Null:C1517; "inputDelaiEchelleChange"; Est une image:K8:10; True:C214; $droite_el+10; $haut_el)
+											End case 
+											
+										End for 
 										
 								End case 
 								
+								$pointeur_p:=OBJECT Get pointer:C1124(Objet nommé:K67:5; $conditionAction_o.varParamExtra[$pos_el+1])
+								
+								If (Is nil pointer:C315($pointeur_p)=False:C215)
+									$posBis_el:=Num:C11(Substring:C12($conditionAction_o.varParamExtra[$pos_el+1]; Position:C15("Param"; $conditionAction_o.varParamExtra[$pos_el+1])))
+									
+									If ($paramExtra_o.format="input")
+										$pointeur_p->:=$conditionAction_o.paramExtra[$posBis_el-1].value
+									Else 
+										
+										If ($conditionAction_o.paramExtra[$posBis_el-1].value>0)
+											
+											Case of 
+												: (String:C10($conditionAction_o.paramExtra[$posBis_el-1].echelle)="jour(s)")
+													$pointeur_p->:=Num:C11(Round:C94($conditionAction_o.paramExtra[$posBis_el-1].value/86400; 0))
+												: (String:C10($conditionAction_o.paramExtra[$posBis_el-1].echelle)="semaine(s)")
+													$pointeur_p->:=Num:C11(Round:C94($conditionAction_o.paramExtra[$posBis_el-1].value/(86400*7); 0))
+												: (String:C10($conditionAction_o.paramExtra[$posBis_el-1].echelle)="mois")
+													$pointeur_p->:=Num:C11(Round:C94($conditionAction_o.paramExtra[$posBis_el-1].value/(86400*30); 0))
+												: (String:C10($conditionAction_o.paramExtra[$posBis_el-1].echelle)="année(s)")
+													$pointeur_p->:=Num:C11(Round:C94($conditionAction_o.paramExtra[$posBis_el-1].value/(86400*365); 0))
+											End case 
+											
+											If (String:C10($conditionAction_o.paramExtra[$posBis_el-1].echelle)#"jour(s)")
+												OBJECT SET TITLE:C194(*; $conditionAction_o.varParamExtra[$pos_el+1]+"Echelle"; String:C10($conditionAction_o.paramExtra[$posBis_el-1].echelle))
+											End if 
+											
+										End if 
+										
+									End if 
+									
+								End if 
+								
 						End case 
 						
-						If ($paramExtra_o.format#Null:C1517)  // Si on a un input alors on doit prendre celle-ci en compte pour avoir le $bas_el qui correspond bien car on la générer juste avant
-							$objectNameParamExtra_t:=$conditionAction_o.varParamExtra[$pos_el+1]
-						Else 
-							$objectNameParamExtra_t:=$conditionAction_o.varParamExtra[$pos_el]
-						End if 
+						Case of 
+							: (String:C10($paramExtra_o.format)="inputDelai")  // Si on a un input délai alors on doit prendre le dernier élément de ce groupe d'élément pour avoir le $bas_el qui correspond bien car on la générer juste avant 
+								$objectNameParamExtra_t:=$conditionAction_o.varParamExtra[$pos_el+5]
+							: ($paramExtra_o.format#Null:C1517)  // Si on a un input alors on doit prendre celui-ci en compte pour avoir le $bas_el qui correspond bien car on la générer juste avant
+								$objectNameParamExtra_t:=$conditionAction_o.varParamExtra[$pos_el+1]
+							Else 
+								$objectNameParamExtra_t:=$conditionAction_o.varParamExtra[$pos_el]
+						End case 
 						
 						If (Mod:C98($conditionAction_o.paramExtra.indexOf($paramExtra_o)+1; 2)#0)  // Si l'indice du X° paramExtra est un nombre impaire
 							
@@ -229,8 +301,8 @@ Permet de faire le chargement visuel des différentes conditions de saut d'une s
 Historique
 25/05/21 - Rémy Scanu <remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
-	var $objectName_t; $objectNameParamExtra_t; $varName_t; $autreVarName_t : Text
-	var $pos_el; $gauche_el; $haut_el; $droite_el; $bas_el; $hauteur_el; $initInput_el; $indiceError_el; $posBis_el : Integer
+	var $objectName_t; $objectNameParamExtra_t; $varName_t; $autreVarName_t; $initInput_t : Text
+	var $pos_el; $gauche_el; $haut_el; $droite_el; $bas_el; $hauteur_el; $initInput_el; $indiceError_el; $posBis_el; $i_el : Integer
 	var $stop_b : Boolean
 	var $pointeur_p : Pointer
 	var $conditionSaut_o; $paramExtra_o : Object
@@ -295,9 +367,12 @@ Historique
 								// On duplique l'objet standard "texte" et on le repositionne ensuite correctement
 								$pos_el:=$conditionSaut_o.paramExtra.indexOf($paramExtra_o)
 								
-								If ($conditionSaut_o.varParamExtra[$pos_el]="@Input@")  //Si le paramExtra précédent avait besoin d'un input
-									$pos_el:=$pos_el+1
-								End if 
+								Case of 
+									: ($conditionSaut_o.varParamExtra[$pos_el]="@InputDelai@")  //Si le paramExtra précédent avait besoin d'un input délai
+										$pos_el:=$pos_el+5
+									: ($conditionSaut_o.varParamExtra[$pos_el]="@Input@")  //Si le paramExtra précédent avait besoin d'un input
+										$pos_el:=$pos_el+1
+								End case 
 								
 								If (Mod:C98($conditionSaut_o.paramExtra.indexOf($paramExtra_o)+1; 2)=0)  // Si l'indice du X° paramExtra est un nombre paire
 									cmaToolDuplicateObjInForm($conditionSaut_o.varParamExtra[$pos_el]; $paramExtra_o.label; "Texte"; Est un texte:K8:3; True:C214; 250; $bas_el+20)
@@ -316,23 +391,78 @@ Historique
 											cmaToolDuplicateObjInForm($conditionSaut_o.varParamExtra[$pos_el+1]; ->$initInput_el; "inputNum"; Est un pointeur:K8:14; True:C214; 10; $bas_el+20)
 										End if 
 										
-										$pointeur_p:=OBJECT Get pointer:C1124(Objet nommé:K67:5; $conditionSaut_o.varParamExtra[$pos_el+1])
+									: ($paramExtra_o.format="inputDelai")
 										
-										If (Is nil pointer:C315($pointeur_p)=False:C215)
-											$posBis_el:=Num:C11(Substring:C12($conditionSaut_o.varParamExtra[$pos_el+1]; Position:C15("Param"; $conditionSaut_o.varParamExtra[$pos_el+1])))
-											
-											$pointeur_p->:=$conditionSaut_o.paramExtra[$posBis_el-1].value
+										// On duplique d'abord la zone de saisie numérique du délai
+										If (Mod:C98($conditionSaut_o.paramExtra.indexOf($paramExtra_o)+1; 2)=0)  // Si l'indice du X° paramExtra est un nombre paire
+											cmaToolDuplicateObjInForm($conditionSaut_o.varParamExtra[$pos_el+1]; ->$initInput_el; "inputDelai"; Est un pointeur:K8:14; True:C214; 250; $bas_el+20)
+										Else 
+											cmaToolDuplicateObjInForm($conditionSaut_o.varParamExtra[$pos_el+1]; ->$initInput_el; "inputDelai"; Est un pointeur:K8:14; True:C214; 10; $bas_el+20)
 										End if 
+										
+										// Puis les boutons "inputDelaiUp, "inputDelaiDown", "inputDelaiEchelle" et "inputDelaiEchelleChange"
+										For ($i_el; 1; 4)
+											OBJECT GET COORDINATES:C663(*; $conditionSaut_o.varParamExtra[$pos_el+$i_el]; $gauche_el; $haut_el; $droite_el; $bas_el)
+											
+											Case of 
+												: ($i_el=1)
+													cmaToolDuplicateObjInForm($conditionSaut_o.varParamExtra[$pos_el+$i_el+1]; Null:C1517; "inputDelaiUp"; Est une image:K8:10; True:C214; $droite_el+15; $haut_el-5)
+												: ($i_el=2)
+													cmaToolDuplicateObjInForm($conditionSaut_o.varParamExtra[$pos_el+$i_el+1]; Null:C1517; "inputDelaiDown"; Est une image:K8:10; True:C214; $gauche_el; $bas_el+1)
+												: ($i_el=3)
+													$initInput_t:="jour(s)"
+													
+													cmaToolDuplicateObjInForm($conditionSaut_o.varParamExtra[$pos_el+$i_el+1]; "jour(s)"; "inputDelaiEchelleTexte"; Est un texte:K8:3; True:C214; $droite_el+8; $haut_el-9)
+												: ($i_el=4)
+													cmaToolDuplicateObjInForm($conditionSaut_o.varParamExtra[$pos_el+$i_el+1]; Null:C1517; "inputDelaiEchelleChange"; Est une image:K8:10; True:C214; $droite_el+10; $haut_el)
+											End case 
+											
+										End for 
 										
 								End case 
 								
+								$pointeur_p:=OBJECT Get pointer:C1124(Objet nommé:K67:5; $conditionSaut_o.varParamExtra[$pos_el+1])
+								
+								If (Is nil pointer:C315($pointeur_p)=False:C215)
+									$posBis_el:=Num:C11(Substring:C12($conditionSaut_o.varParamExtra[$pos_el+1]; Position:C15("Param"; $conditionSaut_o.varParamExtra[$pos_el+1])))
+									
+									If ($paramExtra_o.format="input")
+										$pointeur_p->:=$conditionSaut_o.paramExtra[$posBis_el-1].value
+									Else 
+										
+										If ($conditionSaut_o.paramExtra[$posBis_el-1].value>0)
+											
+											Case of 
+												: (String:C10($conditionSaut_o.paramExtra[$posBis_el-1].echelle)="jour(s)")
+													$pointeur_p->:=Num:C11(Round:C94($conditionSaut_o.paramExtra[$posBis_el-1].value/86400; 0))
+												: (String:C10($conditionSaut_o.paramExtra[$posBis_el-1].echelle)="semaine(s)")
+													$pointeur_p->:=Num:C11(Round:C94($conditionSaut_o.paramExtra[$posBis_el-1].value/(86400*7); 0))
+												: (String:C10($conditionSaut_o.paramExtra[$posBis_el-1].echelle)="mois")
+													$pointeur_p->:=Num:C11(Round:C94($conditionSaut_o.paramExtra[$posBis_el-1].value/(86400*30); 0))
+												: (String:C10($conditionSaut_o.paramExtra[$posBis_el-1].echelle)="année(s)")
+													$pointeur_p->:=Num:C11(Round:C94($conditionSaut_o.paramExtra[$posBis_el-1].value/(86400*365); 0))
+											End case 
+											
+											If (String:C10($conditionSaut_o.paramExtra[$posBis_el-1].echelle)#"jour(s)")
+												OBJECT SET TITLE:C194(*; $conditionSaut_o.varParamExtra[$pos_el+1]+"Echelle"; String:C10($conditionSaut_o.paramExtra[$posBis_el-1].echelle))
+											End if 
+											
+										End if 
+										
+									End if 
+									
+								End if 
+								
 						End case 
 						
-						If ($paramExtra_o.format#Null:C1517)  // Si on a un input alors on doit prendre celle-ci en compte pour avoir le $bas_el qui correspond bien car on la générer juste avant
-							$objectNameParamExtra_t:=$conditionSaut_o.varParamExtra[$pos_el+1]
-						Else 
-							$objectNameParamExtra_t:=$conditionSaut_o.varParamExtra[$pos_el]
-						End if 
+						Case of 
+							: (String:C10($paramExtra_o.format)="inputDelai")  // Si on a un input délai alors on doit prendre le dernier élément de ce groupe d'élément pour avoir le $bas_el qui correspond bien car on la générer juste avant 
+								$objectNameParamExtra_t:=$conditionSaut_o.varParamExtra[$pos_el+5]
+							: ($paramExtra_o.format#Null:C1517)  // Si on a un input alors on doit prendre celui-ci en compte pour avoir le $bas_el qui correspond bien car on la générer juste avant
+								$objectNameParamExtra_t:=$conditionSaut_o.varParamExtra[$pos_el+1]
+							Else 
+								$objectNameParamExtra_t:=$conditionSaut_o.varParamExtra[$pos_el]
+						End case 
 						
 						If (Mod:C98($conditionSaut_o.paramExtra.indexOf($paramExtra_o)+1; 2)#0)  // Si l'indice du X° paramExtra est un nombre impaire
 							
@@ -383,7 +513,7 @@ Historique
 19/10/21 - Rémy Scanu <remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
 	var $table_o; $enregistrement_o; $autreTable_o; $autreEnregistrement_o : Object
-	var $collection_c : Collection
+	var $collection_c; $autreCollection_c : Collection
 	
 	ASSERT:C1129(This:C1470.scene#Null:C1517; "Impossible d'utiliser la fonction manageConditionAction sans une scène de définie.")
 	
@@ -407,6 +537,7 @@ Historique
 						$collection_c:=$autreEnregistrement_o.historique.detail.query("eventTs > :1 AND eventTs <= :2"; $enregistrement_o.tsCreation-60; $enregistrement_o.tsCreation)  // Je prends une marge d'1 minute pour être certain de prendre le bon mail
 						
 						If ($collection_c.length>0)  // C'est une solution du à peu près en attendant que je mette en place une solution plus précise
+							$autreCollection_c:=$conditionAction_o.paramExtra.indices("titre = :1"; "Intervalle")
 							
 							Case of 
 								: ($conditionAction_o.value=1)  // Le mail doit avoir été ouvert
@@ -415,9 +546,16 @@ Historique
 									$continue_b:=Not:C34(($autreEnregistrement_o.lastOpened>$collection_c[0].eventTs) | ($autreEnregistrement_o.lastClicked>$collection_c[0].eventTs))
 							End case 
 							
-							// Ajout des paramètres de temps et de répétition
-							If ($continue_b=False:C215)
-								$continue_b:=(cmaTimestamp(Current date:C33; Current time:C178)>($collection_c[0].eventTs+($conditionAction_o.paramExtra[0].value*$conditionAction_o.paramExtra[1].value)))  // Le délai est dépassé, on peut passer outre et lancer les comédiens qui s'impatientaient...
+							If ($continue_b=True:C214) & ($conditionAction_o.paramExtra#Null:C1517)  // La scène peut être jouer mais on va voir les détails maintenant
+								
+								If ($conditionAction_o.paramExtra[$autreCollection_c[0]].value>0)  // Un intervalle de temps a été indiqué
+									
+									If (cmaTimestamp(Current date:C33; Current time:C178)<($collection_c[0].eventTs+$conditionAction_o.paramExtra[$autreCollection_c[0]].value))  // Les conditions sont réunis pour faire un saut de scène mais le délai indiqué dans la condition d'action n'a pas encore été dépassée
+										CLEAR VARIABLE:C89($continue_b)
+									End if 
+									
+								End if 
+								
 							End if 
 							
 						End if 
@@ -439,9 +577,9 @@ Permet de faire la gestion des différentes conditions d'action d'une scène
 Historique
 17/05/21 - Rémy Scanu <remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
-	var $element_t; $varParamExtra_t : Text
+	var $element_t; $varParamExtra_t; $texte_t : Text
 	var $pos_el; $posBis_el; $value_el : Integer
-	var $pointeur_p : Pointer
+	var $pointeurVar_p : Pointer
 	var $conditionAction_o : Object
 	
 	Case of 
@@ -542,7 +680,7 @@ Historique
 							
 						Else   // Il s'agit d'une modification d'un paramExtra d'une condition d'action 
 							
-							If ($conditionAction_o.varParamExtra[$posBis_el]="@Input")  // Il s'agit de la modification d'un objet type [input]
+							If ($conditionAction_o.varParamExtra[$posBis_el]="@Input") | ($conditionAction_o.varParamExtra[$posBis_el]="@InputDelai@")  // Il s'agit de la modification d'un objet type [input]
 								$posBis_el:=Num:C11(Substring:C12($nomObjet_t; Position:C15("Param"; $nomObjet_t)))
 							End if 
 							
@@ -550,11 +688,52 @@ Historique
 								: ($conditionAction_o.paramExtra[$posBis_el-1].type="boolean")
 								: ($conditionAction_o.paramExtra[$posBis_el-1].type="int")
 									
-									If (Application type:C494=4D mode local:K5:1)
+									If ($conditionAction_o.paramExtra[$posBis_el-1].format="inputDelai")
+										$element_t:=Substring:C12($nomObjet_t; 0; Position:C15("Delai"; $nomObjet_t)+4)
 										
-										Use ($conditionAction_o.paramExtra)
-											$conditionAction_o.paramExtra[$posBis_el-1].value:=Num:C11($pointeur_p->)
-										End use 
+										$pointeurVar_p:=OBJECT Get pointer:C1124(Objet nommé:K67:5; $element_t)
+										$texte_t:=OBJECT Get title:C1068(*; $element_t+"Echelle")
+										
+										Case of 
+											: ($nomObjet_t=$element_t)  // Modification de la zone de saisie
+											: ($nomObjet_t=($element_t+"Up"))  // Clic sur le bouton Up
+												$pointeurVar_p->:=Num:C11($pointeurVar_p->)+1
+											: ($nomObjet_t=($element_t+"Down"))  // Clic sur le bouton Down
+												$pointeurVar_p->:=Num:C11($pointeurVar_p->)-1
+											: ($nomObjet_t=($element_t+"EchelleChange"))  // Clic sur le bouton EchelleChange
+												
+												Case of 
+													: ($texte_t="jour(s)")
+														$texte_t:="semaine(s)"
+														
+														OBJECT SET TITLE:C194(*; $element_t+"Echelle"; "semaine(s)")
+													: ($texte_t="semaine(s)")
+														$texte_t:="mois"
+														
+														OBJECT SET TITLE:C194(*; $element_t+"Echelle"; "mois")
+													: ($texte_t="mois")
+														$texte_t:="année(s)"
+														
+														OBJECT SET TITLE:C194(*; $element_t+"Echelle"; "année(s)")
+													: ($texte_t="année(s)")
+														$texte_t:="jour(s)"
+														
+														OBJECT SET TITLE:C194(*; $element_t+"Echelle"; "jour(s)")
+												End case 
+												
+												$conditionAction_o.paramExtra[$posBis_el-1].echelle:=$texte_t
+										End case 
+										
+										Case of 
+											: ($texte_t="jour(s)")
+												$conditionAction_o.paramExtra[$posBis_el-1].value:=Num:C11($pointeurVar_p->)*86400*1
+											: ($texte_t="semaine(s)")
+												$conditionAction_o.paramExtra[$posBis_el-1].value:=Num:C11($pointeurVar_p->)*86400*7
+											: ($texte_t="mois")
+												$conditionAction_o.paramExtra[$posBis_el-1].value:=Num:C11($pointeurVar_p->)*86400*30
+											: ($texte_t="année(s)")
+												$conditionAction_o.paramExtra[$posBis_el-1].value:=Num:C11($pointeurVar_p->)*86400*365
+										End case 
 										
 									Else 
 										$conditionAction_o.paramExtra[$posBis_el-1].value:=Num:C11($pointeur_p->)
@@ -581,7 +760,7 @@ Permet de faire la gestion des différentes conditions de saut d'une scène
 Historique
 25/05/21 - Rémy Scanu <remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
-	var $element_t; $varParamExtra_t : Text
+	var $element_t; $varParamExtra_t; $texte_t : Text
 	var $pos_el; $posBis_el; $value_el : Integer
 	var $pointeur_p : Pointer
 	var $conditionSaut_o : Object
@@ -685,7 +864,7 @@ Historique
 							
 						Else   // Il s'agit d'une modification d'un paramExtra d'une condition de saut
 							
-							If ($conditionSaut_o.varParamExtra[$posBis_el]="@Input")  // Il s'agit de la modification d'un objet type [input]
+							If ($conditionSaut_o.varParamExtra[$posBis_el]="@Input") | ($conditionSaut_o.varParamExtra[$posBis_el]="@InputDelai@")  // Il s'agit de la modification d'un objet type [input]
 								$posBis_el:=Num:C11(Substring:C12($nomObjet_t; Position:C15("Param"; $nomObjet_t)))
 							End if 
 							
@@ -693,11 +872,52 @@ Historique
 								: ($conditionSaut_o.paramExtra[$posBis_el-1].type="boolean")
 								: ($conditionSaut_o.paramExtra[$posBis_el-1].type="int")
 									
-									If (Application type:C494=4D mode local:K5:1)
+									If ($conditionSaut_o.paramExtra[$posBis_el-1].format="inputDelai")
+										$element_t:=Substring:C12($nomObjet_t; 0; Position:C15("Delai"; $nomObjet_t)+4)
 										
-										Use ($conditionSaut_o.paramExtra)
-											$conditionSaut_o.paramExtra[$posBis_el-1].value:=Num:C11($pointeur_p->)
-										End use 
+										$pointeurVar_p:=OBJECT Get pointer:C1124(Objet nommé:K67:5; $element_t)
+										$texte_t:=OBJECT Get title:C1068(*; $element_t+"Echelle")
+										
+										Case of 
+											: ($nomObjet_t=$element_t)  // Modification de la zone de saisie
+											: ($nomObjet_t=($element_t+"Up"))  // Clic sur le bouton Up
+												$pointeurVar_p->:=Num:C11($pointeurVar_p->)+1
+											: ($nomObjet_t=($element_t+"Down"))  // Clic sur le bouton Down
+												$pointeurVar_p->:=Num:C11($pointeurVar_p->)-1
+											: ($nomObjet_t=($element_t+"EchelleChange"))  // Clic sur le bouton EchelleChange
+												
+												Case of 
+													: ($texte_t="jour(s)")
+														$texte_t:="semaine(s)"
+														
+														OBJECT SET TITLE:C194(*; $element_t+"Echelle"; "semaine(s)")
+													: ($texte_t="semaine(s)")
+														$texte_t:="mois"
+														
+														OBJECT SET TITLE:C194(*; $element_t+"Echelle"; "mois")
+													: ($texte_t="mois")
+														$texte_t:="année(s)"
+														
+														OBJECT SET TITLE:C194(*; $element_t+"Echelle"; "année(s)")
+													: ($texte_t="année(s)")
+														$texte_t:="jour(s)"
+														
+														OBJECT SET TITLE:C194(*; $element_t+"Echelle"; "jour(s)")
+												End case 
+												
+												$conditionSaut_o.paramExtra[$posBis_el-1].echelle:=$texte_t
+										End case 
+										
+										Case of 
+											: ($texte_t="jour(s)")
+												$conditionSaut_o.paramExtra[$posBis_el-1].value:=Num:C11($pointeurVar_p->)*86400*1
+											: ($texte_t="semaine(s)")
+												$conditionSaut_o.paramExtra[$posBis_el-1].value:=Num:C11($pointeurVar_p->)*86400*7
+											: ($texte_t="mois")
+												$conditionSaut_o.paramExtra[$posBis_el-1].value:=Num:C11($pointeurVar_p->)*86400*30
+											: ($texte_t="année(s)")
+												$conditionSaut_o.paramExtra[$posBis_el-1].value:=Num:C11($pointeurVar_p->)*86400*365
+										End case 
 										
 									Else 
 										$conditionSaut_o.paramExtra[$posBis_el-1].value:=Num:C11($pointeur_p->)
@@ -725,11 +945,26 @@ Historique
 19/10/21 - Rémy Scanu <remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
 	var $table_o; $enregistrement_o; $autreTable_o; $autreEnregistrement_o : Object
-	var $collection_c : Collection
+	var $collection_c; $autreCollection_c : Collection
 	
 	ASSERT:C1129(This:C1470.scene#Null:C1517; "Impossible d'utiliser la fonction manageConditionSaut sans une scène de définie.")
 	
 	Case of 
+		: ($conditionSaut_o.titre="Mailing ouvert") | ($conditionSaut_o.titre="Mailing cliqué")  // Le mailing de la scène a été ouvert OU cliqué
+			$table_o:=ds:C1482.CaScene.query("scenarioID is :1 AND numOrdre = :2"; This:C1470.scene.scenarioID; This:C1470.scene.numOrdre)
+			
+			If ($table_o.length=1)
+				$enregistrement_o:=$table_o.first()
+				
+				If ($conditionSaut_o.titre="Mailing ouvert")
+					$table_o:=$enregistrement_o.AllCaScenarioEvent.query("information = :1 AND etat # :2 AND personneScenarioID = :3"; "Mailing ouvert"; "Terminé"; $caPersonneScenario_o.ID).orderBy("tsCreation desc")
+				Else 
+					$table_o:=$enregistrement_o.AllCaScenarioEvent.query("information = :1 AND etat # :2 AND personneScenarioID = :3"; "Mailing cliqué"; "Terminé"; $caPersonneScenario_o.ID).orderBy("tsCreation desc")
+				End if 
+				
+				$continue_b:=($table_o.length>0)  // On a bien trouvé un log, on prend le premier puisqu'on a trié par tsCreation décroissant
+			End if 
+			
 		: ($conditionSaut_o.titre="Mail de la scène précédente ouvert")  // On doit chercher si dans une scène précédente, il y en a au moins une qui a l'action Envoi email
 			$table_o:=ds:C1482.CaScene.query("scenarioID is :1 AND numOrdre < :2 AND action = :3"; This:C1470.scene.scenarioID; This:C1470.scene.numOrdre; "Envoi email").orderBy("numOrdre desc")
 			
@@ -749,6 +984,7 @@ Historique
 						$collection_c:=$autreEnregistrement_o.historique.detail.query("eventTs > :1 AND eventTs <= :2"; $enregistrement_o.tsCreation-60; $enregistrement_o.tsCreation)  // Je prends une marge d'1 minute pour être certain de prendre le bon mail
 						
 						If ($collection_c.length>0)  // C'est une solution du à peu près en attendant que je mette en place une solution plus précise
+							$autreCollection_c:=$conditionSaut_o.paramExtra.indices("titre = :1"; "Intervalle")
 							
 							Case of 
 								: ($conditionSaut_o.value=1)  // Le mail doit avoir été ouvert
@@ -756,6 +992,10 @@ Historique
 								: ($conditionSaut_o.value=0)  // Le mail ne doit pas avoir été ouvert ou cliqué
 									$continue_b:=Not:C34(($autreEnregistrement_o.lastOpened>$collection_c[0].eventTs) | ($autreEnregistrement_o.lastClicked>$collection_c[0].eventTs))
 							End case 
+							
+							If ($continue_b=True:C214) & (cmaTimestamp(Current date:C33; Current time:C178)<($collection_c[0].eventTs+$conditionSaut_o.paramExtra[$autreCollection_c[0]].value))  // Les conditions sont réunis pour faire un saut de scène mais le délai indiqué dans la condition de saut n'a pas encore été dépassée
+								CLEAR VARIABLE:C89($continue_b)
+							End if 
 							
 						End if 
 						

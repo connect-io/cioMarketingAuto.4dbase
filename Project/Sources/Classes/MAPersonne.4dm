@@ -413,7 +413,8 @@ Permet de mettre à jour la table marketing
 Historique
 26/01/21 - Grégory Fromain <gregory@connect-io.fr> - Ajout entête
 ------------------------------------------------------------------------------*/
-	var $table_o; $enregistrement_o : Object
+	var $continue_b : Boolean
+	var $table_o; $enregistrement_o; $autreTable_o; $caScenarioEvents_o; $caScenarioEvent_o; $scene_cs; $caScenarioPersonne_o : Object
 	
 	ASSERT:C1129(This:C1470.personne#Null:C1517; "Impossible d'utiliser la fonction updateCaMarketingStatistic sans une personne de définie.")
 	
@@ -442,6 +443,7 @@ Historique
 			// Il faut également mettre à jour les autres champs
 			This:C1470.mailjetGetDetailStat(This:C1470.eMail; "3"; "4"; "7"; "8"; "10")
 		: ($provenance_el=2)  // On souhaite mettre à jour un des event (opened, clicked, unsubscribe ou bounce)
+			$scene_cs:=cmaToolGetClass("MAScene").new()
 			
 			Case of 
 				: (String:C10($detail_o.eventNumber)="3")
@@ -461,6 +463,33 @@ Historique
 				: (String:C10($detail_o.eventNumber)="10")
 					$enregistrement_o.lastBounce:=$detail_o.eventTs
 			End case 
+			
+			// On doit chercher si pour cette personne le mailing de la scène qui a déclenché cet évènement doit déclencher un saut de scène
+			$autreTable_o:=ds:C1482.CaPersonneScenario.query("actif = :1 AND tsProchainCheck > :2"; True:C214; cmaTimestamp(Current date:C33; Current time:C178))
+			
+			If ($autreTable_o.length>0)  // Il y a des scénarios actifs pour la personne
+				$caScenarioEvents_o:=$autreTable_o.AllCaScenarioEvent.query("etat # :1"; "Terminé")
+				
+				For each ($caScenarioEvent_o; $caScenarioEvents_o)
+					$continue_b:=$scene_cs.loadByPrimaryKey($caScenarioEvent_o.OneCaScene.ID)
+					
+					If ($continue_b=True:C214)
+						$caScenarioPersonne_o:=$caScenarioEvent_o.OneCaPersonneScenario
+						
+						Case of 
+							: (String:C10($detail_o.eventNumber)="3")  // Si ouvert, on met à jour le log de la scène de la personne
+								$scene_cs.addScenarioEvent("Évènement mailjet, mail ouvert"; $caScenarioPersonne_o.ID)
+							: (String:C10($detail_o.eventNumber)="4")  // Si clic, on met à jour le log de la scène de la personne
+								$scene_cs.addScenarioEvent("Évènement mailjet, mail cliqué"; $caScenarioPersonne_o.ID)
+						End case 
+						
+						$caScenarioPersonne_o.tsProchainCheck:=cmaTimestamp(Current date:C33; Current time:C178)
+						$caScenarioPersonne_o.save()
+					End if 
+					
+				End for each 
+				
+			End if 
 			
 		: ($provenance_el=3)  // On souhaite mettre à jour l'historique des mailings envoyés à la personne
 			

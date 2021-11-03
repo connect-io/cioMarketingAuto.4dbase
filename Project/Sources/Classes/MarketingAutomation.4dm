@@ -241,10 +241,10 @@ Historique
 			End if 
 			
 		Else   // S'il y a des logs pour le scénario de la personne, on va regarder parmis ceux-ci ceux qui ne sont pas terminés
-			$caScenarioEvent_o:=$caScenarioEvent_o.query("etat # :1"; "Terminé")
+			$caScenarioEvent_o:=$caScenarioEvent_o.query("etat # :1"; "Terminé").orderBy("tsCreation desc")
 			
 			// La dernière scène n'a pas pu se finir
-			If ($caScenarioEvent_o.length=1)
+			If ($caScenarioEvent_o.length>0)
 				$caScenarioEvent_o:=$caScenarioEvent_o.first()
 				
 				Case of 
@@ -291,6 +291,8 @@ Historique
 								
 						End case 
 						
+					: ($caScenarioEvent_o.etat="Évènement mailjet")  // Un évènement mailjet a été détecté
+						$scene_o:=$caScenarioEvent_o.OneCaScene
 				End case 
 				
 			End if 
@@ -330,6 +332,8 @@ Historique
 							$continue_b:=False:C215
 						End if 
 						
+					Else   // On ne peux pas passer à une autre scène, on va voir si on peut quand même la jouer histoire que les comédiens ne se soient pas préparés pour rien :D
+						$continue_b:=True:C214
 					End if 
 					
 				End if 
@@ -359,6 +363,14 @@ Historique
 						$caScenarioEvent_o.save()
 					End if 
 					
+				End if 
+				
+			End if 
+			
+			If (OB Is defined:C1231($caScenarioEvent_o; "length")=False:C215)  // On a déjà des logs pour le scénario de la personne
+				
+				If (String:C10($caScenarioEvent_o.etat)="Évènement mailjet")
+					$continue_b:=Not:C34((String:C10($caScenarioEvent_o.etat)="Évènement mailjet"))
 				End if 
 				
 			End if 
