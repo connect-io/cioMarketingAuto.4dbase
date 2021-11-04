@@ -37,7 +37,11 @@ Function updateStringPersonneForm
 	
 	Case of 
 		: (Num:C11($1.modeSelection)=1) | (Num:C11($1.modeSelection)=2) & (Bool:C1537($1.multiSelection)=False:C215)  // Sélection unique OU Sélection multi-lignes mais qu'une seule ligne sélectionnée
-			$1.resume:=Choose:C955($civilite_t#""; $civilite_t+" "; "")+$1.nom+" "+$1.prenom+", habite à "+$1.ville+" ("+$1.codePostal+")."
+			$1.resume:=Choose:C955($civilite_t#""; $civilite_t+" "; "")+$1.nom+" "+$1.prenom+", habite à "+$1.ville+" ("+$1.codePostal+")."+Char:C90(Retour à la ligne:K15:40)
+			
+			$1.resume:=$1.resume+"• Adresse email : "+$1.eMail+Char:C90(Retour à la ligne:K15:40)
+			$1.resume:=$1.resume+"• Téléphone fixe : "+$1.telFixe+Char:C90(Retour à la ligne:K15:40)
+			$1.resume:=$1.resume+"• Téléphone portable : "+$1.telMobile
 			
 			$class_o:=cmaToolGetClass("MAPersonne").new()
 			$class_o.loadByPrimaryKey($1.UID)
@@ -62,7 +66,6 @@ Function updateStringPersonneForm
 					End case 
 					
 					$1.resumeMarketing:=$1.resumeMarketing+Char:C90(Retour à la ligne:K15:40)
-					
 					$1.resumeMarketing:=$1.resumeMarketing+"Dernière(s) activité(s) des mails envoyés :"+Char:C90(Retour à la ligne:K15:40)
 					
 					If ($table_o.lastOpened#0)
@@ -161,7 +164,7 @@ Function viewPersonList
 	End case 
 	
 	If ($continue_b=True:C214)
-		$class_o.toCollectionAndExtractField(New collection:C1472("UID"; "sexe"; "nom"; "prenom"; "codePostal"; "ville"))
+		$class_o.toCollectionAndExtractField(New collection:C1472("UID"; "sexe"; "nom"; "prenom"; "codePostal"; "ville"; "eMail"; "telFixe"; "telMobile"))
 		
 		Form:C1466.personneCollectionInit:=$class_o.personneCollection
 		$1.personneCollection:=$class_o.personneCollection

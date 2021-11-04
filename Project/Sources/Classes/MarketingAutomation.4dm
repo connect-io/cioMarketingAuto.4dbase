@@ -217,8 +217,8 @@ Historique
 29/01/21 - Rémy Scanu <remy@connect-io.fr> - Ajout entête
 -----------------------------------------------------------------------------*/
 	var $numOrdre_el : Integer
-	var $continue_b; $saut_b : Boolean
-	var $table_o; $enregistrement_o; $caScenarioEvent_o; $scene_o; $personne_o; $eMail_o; $config_o; $conditionAction_o; $conditionSaut_o; $scene_cs; $retour_o; $scenario_o : Object
+	var $continue_b; $saut_b; $sautEffectue_b : Boolean
+	var $table_o; $enregistrement_o; $caScenarioEvent_o; $scene_o; $personne_o; $eMail_o; $config_o; $conditionAction_o; $conditionSaut_o; $scene_cs; $retour_o; $scenario_o; $autreTable_o; $autreEnregistrement_o : Object
 	var $collection_c : Collection
 	
 	ASSERT:C1129(This:C1470.cronosImage#Null:C1517; "Impossible d'utiliser la fonction cronosAction sans avoir lancer la fonction loadCronos avant")
@@ -322,14 +322,15 @@ Historique
 					End for each 
 					
 					If ($continue_b=True:C214)  // Toutes les conditions sont réunis pour qu'on fasse... le grand Saut :D
-						$scene_o:=ds:C1482.CaScene.get($scene_o.conditionSaut.sceneSautID)
+						$scene_o:=ds:C1482.CaScene.get(Num:C11($scene_o.conditionSaut.sceneSautID))
 						
 						If ($scene_o#Null:C1517)  // La scène a bien été trouvé, on note qu'on change de scène dans les logs
 							$scene_cs.addScenarioEvent("Changement de scène"; $enregistrement_o.ID)
 							
 							$saut_b:=True:C214
+							$sautEffectue_b:=True:C214
 						Else 
-							$continue_b:=False:C215
+							CLEAR VARIABLE:C89($continue_b)
 						End if 
 						
 					Else   // On ne peux pas passer à une autre scène, on va voir si on peut quand même la jouer histoire que les comédiens ne se soient pas préparés pour rien :D
@@ -339,6 +340,38 @@ Historique
 				End if 
 				
 			Until ($saut_b=False:C215)
+			
+			If (OB Is defined:C1231($caScenarioEvent_o; "length")=False:C215)  // On a déjà des logs pour le scénario de la personne
+				
+				If (String:C10($caScenarioEvent_o.etat)="Évènement mailjet")  // Si l'évènement est un "Évènement mailjet"
+					
+					If ($sautEffectue_b=False:C215)  // Si cet évènement n'a pas déclenché un saut de scène, on ne fait rien pour la suite
+						CLEAR VARIABLE:C89($continue_b)
+					Else   // Il faut cloturer le log de l'envoi du mailing qui a occasionné cet évènement mailjet
+						$autreTable_o:=ds:C1482.CaScenarioEvent.query("personneScenarioID = :1 AND sceneID = :2 AND etat = :3"; $caScenarioEvent_o.personneScenarioID; $caScenarioEvent_o.sceneID; "En cours")
+						
+						For each ($autreEnregistrement_o; $autreTable_o)
+							$autreEnregistrement_o.etat:="Terminé"
+							$autreEnregistrement_o.tsMiseAJour:=cmaTimestamp(Current date:C33; Current time:C178)
+							
+							$autreEnregistrement_o.save()
+						End for each 
+						
+					End if 
+					
+					// Dans tous les cas si le dernier event est un "Évènement mailjet", on le clos pour ne pas repasser dessus après
+					$caScenarioEvent_o.etat:="Terminé"
+					
+					// Je restitue le tsProchainCheck qu'il y avait avant la détection de l'évènement
+					$enregistrement_o.tsProchainCheck:=$caScenarioEvent_o.tsMiseAJour
+					$enregistrement_o.save()
+					
+					// Et je mets à jour mon log avec le bon timeStamp cette fois-ci
+					$caScenarioEvent_o.tsMiseAJour:=cmaTimestamp(Current date:C33; Current time:C178)
+					$caScenarioEvent_o.save()
+				End if 
+				
+			End if 
 			
 			If ($continue_b=True:C214)  // Vérification des conditions d'action
 				
@@ -363,14 +396,6 @@ Historique
 						$caScenarioEvent_o.save()
 					End if 
 					
-				End if 
-				
-			End if 
-			
-			If (OB Is defined:C1231($caScenarioEvent_o; "length")=False:C215)  // On a déjà des logs pour le scénario de la personne
-				
-				If (String:C10($caScenarioEvent_o.etat)="Évènement mailjet")
-					$continue_b:=Not:C34((String:C10($caScenarioEvent_o.etat)="Évènement mailjet"))
 				End if 
 				
 			End if 

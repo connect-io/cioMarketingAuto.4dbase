@@ -14,7 +14,7 @@ Historique
 -----------------------------------------------------------------------------*/
 	This:C1470.scene:=Null:C1517
 	
-Function addScenarioEvent($action_t : Text; $personneScenarioID_v : Variant)
+Function addScenarioEvent($action_t : Text; $personneScenarioID_v : Variant; $tsProchainCheck_el : Integer)
 /* -----------------------------------------------------------------------------
 Fonction : MAScene.addScenarioEvent
 	
@@ -45,8 +45,6 @@ Historique
 		: ($action_t="Évènement mailjet@")
 			$caScenarioEvent_o.etat:="Évènement mailjet"
 			
-			$caScenarioEvent_o.tsMiseAJour:=cmaTimestamp(Current date:C33; Current time:C178)
-			
 			Case of 
 				: ($action_t="Évènement mailjet, mail ouvert")
 					$caScenarioEvent_o.information:="Mailing ouvert"
@@ -54,10 +52,11 @@ Historique
 					$caScenarioEvent_o.information:="Mailing cliqué"
 			End case 
 			
+			// Je mets au chaud le timeStamp du prochain Check initial pour le remettre ensuite
+			$caScenarioEvent_o.tsMiseAJour:=$tsProchainCheck_el
 		: ($action_t="Changement de scène")
 			$caScenarioEvent_o.etat:="Terminé"
 			
-			$caScenarioEvent_o.tsMiseAJour:=cmaTimestamp(Current date:C33; Current time:C178)
 			$caScenarioEvent_o.information:="Changement de scène à cause d'une condition de saut"
 		: ($action_t="Changement de scénario") | ($action_t="Fin du scénario")
 			$caScenarioEvent_o.etat:="Terminé"

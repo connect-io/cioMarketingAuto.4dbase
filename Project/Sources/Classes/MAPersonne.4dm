@@ -464,8 +464,8 @@ Historique
 					$enregistrement_o.lastBounce:=$detail_o.eventTs
 			End case 
 			
-			// On doit chercher si pour cette personne le mailing de la scène qui a déclenché cet évènement doit déclencher un saut de scène
-			$autreTable_o:=ds:C1482.CaPersonneScenario.query("actif = :1 AND tsProchainCheck > :2"; True:C214; cmaTimestamp(Current date:C33; Current time:C178))
+			// On doit chercher si pour cette personne le mailing de la scène qui a déclenché cet évènement doit déclencher quelque chose (saut de scène par exemple)
+			$autreTable_o:=This:C1470.personne.AllCaPersonneScenario.query("actif = :1 AND tsProchainCheck > :2"; True:C214; cmaTimestamp(Current date:C33; Current time:C178))
 			
 			If ($autreTable_o.length>0)  // Il y a des scénarios actifs pour la personne
 				$caScenarioEvents_o:=$autreTable_o.AllCaScenarioEvent.query("etat # :1"; "Terminé")
@@ -478,11 +478,12 @@ Historique
 						
 						Case of 
 							: (String:C10($detail_o.eventNumber)="3")  // Si ouvert, on met à jour le log de la scène de la personne
-								$scene_cs.addScenarioEvent("Évènement mailjet, mail ouvert"; $caScenarioPersonne_o.ID)
+								$scene_cs.addScenarioEvent("Évènement mailjet, mail ouvert"; $caScenarioPersonne_o.ID; $caScenarioPersonne_o.tsProchainCheck)
 							: (String:C10($detail_o.eventNumber)="4")  // Si clic, on met à jour le log de la scène de la personne
-								$scene_cs.addScenarioEvent("Évènement mailjet, mail cliqué"; $caScenarioPersonne_o.ID)
+								$scene_cs.addScenarioEvent("Évènement mailjet, mail cliqué"; $caScenarioPersonne_o.ID; $caScenarioPersonne_o.tsProchainCheck)
 						End case 
 						
+						// On force le timeStamp du prochainCheck à maintenant pour voir si cet évènement déclenchera un saut de scène par exemple
 						$caScenarioPersonne_o.tsProchainCheck:=cmaTimestamp(Current date:C33; Current time:C178)
 						$caScenarioPersonne_o.save()
 					End if 

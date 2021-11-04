@@ -636,7 +636,7 @@
 					"top": 233,
 					"width": 195,
 					"height": 28,
-					"max": 10,
+					"max": 15,
 					"events": [
 						"onDataChange"
 					],
