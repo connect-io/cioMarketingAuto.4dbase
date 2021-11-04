@@ -44,7 +44,7 @@ If (Form event code:C388=Sur clic:K2:4) & (Form:C1466.SceneCurrentElement#Null:C
 		sceneAction_at:=$pos_el
 		sceneAction_at{0}:=sceneAction_at{$pos_el}
 	Else 
-		sceneSuivante_at{0}:="Sélection d'une action de scène"
+		sceneAction_at{0}:="Sélection d'une action de scène"
 	End if 
 	
 	$table_o:=ds:C1482.CaScenario.query("ID # :1"; Form:C1466.sceneDetail.scenarioID)

@@ -124,11 +124,89 @@
 					"events": [
 						"onDataChange"
 					]
+				},
+				"inputDelai": {
+					"type": "input",
+					"left": 540,
+					"top": 124,
+					"width": 61,
+					"height": 17,
+					"dataSource": "",
+					"fill": "transparent",
+					"borderStyle": "none",
+					"entryFilter": "&9",
+					"visibility": "hidden",
+					"dataSourceTypeHint": "number",
+					"method": "ObjectMethods/inputDelai.4dm",
+					"events": [
+						"onDataChange"
+					]
+				},
+				"inputDelaiUp": {
+					"type": "pictureButton",
+					"left": 616,
+					"top": 119,
+					"width": 13,
+					"height": 13,
+					"events": [
+						"onClick",
+						"onMouseMove"
+					],
+					"picture": "/RESOURCES/Images/up-arrow.png",
+					"method": "ObjectMethods/inputDelaiUp.4dm",
+					"loopBackToFirstFrame": true,
+					"switchBackWhenReleased": true,
+					"useLastFrameAsDisabled": true,
+					"visibility": "hidden"
+				},
+				"inputDelaiDown": {
+					"type": "pictureButton",
+					"left": 616,
+					"top": 133,
+					"width": 13,
+					"height": 13,
+					"events": [
+						"onClick",
+						"onMouseMove"
+					],
+					"picture": "/RESOURCES/Images/down-arrow.png",
+					"method": "ObjectMethods/inputDelaiDown.4dm",
+					"loopBackToFirstFrame": true,
+					"switchBackWhenReleased": true,
+					"useLastFrameAsDisabled": true,
+					"visibility": "hidden"
+				},
+				"inputDelaiEchelleChange": {
+					"type": "pictureButton",
+					"left": 716,
+					"top": 124,
+					"width": 17,
+					"height": 17,
+					"events": [
+						"onClick",
+						"onMouseMove"
+					],
+					"picture": "/RESOURCES/Images/resize.png",
+					"method": "ObjectMethods/inputDelaiEchelleChange.4dm",
+					"loopBackToFirstFrame": true,
+					"switchBackWhenReleased": true,
+					"useLastFrameAsDisabled": true,
+					"visibility": "hidden"
+				},
+				"inputDelaiEchelleTexte": {
+					"type": "text",
+					"text": "",
+					"top": 124,
+					"left": 637,
+					"width": 69,
+					"height": 17,
+					"visibility": "hidden",
+					"fontWeight": "bold"
 				}
 			}
 		}
 	],
-	"geometryStamp": 134,
+	"geometryStamp": 135,
 	"editor": {
 		"activeView": "View 1",
 		"defaultView": "View 1",

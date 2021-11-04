@@ -12,7 +12,6 @@ Case of
 		
 		Form:C1466.MAPersonneDisplay:=cmaToolGetClass("MAPersonneDisplay").new()
 		Form:C1466.MAPersonneDisplay.viewPersonList(Form:C1466)
-		
 	: (Form event code:C388=Sur données modifiées:K2:15)
 		Form:C1466.personneCollection:=Form:C1466.personneSelectionDisplayClass.manageFilter()
 		Form:C1466.personneCollection:=Form:C1466.personneSelectionDisplayClass.manageSort("")

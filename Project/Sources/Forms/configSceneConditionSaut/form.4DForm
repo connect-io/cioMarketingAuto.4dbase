@@ -1,4 +1,4 @@
-﻿{
+{
 	"$4d": {
 		"version": "1",
 		"kind": "form"
@@ -14,7 +14,7 @@
 	"events": [
 		"onLoad"
 	],
-	"windowTitle": "Définition des conditions d'action",
+	"windowTitle": "Définition des conditions de saut",
 	"destination": "detailScreen",
 	"pages": [
 		{
@@ -89,7 +89,7 @@
 					"loopBackToFirstFrame": true,
 					"useLastFrameAsDisabled": true
 				},
-				"deleteConditionAction": {
+				"deleteConditionSaut": {
 					"type": "pictureButton",
 					"left": 743,
 					"top": 40,
@@ -101,18 +101,144 @@
 					],
 					"dataSource": "",
 					"picture": "/RESOURCES/Images/delete-item.png",
-					"method": "ObjectMethods/deleteConditionAction.4dm",
+					"method": "ObjectMethods/deleteConditionSaut.4dm",
 					"visibility": "hidden",
 					"switchContinuously": false,
 					"switchWhenRollover": false,
 					"switchBackWhenReleased": true,
 					"loopBackToFirstFrame": true,
 					"useLastFrameAsDisabled": true
+				},
+				"inputNum": {
+					"type": "input",
+					"left": 573,
+					"top": 80,
+					"width": 160,
+					"height": 20,
+					"dataSourceTypeHint": "number",
+					"entryFilter": "&9",
+					"placeholder": "Zone de saisie de numérique",
+					"numberFormat": "",
+					"method": "ObjectMethods/inputNum.4dm",
+					"visibility": "hidden",
+					"events": [
+						"onDataChange"
+					]
+				},
+				"selectSceneSaut": {
+					"type": "dropdown",
+					"left": 483,
+					"top": 166,
+					"width": 250,
+					"height": 20,
+					"events": [
+						"onDataChange"
+					],
+					"dataSource": "sceneSaut_at",
+					"method": "ObjectMethods/selectSceneSaut.4dm"
+				},
+				"deleteSceneSaut": {
+					"type": "pictureButton",
+					"left": 743,
+					"top": 166,
+					"width": 20,
+					"height": 20,
+					"events": [
+						"onClick",
+						"onMouseMove"
+					],
+					"dataSource": "",
+					"picture": "/RESOURCES/Images/delete-item.png",
+					"method": "ObjectMethods/deleteSceneSaut.4dm",
+					"visibility": "visible",
+					"switchContinuously": false,
+					"switchWhenRollover": false,
+					"switchBackWhenReleased": true,
+					"loopBackToFirstFrame": true,
+					"useLastFrameAsDisabled": true
+				},
+				"inputDelai": {
+					"type": "input",
+					"left": 540,
+					"top": 124,
+					"width": 61,
+					"height": 17,
+					"dataSource": "",
+					"fill": "transparent",
+					"borderStyle": "none",
+					"entryFilter": "&9",
+					"visibility": "hidden",
+					"dataSourceTypeHint": "number",
+					"method": "ObjectMethods/inputDelai.4dm",
+					"events": [
+						"onDataChange"
+					]
+				},
+				"inputDelaiUp": {
+					"type": "pictureButton",
+					"left": 616,
+					"top": 119,
+					"width": 13,
+					"height": 13,
+					"events": [
+						"onClick",
+						"onMouseMove"
+					],
+					"picture": "/RESOURCES/Images/up-arrow.png",
+					"method": "ObjectMethods/inputDelaiUp.4dm",
+					"loopBackToFirstFrame": true,
+					"switchBackWhenReleased": true,
+					"useLastFrameAsDisabled": true,
+					"visibility": "hidden"
+				},
+				"inputDelaiDown": {
+					"type": "pictureButton",
+					"left": 616,
+					"top": 133,
+					"width": 13,
+					"height": 13,
+					"events": [
+						"onClick",
+						"onMouseMove"
+					],
+					"picture": "/RESOURCES/Images/down-arrow.png",
+					"method": "ObjectMethods/inputDelaiDown.4dm",
+					"loopBackToFirstFrame": true,
+					"switchBackWhenReleased": true,
+					"useLastFrameAsDisabled": true,
+					"visibility": "hidden"
+				},
+				"inputDelaiEchelleChange": {
+					"type": "pictureButton",
+					"left": 716,
+					"top": 124,
+					"width": 17,
+					"height": 17,
+					"events": [
+						"onClick",
+						"onMouseMove"
+					],
+					"picture": "/RESOURCES/Images/resize.png",
+					"method": "ObjectMethods/inputDelaiEchelleChange.4dm",
+					"loopBackToFirstFrame": true,
+					"switchBackWhenReleased": true,
+					"useLastFrameAsDisabled": true,
+					"visibility": "hidden"
+				},
+				"inputDelaiEchelleTexte": {
+					"type": "text",
+					"text": "",
+					"top": 124,
+					"left": 637,
+					"width": 69,
+					"height": 17,
+					"visibility": "hidden",
+					"fontWeight": "bold"
 				}
 			}
 		}
 	],
-	"geometryStamp": 133,
+	"geometryStamp": 135,
 	"editor": {
 		"activeView": "View 1",
 		"defaultView": "View 1",

@@ -1,4 +1,4 @@
-﻿{
+{
 	"$4d": {
 		"version": "1",
 		"kind": "form"
@@ -136,7 +136,7 @@
 					"scrollbarHorizontal": "hidden",
 					"scrollbarVertical": "visible",
 					"dataSource": "Form:C1466.personneDetail.resume",
-					"fontSize": 14,
+					"fontSize": 12,
 					"fontWeight": "bold",
 					"fill": "transparent"
 				},
@@ -381,7 +381,7 @@
 					"listboxType": "collection",
 					"dataSource": "Form:C1466.scenarioEvent",
 					"headerHeight": "17px",
-					"rowHeight": "30px",
+					"rowHeight": "40px",
 					"scrollbarHorizontal": "hidden",
 					"textAlign": "center",
 					"verticalAlign": "middle",

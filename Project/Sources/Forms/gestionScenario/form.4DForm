@@ -1,4 +1,4 @@
-﻿{
+{
 	"$4d": {
 		"version": "1",
 		"kind": "form"
@@ -533,7 +533,8 @@
 					"height": 17,
 					"dataSource": "Form:C1466.sceneSuivanteDelai",
 					"fill": "transparent",
-					"borderStyle": "none"
+					"borderStyle": "none",
+					"entryFilter": "&9"
 				},
 				"sceneDetailDelaiUp": {
 					"type": "pictureButton",
@@ -608,7 +609,7 @@
 					"top": 233,
 					"width": 195,
 					"height": 28,
-					"max": 10,
+					"max": 15,
 					"events": [
 						"onDataChange"
 					],
