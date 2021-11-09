@@ -296,6 +296,8 @@ Historique
 		
 	End if 
 	
+	$fieldExtract_t:=Replace string:C233($fieldExtract_t; ";;"; ";")
+	
 	This:C1470.personneCollection:=Formula from string:C1601("This.personneSelection.toCollection().extract("+$fieldExtract_t+")").call(This:C1470)
 	
 	If ($extractFieldChild=True:C214)

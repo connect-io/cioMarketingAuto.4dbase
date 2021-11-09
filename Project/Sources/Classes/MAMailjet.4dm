@@ -158,7 +158,7 @@ Function getMessageEvent($statut_t : Text; $tsFrom_el : Integer; $tsTo_el : Inte
 	End if 
 	
 Function getMessageEventDetail($mailjet_o : Object; $messageEvent_t : Text; $tsFrom_el : Integer; $tsTo_el : Integer; $contactID_r : Real)->$retour_o : Object
-	var $resultatHttp_t; $tsFrom_t; $tsTo_t : Text
+	var $resultatHttp_t; $tsFrom_t; $tsTo_t; $contactID_t : Text
 	var $countMessage_el; $nbBoucle_el; $i_el; $offset_el : Integer
 	var $blob_b : Blob
 	
