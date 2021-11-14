@@ -52,7 +52,7 @@ Function loadAllScenario
 Function loadScenarioDisplay
 	var $1 : Text  // Texte qui indique l'ID du scénario à charger
 	
-	If (Value type:C1509($1)=Est une variable indéfinie:K8:13)
+	If (Count parameters:C259=0)
 		This:C1470.loadAllScenario()
 	Else 
 		This:C1470.loadByPrimaryKey($1)

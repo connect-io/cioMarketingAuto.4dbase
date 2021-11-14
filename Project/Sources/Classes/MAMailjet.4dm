@@ -145,7 +145,7 @@ Function getMessageEvent($statut_t : Text; $tsFrom_el : Integer; $tsTo_el : Inte
 	$tsFrom_t:="&FromTS="+String:C10($tsFrom_el)
 	$tsTo_t:="&ToTS="+String:C10($tsTo_el)
 	
-	If (Num:C11($contactID_r)#0)
+	If (Count parameters:C259=5)
 		$contactID_t:=String:C10($contactID_r)
 	End if 
 	
@@ -167,7 +167,7 @@ Function getMessageEventDetail($mailjet_o : Object; $messageEvent_t : Text; $tsF
 	$tsFrom_t:="&FromTS="+String:C10($tsFrom_el)
 	$tsTo_t:="&ToTS="+String:C10($tsTo_el)
 	
-	If (Num:C11($contactID_r)#0)
+	If (Count parameters:C259=5)
 		$contactID_t:=String:C10($contactID_r)
 	End if 
 	

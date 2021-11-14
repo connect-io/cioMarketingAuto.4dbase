@@ -17,45 +17,49 @@ Historique
 	var $chemin_t : Text
 	var $fichierConfig_o : cs:C1710.File
 	
-	If (Bool:C1537($initialisation_b)=True:C214)  // On initialise tout ça uniquement au premier appel (Normalement Sur ouverture de la base)
+	If (Count parameters:C259>0)
 		
-		Use (Storage:C1525)
-			Storage:C1525.automation:=New shared object:C1526()
-		End use 
-		
-		Case of 
-			: (Count parameters:C259=1)
-				This:C1470.configChemin:=Get 4D folder:C485(Dossier Resources courant:K5:16; *)+"cioMarketingAutomation"+Séparateur dossier:K24:12+"config.json"
-			: (String:C10($configChemin_t)="")
-				This:C1470.configChemin:=Get 4D folder:C485(Dossier Resources courant:K5:16; *)+"cioMarketingAutomation"+Séparateur dossier:K24:12+"config.json"
-			Else 
-				This:C1470.configChemin:=$configChemin_t
-		End case 
-		
-		$fichierConfig_o:=File:C1566(This:C1470.configChemin; fk chemin plateforme:K87:2)
-		
-		If ($fichierConfig_o.exists=True:C214)
-			// Je charge toutes les images
-			This:C1470.loadImage()
+		If (Bool:C1537($initialisation_b)=True:C214)  // On initialise tout ça uniquement au premier appel (Normalement Sur ouverture de la base)
 			
-			Use (Storage:C1525.automation)
-				Storage:C1525.automation.config:=OB Copy:C1225(JSON Parse:C1218($fichierConfig_o.getText()); ck shared:K85:29; Storage:C1525.automation)
-				Storage:C1525.automation.image:=OB Copy:C1225(This:C1470.image; ck shared:K85:29; Storage:C1525.automation)
+			Use (Storage:C1525)
+				Storage:C1525.automation:=New shared object:C1526()
 			End use 
 			
-			This:C1470.loadPasserelle("Personne")
+			Case of 
+				: (Count parameters:C259=1)
+					This:C1470.configChemin:=Get 4D folder:C485(Dossier Resources courant:K5:16; *)+"cioMarketingAutomation"+Séparateur dossier:K24:12+"config.json"
+				: (String:C10($configChemin_t)="")
+					This:C1470.configChemin:=Get 4D folder:C485(Dossier Resources courant:K5:16; *)+"cioMarketingAutomation"+Séparateur dossier:K24:12+"config.json"
+				Else 
+					This:C1470.configChemin:=$configChemin_t
+			End case 
 			
-			// Chargement des conditions d'action et de saut pour les scènes d'un scénario
-			This:C1470.loadSceneConditionActionList()
-			This:C1470.loadSceneConditionSautList()
-		Else 
-			ALERT:C41("Impossible d'intialiser le composant caMarketingAutomation")
-		End if 
-		
-		$chemin_t:=Get 4D folder:C485(Dossier Resources courant:K5:16; *)+"cioMarketingAutomation"+Séparateur dossier:K24:12
-		
-		If (Test path name:C476($chemin_t+"scenario"+Séparateur dossier:K24:12)#Est un dossier:K24:2)
-			CREATE FOLDER:C475($chemin_t+"scenario"+Séparateur dossier:K24:12)
+			$fichierConfig_o:=File:C1566(This:C1470.configChemin; fk chemin plateforme:K87:2)
+			
+			If ($fichierConfig_o.exists=True:C214)
+				// Je charge toutes les images
+				This:C1470.loadImage()
+				
+				Use (Storage:C1525.automation)
+					Storage:C1525.automation.config:=OB Copy:C1225(JSON Parse:C1218($fichierConfig_o.getText()); ck shared:K85:29; Storage:C1525.automation)
+					Storage:C1525.automation.image:=OB Copy:C1225(This:C1470.image; ck shared:K85:29; Storage:C1525.automation)
+				End use 
+				
+				This:C1470.loadPasserelle("Personne")
+				
+				// Chargement des conditions d'action et de saut pour les scènes d'un scénario
+				This:C1470.loadSceneConditionActionList()
+				This:C1470.loadSceneConditionSautList()
+			Else 
+				ALERT:C41("Impossible d'intialiser le composant caMarketingAutomation")
+			End if 
+			
+			$chemin_t:=Get 4D folder:C485(Dossier Resources courant:K5:16; *)+"cioMarketingAutomation"+Séparateur dossier:K24:12
+			
+			If (Test path name:C476($chemin_t+"scenario"+Séparateur dossier:K24:12)#Est un dossier:K24:2)
+				CREATE FOLDER:C475($chemin_t+"scenario"+Séparateur dossier:K24:12)
+			End if 
+			
 		End if 
 		
 	End if 
