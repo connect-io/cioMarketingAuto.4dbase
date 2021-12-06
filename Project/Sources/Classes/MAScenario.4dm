@@ -402,13 +402,15 @@ Function updateStringSceneForm
 				This:C1470.sceneSuivanteDelai:="0"
 				
 				If (String:C10(This:C1470.sceneDetail.paramAction.echelleDelai)="")
-					This:C1470.sceneDetail.paramAction.echelleDelai:="jour(s)"
+					This:C1470.sceneDetail.paramAction.echelleDelai:="minute(s)"
 				End if 
 				
 			Else 
 				
 				Case of 
-					: (String:C10(This:C1470.sceneDetail.paramAction.echelleDelai)="jour(s)") | (String:C10(This:C1470.sceneDetail.paramAction.echelleDelai)="jour(s)")
+					: (String:C10(This:C1470.sceneDetail.paramAction.echelleDelai)="minute(s)")
+						This:C1470.sceneSuivanteDelai:=String:C10(Round:C94(This:C1470.sceneDetail.tsAttente/60; 0))
+					: (String:C10(This:C1470.sceneDetail.paramAction.echelleDelai)="jour(s)")
 						This:C1470.sceneSuivanteDelai:=String:C10(Round:C94(This:C1470.sceneDetail.tsAttente/86400; 0))
 					: (String:C10(This:C1470.sceneDetail.paramAction.echelleDelai)="semaine(s)")
 						This:C1470.sceneSuivanteDelai:=String:C10(Round:C94(This:C1470.sceneDetail.tsAttente/(86400*7); 0))

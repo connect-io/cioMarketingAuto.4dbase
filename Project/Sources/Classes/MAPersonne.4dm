@@ -465,7 +465,7 @@ Historique
 			End case 
 			
 			// On doit chercher si pour cette personne le mailing de la scène qui a déclenché cet évènement doit déclencher quelque chose (saut de scène par exemple)
-			$autreTable_o:=This:C1470.personne.AllCaPersonneScenario.query("actif = :1 AND tsProchainCheck > :2"; True:C214; cmaTimestamp(Current date:C33; Current time:C178))
+			$autreTable_o:=This:C1470.personne.AllCaPersonneScenario.query("actif = :1"; True:C214)
 			
 			If ($autreTable_o.length>0)  // Il y a des scénarios actifs pour la personne
 				$caScenarioEvents_o:=$autreTable_o.AllCaScenarioEvent.query("etat # :1"; "Terminé")

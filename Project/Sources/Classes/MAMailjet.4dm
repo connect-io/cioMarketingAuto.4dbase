@@ -135,32 +135,35 @@ Function AnalysisMessageEvent
 			// Je demande dans un second temps les 1000 premiers mails de mon laps de temps recherché (entre $1 et $2) -> un jour à la fois normalement
 			cwToolWebHttpRequest("GET"; This:C1470.config.domainRequest+"/REST/message?MessageStatus="+$2+"&limit=1000"+$tsFrom_t+$tsTo_t+"&offset="+String:C10($offset_el)+"&ShowContactAlt=true&sort=ArrivedAt+desc"; ""; ->$resultatHttp_t)
 			
-			$mailStatut_o:=JSON Parse:C1218($resultatHttp_t)
-			
-			OB GET ARRAY:C1229($mailStatut_o; "Data"; $dataStat_ao)
-			
-			If (Size of array:C274($dataStat_ao)>0)
+			If ($resultatHttp_t#"@Error@")
+				$mailStatut_o:=JSON Parse:C1218($resultatHttp_t)
 				
-				For ($j_el; 1; Size of array:C274($dataStat_ao))
-					$statut_o:=$dataStat_ao{$j_el}
+				OB GET ARRAY:C1229($mailStatut_o; "Data"; $dataStat_ao)
+				
+				If (Size of array:C274($dataStat_ao)>0)
 					
-					$contactID_el:=Num:C11($statut_o.ContactID)  // Contact ID chez mailjet du contact
-					$email_t:=$statut_o.ContactAlt  // Email du contact
+					For ($j_el; 1; Size of array:C274($dataStat_ao))
+						$statut_o:=$dataStat_ao{$j_el}
+						
+						$contactID_el:=Num:C11($statut_o.ContactID)  // Contact ID chez mailjet du contact
+						$email_t:=$statut_o.ContactAlt  // Email du contact
+						
+						If (Find in array:C230($email_at; $email_t)=-1)  // Si le contact n'a pas déjà été traité on ne recherche que le statut du mail le plus récent, inutile de boucler sur les plus anciens
+							APPEND TO ARRAY:C911($email_at; $email_t)
+							
+							$arrivedAt_t:=$statut_o.ArrivedAt
+							
+							$dateArrivedAt_d:=Date:C102($arrivedAt_t)
+							$heureArrivedAt_h:=Time:C179($arrivedAt_t)
+							
+							$tsEvent_el:=cmaTimestamp($dateArrivedAt_d; $heureArrivedAt_h)
+							
+							$5->push(New object:C1471("email"; $email_t; "idContact"; $contactID_el; "tsEvent"; $tsEvent_el))
+						End if 
+						
+					End for 
 					
-					If (Find in array:C230($email_at; $email_t)=-1)  // Si le contact n'a pas déjà été traité on ne recherche que le statut du mail le plus récent, inutile de boucler sur les plus anciens
-						APPEND TO ARRAY:C911($email_at; $email_t)
-						
-						$arrivedAt_t:=$statut_o.ArrivedAt
-						
-						$dateArrivedAt_d:=Date:C102($arrivedAt_t)
-						$heureArrivedAt_h:=Time:C179($arrivedAt_t)
-						
-						$tsEvent_el:=cmaTimestamp($dateArrivedAt_d; $heureArrivedAt_h)
-						
-						$5->push(New object:C1471("email"; $email_t; "idContact"; $contactID_el; "tsEvent"; $tsEvent_el))
-					End if 
-					
-				End for 
+				End if 
 				
 			End if 
 			

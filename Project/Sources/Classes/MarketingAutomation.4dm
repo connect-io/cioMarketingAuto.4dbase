@@ -464,7 +464,12 @@ Historique
 						$scene_cs.addScenarioEvent($scene_o.action; $enregistrement_o.ID)
 				End case 
 				
-				$enregistrement_o.tsProchainCheck:=cmaTimestamp(Current date:C33; Current time:C178)+$scene_o.tsAttente
+				If ($scene_o.action="Changement de scénario") | ($scene_o.action="Fin du scénario")
+					$enregistrement_o.tsProchainCheck:=0
+				Else 
+					$enregistrement_o.tsProchainCheck:=cmaTimestamp(Current date:C33; Current time:C178)+$scene_o.tsAttente
+				End if 
+				
 				$retour_o:=$enregistrement_o.save()
 				
 				If ($retour_o.success=False:C215)

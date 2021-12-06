@@ -1,4 +1,4 @@
-﻿{
+{
 	"$4d": {
 		"version": "1",
 		"kind": "form"
@@ -657,7 +657,7 @@
 						"onDataChange"
 					],
 					"dataSource": "sceneSuivante_at",
-					"fontSize": 10
+					"fontSize": 9
 				},
 				"sceneDetailAction": {
 					"type": "dropdown",
@@ -753,7 +753,7 @@
 						"onDataChange"
 					],
 					"dataSource": "scenarioSuivantNom_at",
-					"fontSize": 10
+					"fontSize": 9
 				},
 				"sceneDetailDeleteScenarioSuivant": {
 					"type": "pictureButton",
