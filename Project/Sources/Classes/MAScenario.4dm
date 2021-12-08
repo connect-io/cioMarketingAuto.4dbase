@@ -114,15 +114,21 @@ Function searchPersonToScenario
 				: ($cleValeur_o.key="ageMinimum")
 					$lib_t:=Storage:C1525.automation.formule.getFieldName(Storage:C1525.automation.passerelle.champ; "dateNaissance")
 					
-					$table_o:=ds:C1482[Storage:C1525.automation.passerelle.tableHote].query($lib_t+" <= :1"; cwToolNumToDate($cleValeur_o.value; "year"; "less"))
+					If ($cleValeur_o.value#0)
+						$table_o:=ds:C1482[Storage:C1525.automation.passerelle.tableHote].query($lib_t+" <= :1"; cwToolNumToDate($cleValeur_o.value; "year"; "less"))
+						
+						$personne_o:=$personne_o.and($table_o)  // Première propriété de ma collection d'objet $cleValeur_c
+					End if 
 					
-					$personne_o:=$personne_o.and($table_o)  // Première propriété de ma collection d'objet $cleValeur_c
 				: ($cleValeur_o.key="ageMaximum")
 					$lib_t:=Storage:C1525.automation.formule.getFieldName(Storage:C1525.automation.passerelle.champ; "dateNaissance")
 					
-					$table_o:=ds:C1482[Storage:C1525.automation.passerelle.tableHote].query($lib_t+" >= :1"; cwToolNumToDate($cleValeur_o.value; "year"; "less"))
+					If ($cleValeur_o.value#0)
+						$table_o:=ds:C1482[Storage:C1525.automation.passerelle.tableHote].query($lib_t+" >= :1"; cwToolNumToDate($cleValeur_o.value; "year"; "less"))
+						
+						$personne_o:=$personne_o.and($table_o)
+					End if 
 					
-					$personne_o:=$personne_o.and($table_o)
 				: ($cleValeur_o.key="dateDebutMailClique")
 					
 					If ($cleValeur_o.value#!00-00-00!)
