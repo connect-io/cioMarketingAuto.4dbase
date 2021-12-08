@@ -29,7 +29,7 @@ Function newScenario
 	
 	$caScenario_o.nom:="Nouveau scénario"
 	$caScenario_o.actif:=True:C214
-	$caScenario_o.condition:=New object:C1471("ageMinimum"; 18; "ageMaximum"; 99; "rang"; 0; "dateDebutMailClique"; !00-00-00!; "dateFinMailClique"; !00-00-00!; "dateDebutMailOuvert"; !00-00-00!; "dateFinMailOuvert"; !00-00-00!)
+	$caScenario_o.condition:=New object:C1471("ageMinimum"; 0; "ageMaximum"; 0; "rang"; 0; "dateDebutMailClique"; !00-00-00!; "dateFinMailClique"; !00-00-00!; "dateDebutMailOuvert"; !00-00-00!; "dateFinMailOuvert"; !00-00-00!)
 	
 	$retour_o:=$caScenario_o.save()
 	

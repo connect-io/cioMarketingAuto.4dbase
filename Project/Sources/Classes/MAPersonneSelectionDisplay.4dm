@@ -58,7 +58,7 @@ Historique
 	
 	$collectionFiltered_c:=$collectionToFilter_c.copy()
 	
-Function manageSort($objectClicked_t : Text)->$collectionOrdered_c : Collection
+Function manageSort($objectClicked_t : Text; $sort_b : Boolean)->$collectionOrdered_c : Collection
 /*-----------------------------------------------------------------------------
 Fonction : MAPersonneSelection.manageSort
 	
@@ -68,7 +68,12 @@ Historique
 27/01/21 - RémyScanu remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
 	var $propriete_t; $proprieteToOrder; $allProprieteToOrder_t : Text
+	var $keepSort_b : Boolean
 	var $verif_o : Object
+	
+	If (Count parameters:C259=2)
+		$keepSort_b:=$sort_b
+	End if 
 	
 	$verif_o:=cwToolProprieteExisteDansObjet(Form:C1466; New collection:C1472("imageSort@"); -1)
 	
@@ -79,7 +84,7 @@ Historique
 		Case of 
 			: (Picture size:C356(Form:C1466[$propriete_t])=Picture size:C356(Storage:C1525.automation.image["sort"]))
 				
-				If ($propriete_t=("@"+$objectClicked_t+"@")) & ($objectClicked_t#"")  // La colonne a été cliqué et avait le statut du tri neutre on le passe à croissant
+				If ($propriete_t=("@"+$objectClicked_t+"@")) & ($objectClicked_t#"") & ($keepSort_b=False:C215)  // La colonne a été cliqué et avait le statut du tri neutre on le passe à croissant
 					Form:C1466[$propriete_t]:=Storage:C1525.automation.image["sort-asc"]
 					
 					$allProprieteToOrder_t:=$allProprieteToOrder_t+$proprieteToOrder+" asc"+","
@@ -91,7 +96,7 @@ Historique
 				
 			: (Picture size:C356(Form:C1466[$propriete_t])=Picture size:C356(Storage:C1525.automation.image["sort-asc"]))
 				
-				If ($propriete_t=("@"+$objectClicked_t+"@")) & ($objectClicked_t#"")  // La colonne a été cliqué et avait le statut du tri croissant on le passe à décroissant
+				If ($propriete_t=("@"+$objectClicked_t+"@")) & ($objectClicked_t#"") & ($keepSort_b=False:C215)  // La colonne a été cliqué et avait le statut du tri croissant on le passe à décroissant
 					Form:C1466[$propriete_t]:=Storage:C1525.automation.image["sort-desc"]
 					
 					$allProprieteToOrder_t:=$allProprieteToOrder_t+$proprieteToOrder+" desc"+","
@@ -101,7 +106,7 @@ Historique
 				
 			Else 
 				
-				If ($propriete_t=("@"+$objectClicked_t+"@")) & ($objectClicked_t#"")  // La colonne a été cliqué et avait le statut du tri décroissant on le passe à neutre
+				If ($propriete_t=("@"+$objectClicked_t+"@")) & ($objectClicked_t#"") & ($keepSort_b=False:C215)  // La colonne a été cliqué et avait le statut du tri décroissant on le passe à neutre
 					Form:C1466[$propriete_t]:=Storage:C1525.automation.image["sort"]
 				End if 
 				

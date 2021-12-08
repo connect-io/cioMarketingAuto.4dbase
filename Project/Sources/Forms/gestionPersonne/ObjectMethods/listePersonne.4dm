@@ -33,6 +33,8 @@ Else
 	
 	If (Num:C11(Form:C1466.entree)#2)  // Différent de gestion du scénario (Personne en cours)
 		OBJECT SET ENABLED:C1123(*; "supprimerScenarioEnCours"; False:C215)  // Désactivation du bouton pour supprimer le scénario en cours tant qu'il n'y a pas de personne sélectionné
+	Else 
+		LISTBOX SET PROPERTY:C1440(*; "listePersonne"; lk mode de sélection:K53:35; lk multilignes:K53:59)
 	End if 
 	
 End if 

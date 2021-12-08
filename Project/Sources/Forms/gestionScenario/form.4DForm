@@ -112,9 +112,9 @@
 				"scenarioDetailPersonnePossibleChaine": {
 					"type": "input",
 					"left": 221,
-					"top": 516,
+					"top": 513,
 					"width": 156,
-					"height": 26,
+					"height": 23,
 					"dataSource": "Form:C1466.scenarioPersonnePossible",
 					"enterable": false,
 					"focusable": false,
@@ -138,9 +138,9 @@
 				"scenarioDetailPersonneEnCoursChaine": {
 					"type": "input",
 					"left": 221,
-					"top": 544,
+					"top": 541,
 					"width": 156,
-					"height": 14,
+					"height": 23,
 					"dataSource": "Form:C1466.scenarioPersonneEnCours",
 					"enterable": false,
 					"focusable": false,
@@ -774,7 +774,7 @@
 			}
 		}
 	],
-	"geometryStamp": 768,
+	"geometryStamp": 776,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",
