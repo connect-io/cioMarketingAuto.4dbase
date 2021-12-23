@@ -14,3 +14,5 @@ Else
 	
 	OBJECT SET ENABLED:C1123(*; "personneDetailListeScene"; False:C215)
 End if 
+
+Form:C1466.scenarioEvent:=Null:C1517  // Dans tous les cas je dois réinitialiser mon entitySelection des logs des scènes
