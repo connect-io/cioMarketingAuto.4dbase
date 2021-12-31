@@ -39,7 +39,7 @@ Function newScenario
 		
 		$caScenario_o.condition:=New object:C1471("UIDCollection"; $class_o.personneCollection.extract("UID"))
 	Else 
-		$caScenario_o.condition:=New object:C1471("ageMinimum"; 18; "ageMaximum"; 99; "rang"; 0; "dateDebutMailClique"; !00-00-00!; "dateFinMailClique"; !00-00-00!; "dateDebutMailOuvert"; !00-00-00!; "dateFinMailOuvert"; !00-00-00!)
+		$caScenario_o.condition:=New object:C1471("ageMinimum"; 0; "ageMaximum"; 0; "rang"; 0; "dateDebutMailClique"; !00-00-00!; "dateFinMailClique"; !00-00-00!; "dateDebutMailOuvert"; !00-00-00!; "dateFinMailOuvert"; !00-00-00!)
 	End if 
 	
 	$retour_o:=$caScenario_o.save()
@@ -135,15 +135,21 @@ Function searchPersonToScenario
 					: ($cleValeur_o.key="ageMinimum")
 						$lib_t:=Storage:C1525.automation.formule.getFieldName(Storage:C1525.automation.passerelle.champ; "dateNaissance")
 						
-						$table_o:=ds:C1482[Storage:C1525.automation.passerelle.tableHote].query($lib_t+" <= :1"; cwToolNumToDate($cleValeur_o.value; "year"; "less"))
+						If ($cleValeur_o.value#0)
+							$table_o:=ds:C1482[Storage:C1525.automation.passerelle.tableHote].query($lib_t+" <= :1"; cwToolNumToDate($cleValeur_o.value; "year"; "less"))
+							
+							$personne_o:=$personne_o.and($table_o)  // Première propriété de ma collection d'objet $cleValeur_c
+						End if 
 						
-						$personne_o:=$personne_o.and($table_o)  // Première propriété de ma collection d'objet $cleValeur_c
 					: ($cleValeur_o.key="ageMaximum")
 						$lib_t:=Storage:C1525.automation.formule.getFieldName(Storage:C1525.automation.passerelle.champ; "dateNaissance")
 						
-						$table_o:=ds:C1482[Storage:C1525.automation.passerelle.tableHote].query($lib_t+" >= :1"; cwToolNumToDate($cleValeur_o.value; "year"; "less"))
+						If ($cleValeur_o.value#0)
+							$table_o:=ds:C1482[Storage:C1525.automation.passerelle.tableHote].query($lib_t+" >= :1"; cwToolNumToDate($cleValeur_o.value; "year"; "less"))
+							
+							$personne_o:=$personne_o.and($table_o)
+						End if 
 						
-						$personne_o:=$personne_o.and($table_o)
 					: ($cleValeur_o.key="dateDebutMailClique")
 						
 						If ($cleValeur_o.value#!00-00-00!)
@@ -429,20 +435,22 @@ Function updateStringSceneForm
 				This:C1470.sceneSuivanteDelai:="0"
 				
 				If (String:C10(This:C1470.sceneDetail.paramAction.echelleDelai)="")
-					This:C1470.sceneDetail.paramAction.echelleDelai:="jour(s)"
+					This:C1470.sceneDetail.paramAction.echelleDelai:="minute(s)"
 				End if 
 				
 			Else 
 				
 				Case of 
-					: (String:C10(This:C1470.sceneDetail.paramAction.echelleDelai)="jour(s)") | (String:C10(This:C1470.sceneDetail.paramAction.echelleDelai)="jour(s)")
-						This:C1470.sceneSuivanteDelai:=String:C10(Round:C94(This:C1470.sceneDetail.tsAttente/5184000; 0))
+					: (String:C10(This:C1470.sceneDetail.paramAction.echelleDelai)="minute(s)")
+						This:C1470.sceneSuivanteDelai:=String:C10(Round:C94(This:C1470.sceneDetail.tsAttente/60; 0))
+					: (String:C10(This:C1470.sceneDetail.paramAction.echelleDelai)="jour(s)")
+						This:C1470.sceneSuivanteDelai:=String:C10(Round:C94(This:C1470.sceneDetail.tsAttente/86400; 0))
 					: (String:C10(This:C1470.sceneDetail.paramAction.echelleDelai)="semaine(s)")
-						This:C1470.sceneSuivanteDelai:=String:C10(Round:C94(This:C1470.sceneDetail.tsAttente/(5184000*7); 0))
+						This:C1470.sceneSuivanteDelai:=String:C10(Round:C94(This:C1470.sceneDetail.tsAttente/(86400*7); 0))
 					: (String:C10(This:C1470.sceneDetail.paramAction.echelleDelai)="mois(s)")
-						This:C1470.sceneSuivanteDelai:=String:C10(Round:C94(This:C1470.sceneDetail.tsAttente/(5184000*30); 0))
+						This:C1470.sceneSuivanteDelai:=String:C10(Round:C94(This:C1470.sceneDetail.tsAttente/(86400*30); 0))
 					: (String:C10(This:C1470.sceneDetail.paramAction.echelleDelai)="année(s)")
-						This:C1470.sceneSuivanteDelai:=String:C10(Round:C94(This:C1470.sceneDetail.tsAttente/(5184000*365); 0))
+						This:C1470.sceneSuivanteDelai:=String:C10(Round:C94(This:C1470.sceneDetail.tsAttente/(86400*365); 0))
 				End case 
 				
 			End if 

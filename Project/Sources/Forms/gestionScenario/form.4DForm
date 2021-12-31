@@ -112,9 +112,9 @@
 				"scenarioDetailPersonnePossibleChaine": {
 					"type": "input",
 					"left": 221,
-					"top": 516,
+					"top": 513,
 					"width": 156,
-					"height": 26,
+					"height": 23,
 					"dataSource": "Form:C1466.scenarioPersonnePossible",
 					"enterable": false,
 					"focusable": false,
@@ -138,9 +138,9 @@
 				"scenarioDetailPersonneEnCoursChaine": {
 					"type": "input",
 					"left": 221,
-					"top": 544,
+					"top": 541,
 					"width": 156,
-					"height": 14,
+					"height": 23,
 					"dataSource": "Form:C1466.scenarioPersonneEnCours",
 					"enterable": false,
 					"focusable": false,
@@ -630,7 +630,7 @@
 						"onDataChange"
 					],
 					"dataSource": "sceneSuivante_at",
-					"fontSize": 10
+					"fontSize": 9
 				},
 				"sceneDetailAction": {
 					"type": "dropdown",
@@ -726,7 +726,7 @@
 						"onDataChange"
 					],
 					"dataSource": "scenarioSuivantNom_at",
-					"fontSize": 10
+					"fontSize": 9
 				},
 				"sceneDetailDeleteScenarioSuivant": {
 					"type": "pictureButton",
@@ -747,7 +747,7 @@
 			}
 		}
 	],
-	"geometryStamp": 781,
+	"geometryStamp": 785,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",

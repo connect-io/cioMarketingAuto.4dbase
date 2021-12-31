@@ -13,6 +13,7 @@ If (Form event code:C388=Sur clic:K2:4) & (Form:C1466.ScenarioCurrentElement#Nul
 	OBJECT SET ENABLED:C1123(*; "scenarioListeBoutonSupprimer"; True:C214)
 	OBJECT SET ENABLED:C1123(*; "scenarioDetail@"; True:C214)
 	OBJECT SET ENABLED:C1123(*; "sceneListe@"; True:C214)
+	OBJECT SET ENABLED:C1123(*; "scenarioDetailBoutonAppliquer"; False:C215)
 	
 	OBJECT SET HELP TIP:C1181(*; "scenarioDetailObjectif"; "• Rang 1 : Suspect\r• Rang 2 : Prospect\r• Rang 3 : Client\r• Rang 4 : Client fidèle\r• Rang 5 : Ambassadeur")
 Else 

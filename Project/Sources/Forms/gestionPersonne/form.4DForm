@@ -13,6 +13,7 @@
 	"bottomMargin": 20,
 	"events": [
 		"onLoad",
+		"onClick",
 		"onDataChange"
 	],
 	"windowTitle": "Gestion et/ou sélection des personnes pour les scénarios",

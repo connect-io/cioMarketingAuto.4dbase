@@ -6,6 +6,8 @@ If (Form:C1466.SceneCurrentElement#Null:C1517) & (Form:C1466.ScenarioCurrentElem
 	$continue_b:=True:C214
 	
 	Case of 
+		: (String:C10(Form:C1466.sceneDetail.paramAction.echelleDelai)="minute(s)")
+			Form:C1466.sceneDetail.tsAttente:=Num:C11(Form:C1466.sceneSuivanteDelai)*60*1
 		: (String:C10(Form:C1466.sceneDetail.paramAction.echelleDelai)="jour(s)")
 			Form:C1466.sceneDetail.tsAttente:=Num:C11(Form:C1466.sceneSuivanteDelai)*86400*1
 		: (String:C10(Form:C1466.sceneDetail.paramAction.echelleDelai)="semaine(s)")
@@ -45,8 +47,8 @@ If (Form:C1466.SceneCurrentElement#Null:C1517) & (Form:C1466.ScenarioCurrentElem
 		Else 
 			$retour_o:=Form:C1466.sceneDetail.save()
 			
-			If ($retour_o.success=False:C215)
-				// Avertir l'utilisateur
+			If ($retour_o.success=True:C214)
+				ALERT:C41("La scène a bien été sauvegardée")
 			End if 
 			
 			// On rafraîchi les entités
