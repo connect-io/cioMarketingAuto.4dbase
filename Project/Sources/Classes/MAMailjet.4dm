@@ -284,7 +284,7 @@ Function getMessageDetail($messageID_t : Text)->$messageDetail_o : Object
 	// Je demande dans un second temps les 1000 premiers mails de mon laps de temps recherché (entre $3 et $4) -> un jour à la fois normalement
 	cwToolWebHttpRequest("GET"; This:C1470.config.domainRequest+"/REST/message/"+$messageID_t+"?ShowContactAlt=true&ShowSubject=true"; ""; ->$resultatHttp_t)
 	
-	If ($resultatHttp_t#"Error@")
+	If ($resultatHttp_t#"") & ($resultatHttp_t#"Error@")
 		$messageDetail_o:=JSON Parse:C1218($resultatHttp_t)
 	End if 
 	
@@ -297,7 +297,7 @@ Function getMessageHistoryDetail($messageID_t : Text)->$messageHistoryDetail_t :
 	
 	cwToolWebHttpRequest("GET"; This:C1470.config.domainRequest+"/REST/messagehistory/"+$messageID_t; ""; ->$resultatHttp_t)
 	
-	If ($resultatHttp_t#"")
+	If ($resultatHttp_t#"") & ($resultatHttp_t#"Error@")
 		$detail_o:=JSON Parse:C1218($resultatHttp_t)
 		
 		OB GET ARRAY:C1229($detail_o; "Data"; $dataDetail_ao)
