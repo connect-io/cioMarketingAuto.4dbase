@@ -181,6 +181,8 @@ Historique
 	
 	ASSERT:C1129(This:C1470.cronosImage#Null:C1517; "Impossible d'utiliser la fonction cronosAction sans avoir lancer la fonction loadCronos avant")
 	
+	$mailjetDetail_c:=New collection:C1472
+	
 	// Instanciation de la class
 	$class_o:=cmaToolGetClass("MAPersonne").new()
 	
@@ -193,15 +195,19 @@ Historique
 				This:C1470.cronosMailjetClass.AnalysisMessageEvent($mailjet_o; ${$i_el}; $1; $2; ->$mailjetDetail_c)
 			End if 
 			
-			For each ($mailjetDetail_o; $mailjetDetail_c)
-				// On vérifie que l'email trouvé est bien dans la base du client
-				$class_o.loadByField("eMail"; "="; $mailjetDetail_o.email)  // Initialisation de l'entité de la table [Personne] du client
+			If ($mailjetDetail_c.length>0)
 				
-				If ($class_o.personne#Null:C1517)  // On met à jour la table marketing avec les infos de mailjet
-					$class_o.updateCaMarketingStatistic(2; New object:C1471("eventNumber"; ${$i_el}; "eventTs"; Num:C11($mailjetDetail_o.tsEvent)))
-				End if 
+				For each ($mailjetDetail_o; $mailjetDetail_c)
+					// On vérifie que l'email trouvé est bien dans la base du client
+					$class_o.loadByField("eMail"; "="; $mailjetDetail_o.email)  // Initialisation de l'entité de la table [Personne] du client
+					
+					If ($class_o.personne#Null:C1517)  // On met à jour la table marketing avec les infos de mailjet
+						$class_o.updateCaMarketingStatistic(2; New object:C1471("eventNumber"; ${$i_el}; "eventTs"; Num:C11($mailjetDetail_o.tsEvent)))
+					End if 
+					
+				End for each 
 				
-			End for each 
+			End if 
 			
 		End for 
 		

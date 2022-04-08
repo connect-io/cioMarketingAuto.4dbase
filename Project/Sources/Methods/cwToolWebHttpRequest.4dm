@@ -1,4 +1,4 @@
-//%attributes = {"shared":true,"preemptive":"capable"}
+//%attributes = {"shared":true}
 /* -----------------------------------------------------------------------------
 Méthode : cwToolWebHttpRequest
 
