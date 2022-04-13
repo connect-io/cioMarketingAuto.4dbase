@@ -368,9 +368,13 @@ Function sendMailing($configPreCharge_o : Object)
 						End if 
 						
 						$config_o.eMailConfig.to:=This:C1470.eMail
-						$statut_o:=$config_o.eMailConfig.send()
 						
+						ON ERR CALL:C155("outilsCatchErrorSendMail")
+						
+						$statut_o:=$config_o.eMailConfig.send()
 						$statut_b:=(String:C10($statut_o.statusText)="ok@")
+						
+						ON ERR CALL:C155("")
 						
 						If (Count parameters:C259=0)  // Le mailing ne part pas en automatique, on affiche l'alerte sur le statut d'envoi du mail 
 							

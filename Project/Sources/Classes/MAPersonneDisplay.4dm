@@ -109,7 +109,8 @@ Function viewPersonList
 	var $1 : Object  // Objet Form scénario
 	
 	var $continue_b : Boolean
-	var $class_o : Object
+	var $class_o; $enregistrement_o : Object
+	
 	var entitySelection_o : Object
 	
 	$class_o:=cmaToolGetClass("MAPersonneSelection").new()  // Instanciation de la class
@@ -127,7 +128,7 @@ Function viewPersonList
 			
 			OBJECT SET ENABLED:C1123(*; "supprimerScenarioEnCours"; False:C215)
 			
-			If ($1.donnee.scenarioSelectionPossiblePersonne#Null:C1517)
+			If ($1.donnee.scenarioSelectionPossiblePersonne#Null:C1517) & ($1.personne#Null:C1517)
 				
 				For each ($enregistrement_o; $1.personne)
 					$table_o:=$1.donnee.scenarioSelectionPossiblePersonne.get($enregistrement_o.UID)

@@ -107,8 +107,6 @@ Historique
 		
 		// On vérifie que l'on à bien des pièces jointes
 		If (This:C1470.attachmentsPath_c.length#0)
-			
-			// Dans ce cas on créé une collection
 			This:C1470.attachments:=New collection:C1472()
 			
 			// on boucle sur les pièces jointes
@@ -131,6 +129,7 @@ Historique
 			End for each 
 			
 		End if 
+		
 	End if 
 	
 	//Envoi du mail

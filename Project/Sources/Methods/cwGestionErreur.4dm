@@ -22,10 +22,6 @@ $erreur:=New object:C1471(\
 "ligne"; Error Line; \
 "code"; Error)
 
-If (visiteur#Null:C1517)
-	$erreur.visiteur:=visiteur
-End if 
-
 cwLogErreurAjout("Serveur Web"; $erreur)
 
 If (Get assert enabled:C1130)

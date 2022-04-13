@@ -235,6 +235,9 @@ Historique
 	$scene_cs:=cmaToolGetClass("MAScene").new()
 	
 	For each ($enregistrement_o; $table_o)
+		This:C1470.cronosMessage:=This:C1470.cronosMessage+Char:C90(Retour à la ligne:K15:40)
+		This:C1470.cronosMessage:=This:C1470.cronosMessage+"Envoi de l'email automatique "+String:C10($enregistrement_o.indexOf($table_o)+1)+" / "+String:C10($table_o.length)
+		
 		$caScenarioEvent_o:=$enregistrement_o.AllCaScenarioEvent
 		
 		If ($caScenarioEvent_o.length=0)  // Il n'y a pas encore de scène exécutée

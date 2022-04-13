@@ -112,9 +112,9 @@
 				"scenarioDetailPersonnePossibleChaine": {
 					"type": "input",
 					"left": 221,
-					"top": 513,
+					"top": 497,
 					"width": 156,
-					"height": 23,
+					"height": 36,
 					"dataSource": "Form:C1466.scenarioPersonnePossible",
 					"enterable": false,
 					"focusable": false,
@@ -126,7 +126,7 @@
 				"scenarioDetailPersonnePossible": {
 					"type": "button",
 					"text": "Voir",
-					"top": 513,
+					"top": 497,
 					"left": 383,
 					"width": 36,
 					"height": 23,
@@ -138,9 +138,9 @@
 				"scenarioDetailPersonneEnCoursChaine": {
 					"type": "input",
 					"left": 221,
-					"top": 541,
+					"top": 538,
 					"width": 156,
-					"height": 23,
+					"height": 36,
 					"dataSource": "Form:C1466.scenarioPersonneEnCours",
 					"enterable": false,
 					"focusable": false,
@@ -152,7 +152,7 @@
 				"scenarioDetailPersonneEnCours": {
 					"type": "button",
 					"text": "Voir",
-					"top": 541,
+					"top": 538,
 					"left": 383,
 					"width": 36,
 					"height": 23,
@@ -774,7 +774,7 @@
 			}
 		}
 	],
-	"geometryStamp": 776,
+	"geometryStamp": 802,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",

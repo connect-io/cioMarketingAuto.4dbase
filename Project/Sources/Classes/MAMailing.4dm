@@ -29,15 +29,15 @@ Historique
 	
 	$type_t:=selectValue_t
 	
-Function sendGetConfig($type_t : Text)->$config_o : Object
-/* -----------------------------------------------------------------------------
+Function sendGetConfig($type_t : Text; $transporteur_t : Text; $subject_t : Text; $attachmentFile_b : Boolean)->$config_o : Object
+/*------------------------------------------------------------------------------
 Fonction : MarketingAutomation.loadPasserelle
 	
 Permet à l'utilisateur de configurer son mailing suivant un type d'envoi
 	
 Historique
 29/01/21 - Rémy Scanu <remy@connect-io.fr> - Ajout entête
------------------------------------------------------------------------------*/
+------------------------------------------------------------------------------*/
 	var $document_t : Text
 	var $eMail_o : Object
 	var $transporter_c : Collection
@@ -50,22 +50,33 @@ Historique
 	
 	Case of 
 		: ($type_t="Email")
-			// Choix du transporteur
-			$transporter_c:=cwStorage.eMail.smtp
 			
-			cwToolWindowsForm("selectValue"; "center"; New object:C1471("collection"; $transporter_c; "property"; "name"; "selectSubTitle"; "Merci de sélectionner un expéditeur"; "title"; "Choix de l'expéditeur :"))
+			If (Count parameters:C259=1)  // Envoi d'un email en manuel
+				$transporter_c:=cwStorage.eMail.smtp  // Choix du transporteur
+				cwToolWindowsForm("selectValue"; "center"; New object:C1471("collection"; $transporter_c; "property"; "name"; "selectSubTitle"; "Merci de sélectionner un expéditeur"; "title"; "Choix de l'expéditeur :"))
+			Else   // Envoi d'un email en automatique
+				selectValue_t:=$transporteur_t
+			End if 
 			
 			If (selectValue_t#"")
 				$eMail_o:=cmaToolGetClass("MAEMail").new(selectValue_t)
 				
-				$eMail_o.subject:=Request:C163("Objet du mail ?"; ""; "Valider"; "Annuler l'envoi")
+				If (Count parameters:C259=1)  // Envoi d'un email en manuel
+					$eMail_o.subject:=Request:C163("Objet du mail ?"; ""; "Valider"; "Annuler l'envoi")
+				Else   // Envoi d'un email en automatique
+					$eMail_o.subject:=$subject_t
+				End if 
 				
 				If ($eMail_o.subject#"")
-					CONFIRM:C162("Voulez-vous insérer une ou plusieurs pièces-jointes ?")
+					
+					If (Count parameters:C259=1)  // Envoi d'un email en manuel
+						CONFIRM:C162("Voulez-vous insérer une ou plusieurs pièces-jointes ?")
+					Else   // Envoi d'un email en automatique
+						OK:=Num:C11($attachmentFile_b)
+					End if 
 					
 					If (OK=1)
 						$eMail_o.attachmentsPath_c:=New collection:C1472
-						
 						$document_t:=Select document:C905(""; "*"; "Fichiers à insérer en pièce-jointe"; Fichiers multiples:K24:7+Utiliser fenêtre feuille:K24:11; $attachmentsFiles_at)
 						
 						// IMPORTANT NE FONCTIONNE QUE SUR LA MACHINE DU SERVEUR POUR DU CLIENT/SERVEUR IL FAUT CREER UNE TABLE PIECE-JOINTE (VOIR BASE CERFPA)
