@@ -223,8 +223,8 @@ Historique
 29/01/21 - Rémy Scanu <remy@connect-io.fr> - Ajout entête
 -----------------------------------------------------------------------------*/
 	var $numOrdre_el : Integer
-	var $continue_b; $saut_b; $sautEffectue_b : Boolean
-	var $table_o; $enregistrement_o; $caScenarioEvent_o; $scene_o; $personne_o; $eMail_o; $config_o; $conditionAction_o; $conditionSaut_o; $scene_cs; $retour_o; $scenario_o; $autreTable_o; $autreEnregistrement_o : Object
+	var $continue_b; $saut_b; $sautEffectue_b; $finScenario_b : Boolean
+	var $table_o; $enregistrement_o; $caScenarioEvent_o; $scene_o; $personne_o; $eMail_o; $config_o; $conditionAction_o; $conditionSaut_o; $scene_cs; $retour_o; $scenario_o; $autreTable_o; $autreEnregistrement_o; $caPersonneMarketing_o : Object
 	var $collection_c : Collection
 	
 	ASSERT:C1129(This:C1470.cronosImage#Null:C1517; "Impossible d'utiliser la fonction cronosAction sans avoir lancer la fonction loadCronos avant")
@@ -235,8 +235,8 @@ Historique
 	$scene_cs:=cmaToolGetClass("MAScene").new()
 	
 	For each ($enregistrement_o; $table_o)
-		This:C1470.cronosMessage:=This:C1470.cronosMessage+Char:C90(Retour à la ligne:K15:40)
-		This:C1470.cronosMessage:=This:C1470.cronosMessage+"Envoi de l'email automatique "+String:C10($enregistrement_o.indexOf($table_o)+1)+" / "+String:C10($table_o.length)
+		Form:C1466.cronosMessage:="Gestion des scénarios..."+Char:C90(Retour à la ligne:K15:40)
+		Form:C1466.cronosMessage:=Form:C1466.cronosMessage+"Envoi de l'email automatique "+String:C10($enregistrement_o.indexOf($table_o)+1)+" / "+String:C10($table_o.length)
 		
 		$caScenarioEvent_o:=$enregistrement_o.AllCaScenarioEvent
 		
@@ -252,8 +252,7 @@ Historique
 		Else   // S'il y a des logs pour le scénario de la personne, on va regarder parmis ceux-ci ceux qui ne sont pas terminés
 			$caScenarioEvent_o:=$caScenarioEvent_o.query("etat # :1"; "Terminé").orderBy("tsCreation desc")
 			
-			// La dernière scène n'a pas pu se finir
-			If ($caScenarioEvent_o.length>0)
+			If ($caScenarioEvent_o.length>0)  // La dernière scène n'a pas pu se finir
 				$caScenarioEvent_o:=$caScenarioEvent_o.first()
 				
 				Case of 
@@ -284,6 +283,7 @@ Historique
 									
 									// Ajout du log
 									$scene_cs.addScenarioEvent("Fin du scénario"; $enregistrement_o.ID)
+									$finScenario_b:=True:C214
 								Else   // L'utilisateur a oublié de programmer une scène suivante
 									CLEAR VARIABLE:C89($scene_o)
 									
@@ -292,7 +292,6 @@ Historique
 									// On recherche une scène jusqu'à trouver la bonne
 									Repeat 
 										$numOrdre_el:=$numOrdre_el+1
-										
 										$scene_o:=$caScenarioEvent_o.OneCaScene.OneCaScenario.AllCaScene.query("numOrdre = :1"; $numOrdre_el)
 										
 										If ($scene_o.length=1)  // On a trouvé la bonne scène
@@ -309,6 +308,8 @@ Historique
 						$scene_o:=$caScenarioEvent_o.OneCaScene
 				End case 
 				
+			Else   // Ce n'est pas normal de se retrouver dans ce cas-là, mais on va faire en sorte que lors du prochain passage cette personne n'y soit plus.
+				$finScenario_b:=True:C214
 			End if 
 			
 		End if 
@@ -427,14 +428,35 @@ Historique
 					$personne_o:=cmaToolGetClass("MAPersonne").new()
 					$personne_o.loadByPrimaryKey($enregistrement_o.personneID)
 					
-					If (String:C10($personne_o.eMail)#"") & (cmaToolRegexValidate(1; String:C10($personne_o.eMail))=True:C214)  // Si la personne possède bien un email et qu'il est valide
-						$continue_b:=True:C214
-					Else 
-						$continue_b:=False:C215
+					If ($continue_b=True:C214)
+						$continue_b:=(String:C10($personne_o.eMail)#"") & (cmaToolRegexValidate(1; String:C10($personne_o.eMail))=True:C214)  // Si la personne possède bien un email et qu'il est valide
+						
+						If ($continue_b=False:C215)
+							$scene_cs.addScenarioEvent("Erreur email"; $enregistrement_o.ID)
+						End if 
+						
 					End if 
 					
 					If ($continue_b=True:C214)  // Si la personne n'a pas un email en demande de désabonnement ou en bounce
 						$continue_b:=$personne_o.mailjetIsPossible()
+						
+						If ($continue_b=False:C215)
+							$caPersonneMarketing_o:=$personne_o.personne.AllCaPersonneMarketing
+							
+							If ($caPersonneMarketing_o.length=1)
+								$caPersonneMarketing_o:=$caPersonneMarketing_o.first()
+								
+								Case of 
+									: ($caPersonneMarketing_o.desabonementMail=True:C214)
+										$scene_cs.addScenarioEvent("Désabonnement"; $enregistrement_o.ID)
+									: ($caPersonneMarketing_o.lastBounce#0)
+										$scene_cs.addScenarioEvent("Bounce"; $enregistrement_o.ID)
+								End case 
+								
+							End if 
+							
+						End if 
+						
 					End if 
 					
 					If ($continue_b=True:C214)  // Si l'email qui est programmé n'est pas vide
@@ -456,6 +478,8 @@ Historique
 							$continue_b:=False:C215
 						End if 
 						
+					Else   // Dans ce cas là, soit le mail n'est pas bon, soit il est en demande de désabonnement ou soit il est en bounce
+						$finScenario_b:=True:C214
 					End if 
 					
 			End case 
@@ -496,14 +520,18 @@ Historique
 					// toDo
 				End if 
 				
-			Else   // Il faut envoyer un email pour prévenir que la scène ne peut pas être exécuter
-				//toDo
 			End if 
 			
 		End if 
 		
-		CLEAR VARIABLE:C89($scene_o)
-		CLEAR VARIABLE:C89($continue_b)
+		If ($finScenario_b=True:C214)  // Pas de scène "Fin de scénario" OU problème dans l'adresse email OU Désabonnement/Bounce
+			$enregistrement_o.actif:=False:C215
+			$enregistrement_o.tsProchainCheck:=0
+			
+			$enregistrement_o.save()
+		End if 
+		
+		cmaToolCleanVariable(->$finScenario_b; ->$scene_o; ->$continue_b)
 	End for each 
 	
 Function loadCronos

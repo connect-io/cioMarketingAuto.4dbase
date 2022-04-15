@@ -10,7 +10,7 @@ Fonction : MAScene.constructor
 Instanciation de la class MAScene
 	
 Historique
-15/02/21 - Rémy Scanu remy@connect-io.fr> - Création
+15/02/21 - Rémy Scanu <remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
 	This:C1470.scene:=Null:C1517
 	
@@ -21,7 +21,7 @@ Fonction : MAScene.addScenarioEvent
 Permet de faire l'ajout d'un log quand un évenement arrive sur une scène d'un scénario d'une personne
 	
 Historique
-19/05/21 - Rémy Scanu remy@connect-io.fr> - Création
+19/05/21 - Rémy Scanu <remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
 	var $caScenarioEvent_o : Object
 	
@@ -62,6 +62,19 @@ Historique
 			$caScenarioEvent_o.etat:="Terminé"
 			
 			$caScenarioEvent_o.information:=$action_t
+		: ($action_t="Erreur email")
+			$caScenarioEvent_o.etat:="Terminé"
+			
+			$caScenarioEvent_o.information:="L'email renseigné n'est pas au bon format"
+		: ($action_t="Désabonnement") | ($action_t="Bounce")
+			$caScenarioEvent_o.etat:="Terminé"
+			
+			If ($action_t="Désabonnement")
+				$caScenarioEvent_o.information:="L'utilisateur a demandé à ne plus recevoir de mail de votre part"
+			Else 
+				$caScenarioEvent_o.information:="L'email de destination est un bounce."
+			End if 
+			
 	End case 
 	
 	$caScenarioEvent_o.save()
@@ -73,7 +86,7 @@ Fonction : MAScene.loadByPrimaryKey
 Retrouve une scène via sa clé primaire.
 	
 Historique
-15/02/21 - Rémy Scanu remy@connect-io.fr> - Création
+15/02/21 - Rémy Scanu <remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
 	This:C1470.scene:=ds:C1482.CaScene.get($sceneID_i)
 	
@@ -1074,7 +1087,7 @@ Fonction : MAScene.reArrangeNumOrdre
 Permet de re-arranger les numéros d'ordre des différentes scènes d'un scénario
 	
 Historique
-17/05/21 - Rémy Scanu remy@connect-io.fr> - Création
+17/05/21 - Rémy Scanu <remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
 	var $table_o; $enregistrement_o; $scene_o; $return_o : Object
 	
@@ -1103,7 +1116,7 @@ Fonction : MAScene.updateStringActiveModel
 Permet de charger les éléments quand on change un modèle actif
 	
 Historique
-15/02/21 - Rémy Scanu remy@connect-io.fr> - Création
+15/02/21 - Rémy Scanu <remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
 	var $collection_c : Collection
 	

@@ -1,5 +1,10 @@
 If (Form event code:C388=Sur clic:K2:4) & (Form:C1466.PersonneCurrentElement#Null:C1517)
-	Form:C1466.personneDetail:=Form:C1466.PersonneSelectedElement[0]
+	Form:C1466.personneDetail:=Form:C1466.PersonneSelectedElement[0].toObject()
+	
+	For each ($element_t; New collection:C1472("nom"; "prenom"; "UID"; "sexe"; "codePostal"; "ville"; "eMail"; "telFixe"; "telMobile"))
+		Form:C1466.personneDetail[$element_t]:=Form:C1466.personneDetail[Storage:C1525.automation.formule.getFieldName(Storage:C1525.automation.passerelle.champ; $element_t)]
+	End for each 
+	
 	Form:C1466.personneDetail.modeSelection:=LISTBOX Get property:C917(*; "listePersonne"; lk mode de sélection:K53:35)
 	
 	If (Num:C11(Form:C1466.PersonneSelectedElement.length)>1)

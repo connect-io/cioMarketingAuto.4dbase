@@ -297,11 +297,13 @@ Historique
 	End if 
 	
 	$fieldExtract_t:=Replace string:C233($fieldExtract_t; ";;"; ";")
+	//This.personneCollection:=Créer collection
 	
+	//LISTBOX FIXER FORMULE COLONNE(*; "Nom"; "This."+This.passerelle.champ[This.passerelle.champ.indices("lib = :1"; "nom")[0]].personAccess; Est un texte)
+	//LISTBOX FIXER FORMULE COLONNE(*; "Prenom"; "This."+This.passerelle.champ[This.passerelle.champ.indices("lib = :1"; "prenom")[0]].personAccess; Est un texte)
 	This:C1470.personneCollection:=Formula from string:C1601("This.personneSelection.toCollection().extract("+$fieldExtract_t+")").call(This:C1470)
 	
 	If ($extractFieldChild=True:C214)
-		
 		cmaProgressBar(0; "Initialisation"; True:C214)
 		
 		For each ($childElement_o; $collection_c)

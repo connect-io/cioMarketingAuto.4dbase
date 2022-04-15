@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE base SYSTEM "http://www.4d.com/dtd/2007/base.dtd" >
 <base name="cioMarketingAuto" uuid="66073BD7511C8C4F939F73B8B9AD9D42" collation_locale="fr">
 	<schema name="DEFAULT_SCHEMA"/>
