@@ -37,7 +37,7 @@ If (Form event code:C388=Sur chargement:K2:1)
 	Else 
 		
 		If (cwStorage.eMail.smtp.length>0)
-			COLLECTION TO ARRAY:C1562(cwStorage.eMail.smtp; expediteurList_at; "name")
+			COLLECTION TO ARRAY:C1562(cwStorage.eMail.transporter; expediteurList_at; "name")
 		End if 
 		
 	End if 
