@@ -1,4 +1,4 @@
-﻿{
+{
 	"$4d": {
 		"version": "1",
 		"kind": "form"
@@ -9,8 +9,8 @@
 	"windowMinHeight": 0,
 	"windowMaxWidth": 32767,
 	"windowMaxHeight": 32767,
-	"rightMargin": 20,
-	"bottomMargin": 20,
+	"rightMargin": 0,
+	"bottomMargin": 0,
 	"events": [
 		"onLoad",
 		"onPageChange"
@@ -20,33 +20,18 @@
 	"pages": [
 		{
 			"objects": {
-				"Onglet": {
-					"type": "tab",
-					"text": "Tab control",
-					"top": 13,
-					"left": 97,
-					"width": 760,
-					"height": 627,
-					"labels": [
-						"Infos générales",
-						"Marketing"
-					],
-					"labelsPlacement": "top",
-					"fontFamily": "Arial",
-					"fontSize": 18,
-					"fontWeight": "bold",
-					"events": [
-						"onLoad",
-						"onClick"
-					],
-					"dataSource": "Onglet",
-					"dataSourceTypeHint": "arrayText",
-					"action": "gotoPage"
+				"Rectangle1": {
+					"type": "rectangle",
+					"top": 40,
+					"left": 0,
+					"width": 877,
+					"height": 615,
+					"stroke": "transparent"
 				},
 				"Zone de saisie1": {
 					"type": "input",
 					"left": 13,
-					"top": 30,
+					"top": 50,
 					"width": 64,
 					"height": 64,
 					"dataSourceTypeHint": "picture",
@@ -67,11 +52,13 @@
 					"top": 605,
 					"left": 645,
 					"width": 165,
-					"height": 25,
+					"height": 30,
 					"events": [
 						"onClick"
 					],
-					"method": "ObjectMethods/Bouton4.4dm"
+					"method": "ObjectMethods/Bouton4.4dm",
+					"class": "clickable",
+					"style": "roundedBevel"
 				},
 				"Bouton1": {
 					"type": "button",
@@ -79,11 +66,25 @@
 					"top": 605,
 					"left": 460,
 					"width": 165,
-					"height": 25,
+					"height": 30,
 					"events": [
 						"onClick"
 					],
-					"method": "ObjectMethods/Bouton1.4dm"
+					"method": "ObjectMethods/Bouton1.4dm",
+					"class": "clickable",
+					"style": "roundedBevel"
+				},
+				"Rectangle3": {
+					"type": "rectangle",
+					"top": 0,
+					"left": 0,
+					"width": 877,
+					"height": 40,
+					"sizingX": "grow",
+					"stroke": "transparent",
+					"class": "accentBackColor3",
+					"fill": "#19294F",
+					"right": 877
 				}
 			}
 		},
@@ -110,11 +111,11 @@
 					"width": 250,
 					"height": 16,
 					"dataSource": "Form:C1466.nom",
-					"stroke": "#0000FF",
+					"stroke": "automatic",
 					"class": "",
 					"textAlign": "left",
 					"fill": "#FFFFFF",
-					"borderStyle": "sunken",
+					"borderStyle": "none",
 					"contextMenu": "none",
 					"events": [
 						"onDataChange"
@@ -127,8 +128,7 @@
 					"left": 110,
 					"width": 150,
 					"height": 16,
-					"stroke": "#000000",
-					"class": "",
+					"class": "cuLabel",
 					"text": "Nom / Prénom"
 				},
 				"Champ1": {
@@ -138,11 +138,11 @@
 					"width": 250,
 					"height": 16,
 					"dataSource": "Form:C1466.prenom",
-					"stroke": "#0000FF",
+					"stroke": "automatic",
 					"class": "",
 					"textAlign": "left",
 					"fill": "#FFFFFF",
-					"borderStyle": "sunken",
+					"borderStyle": "none",
 					"contextMenu": "none",
 					"events": [
 						"onDataChange"
@@ -155,22 +155,21 @@
 					"left": 110,
 					"width": 150,
 					"height": 16,
-					"stroke": "#000000",
-					"class": "",
+					"class": "cuLabel",
 					"text": "Date de naissance"
 				},
 				"Champ3": {
 					"type": "input",
 					"top": 143,
 					"left": 280,
-					"width": 250,
+					"width": 527,
 					"height": 16,
 					"dataSource": "Form:C1466.dateNaissance",
-					"stroke": "#0000FF",
+					"stroke": "automatic",
 					"class": "",
 					"textAlign": "left",
 					"fill": "#FFFFFF",
-					"borderStyle": "sunken",
+					"borderStyle": "none",
 					"contextMenu": "none",
 					"events": [
 						"onDataChange"
@@ -201,11 +200,11 @@
 					"width": 527,
 					"height": 16,
 					"dataSource": "Form:C1466.adresse",
-					"stroke": "#0000FF",
+					"stroke": "automatic",
 					"class": "",
 					"textAlign": "left",
 					"fill": "#FFFFFF",
-					"borderStyle": "sunken",
+					"borderStyle": "none",
 					"contextMenu": "none",
 					"events": [
 						"onDataChange"
@@ -218,8 +217,7 @@
 					"left": 110,
 					"width": 150,
 					"height": 16,
-					"stroke": "#000000",
-					"class": "",
+					"class": "cuLabel",
 					"text": "Adresse"
 				},
 				"Champ5": {
@@ -229,11 +227,11 @@
 					"width": 527,
 					"height": 16,
 					"dataSource": "Form:C1466.adresseComplement",
-					"stroke": "#0000FF",
+					"stroke": "automatic",
 					"class": "",
 					"textAlign": "left",
 					"fill": "#FFFFFF",
-					"borderStyle": "sunken",
+					"borderStyle": "none",
 					"contextMenu": "none",
 					"events": [
 						"onDataChange"
@@ -246,8 +244,7 @@
 					"left": 110,
 					"width": 150,
 					"height": 16,
-					"stroke": "#000000",
-					"class": "",
+					"class": "cuLabel",
 					"text": "Adresse complément"
 				},
 				"Champ6": {
@@ -257,11 +254,11 @@
 					"width": 250,
 					"height": 16,
 					"dataSource": "Form:C1466.codePostal",
-					"stroke": "#0000FF",
+					"stroke": "automatic",
 					"class": "",
 					"textAlign": "left",
 					"fill": "#FFFFFF",
-					"borderStyle": "sunken",
+					"borderStyle": "none",
 					"contextMenu": "none",
 					"events": [
 						"onDataChange"
@@ -274,8 +271,7 @@
 					"left": 110,
 					"width": 150,
 					"height": 16,
-					"stroke": "#000000",
-					"class": "",
+					"class": "cuLabel",
 					"text": "Code postal / Ville"
 				},
 				"Champ7": {
@@ -285,11 +281,11 @@
 					"width": 250,
 					"height": 16,
 					"dataSource": "Form:C1466.ville",
-					"stroke": "#0000FF",
+					"stroke": "automatic",
 					"class": "",
 					"textAlign": "left",
 					"fill": "#FFFFFF",
-					"borderStyle": "sunken",
+					"borderStyle": "none",
 					"contextMenu": "none",
 					"events": [
 						"onDataChange"
@@ -303,11 +299,11 @@
 					"width": 527,
 					"height": 16,
 					"dataSource": "Form:C1466.eMail",
-					"stroke": "#0000FF",
+					"stroke": "automatic",
 					"class": "",
 					"textAlign": "left",
 					"fill": "#FFFFFF",
-					"borderStyle": "sunken",
+					"borderStyle": "none",
 					"contextMenu": "none",
 					"events": [
 						"onDataChange"
@@ -320,8 +316,7 @@
 					"left": 110,
 					"width": 150,
 					"height": 16,
-					"stroke": "#000000",
-					"class": "",
+					"class": "cuLabel",
 					"text": "Adresse mail"
 				},
 				"Champ9": {
@@ -331,11 +326,11 @@
 					"width": 527,
 					"height": 16,
 					"dataSource": "Form:C1466.telFixe",
-					"stroke": "#0000FF",
+					"stroke": "automatic",
 					"class": "",
 					"textAlign": "left",
 					"fill": "#FFFFFF",
-					"borderStyle": "sunken",
+					"borderStyle": "none",
 					"contextMenu": "none",
 					"events": [
 						"onDataChange"
@@ -348,8 +343,7 @@
 					"left": 110,
 					"width": 150,
 					"height": 16,
-					"stroke": "#000000",
-					"class": "",
+					"class": "cuLabel",
 					"text": "Téléphone fixe"
 				},
 				"Champ10": {
@@ -359,11 +353,11 @@
 					"width": 527,
 					"height": 16,
 					"dataSource": "Form:C1466.telMobile",
-					"stroke": "#0000FF",
+					"stroke": "automatic",
 					"class": "",
 					"textAlign": "left",
 					"fill": "#FFFFFF",
-					"borderStyle": "sunken",
+					"borderStyle": "none",
 					"contextMenu": "none",
 					"events": [
 						"onDataChange"
@@ -376,9 +370,124 @@
 					"left": 110,
 					"width": 150,
 					"height": 16,
-					"stroke": "#000000",
-					"class": "",
+					"class": "cuLabel",
 					"text": "Téléphone mobile"
+				},
+				"Line6": {
+					"type": "line",
+					"top": 122,
+					"left": 270,
+					"width": 260,
+					"class": "accentColor2",
+					"right": 530,
+					"height": 1
+				},
+				"Line1": {
+					"type": "line",
+					"top": 122,
+					"left": 547,
+					"width": 260,
+					"class": "accentColor2",
+					"right": 807,
+					"height": 1
+				},
+				"Line2": {
+					"type": "line",
+					"top": 158,
+					"left": 270,
+					"width": 537,
+					"class": "accentColor2",
+					"right": 807,
+					"height": 1
+				},
+				"Line3": {
+					"type": "line",
+					"top": 240,
+					"left": 270,
+					"width": 537,
+					"class": "accentColor2",
+					"right": 807,
+					"height": 1
+				},
+				"Line4": {
+					"type": "line",
+					"top": 276,
+					"left": 270,
+					"width": 537,
+					"class": "accentColor2",
+					"right": 807,
+					"height": 1
+				},
+				"Line5": {
+					"type": "line",
+					"top": 312,
+					"left": 270,
+					"width": 260,
+					"class": "accentColor2",
+					"right": 530,
+					"height": 1
+				},
+				"Line7": {
+					"type": "line",
+					"top": 348,
+					"left": 270,
+					"width": 537,
+					"class": "accentColor2",
+					"right": 807,
+					"height": 1
+				},
+				"Line8": {
+					"type": "line",
+					"top": 384,
+					"left": 270,
+					"width": 537,
+					"class": "accentColor2",
+					"right": 807,
+					"height": 1
+				},
+				"Line9": {
+					"type": "line",
+					"top": 420,
+					"left": 270,
+					"width": 537,
+					"class": "accentColor2",
+					"right": 807,
+					"height": 1
+				},
+				"Line10": {
+					"type": "line",
+					"top": 312,
+					"left": 547,
+					"width": 260,
+					"class": "accentColor2",
+					"right": 807,
+					"height": 1
+				},
+				"Texte17": {
+					"type": "text",
+					"text": "Détail personne",
+					"top": 9,
+					"left": 10,
+					"width": 185,
+					"height": 22,
+					"fontSize": 18,
+					"stroke": "#FFFFFF",
+					"textAlign": "left"
+				},
+				"Zone de saisie2": {
+					"type": "input",
+					"left": 364,
+					"top": 9,
+					"width": 412,
+					"height": 22,
+					"dataSource": "\"Fiche de \"+Form:C1466.nom+\" \"+Form:C1466.prenom",
+					"fontSize": 18,
+					"fill": "transparent",
+					"borderStyle": "none",
+					"stroke": "#FFFFFF",
+					"enterable": false,
+					"focusable": false,
+					"contextMenu": "automatic"
 				}
 			}
 		},
@@ -391,15 +500,17 @@
 					"left": 110,
 					"width": 130,
 					"height": 16,
-					"fontWeight": "normal"
+					"fontWeight": "normal",
+					"class": "cuLabel"
 				},
 				"rang": {
 					"type": "input",
-					"left": 270,
+					"left": 280,
 					"top": 107,
-					"width": 200,
+					"width": 527,
 					"height": 16,
-					"dataSource": "Form:C1466.rang"
+					"dataSource": "Form:C1466.rang",
+					"borderStyle": "none"
 				},
 				"Texte10": {
 					"type": "text",
@@ -408,11 +519,12 @@
 					"left": 110,
 					"width": 160,
 					"height": 16,
-					"fontWeight": "normal"
+					"fontWeight": "normal",
+					"class": "cuLabel"
 				},
 				"imageDesabonnement": {
 					"type": "input",
-					"left": 270,
+					"left": 280,
 					"top": 143,
 					"width": 16,
 					"height": 16,
@@ -434,7 +546,8 @@
 					"left": 110,
 					"width": 130,
 					"height": 16,
-					"fontWeight": "normal"
+					"fontWeight": "normal",
+					"class": "cuLabel"
 				},
 				"Texte12": {
 					"type": "text",
@@ -452,9 +565,9 @@
 				},
 				"Zone de saisie": {
 					"type": "input",
-					"left": 270,
+					"left": 280,
 					"top": 179,
-					"width": 537,
+					"width": 527,
 					"height": 100,
 					"dataSource": "Form:C1466.resumeMarketing",
 					"enterable": false,
@@ -503,17 +616,23 @@
 					"currentItemPositionSource": "Form:C1466.ScenarioEnCoursCurrentPosition",
 					"selectedItemsSource": "Form:C1466.ScenarioEnCoursSelectedElement",
 					"selectionMode": "single",
+					"headerHeight": "24px",
+					"horizontalLineStroke": "transparent",
+					"verticalLineStroke": "transparent",
+					"fill": "#F5FBFF",
+					"alternateFill": "#E1F2FC",
 					"columns": [
 						{
 							"header": {
 								"text": "Nom",
-								"name": "Entête1"
+								"name": "Entête1",
+								"stroke": "#21759B"
 							},
 							"name": "Colonne1",
 							"footer": {
 								"name": "Pied1"
 							},
-							"alternateFill": "#D6D6D6",
+							"alternateFill": "#E1F2FC",
 							"width": 150,
 							"dataSource": "This:C1470.OneCaScenario.nom",
 							"enterable": false
@@ -521,13 +640,14 @@
 						{
 							"header": {
 								"name": "Entête2",
-								"text": "Statut"
+								"text": "Statut",
+								"stroke": "#21759B"
 							},
 							"name": "Colonne2",
 							"footer": {
 								"name": "Pied2"
 							},
-							"alternateFill": "#D6D6D6",
+							"alternateFill": "#E1F2FC",
 							"width": 150,
 							"dataSource": "This:C1470.actif",
 							"dataSourceTypeHint": "boolean",
@@ -577,17 +697,23 @@
 					"currentItemPositionSource": "Form:C1466.ScenarioPossibleCurrentPosition",
 					"selectedItemsSource": "Form:C1466.ScenarioPossibleSelectedElement",
 					"selectionMode": "single",
+					"headerHeight": "24px",
+					"horizontalLineStroke": "transparent",
+					"verticalLineStroke": "transparent",
+					"fill": "#F5FBFF",
+					"alternateFill": "#E1F2FC",
 					"columns": [
 						{
 							"header": {
 								"text": "Nom",
-								"name": "Entête4"
+								"name": "Entête4",
+								"stroke": "#21759B"
 							},
 							"name": "Colonne4",
 							"footer": {
 								"name": "Pied4"
 							},
-							"alternateFill": "#D6D6D6",
+							"alternateFill": "#E1F2FC",
 							"width": 150,
 							"dataSource": "This:C1470.nom",
 							"enterable": false
@@ -595,13 +721,14 @@
 						{
 							"header": {
 								"name": "Entête5",
-								"text": "Statut"
+								"text": "Statut",
+								"stroke": "#21759B"
 							},
 							"name": "Colonne5",
 							"footer": {
 								"name": "Pied5"
 							},
-							"alternateFill": "#D6D6D6",
+							"alternateFill": "#E1F2FC",
 							"width": 150,
 							"dataSource": "This:C1470.actif",
 							"dataSourceTypeHint": "boolean",
@@ -628,7 +755,7 @@
 				"detailPersonneScenarioPersonneEnCoursString": {
 					"type": "input",
 					"left": 110,
-					"top": 555,
+					"top": 545,
 					"width": 156,
 					"height": 14,
 					"dataSource": "Form:C1466.scenarioPersonneEnCours",
@@ -642,43 +769,58 @@
 				"detailPersonneScenarioVoirModifier": {
 					"type": "button",
 					"text": "Voir/Modifier scénario",
-					"top": 574,
+					"top": 564,
 					"left": 110,
 					"width": 182,
-					"height": 23,
+					"height": 30,
 					"events": [
 						"onClick"
 					],
-					"method": "ObjectMethods/detailPersonneScenarioVoirModifier.4dm"
+					"method": "ObjectMethods/detailPersonneScenarioVoirModifier.4dm",
+					"class": "clickable",
+					"style": "roundedBevel"
 				},
 				"detailPersonneScenarioEnleverPersonne": {
 					"type": "button",
 					"text": "Enlever du scénario",
-					"top": 607,
+					"top": 605,
 					"left": 110,
 					"width": 182,
-					"height": 23,
+					"height": 30,
 					"events": [
 						"onClick"
 					],
-					"method": "ObjectMethods/detailPersonneScenarioEnleverPersonne.4dm"
+					"method": "ObjectMethods/detailPersonneScenarioEnleverPersonne.4dm",
+					"class": "clickable",
+					"style": "roundedBevel"
 				},
 				"detailPersonneScenarioActifInactif": {
 					"type": "button",
 					"text": "Changer le statut",
-					"top": 574,
+					"top": 564,
 					"left": 302,
 					"width": 116,
-					"height": 23,
+					"height": 30,
 					"events": [
 						"onClick"
 					],
-					"method": "ObjectMethods/detailPersonneScenarioActifInactif.4dm"
+					"method": "ObjectMethods/detailPersonneScenarioActifInactif.4dm",
+					"class": "clickable",
+					"style": "roundedBevel"
+				},
+				"Line11": {
+					"type": "line",
+					"top": 122,
+					"left": 273,
+					"width": 537,
+					"class": "accentColor2",
+					"right": 810,
+					"height": 1
 				}
 			}
 		}
 	],
-	"geometryStamp": 416,
+	"geometryStamp": 580,
 	"editor": {
 		"activeView": "View 1",
 		"defaultView": "View 1",

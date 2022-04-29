@@ -9,8 +9,8 @@
 	"windowMinHeight": 0,
 	"windowMaxWidth": 32767,
 	"windowMaxHeight": 32767,
-	"rightMargin": 20,
-	"bottomMargin": 20,
+	"rightMargin": 0,
+	"bottomMargin": 0,
 	"events": [
 		"onLoad"
 	],
@@ -18,7 +18,28 @@
 	"destination": "detailScreen",
 	"pages": [
 		{
-			"objects": {}
+			"objects": {
+				"Rectangle3": {
+					"type": "rectangle",
+					"top": 0,
+					"left": 0,
+					"width": 951,
+					"height": 40,
+					"sizingX": "grow",
+					"stroke": "transparent",
+					"class": "accentBackColor3",
+					"fill": "#19294F",
+					"right": 951
+				},
+				"Rectangle2": {
+					"type": "rectangle",
+					"top": 40,
+					"left": 0,
+					"width": 951,
+					"height": 649,
+					"stroke": "transparent"
+				}
+			}
 		},
 		{
 			"objects": {
@@ -45,11 +66,13 @@
 					"top": 588,
 					"left": 257,
 					"width": 170,
-					"height": 25,
+					"height": 30,
 					"events": [
 						"onClick"
 					],
-					"method": "ObjectMethods/scenarioDetailBoutonSauvegarder.4dm"
+					"method": "ObjectMethods/scenarioDetailBoutonSauvegarder.4dm",
+					"class": "clickable",
+					"style": "roundedBevel"
 				},
 				"scenarioListeBoutonSupprimer": {
 					"type": "button",
@@ -61,7 +84,9 @@
 					"events": [
 						"onClick"
 					],
-					"method": "ObjectMethods/scenarioListeBoutonSupprimer.4dm"
+					"method": "ObjectMethods/scenarioListeBoutonSupprimer.4dm",
+					"class": "clickable",
+					"style": "roundedBevel"
 				},
 				"scenarioListeBoutonAjout": {
 					"type": "button",
@@ -73,7 +98,9 @@
 					"events": [
 						"onClick"
 					],
-					"method": "ObjectMethods/scenarioListeBoutonAjout.4dm"
+					"method": "ObjectMethods/scenarioListeBoutonAjout.4dm",
+					"class": "clickable",
+					"style": "roundedBevel"
 				},
 				"sceneDetailBoutonSauvegarder": {
 					"type": "button",
@@ -81,11 +108,13 @@
 					"top": 646,
 					"left": 762,
 					"width": 170,
-					"height": 25,
+					"height": 30,
 					"events": [
 						"onClick"
 					],
-					"method": "ObjectMethods/sceneDetailBoutonSauvegarder.4dm"
+					"method": "ObjectMethods/sceneDetailBoutonSauvegarder.4dm",
+					"class": "clickable",
+					"style": "roundedBevel"
 				},
 				"Texte4": {
 					"type": "text",
@@ -100,14 +129,16 @@
 				"scenarioDetailBoutonAppliquer": {
 					"type": "button",
 					"text": "Appliquer le scénario",
-					"top": 620,
+					"top": 628,
 					"left": 257,
 					"width": 170,
-					"height": 25,
+					"height": 30,
 					"events": [
 						"onClick"
 					],
-					"method": "ObjectMethods/scenarioDetailBoutonAppliquer.4dm"
+					"method": "ObjectMethods/scenarioDetailBoutonAppliquer.4dm",
+					"class": "clickable",
+					"style": "roundedBevel"
 				},
 				"scenarioDetailPersonnePossibleChaine": {
 					"type": "input",
@@ -133,7 +164,9 @@
 					"events": [
 						"onClick"
 					],
-					"method": "ObjectMethods/scenarioDetailPersonnePossible.4dm"
+					"method": "ObjectMethods/scenarioDetailPersonnePossible.4dm",
+					"class": "clickable",
+					"style": "roundedBevel"
 				},
 				"scenarioDetailPersonneEnCoursChaine": {
 					"type": "input",
@@ -159,7 +192,9 @@
 					"events": [
 						"onClick"
 					],
-					"method": "ObjectMethods/scenarioDetailPersonneEnCours.4dm"
+					"method": "ObjectMethods/scenarioDetailPersonneEnCours.4dm",
+					"class": "clickable",
+					"style": "roundedBevel"
 				},
 				"scenarioListe": {
 					"type": "listbox",
@@ -176,17 +211,22 @@
 					"currentItemSource": "Form:C1466.ScenarioCurrentElement",
 					"currentItemPositionSource": "Form:C1466.ScenarioCurrentPosition",
 					"selectedItemsSource": "Form:C1466.ScenarioSelectedElement",
-					"fill": "automatic",
+					"fill": "#F5FBFF",
 					"scrollbarHorizontal": "hidden",
 					"rowHeight": "30px",
 					"verticalAlign": "middle",
 					"method": "ObjectMethods/scenarioListe.4dm",
 					"selectionMode": "single",
+					"headerHeight": "24px",
+					"horizontalLineStroke": "transparent",
+					"verticalLineStroke": "transparent",
+					"alternateFill": "#E1F2FC",
 					"columns": [
 						{
 							"header": {
 								"text": "Sélection des scénarios",
-								"name": "Entête1"
+								"name": "Entête1",
+								"stroke": "#21759B"
 							},
 							"name": "Nom",
 							"footer": {
@@ -300,8 +340,9 @@
 					"events": [
 						"onClick"
 					],
-					"style": "regular",
-					"method": "ObjectMethods/scenarioDetailCondition.4dm"
+					"style": "roundedBevel",
+					"method": "ObjectMethods/scenarioDetailCondition.4dm",
+					"class": "clickable"
 				},
 				"sceneListe": {
 					"type": "listbox",
@@ -324,15 +365,23 @@
 					"verticalAlign": "middle",
 					"method": "ObjectMethods/sceneListe.4dm",
 					"selectionMode": "single",
+					"headerHeight": "24px",
+					"showFooters": true,
+					"horizontalLineStroke": "transparent",
+					"verticalLineStroke": "transparent",
 					"columns": [
 						{
 							"header": {
 								"text": "Sélection des scènes",
-								"name": "Entête2"
+								"name": "Entête2",
+								"stroke": "#21759B"
 							},
 							"name": "Nom1",
 							"footer": {
-								"name": "Pied2"
+								"name": "Pied2",
+								"dataSourceTypeHint": "number",
+								"variableCalculation": "count",
+								"numberFormat": "##0 ligne.s"
 							},
 							"maxWidth": 200,
 							"width": 200,
@@ -340,7 +389,9 @@
 							"textAlign": "center",
 							"enterable": false,
 							"wordwrap": "normal",
-							"pictureFormat": "proportionalCenter"
+							"pictureFormat": "proportionalCenter",
+							"fill": "#F5FBFF",
+							"alternateFill": "#E1F2FC"
 						}
 					]
 				},
@@ -354,7 +405,9 @@
 					"events": [
 						"onClick"
 					],
-					"method": "ObjectMethods/sceneListeBoutonSupprimer.4dm"
+					"method": "ObjectMethods/sceneListeBoutonSupprimer.4dm",
+					"class": "clickable",
+					"style": "roundedBevel"
 				},
 				"sceneListeBoutonAjout": {
 					"type": "button",
@@ -366,7 +419,9 @@
 					"events": [
 						"onClick"
 					],
-					"method": "ObjectMethods/sceneListeBoutonAjout.4dm"
+					"method": "ObjectMethods/sceneListeBoutonAjout.4dm",
+					"class": "clickable",
+					"style": "roundedBevel"
 				},
 				"Texte2": {
 					"type": "text",
@@ -428,9 +483,10 @@
 					"events": [
 						"onClick"
 					],
-					"style": "regular",
+					"style": "roundedBevel",
 					"method": "ObjectMethods/sceneDetailConditionAction.4dm",
-					"visibility": "visible"
+					"visibility": "visible",
+					"class": "clickable"
 				},
 				"Texte13": {
 					"type": "text",
@@ -451,9 +507,10 @@
 					"events": [
 						"onClick"
 					],
-					"style": "regular",
+					"style": "roundedBevel",
 					"method": "ObjectMethods/sceneDetailConditionSaut.4dm",
-					"visibility": "visible"
+					"visibility": "visible",
+					"class": "clickable"
 				},
 				"sceneDetailPersonneEnCoursChaine": {
 					"type": "input",
@@ -479,7 +536,9 @@
 					"events": [
 						"onClick"
 					],
-					"method": "ObjectMethods/sceneDetailPersonneEnCours.4dm"
+					"method": "ObjectMethods/sceneDetailPersonneEnCours.4dm",
+					"class": "clickable",
+					"style": "roundedBevel"
 				},
 				"Texte5": {
 					"type": "text",
@@ -500,9 +559,10 @@
 					"events": [
 						"onClick"
 					],
-					"style": "regular",
+					"style": "roundedBevel",
 					"method": "ObjectMethods/scenarioDetailDecor.4dm",
-					"visibility": "hidden"
+					"visibility": "hidden",
+					"class": "clickable"
 				},
 				"Texte6": {
 					"type": "text",
@@ -522,8 +582,9 @@
 					"events": [
 						"onClick"
 					],
-					"style": "regular",
-					"method": "ObjectMethods/sceneDetailParametre.4dm"
+					"style": "roundedBevel",
+					"method": "ObjectMethods/sceneDetailParametre.4dm",
+					"class": "clickable"
 				},
 				"Texte14": {
 					"type": "text",
@@ -770,11 +831,37 @@
 					"loopBackToFirstFrame": true,
 					"switchBackWhenReleased": true,
 					"useLastFrameAsDisabled": true
+				},
+				"Texte17": {
+					"type": "text",
+					"text": "Gestion des scénarios",
+					"top": 9,
+					"left": 10,
+					"width": 185,
+					"height": 22,
+					"fontSize": 18,
+					"stroke": "#FFFFFF",
+					"textAlign": "left"
+				},
+				"Zone de saisie": {
+					"type": "input",
+					"left": 364,
+					"top": 9,
+					"width": 212,
+					"height": 22,
+					"dataSource": "\"Résultat (\"+String:C10(Form:C1466.scenario.length)+\")\"",
+					"fontSize": 18,
+					"fill": "transparent",
+					"borderStyle": "none",
+					"stroke": "#FFFFFF",
+					"enterable": false,
+					"focusable": false,
+					"contextMenu": "automatic"
 				}
 			}
 		}
 	],
-	"geometryStamp": 802,
+	"geometryStamp": 853,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",

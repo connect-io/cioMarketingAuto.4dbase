@@ -15,7 +15,8 @@ Historique
 25/01/21 - Grégory Fromain <gregory@connect-io.fr> - clean code
 -----------------------------------------------------------------------------*/
 	var $chemin_t : Text
-	var $fichierConfig_o : cs:C1710.File
+	var $configFile_o : 4D:C1709.File
+	var $scenarioFolder_o : 4D:C1709.Folder
 	
 	If (Bool:C1537($initialisation_b)=True:C214)  // On initialise tout ça uniquement au premier appel (Normalement Sur ouverture de la base)
 		
@@ -23,23 +24,19 @@ Historique
 			Storage:C1525.automation:=New shared object:C1526()
 		End use 
 		
-		Case of 
-			: (Count parameters:C259=1)
-				This:C1470.configChemin:=Get 4D folder:C485(Dossier Resources courant:K5:16; *)+"cioMarketingAutomation"+Séparateur dossier:K24:12+"config.json"
-			: (String:C10($configChemin_t)="")
-				This:C1470.configChemin:=Get 4D folder:C485(Dossier Resources courant:K5:16; *)+"cioMarketingAutomation"+Séparateur dossier:K24:12+"config.json"
-			Else 
-				This:C1470.configChemin:=$configChemin_t
-		End case 
+		// Chargement du fichier de config
+		$configFile_o:=Folder:C1567(fk resources folder:K87:11; *).file("cioMarketingAutomation/config.json")
 		
-		$fichierConfig_o:=File:C1566(This:C1470.configChemin; fk chemin plateforme:K87:2)
+		If (Not:C34($configFile_o.exists))  // Il n'existe pas de fichier de config dans la base hote, on le génère.
+			Folder:C1567(fk resources folder:K87:11).file("modelAutomation/config.json").copyTo($configFile_o.parent; $configFile_o.fullName)
+		End if 
 		
-		If ($fichierConfig_o.exists=True:C214)
+		If ($configFile_o.exists=True:C214)
 			// Je charge toutes les images
 			This:C1470.loadImage()
 			
 			Use (Storage:C1525.automation)
-				Storage:C1525.automation.config:=OB Copy:C1225(JSON Parse:C1218($fichierConfig_o.getText()); ck shared:K85:29; Storage:C1525.automation)
+				Storage:C1525.automation.config:=OB Copy:C1225(JSON Parse:C1218($configFile_o.getText()); ck shared:K85:29; Storage:C1525.automation)
 				Storage:C1525.automation.image:=OB Copy:C1225(This:C1470.image; ck shared:K85:29; Storage:C1525.automation)
 			End use 
 			
@@ -49,13 +46,13 @@ Historique
 			This:C1470.loadSceneConditionActionList()
 			This:C1470.loadSceneConditionSautList()
 		Else 
-			ALERT:C41("Impossible d'intialiser le composant caMarketingAutomation")
+			ALERT:C41("Impossible d'intialiser le composant caMarketingAutomation, le fichier de configuration n'a pas pu être trouvé dans la base hôte.")
 		End if 
 		
-		$chemin_t:=Get 4D folder:C485(Dossier Resources courant:K5:16; *)+"cioMarketingAutomation"+Séparateur dossier:K24:12
+		$scenarioFolder_o:=Folder:C1567(fk resources folder:K87:11; *).folder("scenario")
 		
-		If (Test path name:C476($chemin_t+"scenario"+Séparateur dossier:K24:12)#Est un dossier:K24:2)
-			CREATE FOLDER:C475($chemin_t+"scenario"+Séparateur dossier:K24:12)
+		If ($scenarioFolder_o.exists=False:C215)
+			$scenarioFolder_o.create()
 		End if 
 		
 	End if 
@@ -71,7 +68,7 @@ Historique
 -----------------------------------------------------------------------------*/
 	var $dossier_o : Object
 	
-	$dossier_o:=Folder:C1567($chemin_t; fk chemin plateforme:K87:2)
+	$dossier_o:=Folder:C1567($chemin_t; fk platform path:K87:2)
 	
 	If ($dossier_o.exists=False:C215)  // Création du dossier $chemin_t
 		$isOk_b:=$dossier_o.create()
@@ -235,7 +232,7 @@ Historique
 	$scene_cs:=cmaToolGetClass("MAScene").new()
 	
 	For each ($enregistrement_o; $table_o)
-		Form:C1466.cronosMessage:="Gestion des scénarios..."+Char:C90(Retour à la ligne:K15:40)
+		Form:C1466.cronosMessage:="Gestion des scénarios..."+Char:C90(Line feed:K15:40)
 		Form:C1466.cronosMessage:=Form:C1466.cronosMessage+"Envoi de l'email automatique "+String:C10($enregistrement_o.indexOf($table_o)+1)+" / "+String:C10($table_o.length)
 		
 		$caScenarioEvent_o:=$enregistrement_o.AllCaScenarioEvent
@@ -601,9 +598,9 @@ Historique
 		This:C1470.image:=New object:C1471()
 	End if 
 	
-	$dossier_o:=Folder:C1567(Get 4D folder:C485(Dossier Resources courant:K5:16)+"Images"+Séparateur dossier:K24:12; fk chemin plateforme:K87:2)
+	$dossier_o:=Folder:C1567(Get 4D folder:C485(Current resources folder:K5:16)+"Images"+Folder separator:K24:12; fk platform path:K87:2)
 	
-	For each ($fichier_o; $dossier_o.files(fk ignorer invisibles:K87:22))
+	For each ($fichier_o; $dossier_o.files(fk ignore invisible:K87:22))
 		$blob_b:=$fichier_o.getContent()
 		
 		BLOB TO PICTURE:C682($blob_b; $image_i)
@@ -643,7 +640,7 @@ Historique
 	
 	ASSERT:C1129(Storage:C1525.automation#Null:C1517; "Impossible d'utiliser la fonction loadSceneConditionActionList sans avoir fait une initialisation complète de la class MarketingAutomation")
 	
-	$fichierConfig_o:=File:C1566(Get 4D folder:C485(Dossier Resources courant:K5:16; *)+"cioMarketingAutomation"+Séparateur dossier:K24:12+"scene"+Séparateur dossier:K24:12+"conditionAction.json"; fk chemin plateforme:K87:2)
+	$fichierConfig_o:=File:C1566(Get 4D folder:C485(Current resources folder:K5:16; *)+"cioMarketingAutomation"+Folder separator:K24:12+"scene"+Folder separator:K24:12+"conditionAction.json"; fk platform path:K87:2)
 	
 	If ($fichierConfig_o.exists=True:C214)
 		
@@ -666,7 +663,7 @@ Historique
 	
 	ASSERT:C1129(Storage:C1525.automation#Null:C1517; "Impossible d'utiliser la fonction loadSceneConditionSautList sans avoir fait une initialisation complète de la class MarketingAutomation")
 	
-	$fichierConfig_o:=File:C1566(Get 4D folder:C485(Dossier Resources courant:K5:16; *)+"cioMarketingAutomation"+Séparateur dossier:K24:12+"scene"+Séparateur dossier:K24:12+"conditionSaut.json"; fk chemin plateforme:K87:2)
+	$fichierConfig_o:=File:C1566(Get 4D folder:C485(Current resources folder:K5:16; *)+"cioMarketingAutomation"+Folder separator:K24:12+"scene"+Folder separator:K24:12+"conditionSaut.json"; fk platform path:K87:2)
 	
 	If ($fichierConfig_o.exists=True:C214)
 		

@@ -2,9 +2,9 @@ var $tsFrom_el; $tsTo_el; $prochaineVerif_el : Integer
 var $lastRequest_o : Object
 
 Case of 
-	: (Form event code:C388=Sur chargement:K2:1)
+	: (Form event code:C388=On Load:K2:1)
 		SET TIMER:C645(60)
-	: (Form event code:C388=Sur minuteur:K2:25)
+	: (Form event code:C388=On Timer:K2:25)
 		
 		Case of 
 			: (Form:C1466.cronosMessage="Récupération des données de mailjet en cours...")
@@ -42,7 +42,7 @@ Case of
 				Form:C1466.cronosMessage:=""
 				Form:C1466.cronosVerifScenario:=cmaTimestamp(Current date:C33; Current time:C178)+120  // On incrémente de 2 min
 			: (Form:C1466.cronosMessage="Gestion des process automatiques personnalisés journalier...")
-				Formula from string:C1601("outilsGestionCronos(1)").call()
+				Formula from string:C1601("_cmaGestionCronos(1)").call()
 				
 				Form:C1466.cronosMessage:=""
 				Form:C1466.cronosVerifProcessAuto:=cmaTimestamp(Current date:C33+1; ?00:00:00?)  // On incrémente de 24h

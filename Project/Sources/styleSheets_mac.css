@@ -1,4 +1,24 @@
-.default {
+.Par_défaut {
+	font-family: Geneva;
+	font-size: 13px;
+}
+
+.Tahoma_10 {
+	font-family: Lucida Grande;
+	font-size: 13px;
+}
+
+.Tahoma_11 {
+	font-family: Lucida Grande;
+	font-size: 13px;
+}
+
+.Tahoma_12 {
+	font-family: Lucida Grande;
+	font-size: 12px;
+}
+
+.Titre_bloc {
 	font-family: Lucida Grande;
 	font-size: 13px;
 }

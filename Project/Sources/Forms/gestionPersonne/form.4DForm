@@ -1,4 +1,4 @@
-﻿{
+{
 	"$4d": {
 		"version": "1",
 		"kind": "form"
@@ -9,8 +9,8 @@
 	"windowMinHeight": 0,
 	"windowMaxWidth": 32767,
 	"windowMaxHeight": 32767,
-	"rightMargin": 20,
-	"bottomMargin": 20,
+	"rightMargin": 0,
+	"bottomMargin": 0,
 	"events": [
 		"onLoad",
 		"onClick",
@@ -20,31 +20,45 @@
 	"destination": "detailScreen",
 	"pages": [
 		{
-			"objects": {}
+			"objects": {
+				"Rectangle1": {
+					"type": "rectangle",
+					"top": 40,
+					"left": 0,
+					"width": 1360,
+					"height": 576,
+					"stroke": "transparent"
+				},
+				"Rectangle3": {
+					"type": "rectangle",
+					"top": 0,
+					"left": 0,
+					"width": 1361,
+					"height": 40,
+					"sizingX": "grow",
+					"stroke": "transparent",
+					"class": "accentBackColor3",
+					"fill": "#19294F",
+					"right": 1361
+				}
+			}
 		},
 		{
 			"objects": {
-				"Texte4": {
-					"type": "text",
-					"text": "Gestion des personnes",
-					"top": 17,
-					"left": 25,
-					"width": 300,
-					"height": 21,
-					"fontWeight": "bold",
-					"fontSize": 16
-				},
 				"personneDetailVoirFiche": {
 					"type": "button",
 					"text": "Voir la fiche de la personne",
-					"top": 490,
+					"top": 486,
 					"left": 360,
 					"width": 250,
-					"height": 25,
+					"height": 30,
 					"events": [
-						"onClick"
+						"onClick",
+						"onMouseMove"
 					],
-					"method": "ObjectMethods/personneDetailVoirFiche.4dm"
+					"method": "ObjectMethods/personneDetailVoirFiche.4dm",
+					"class": "clickable",
+					"style": "roundedBevel"
 				},
 				"supprimerScenarioEnCours": {
 					"type": "button",
@@ -52,11 +66,14 @@
 					"top": 574,
 					"left": 47,
 					"width": 270,
-					"height": 25,
+					"height": 30,
 					"events": [
-						"onClick"
+						"onClick",
+						"onMouseMove"
 					],
-					"method": "ObjectMethods/supprimerScenarioEnCours.4dm"
+					"method": "ObjectMethods/supprimerScenarioEnCours.4dm",
+					"class": "clickable",
+					"style": "roundedBevel"
 				},
 				"personneDetail": {
 					"type": "input",
@@ -92,12 +109,17 @@
 					"currentItemPositionSource": "Form:C1466.ScenarioPersonneCurrentPosition",
 					"selectedItemsSource": "Form:C1466.ScenarioPersonneSelectedElement",
 					"selectionMode": "single",
-					"headerHeight": "17px",
+					"headerHeight": "24px",
+					"horizontalLineStroke": "transparent",
+					"verticalLineStroke": "transparent",
+					"alternateFill": "#E1F2FC",
+					"fill": "#F5FBFF",
 					"columns": [
 						{
 							"header": {
 								"text": "Liste des scénarios de la personne",
-								"name": "Entête3"
+								"name": "Entête3",
+								"stroke": "#21759B"
 							},
 							"name": "NomScenario",
 							"width": 205,
@@ -117,11 +139,14 @@
 					"top": 530,
 					"left": 360,
 					"width": 120,
-					"height": 25,
+					"height": 30,
 					"events": [
-						"onClick"
+						"onClick",
+						"onMouseMove"
 					],
-					"method": "ObjectMethods/Bouton3.4dm"
+					"method": "ObjectMethods/Bouton3.4dm",
+					"class": "clickable",
+					"style": "roundedBevel"
 				},
 				"Bouton4": {
 					"type": "button",
@@ -129,11 +154,14 @@
 					"top": 530,
 					"left": 490,
 					"width": 120,
-					"height": 25,
+					"height": 30,
 					"events": [
-						"onClick"
+						"onClick",
+						"onMouseMove"
 					],
-					"method": "ObjectMethods/Bouton4.4dm"
+					"method": "ObjectMethods/Bouton4.4dm",
+					"class": "clickable",
+					"style": "roundedBevel"
 				},
 				"personneDetailMarketing": {
 					"type": "input",
@@ -169,12 +197,17 @@
 					"currentItemPositionSource": "Form:C1466.SceneCurrentPosition",
 					"selectedItemsSource": "Form:C1466.SceneSelectedElement",
 					"selectionMode": "single",
-					"headerHeight": "17px",
+					"headerHeight": "24px",
+					"alternateFill": "#E1F2FC",
+					"fill": "#F5FBFF",
+					"horizontalLineStroke": "transparent",
+					"verticalLineStroke": "transparent",
 					"columns": [
 						{
 							"header": {
 								"text": "Liste des scènes du scénario",
-								"name": "Entête4"
+								"name": "Entête4",
+								"stroke": "#21759B"
 							},
 							"name": "NomScenario1",
 							"width": 205,
@@ -196,7 +229,8 @@
 					"width": 150,
 					"height": 16,
 					"textAlign": "center",
-					"fontWeight": "bold"
+					"fontWeight": "bold",
+					"stroke": "#21759B"
 				},
 				"Texte5": {
 					"type": "text",
@@ -206,7 +240,8 @@
 					"width": 150,
 					"height": 16,
 					"textAlign": "center",
-					"fontWeight": "bold"
+					"fontWeight": "bold",
+					"stroke": "#21759B"
 				},
 				"Ligne": {
 					"type": "line",
@@ -227,7 +262,7 @@
 				},
 				"Ligne5": {
 					"type": "line",
-					"top": 52,
+					"top": 51,
 					"left": 25,
 					"width": 300,
 					"height": 1,
@@ -235,7 +270,7 @@
 				},
 				"Ligne6": {
 					"type": "line",
-					"top": 50,
+					"top": 52,
 					"left": 24,
 					"width": 1,
 					"height": 48,
@@ -313,7 +348,7 @@
 					],
 					"listboxType": "collection",
 					"dataSource": "Form:C1466.scenarioEvent",
-					"headerHeight": "17px",
+					"headerHeight": "24px",
 					"rowHeight": "40px",
 					"scrollbarHorizontal": "hidden",
 					"textAlign": "center",
@@ -321,11 +356,16 @@
 					"selectedItemsSource": "Form:C1466.SceneLogSelectedElement",
 					"currentItemPositionSource": "Form:C1466.SceneLogCurrentPosition",
 					"currentItemSource": "Form:C1466.SceneLogCurrentElement",
+					"alternateFill": "#E1F2FC",
+					"fill": "#F5FBFF",
+					"horizontalLineStroke": "transparent",
+					"verticalLineStroke": "transparent",
 					"columns": [
 						{
 							"header": {
 								"text": "Etat",
-								"name": "Entête6"
+								"name": "Entête6",
+								"stroke": "#21759B"
 							},
 							"name": "Colonne2",
 							"footer": {
@@ -337,7 +377,8 @@
 						{
 							"header": {
 								"name": "Entête7",
-								"text": "Crée le"
+								"text": "Crée le",
+								"stroke": "#21759B"
 							},
 							"name": "Colonne3",
 							"footer": {
@@ -385,9 +426,10 @@
 					"dataSource": "Form:C1466.personneCollection",
 					"selectionMode": "single",
 					"method": "ObjectMethods/listePersonne.4dm",
-					"horizontalLineStroke": "#000000",
-					"verticalLineStroke": "#A9A9A9",
+					"horizontalLineStroke": "transparent",
+					"verticalLineStroke": "transparent",
 					"showHeaders": false,
+					"fill": "#F5FBFF",
 					"columns": [
 						{
 							"header": {
@@ -400,7 +442,7 @@
 							},
 							"width": 150,
 							"dataSource": "This:C1470.nom",
-							"alternateFill": "#D6D6D6",
+							"alternateFill": "#E1F2FC",
 							"enterable": false
 						},
 						{
@@ -414,29 +456,41 @@
 							},
 							"width": 150,
 							"dataSource": "This:C1470.prenom",
-							"alternateFill": "#D6D6D6",
-							"enterable": false
-						},
-						{
-							"header": {
-								"name": "Entête2",
-								"text": "Prénom"
-							},
-							"name": "UID",
-							"footer": {
-								"name": "Pied2"
-							},
-							"width": 150,
-							"dataSource": "This:C1470.UID",
-							"alternateFill": "#D6D6D6",
+							"alternateFill": "#E1F2FC",
 							"enterable": false
 						}
 					]
+				},
+				"Texte": {
+					"type": "text",
+					"text": "Gestion des personnes",
+					"top": 9,
+					"left": 10,
+					"width": 185,
+					"height": 22,
+					"fontSize": 18,
+					"stroke": "#FFFFFF",
+					"textAlign": "left"
+				},
+				"Zone de saisie": {
+					"type": "input",
+					"left": 364,
+					"top": 9,
+					"width": 212,
+					"height": 22,
+					"dataSource": "\"Résultat (\"+String:C10(Form:C1466.personneCollection.length)+\")\"",
+					"fontSize": 18,
+					"fill": "transparent",
+					"borderStyle": "none",
+					"stroke": "#FFFFFF",
+					"enterable": false,
+					"focusable": false,
+					"contextMenu": "automatic"
 				}
 			}
 		}
 	],
-	"geometryStamp": 429,
+	"geometryStamp": 491,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",

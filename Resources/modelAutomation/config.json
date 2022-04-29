@@ -2,111 +2,88 @@
     "passerelle" : [
         {
             "tableComposant" : "Personne",
-            "tableHote" : "ELV_Élèves",
+            "tableHote" : "NomDeVotreTablePersonne",
             "champ" : [
                 {
                     "lib" : "adresse",
-                    "value" : "Adresse1"
+                    "personAccess" : "champAdresse",
+                    "type" : "text"
                 },
                 {
                     "lib" : "adresseComplement",
-                    "value" : "Adresse2"
+                    "personAccess" : "chamAdresseComplement",
+                    "type" : "text"
                 },
                 {
                     "lib" : "codePostal",
-                    "value" : "CodePostal"
+                    "personAccess" : "champCodePostal",
+                    "type" : "text"
                 },
                 {
                     "lib" : "dateCreation",
-                    "value" : "CreateDate"
+                    "personAccess" : "champDateCreation",
+                    "type" : "date"
                 },
                 {
                     "lib" : "dateNaissance",
-                    "value" : "Naissance"
+                    "personAccess" : "champDateNaissance",
+                    "type" : "date"
                 },
                 {
                     "lib" : "nom",
-                    "value" : "Nom"
+                    "personAccess" : "champNom",
+                    "type" : "text"
                 },
                 {
                     "lib" : "prenom",
-                    "value" : "Prénom"
+                    "personAccess" : "champPrenom",
+                    "type" : "text"
                 },
                 {
                     "lib" : "sexe",
-                    "value" : "Titre"
+                    "personAccess" : "champSexe",
+                    "type" : "text"
                 },
                 {
                     "lib" : "UID",
-                    "value" : "UID"
+                    "personAccess" : "champUID",
+                    "type" : "text"
                 },
                 {
                     "lib" : "ville",
-                    "value" : "Ville"
-                }
-            ],
-            "lienAvecTelecom" : [
-                {
-                    "lib" : "email",
-                    "value" : ""
+                    "personAccess" : "champVille",
+                    "type" : "text"
                 },
                 {
-                    "lib" : "nomLien",
-                    "value" : ""
+                    "lib" : "eMail",
+                    "personAccess" : "champEMail",
+                    "type" : "text"
+                },
+                {
+                    "lib" : "telFixe",
+                    "personAccess" : "champTelFixe",
+                    "type" : "text"
+                },
+                {
+                    "lib" : "telMobile",
+                    "personAccess" : "chaampTelMobile",
+                    "type" : "text"
                 }
             ],
             "libelleSexe" : [
                 {
                     "lib" : "homme",
-                    "value" : "1"
+                    "value" : ""
                 },
                 {
                     "lib" : "femme",
-                    "value" : "2"
-                }
-            ]
-        },
-        {
-            "tableComposant" : "Telecom",
-            "tableHote" : "",
-            "champ" : [
-                {
-                    "lib" : "type",
                     "value" : ""
                 },
                 {
-                    "lib" : "UID",
-                    "value" : ""
-                },
-                {
-                    "lib" : "value",
-                    "value" : ""
-                }
-            ],
-            "lienAvecPersonne" : [
-                {
-                    "lib" : "nomLien",
-                    "value" : ""
-                },
-                {
-                    "lib" : "UID",
-                    "value" : ""
-                }
-            ],
-            "libelleType" : [
-                {
-                    "lib" : "email",
-                    "value" : ""
-                },
-                {
-                    "lib" : "mobile",
-                    "value" : ""
-                },
-                {
-                    "lib" : "domicile",
+                    "lib" : "femme",
                     "value" : ""
                 }
             ]
-        }          
+        }         
     ]
 }

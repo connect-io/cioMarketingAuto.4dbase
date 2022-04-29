@@ -1,5 +1,25 @@
-.default {
-	font-family: Segoe UI;
+.Par_défaut {
+	font-family: Tahoma;
+	font-size: 13px;
+}
+
+.Tahoma_10 {
+	font-family: Tahoma;
+	font-size: 10px;
+}
+
+.Tahoma_11 {
+	font-family: Tahoma;
+	font-size: 11px;
+}
+
+.Tahoma_12 {
+	font-family: Tahoma;
 	font-size: 12px;
+}
+
+.Titre_bloc {
+	font-family: Arial;
+	font-size: 16px;
 }
 

@@ -130,9 +130,7 @@ Historique
 		$config_o:=$class_o.sendGetConfig($canalEnvoi_t)
 		
 		If ($config_o.success=True:C214)
-			// On récupère le contenu
-			cwToolWindowsForm("gestionDocument"; New object:C1471("ecartHautEcran"; 30; "ecartBasEcran"; 70); New object:C1471("entree"; 1))
-			
+			cwToolWindowsForm("gestionDocument"; New object:C1471("ecartHautEcran"; 30; "ecartBasEcran"; 70); New object:C1471("entree"; 1))  // On récupère le contenu
 			$compteur_o:=New object:C1471("success"; 0; "fail"; 0)
 			
 			cmaProgressBar(0; "Initialisation"; True:C214)
@@ -162,7 +160,7 @@ Historique
 								
 								If ($corps_t#"@<body@")  // Nouvelle façon d'envoyer des emails
 									// Ajout de la signature
-									$fichier_o:=File:C1566(Get 4D folder:C485(Dossier Resources courant:K5:16; *)+"cioMarketingAutomation"+Séparateur dossier:K24:12+"scene"+Séparateur dossier:K24:12+"signatureEmail.4wp"; fk chemin plateforme:K87:2)
+									$fichier_o:=File:C1566(Get 4D folder:C485(Current resources folder:K5:16; *)+"cioMarketingAutomation"+Folder separator:K24:12+"scene"+Folder separator:K24:12+"signatureEmail.4wp"; fk platform path:K87:2)
 									
 									If ($fichier_o.exists=True:C214)
 										WP INSERT BREAK:C1413($document_o; wk paragraph break:K81:259; wk append:K81:179)
@@ -257,11 +255,15 @@ Historique
 		
 		Case of 
 			: (This:C1470.passerelle.champ[This:C1470.passerelle.champ.indices("lib = :1"; $field_t)[0]].personAccess#Null:C1517) & (This:C1470.passerelle.champ[This:C1470.passerelle.champ.indices("lib = :1"; $field_t)[0]].extractToCollection=Null:C1517)  // L'extraction doit se faire directement sur la table [Personne] de la base hôte
-				$fieldExtract_t:=$fieldExtract_t+Char:C90(Guillemets:K15:41)+String:C10(This:C1470.passerelle.champ[This:C1470.passerelle.champ.indices("lib = :1"; $field_t)[0]].personAccess)+Char:C90(Guillemets:K15:41)+\
-					"; "+Char:C90(Guillemets:K15:41)+$field_t+Char:C90(Guillemets:K15:41)
 				
-				If ($field_c.indexOf($field_t)#($field_c.length-1))
-					$fieldExtract_t:=$fieldExtract_t+";"
+				If (String:C10(This:C1470.passerelle.champ[This:C1470.passerelle.champ.indices("lib = :1"; $field_t)[0]].personAccess)#"")
+					$fieldExtract_t:=$fieldExtract_t+Char:C90(Double quote:K15:41)+String:C10(This:C1470.passerelle.champ[This:C1470.passerelle.champ.indices("lib = :1"; $field_t)[0]].personAccess)+Char:C90(Double quote:K15:41)+\
+						"; "+Char:C90(Double quote:K15:41)+$field_t+Char:C90(Double quote:K15:41)
+					
+					If ($field_c.indexOf($field_t)#($field_c.length-1))
+						$fieldExtract_t:=$fieldExtract_t+";"
+					End if 
+					
 				End if 
 				
 			: (This:C1470.passerelle.champ[This:C1470.passerelle.champ.indices("lib = :1"; $field_t)[0]].extractToCollection#Null:C1517)  // Il faut faire l'extraction sur une table [Enfant]
@@ -283,8 +285,8 @@ Historique
 			$chaineCompare_t:="@"+$element_t+"@"
 			
 			If ($fieldExtract_t#$chaineCompare_t)
-				$fieldExtract_t:=$fieldExtract_t+";"+Char:C90(Guillemets:K15:41)+$element_t+Char:C90(Guillemets:K15:41)+\
-					"; "+Char:C90(Guillemets:K15:41)+$element_t+Char:C90(Guillemets:K15:41)+";"
+				$fieldExtract_t:=$fieldExtract_t+";"+Char:C90(Double quote:K15:41)+$element_t+Char:C90(Double quote:K15:41)+\
+					"; "+Char:C90(Double quote:K15:41)+$element_t+Char:C90(Double quote:K15:41)+";"
 			End if 
 			
 		End for each 
