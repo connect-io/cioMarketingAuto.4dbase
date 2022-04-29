@@ -28,10 +28,33 @@
 					"height": 615,
 					"stroke": "transparent"
 				},
+				"Onglet": {
+					"type": "tab",
+					"text": "Tab control",
+					"top": 55,
+					"left": 97,
+					"width": 760,
+					"height": 588,
+					"labels": [
+						"Infos générales",
+						"Marketing"
+					],
+					"labelsPlacement": "top",
+					"fontFamily": "Arial",
+					"fontSize": 18,
+					"fontWeight": "bold",
+					"events": [
+						"onLoad",
+						"onClick"
+					],
+					"dataSource": "Onglet",
+					"dataSourceTypeHint": "arrayText",
+					"action": "gotoPage"
+				},
 				"Zone de saisie1": {
 					"type": "input",
 					"left": 13,
-					"top": 50,
+					"top": 60,
 					"width": 64,
 					"height": 64,
 					"dataSourceTypeHint": "picture",
@@ -85,383 +108,6 @@
 					"class": "accentBackColor3",
 					"fill": "#19294F",
 					"right": 877
-				}
-			}
-		},
-		{
-			"objects": {
-				"Texte16": {
-					"type": "text",
-					"top": 66,
-					"left": 147,
-					"width": 660,
-					"height": 16,
-					"fill": "#AAAAAA",
-					"stroke": "#0000FF",
-					"class": "",
-					"textAlign": "center",
-					"fontWeight": "bold",
-					"borderStyle": "solid",
-					"text": "É t a t   c i v i l"
-				},
-				"Champ2": {
-					"type": "input",
-					"top": 107,
-					"left": 280,
-					"width": 250,
-					"height": 16,
-					"dataSource": "Form:C1466.nom",
-					"stroke": "automatic",
-					"class": "",
-					"textAlign": "left",
-					"fill": "#FFFFFF",
-					"borderStyle": "none",
-					"contextMenu": "none",
-					"events": [
-						"onDataChange"
-					],
-					"placeholder": "Dupont"
-				},
-				"Texte3": {
-					"type": "text",
-					"top": 107,
-					"left": 110,
-					"width": 150,
-					"height": 16,
-					"class": "cuLabel",
-					"text": "Nom / Prénom"
-				},
-				"Champ1": {
-					"type": "input",
-					"top": 107,
-					"left": 557,
-					"width": 250,
-					"height": 16,
-					"dataSource": "Form:C1466.prenom",
-					"stroke": "automatic",
-					"class": "",
-					"textAlign": "left",
-					"fill": "#FFFFFF",
-					"borderStyle": "none",
-					"contextMenu": "none",
-					"events": [
-						"onDataChange"
-					],
-					"placeholder": "Jean"
-				},
-				"Texte1": {
-					"type": "text",
-					"top": 143,
-					"left": 110,
-					"width": 150,
-					"height": 16,
-					"class": "cuLabel",
-					"text": "Date de naissance"
-				},
-				"Champ3": {
-					"type": "input",
-					"top": 143,
-					"left": 280,
-					"width": 527,
-					"height": 16,
-					"dataSource": "Form:C1466.dateNaissance",
-					"stroke": "automatic",
-					"class": "",
-					"textAlign": "left",
-					"fill": "#FFFFFF",
-					"borderStyle": "none",
-					"contextMenu": "none",
-					"events": [
-						"onDataChange"
-					],
-					"placeholder": "01/01/2021",
-					"dataSourceTypeHint": "date",
-					"entryFilter": "##/##/####",
-					"max": ""
-				},
-				"Texte2": {
-					"type": "text",
-					"top": 184,
-					"left": 147,
-					"width": 660,
-					"height": 16,
-					"fill": "#AAAAAA",
-					"stroke": "#0000FF",
-					"class": "",
-					"textAlign": "center",
-					"fontWeight": "bold",
-					"borderStyle": "solid",
-					"text": "C o o r d o n n é e s"
-				},
-				"Champ4": {
-					"type": "input",
-					"top": 225,
-					"left": 280,
-					"width": 527,
-					"height": 16,
-					"dataSource": "Form:C1466.adresse",
-					"stroke": "automatic",
-					"class": "",
-					"textAlign": "left",
-					"fill": "#FFFFFF",
-					"borderStyle": "none",
-					"contextMenu": "none",
-					"events": [
-						"onDataChange"
-					],
-					"placeholder": "1 avenue Général de Gaulle"
-				},
-				"Texte4": {
-					"type": "text",
-					"top": 225,
-					"left": 110,
-					"width": 150,
-					"height": 16,
-					"class": "cuLabel",
-					"text": "Adresse"
-				},
-				"Champ5": {
-					"type": "input",
-					"top": 261,
-					"left": 280,
-					"width": 527,
-					"height": 16,
-					"dataSource": "Form:C1466.adresseComplement",
-					"stroke": "automatic",
-					"class": "",
-					"textAlign": "left",
-					"fill": "#FFFFFF",
-					"borderStyle": "none",
-					"contextMenu": "none",
-					"events": [
-						"onDataChange"
-					],
-					"placeholder": "Batîment A"
-				},
-				"Texte5": {
-					"type": "text",
-					"top": 261,
-					"left": 110,
-					"width": 150,
-					"height": 16,
-					"class": "cuLabel",
-					"text": "Adresse complément"
-				},
-				"Champ6": {
-					"type": "input",
-					"top": 297,
-					"left": 280,
-					"width": 250,
-					"height": 16,
-					"dataSource": "Form:C1466.codePostal",
-					"stroke": "automatic",
-					"class": "",
-					"textAlign": "left",
-					"fill": "#FFFFFF",
-					"borderStyle": "none",
-					"contextMenu": "none",
-					"events": [
-						"onDataChange"
-					],
-					"placeholder": "75000"
-				},
-				"Texte6": {
-					"type": "text",
-					"top": 297,
-					"left": 110,
-					"width": 150,
-					"height": 16,
-					"class": "cuLabel",
-					"text": "Code postal / Ville"
-				},
-				"Champ7": {
-					"type": "input",
-					"top": 297,
-					"left": 557,
-					"width": 250,
-					"height": 16,
-					"dataSource": "Form:C1466.ville",
-					"stroke": "automatic",
-					"class": "",
-					"textAlign": "left",
-					"fill": "#FFFFFF",
-					"borderStyle": "none",
-					"contextMenu": "none",
-					"events": [
-						"onDataChange"
-					],
-					"placeholder": "Paris"
-				},
-				"Champ8": {
-					"type": "input",
-					"top": 333,
-					"left": 280,
-					"width": 527,
-					"height": 16,
-					"dataSource": "Form:C1466.eMail",
-					"stroke": "automatic",
-					"class": "",
-					"textAlign": "left",
-					"fill": "#FFFFFF",
-					"borderStyle": "none",
-					"contextMenu": "none",
-					"events": [
-						"onDataChange"
-					],
-					"placeholder": "dupont.jean@gmail.com"
-				},
-				"Texte7": {
-					"type": "text",
-					"top": 333,
-					"left": 110,
-					"width": 150,
-					"height": 16,
-					"class": "cuLabel",
-					"text": "Adresse mail"
-				},
-				"Champ9": {
-					"type": "input",
-					"top": 369,
-					"left": 280,
-					"width": 527,
-					"height": 16,
-					"dataSource": "Form:C1466.telFixe",
-					"stroke": "automatic",
-					"class": "",
-					"textAlign": "left",
-					"fill": "#FFFFFF",
-					"borderStyle": "none",
-					"contextMenu": "none",
-					"events": [
-						"onDataChange"
-					],
-					"placeholder": "0493000000"
-				},
-				"Texte8": {
-					"type": "text",
-					"top": 369,
-					"left": 110,
-					"width": 150,
-					"height": 16,
-					"class": "cuLabel",
-					"text": "Téléphone fixe"
-				},
-				"Champ10": {
-					"type": "input",
-					"top": 405,
-					"left": 280,
-					"width": 527,
-					"height": 16,
-					"dataSource": "Form:C1466.telMobile",
-					"stroke": "automatic",
-					"class": "",
-					"textAlign": "left",
-					"fill": "#FFFFFF",
-					"borderStyle": "none",
-					"contextMenu": "none",
-					"events": [
-						"onDataChange"
-					],
-					"placeholder": "0600000000"
-				},
-				"Texte9": {
-					"type": "text",
-					"top": 405,
-					"left": 110,
-					"width": 150,
-					"height": 16,
-					"class": "cuLabel",
-					"text": "Téléphone mobile"
-				},
-				"Line6": {
-					"type": "line",
-					"top": 122,
-					"left": 270,
-					"width": 260,
-					"class": "accentColor2",
-					"right": 530,
-					"height": 1
-				},
-				"Line1": {
-					"type": "line",
-					"top": 122,
-					"left": 547,
-					"width": 260,
-					"class": "accentColor2",
-					"right": 807,
-					"height": 1
-				},
-				"Line2": {
-					"type": "line",
-					"top": 158,
-					"left": 270,
-					"width": 537,
-					"class": "accentColor2",
-					"right": 807,
-					"height": 1
-				},
-				"Line3": {
-					"type": "line",
-					"top": 240,
-					"left": 270,
-					"width": 537,
-					"class": "accentColor2",
-					"right": 807,
-					"height": 1
-				},
-				"Line4": {
-					"type": "line",
-					"top": 276,
-					"left": 270,
-					"width": 537,
-					"class": "accentColor2",
-					"right": 807,
-					"height": 1
-				},
-				"Line5": {
-					"type": "line",
-					"top": 312,
-					"left": 270,
-					"width": 260,
-					"class": "accentColor2",
-					"right": 530,
-					"height": 1
-				},
-				"Line7": {
-					"type": "line",
-					"top": 348,
-					"left": 270,
-					"width": 537,
-					"class": "accentColor2",
-					"right": 807,
-					"height": 1
-				},
-				"Line8": {
-					"type": "line",
-					"top": 384,
-					"left": 270,
-					"width": 537,
-					"class": "accentColor2",
-					"right": 807,
-					"height": 1
-				},
-				"Line9": {
-					"type": "line",
-					"top": 420,
-					"left": 270,
-					"width": 537,
-					"class": "accentColor2",
-					"right": 807,
-					"height": 1
-				},
-				"Line10": {
-					"type": "line",
-					"top": 312,
-					"left": 547,
-					"width": 260,
-					"class": "accentColor2",
-					"right": 807,
-					"height": 1
 				},
 				"Texte17": {
 					"type": "text",
@@ -493,11 +139,388 @@
 		},
 		{
 			"objects": {
+				"Texte16": {
+					"type": "text",
+					"top": 102,
+					"left": 166,
+					"width": 660,
+					"height": 16,
+					"fill": "#AAAAAA",
+					"stroke": "#0000FF",
+					"class": "",
+					"textAlign": "center",
+					"fontWeight": "bold",
+					"borderStyle": "solid",
+					"text": "É t a t   c i v i l"
+				},
+				"Champ2": {
+					"type": "input",
+					"top": 143,
+					"left": 299,
+					"width": 250,
+					"height": 16,
+					"dataSource": "Form:C1466.nom",
+					"stroke": "automatic",
+					"class": "",
+					"textAlign": "left",
+					"fill": "transparent",
+					"borderStyle": "none",
+					"contextMenu": "none",
+					"events": [
+						"onDataChange"
+					],
+					"placeholder": "Dupont"
+				},
+				"Texte3": {
+					"type": "text",
+					"top": 143,
+					"left": 129,
+					"width": 150,
+					"height": 16,
+					"class": "cuLabel",
+					"text": "Nom / Prénom"
+				},
+				"Champ1": {
+					"type": "input",
+					"top": 143,
+					"left": 576,
+					"width": 250,
+					"height": 16,
+					"dataSource": "Form:C1466.prenom",
+					"stroke": "automatic",
+					"class": "",
+					"textAlign": "left",
+					"fill": "transparent",
+					"borderStyle": "none",
+					"contextMenu": "none",
+					"events": [
+						"onDataChange"
+					],
+					"placeholder": "Jean"
+				},
+				"Texte1": {
+					"type": "text",
+					"top": 179,
+					"left": 129,
+					"width": 150,
+					"height": 16,
+					"class": "cuLabel",
+					"text": "Date de naissance"
+				},
+				"Champ3": {
+					"type": "input",
+					"top": 179,
+					"left": 299,
+					"width": 527,
+					"height": 16,
+					"dataSource": "Form:C1466.dateNaissance",
+					"stroke": "automatic",
+					"class": "",
+					"textAlign": "left",
+					"fill": "transparent",
+					"borderStyle": "none",
+					"contextMenu": "none",
+					"events": [
+						"onDataChange"
+					],
+					"placeholder": "01/01/2021",
+					"dataSourceTypeHint": "date",
+					"entryFilter": "##/##/####",
+					"max": ""
+				},
+				"Texte2": {
+					"type": "text",
+					"top": 220,
+					"left": 166,
+					"width": 660,
+					"height": 16,
+					"fill": "#AAAAAA",
+					"stroke": "#0000FF",
+					"class": "",
+					"textAlign": "center",
+					"fontWeight": "bold",
+					"borderStyle": "solid",
+					"text": "C o o r d o n n é e s"
+				},
+				"Champ4": {
+					"type": "input",
+					"top": 261,
+					"left": 299,
+					"width": 527,
+					"height": 16,
+					"dataSource": "Form:C1466.adresse",
+					"stroke": "automatic",
+					"class": "",
+					"textAlign": "left",
+					"fill": "transparent",
+					"borderStyle": "none",
+					"contextMenu": "none",
+					"events": [
+						"onDataChange"
+					],
+					"placeholder": "1 avenue Général de Gaulle"
+				},
+				"Texte4": {
+					"type": "text",
+					"top": 261,
+					"left": 129,
+					"width": 150,
+					"height": 16,
+					"class": "cuLabel",
+					"text": "Adresse"
+				},
+				"Champ5": {
+					"type": "input",
+					"top": 297,
+					"left": 299,
+					"width": 527,
+					"height": 16,
+					"dataSource": "Form:C1466.adresseComplement",
+					"stroke": "automatic",
+					"class": "",
+					"textAlign": "left",
+					"fill": "transparent",
+					"borderStyle": "none",
+					"contextMenu": "none",
+					"events": [
+						"onDataChange"
+					],
+					"placeholder": "Batîment A"
+				},
+				"Texte5": {
+					"type": "text",
+					"top": 297,
+					"left": 129,
+					"width": 150,
+					"height": 16,
+					"class": "cuLabel",
+					"text": "Adresse complément"
+				},
+				"Champ6": {
+					"type": "input",
+					"top": 333,
+					"left": 299,
+					"width": 250,
+					"height": 16,
+					"dataSource": "Form:C1466.codePostal",
+					"stroke": "automatic",
+					"class": "",
+					"textAlign": "left",
+					"fill": "transparent",
+					"borderStyle": "none",
+					"contextMenu": "none",
+					"events": [
+						"onDataChange"
+					],
+					"placeholder": "75000"
+				},
+				"Texte6": {
+					"type": "text",
+					"top": 333,
+					"left": 129,
+					"width": 150,
+					"height": 16,
+					"class": "cuLabel",
+					"text": "Code postal / Ville"
+				},
+				"Champ7": {
+					"type": "input",
+					"top": 333,
+					"left": 576,
+					"width": 250,
+					"height": 16,
+					"dataSource": "Form:C1466.ville",
+					"stroke": "automatic",
+					"class": "",
+					"textAlign": "left",
+					"fill": "transparent",
+					"borderStyle": "none",
+					"contextMenu": "none",
+					"events": [
+						"onDataChange"
+					],
+					"placeholder": "Paris"
+				},
+				"Champ8": {
+					"type": "input",
+					"top": 369,
+					"left": 299,
+					"width": 527,
+					"height": 16,
+					"dataSource": "Form:C1466.eMail",
+					"stroke": "automatic",
+					"class": "",
+					"textAlign": "left",
+					"fill": "transparent",
+					"borderStyle": "none",
+					"contextMenu": "none",
+					"events": [
+						"onDataChange"
+					],
+					"placeholder": "dupont.jean@gmail.com"
+				},
+				"Texte7": {
+					"type": "text",
+					"top": 369,
+					"left": 129,
+					"width": 150,
+					"height": 16,
+					"class": "cuLabel",
+					"text": "Adresse mail"
+				},
+				"Champ9": {
+					"type": "input",
+					"top": 405,
+					"left": 299,
+					"width": 527,
+					"height": 16,
+					"dataSource": "Form:C1466.telFixe",
+					"stroke": "automatic",
+					"class": "",
+					"textAlign": "left",
+					"fill": "transparent",
+					"borderStyle": "none",
+					"contextMenu": "none",
+					"events": [
+						"onDataChange"
+					],
+					"placeholder": "0493000000"
+				},
+				"Texte8": {
+					"type": "text",
+					"top": 405,
+					"left": 129,
+					"width": 150,
+					"height": 16,
+					"class": "cuLabel",
+					"text": "Téléphone fixe"
+				},
+				"Champ10": {
+					"type": "input",
+					"top": 441,
+					"left": 299,
+					"width": 527,
+					"height": 16,
+					"dataSource": "Form:C1466.telMobile",
+					"stroke": "automatic",
+					"class": "",
+					"textAlign": "left",
+					"fill": "transparent",
+					"borderStyle": "none",
+					"contextMenu": "none",
+					"events": [
+						"onDataChange"
+					],
+					"placeholder": "0600000000"
+				},
+				"Texte9": {
+					"type": "text",
+					"top": 441,
+					"left": 129,
+					"width": 150,
+					"height": 16,
+					"class": "cuLabel",
+					"text": "Téléphone mobile"
+				},
+				"Line6": {
+					"type": "line",
+					"top": 158,
+					"left": 289,
+					"width": 260,
+					"class": "accentColor2",
+					"right": 549,
+					"height": 1
+				},
+				"Line1": {
+					"type": "line",
+					"top": 158,
+					"left": 566,
+					"width": 260,
+					"class": "accentColor2",
+					"right": 826,
+					"height": 1
+				},
+				"Line2": {
+					"type": "line",
+					"top": 194,
+					"left": 289,
+					"width": 537,
+					"class": "accentColor2",
+					"right": 826,
+					"height": 1
+				},
+				"Line3": {
+					"type": "line",
+					"top": 276,
+					"left": 289,
+					"width": 537,
+					"class": "accentColor2",
+					"right": 826,
+					"height": 1
+				},
+				"Line4": {
+					"type": "line",
+					"top": 312,
+					"left": 289,
+					"width": 537,
+					"class": "accentColor2",
+					"right": 826,
+					"height": 1
+				},
+				"Line5": {
+					"type": "line",
+					"top": 348,
+					"left": 289,
+					"width": 260,
+					"class": "accentColor2",
+					"right": 549,
+					"height": 1
+				},
+				"Line7": {
+					"type": "line",
+					"top": 384,
+					"left": 289,
+					"width": 537,
+					"class": "accentColor2",
+					"right": 826,
+					"height": 1
+				},
+				"Line8": {
+					"type": "line",
+					"top": 420,
+					"left": 289,
+					"width": 537,
+					"class": "accentColor2",
+					"right": 826,
+					"height": 1
+				},
+				"Line9": {
+					"type": "line",
+					"top": 456,
+					"left": 289,
+					"width": 537,
+					"class": "accentColor2",
+					"right": 826,
+					"height": 1
+				},
+				"Line10": {
+					"type": "line",
+					"top": 348,
+					"left": 566,
+					"width": 260,
+					"class": "accentColor2",
+					"right": 826,
+					"height": 1
+				}
+			}
+		},
+		{
+			"objects": {
 				"Texte": {
 					"type": "text",
 					"text": "Rang :",
-					"top": 107,
-					"left": 110,
+					"top": 143,
+					"left": 129,
 					"width": 130,
 					"height": 16,
 					"fontWeight": "normal",
@@ -505,18 +528,19 @@
 				},
 				"rang": {
 					"type": "input",
-					"left": 280,
-					"top": 107,
+					"left": 299,
+					"top": 143,
 					"width": 527,
 					"height": 16,
 					"dataSource": "Form:C1466.rang",
-					"borderStyle": "none"
+					"borderStyle": "none",
+					"fill": "transparent"
 				},
 				"Texte10": {
 					"type": "text",
 					"text": "Actif (non désabonné) :",
-					"top": 143,
-					"left": 110,
+					"top": 179,
+					"left": 129,
 					"width": 160,
 					"height": 16,
 					"fontWeight": "normal",
@@ -524,8 +548,8 @@
 				},
 				"imageDesabonnement": {
 					"type": "input",
-					"left": 280,
-					"top": 143,
+					"left": 299,
+					"top": 179,
 					"width": 16,
 					"height": 16,
 					"dataSource": "Form:C1466.imageDesabonnement",
@@ -542,8 +566,8 @@
 				"Texte11": {
 					"type": "text",
 					"text": "Information Mailjet :",
-					"top": 179,
-					"left": 110,
+					"top": 215,
+					"left": 129,
 					"width": 130,
 					"height": 16,
 					"fontWeight": "normal",
@@ -551,8 +575,8 @@
 				},
 				"Texte12": {
 					"type": "text",
-					"top": 66,
-					"left": 147,
+					"top": 102,
+					"left": 166,
 					"width": 660,
 					"height": 16,
 					"fill": "#AAAAAA",
@@ -565,10 +589,10 @@
 				},
 				"Zone de saisie": {
 					"type": "input",
-					"left": 280,
-					"top": 179,
+					"left": 299,
+					"top": 215,
 					"width": 527,
-					"height": 100,
+					"height": 80,
 					"dataSource": "Form:C1466.resumeMarketing",
 					"enterable": false,
 					"fill": "transparent",
@@ -578,7 +602,7 @@
 				"Texte14": {
 					"type": "text",
 					"top": 299,
-					"left": 147,
+					"left": 166,
 					"width": 660,
 					"height": 16,
 					"fill": "#AAAAAA",
@@ -593,14 +617,15 @@
 					"type": "text",
 					"text": "Scénario(s) en cours :",
 					"top": 340,
-					"left": 110,
+					"left": 129,
 					"width": 150,
 					"height": 16,
-					"fontWeight": "bold"
+					"fontWeight": "bold",
+					"class": "cuLabel"
 				},
 				"List Box": {
 					"type": "listbox",
-					"left": 110,
+					"left": 129,
 					"top": 376,
 					"width": 308,
 					"height": 159,
@@ -675,14 +700,15 @@
 					"type": "text",
 					"text": "Scénario(s) possiblement applicable :",
 					"top": 340,
-					"left": 492,
+					"left": 511,
 					"width": 260,
 					"height": 16,
-					"fontWeight": "bold"
+					"fontWeight": "bold",
+					"class": "cuLabel"
 				},
 				"List Box1": {
 					"type": "listbox",
-					"left": 492,
+					"left": 511,
 					"top": 376,
 					"width": 315,
 					"height": 159,
@@ -754,7 +780,7 @@
 				},
 				"detailPersonneScenarioPersonneEnCoursString": {
 					"type": "input",
-					"left": 110,
+					"left": 129,
 					"top": 545,
 					"width": 156,
 					"height": 14,
@@ -770,7 +796,7 @@
 					"type": "button",
 					"text": "Voir/Modifier scénario",
 					"top": 564,
-					"left": 110,
+					"left": 129,
 					"width": 182,
 					"height": 30,
 					"events": [
@@ -784,7 +810,7 @@
 					"type": "button",
 					"text": "Enlever du scénario",
 					"top": 605,
-					"left": 110,
+					"left": 129,
 					"width": 182,
 					"height": 30,
 					"events": [
@@ -798,7 +824,7 @@
 					"type": "button",
 					"text": "Changer le statut",
 					"top": 564,
-					"left": 302,
+					"left": 321,
 					"width": 116,
 					"height": 30,
 					"events": [
@@ -810,17 +836,17 @@
 				},
 				"Line11": {
 					"type": "line",
-					"top": 122,
-					"left": 273,
+					"top": 158,
+					"left": 292,
 					"width": 537,
 					"class": "accentColor2",
-					"right": 810,
+					"right": 829,
 					"height": 1
 				}
 			}
 		}
 	],
-	"geometryStamp": 580,
+	"geometryStamp": 723,
 	"editor": {
 		"activeView": "View 1",
 		"defaultView": "View 1",
