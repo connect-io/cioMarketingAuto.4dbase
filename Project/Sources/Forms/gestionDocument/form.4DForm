@@ -1,4 +1,4 @@
-﻿{
+{
 	"$4d": {
 		"version": "1",
 		"kind": "form"
@@ -9,7 +9,7 @@
 	"windowMinHeight": 0,
 	"windowMaxWidth": 32767,
 	"windowMaxHeight": 32767,
-	"rightMargin": 20,
+	"rightMargin": 0,
 	"bottomMargin": 20,
 	"events": [
 		"onLoad",
@@ -19,23 +19,53 @@
 	"destination": "detailScreen",
 	"pages": [
 		{
-			"objects": {}
+			"objects": {
+				"Rectangle3": {
+					"type": "rectangle",
+					"top": 0,
+					"left": 0,
+					"width": 905,
+					"height": 40,
+					"sizingX": "grow",
+					"stroke": "transparent",
+					"class": "accentBackColor3",
+					"fill": "#19294F",
+					"right": 905
+				},
+				"Zone de saisie": {
+					"type": "input",
+					"left": 20,
+					"top": 8,
+					"width": 200,
+					"height": 22,
+					"dataSource": "\"Gestion d'un document\"",
+					"fontSize": 18,
+					"fill": "transparent",
+					"borderStyle": "none",
+					"stroke": "#FFFFFF",
+					"enterable": false,
+					"focusable": false,
+					"contextMenu": "automatic",
+					"fontFamily": "Arial"
+				}
+			}
 		},
 		{
 			"objects": {
 				"Rectangle": {
 					"type": "rectangle",
-					"top": 9,
-					"left": 86,
-					"width": 721,
+					"top": 53,
+					"left": 27,
+					"width": 859,
 					"height": 64,
 					"fill": "transparent",
-					"borderRadius": 10
+					"borderRadius": 10,
+					"stroke": "#C9C9C9"
 				},
 				"ouvrirDocument": {
 					"type": "pictureButton",
-					"left": 137,
-					"top": 15,
+					"left": 96,
+					"top": 59,
 					"width": 40,
 					"height": 40,
 					"events": [
@@ -51,18 +81,18 @@
 				"Texte": {
 					"type": "text",
 					"text": "Ouvrir un document",
-					"top": 57,
-					"left": 100,
-					"width": 115,
+					"top": 101,
+					"left": 54,
+					"width": 125,
 					"height": 15,
 					"fontFamily": "Arial",
-					"fontSize": 12,
-					"fontWeight": "bold"
+					"fontSize": 14,
+					"fontWeight": "normal"
 				},
 				"nouveauDocument": {
 					"type": "pictureButton",
-					"left": 261,
-					"top": 15,
+					"left": 241,
+					"top": 59,
 					"width": 40,
 					"height": 40,
 					"events": [
@@ -78,18 +108,18 @@
 				"Texte1": {
 					"type": "text",
 					"text": "Nouveau document",
-					"top": 57,
-					"left": 225,
-					"width": 115,
+					"top": 101,
+					"left": 199,
+					"width": 125,
 					"height": 15,
 					"fontFamily": "Arial",
-					"fontSize": 12,
-					"fontWeight": "bold"
+					"fontSize": 14,
+					"fontWeight": "normal"
 				},
 				"afficherVariable": {
 					"type": "pictureButton",
 					"left": 376,
-					"top": 15,
+					"top": 59,
 					"width": 40,
 					"height": 40,
 					"events": [
@@ -105,18 +135,18 @@
 				"Texte3": {
 					"type": "text",
 					"text": "Afficher variable",
-					"top": 57,
-					"left": 349,
-					"width": 95,
+					"top": 101,
+					"left": 344,
+					"width": 105,
 					"height": 15,
 					"fontFamily": "Arial",
-					"fontSize": 12,
-					"fontWeight": "bold"
+					"fontSize": 14,
+					"fontWeight": "normal"
 				},
 				"imprimerDocument": {
 					"type": "pictureButton",
-					"left": 492,
-					"top": 15,
+					"left": 511,
+					"top": 59,
 					"width": 40,
 					"height": 40,
 					"events": [
@@ -132,18 +162,18 @@
 				"Texte4": {
 					"type": "text",
 					"text": "Imprimer document",
-					"top": 57,
-					"left": 454,
-					"width": 115,
+					"top": 101,
+					"left": 469,
+					"width": 125,
 					"height": 15,
 					"fontFamily": "Arial",
-					"fontSize": 12,
-					"fontWeight": "bold"
+					"fontSize": 14,
+					"fontWeight": "normal"
 				},
 				"previsualiserEmail": {
 					"type": "pictureButton",
-					"left": 614,
-					"top": 15,
+					"left": 651,
+					"top": 59,
 					"width": 40,
 					"height": 40,
 					"events": [
@@ -159,103 +189,18 @@
 				"Texte5": {
 					"type": "text",
 					"text": "Prévisualiser html",
-					"top": 57,
-					"left": 579,
-					"width": 105,
-					"height": 14,
-					"fontFamily": "Arial",
-					"fontSize": 12,
-					"fontWeight": "bold"
-				},
-				"Texte6": {
-					"type": "text",
-					"text": "Fermer la fenêtre",
-					"top": 57,
-					"left": 694,
-					"width": 104,
-					"height": 14,
-					"fontFamily": "Arial",
-					"fontSize": 12,
-					"fontWeight": "bold"
-				},
-				"Rectangle1": {
-					"type": "rectangle",
-					"top": 77,
-					"left": 891,
-					"width": 168,
-					"height": 103,
-					"fill": "transparent",
-					"borderRadius": 10
-				},
-				"Texte7": {
-					"type": "text",
-					"text": "Export document",
-					"top": 80,
-					"left": 897,
-					"width": 156,
-					"height": 22,
-					"fontFamily": "Arial",
-					"fontSize": 18,
-					"fontWeight": "bold"
-				},
-				"exportWord": {
-					"type": "pictureButton",
-					"left": 925,
-					"top": 109,
-					"width": 40,
-					"height": 40,
-					"events": [
-						"onClick",
-						"onMouseMove"
-					],
-					"picture": "/RESOURCES/Images/word.png",
-					"method": "ObjectMethods/exportWord.4dm",
-					"loopBackToFirstFrame": true,
-					"switchBackWhenReleased": true,
-					"useLastFrameAsDisabled": true
-				},
-				"export4DWP": {
-					"type": "pictureButton",
-					"left": 985,
-					"top": 109,
-					"width": 40,
-					"height": 40,
-					"events": [
-						"onClick",
-						"onMouseMove"
-					],
-					"picture": "/RESOURCES/Images/image-defaut-4DWPRO.png",
-					"method": "ObjectMethods/export4DWP.4dm",
-					"loopBackToFirstFrame": true,
-					"switchBackWhenReleased": true,
-					"useLastFrameAsDisabled": true
-				},
-				"Texte8": {
-					"type": "text",
-					"text": "Word",
-					"top": 159,
-					"left": 928,
-					"width": 34,
+					"top": 101,
+					"left": 614,
+					"width": 115,
 					"height": 15,
 					"fontFamily": "Arial",
-					"fontSize": 12,
-					"fontWeight": "bold"
-				},
-				"Texte9": {
-					"type": "text",
-					"text": "4WP",
-					"top": 159,
-					"left": 991,
-					"width": 28,
-					"height": 15,
-					"fontFamily": "Arial",
-					"fontSize": 12,
-					"fontWeight": "bold"
+					"fontSize": 14,
+					"fontWeight": "normal"
 				},
 				"WParea": {
 					"type": "write",
-					"top": 167,
-					"left": 6,
+					"top": 227,
+					"left": 10,
 					"width": 880,
 					"height": 925,
 					"sizingX": "grow",
@@ -277,8 +222,8 @@
 				},
 				"WPtoolbar": {
 					"type": "subform",
-					"top": 77,
-					"left": 6,
+					"top": 137,
+					"left": 10,
 					"width": 880,
 					"height": 90,
 					"sizingX": "grow",
@@ -290,30 +235,10 @@
 					"selectionMode": "multiple",
 					"printFrame": "variable"
 				},
-				"Rectangle2": {
-					"type": "rectangle",
-					"top": 205,
-					"left": 891,
-					"width": 168,
-					"height": 103,
-					"fill": "transparent",
-					"borderRadius": 10
-				},
-				"Texte10": {
-					"type": "text",
-					"text": "Insérer contenue",
-					"top": 208,
-					"left": 902,
-					"width": 147,
-					"height": 21,
-					"fontFamily": "Arial",
-					"fontSize": 18,
-					"fontWeight": "bold"
-				},
 				"importHTML5": {
 					"type": "pictureButton",
-					"left": 956,
-					"top": 237,
+					"left": 784,
+					"top": 59,
 					"width": 40,
 					"height": 40,
 					"events": [
@@ -329,37 +254,18 @@
 				"Texte11": {
 					"type": "text",
 					"text": "Structure HTML5",
-					"top": 287,
-					"left": 926,
-					"width": 100,
+					"top": 101,
+					"left": 749,
+					"width": 110,
 					"height": 15,
 					"fontFamily": "Arial",
-					"fontSize": 12,
-					"fontWeight": "bold"
-				},
-				"sauvegarderDocument": {
-					"type": "input",
-					"left": 726,
-					"top": 15,
-					"width": 40,
-					"height": 40,
-					"dataSourceTypeHint": "picture",
-					"dataSource": "Form:C1466.imageSave",
-					"enterable": false,
-					"contextMenu": "none",
-					"pictureFormat": "proportionalCenter",
-					"fill": "transparent",
-					"borderStyle": "none",
-					"events": [
-						"onClick",
-						"onMouseMove"
-					],
-					"method": "ObjectMethods/sauvegarderDocument.4dm"
+					"fontSize": 14,
+					"fontWeight": "normal"
 				}
 			}
 		}
 	],
-	"geometryStamp": 223,
+	"geometryStamp": 376,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",

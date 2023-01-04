@@ -1,4 +1,4 @@
-﻿{
+{
 	"$4d": {
 		"version": "1",
 		"kind": "form"
@@ -353,14 +353,16 @@
 				"Bouton": {
 					"type": "button",
 					"text": "Valider",
-					"top": 393,
+					"top": 473,
 					"left": 120,
 					"width": 203,
 					"height": 30,
 					"events": [
 						"onClick"
 					],
-					"method": "ObjectMethods/Bouton.4dm"
+					"method": "ObjectMethods/Bouton.4dm",
+					"class": "clickable",
+					"style": "roundedBevel"
 				},
 				"refreshDateDebutMailClique": {
 					"type": "pictureButton",
@@ -431,7 +433,7 @@
 					"height": 25,
 					"fontWeight": "bold"
 				},
-				"imageDesabonnement1": {
+				"imageSansScenario": {
 					"type": "input",
 					"left": 225,
 					"top": 329,
@@ -448,12 +450,40 @@
 						"onClick",
 						"onMouseMove"
 					],
-					"method": "ObjectMethods/imageDesabonnement1.4dm"
+					"method": "ObjectMethods/imageSansScenario.4dm"
+				},
+				"Texte13": {
+					"type": "text",
+					"text": "Mailing marketing :",
+					"top": 381,
+					"left": 14,
+					"width": 172,
+					"height": 25,
+					"fontWeight": "bold"
+				},
+				"imageMailingMarketing": {
+					"type": "input",
+					"left": 14,
+					"top": 408,
+					"width": 32,
+					"height": 32,
+					"dataSourceTypeHint": "picture",
+					"dataSource": "Form:C1466.imageMailingMarketing",
+					"enterable": false,
+					"contextMenu": "none",
+					"pictureFormat": "proportionalCenter",
+					"fill": "transparent",
+					"borderStyle": "none",
+					"events": [
+						"onClick",
+						"onMouseMove"
+					],
+					"method": "ObjectMethods/imageMailingMarketing.4dm"
 				}
 			}
 		}
 	],
-	"geometryStamp": 253,
+	"geometryStamp": 264,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",

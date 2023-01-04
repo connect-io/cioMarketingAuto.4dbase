@@ -36,7 +36,7 @@ Historique
 		
 		For each ($propriete_t; $verif_o["filtre@"].propriete)
 			$proprieteToFilter_t:=Replace string:C233($propriete_t; "filtre"; "")
-			$proprieteToFilter_t:=cmaToolMajuscFirstChar($proprieteToFilter_t)
+			$proprieteToFilter_t:=cmaToolMinuscFirstChar($proprieteToFilter_t)
 			
 			$type_t:=$passerelle_o.champ.query("lib = :1"; $proprieteToFilter_t)[0].type
 			
@@ -70,7 +70,7 @@ Gestion des tri dans le mode liste [Personne]
 Historique
 27/01/21 - RémyScanu remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
-	var $propriete_t; $proprieteToOrder_t; $allProprieteToOrder_t : Text
+	var $propriete_t; $proprieteToOrder_t; $allProprieteToOrder_t; $lib_t : Text
 	var $keepSort_b : Boolean
 	var $verif_o : Object
 	
@@ -82,14 +82,13 @@ Historique
 	
 	For each ($propriete_t; $verif_o["imageSort@"].propriete)
 		$proprieteToOrder_t:=Replace string:C233($propriete_t; "imageSort"; "")
-		$proprieteToOrder_t:=cmaToolMajuscFirstChar($proprieteToOrder_t)
+		$proprieteToOrder_t:=cmaToolMinuscFirstChar($proprieteToOrder_t)
 		
 		Case of 
 			: (Picture size:C356(Form:C1466[$propriete_t])=Picture size:C356(Storage:C1525.automation.image["sort"]))
 				
 				If ($propriete_t=("@"+$objectClicked_t+"@")) & ($objectClicked_t#"") & ($keepSort_b=False:C215)  // La colonne a été cliqué et avait le statut du tri neutre on le passe à croissant
 					Form:C1466[$propriete_t]:=Storage:C1525.automation.image["sort-asc"]
-					
 					$allProprieteToOrder_t:=$allProprieteToOrder_t+$proprieteToOrder_t+" asc"+","
 				End if 
 				
@@ -101,7 +100,6 @@ Historique
 				
 				If ($propriete_t=("@"+$objectClicked_t+"@")) & ($objectClicked_t#"") & ($keepSort_b=False:C215)  // La colonne a été cliqué et avait le statut du tri croissant on le passe à décroissant
 					Form:C1466[$propriete_t]:=Storage:C1525.automation.image["sort-desc"]
-					
 					$allProprieteToOrder_t:=$allProprieteToOrder_t+$proprieteToOrder_t+" desc"+","
 				Else   // La colonne n'a pas été cliqué mais avait le statut du tri croissant on le maitient
 					$allProprieteToOrder_t:=$allProprieteToOrder_t+$proprieteToOrder_t+" asc"+","

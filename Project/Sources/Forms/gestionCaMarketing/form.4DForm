@@ -1,4 +1,4 @@
-﻿{
+{
 	"$4d": {
 		"version": "1",
 		"kind": "form"
@@ -84,7 +84,9 @@
 					"events": [
 						"onClick"
 					],
-					"method": "ObjectMethods/Bouton3.4dm"
+					"method": "ObjectMethods/Bouton3.4dm",
+					"class": "clickable",
+					"style": "roundedBevel"
 				},
 				"Bouton4": {
 					"type": "button",
@@ -96,12 +98,14 @@
 					"events": [
 						"onClick"
 					],
-					"method": "ObjectMethods/Bouton4.4dm"
+					"method": "ObjectMethods/Bouton4.4dm",
+					"class": "clickable",
+					"style": "roundedBevel"
 				}
 			}
 		}
 	],
-	"geometryStamp": 143,
+	"geometryStamp": 147,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",

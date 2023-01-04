@@ -26,7 +26,7 @@ Historique
 	$server_o:=New object:C1471()
 	
 	// Vérifie que le nom du transporteur soit bien dans la config
-	$transporter_c:=cwStorage.eMail.transporter.query("name IS :1"; $transporter_t)
+	$transporter_c:=cwStorage.eMail.smtp.query("name IS :1"; $transporter_t)
 	
 	If ($transporter_c.length=1)
 		$server_o:=$transporter_c[0]

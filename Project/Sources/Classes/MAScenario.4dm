@@ -213,7 +213,6 @@ Function searchPersonToScenario
 					
 					If ($cleValeur_o.value#Null:C1517)  // Si dans les conditions, l'utisateur souhaite ajouter un critère par rapport au statut de désabonnement
 						$table_o:=ds:C1482.CaPersonneMarketing.query("desabonementMail = :1"; $cleValeur_o.value).OnePersonne
-						
 						$personne_o:=$personne_o.and($table_o)
 					End if 
 					
@@ -228,6 +227,15 @@ Function searchPersonToScenario
 							$personne_o:=$personne_o.and($table_o)
 						End if 
 						
+					End if 
+					
+				: ($cleValeur_o.key="mailingMarketing")
+					
+					If ($cleValeur_o.value#Null:C1517)  // Si dans les conditions, l'utisateur souhaite ajouter un critère sur le booléen mailing Marketing présent dans la table [Personnes] du client
+						$lib_t:=Storage:C1525.automation.formule.getFieldName(Storage:C1525.automation.passerelle.champ; "mailingMarketing")
+						$table_o:=ds:C1482[Storage:C1525.automation.passerelle.tableHote].query($lib_t+" = :1"; $cleValeur_o.value)
+						
+						$personne_o:=$personne_o.and($table_o)
 					End if 
 					
 			End case 
@@ -297,6 +305,8 @@ Function loadImageScenarioCondition
 	This:C1470.imageEmail:=Storage:C1525.automation.image["toggle"]
 	This:C1470.imageDesabonnement:=Storage:C1525.automation.image["toggle"]
 	This:C1470.imageSansScenario:=Storage:C1525.automation.image["toggle"]
+	This:C1470.imageMailingMarketing:=Storage:C1525.automation.image["toggle"]
+	
 	
 	If (This:C1470.scenarioDetail.condition.sexe#Null:C1517)
 		
@@ -335,6 +345,16 @@ Function loadImageScenarioCondition
 			This:C1470.imageSansScenario:=Storage:C1525.automation.image["toggle-on"]
 		Else 
 			This:C1470.imageSansScenario:=Storage:C1525.automation.image["toggle-off"]
+		End if 
+		
+	End if 
+	
+	If (This:C1470.scenarioDetail.condition.mailingMarketing#Null:C1517)
+		
+		If (This:C1470.scenarioDetail.condition.mailingMarketing=True:C214)
+			This:C1470.mailingMarketing:=Storage:C1525.automation.image["toggle-on"]
+		Else 
+			This:C1470.mailingMarketing:=Storage:C1525.automation.image["toggle-off"]
 		End if 
 		
 	End if 

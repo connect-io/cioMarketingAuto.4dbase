@@ -2,33 +2,17 @@ Case of
 	: (Form event code:C388=Sur clic:K2:4)
 		var $chemin_t : Text
 		var $refDoc_h : Time
-		var $fichier_o; $model_o : Object
+		var $fichier_o; $model_o; $parameter_es : Object
 		
-		CONFIRM:C162("Voulez-vous ouvrir un modèle stocké dans le composant ?"; "Oui"; "Non")
+		CONFIRM:C162("Voulez-vous ouvrir un modèle stocké dans le logiciel ?"; "Oui"; "Non")
 		
 		If (OK=1)
-			cwToolWindowsForm("selectValue"; "center"; New object:C1471("collection"; cwStorage.eMail.model; "property"; "name"; "selectSubTitle"; "Merci de sélectionner un modèle"; "title"; "Choix du modèle :"))
+			$parameter_es:=ds:C1482.Parameter.query("type = :1"; "courrier")
+			cwToolWindowsForm("selectValue"; "center"; New object:C1471("collection"; $parameter_es.toCollection(); "property"; "wording"; "selectSubTitle"; "Merci de sélectionner un document"; "title"; "Choix du document :"))
 			
 			If (selectValue_t#"")
-				$model_o:=cwStorage.eMail.model.query("name = :1"; selectValue_t)[0]
-				
-				$fichier_o:=File:C1566(cwStorage.eMail.modelPath+$model_o.source)
-				
-				If ($fichier_o.exists=True:C214)
-					
-					If (String:C10($model_o.layout)#"")
-						$fichier_o:=File:C1566(cwStorage.eMail.modelPath+$model_o.layout)
-						
-						If ($fichier_o.exists=True:C214)
-							WP SET TEXT:C1574(WParea; $fichier_o.getText(); wk append:K81:179)
-						End if 
-						
-					Else 
-						WP SET TEXT:C1574(WParea; $fichier_o.getText(); wk append:K81:179)
-					End if 
-					
-				End if 
-				
+				$parameter_es:=$parameter_es.query("wording = :1"; selectValue_t)
+				WParea:=WP New:C1317($parameter_es.first().value_b)
 			End if 
 			
 		Else 
@@ -36,7 +20,6 @@ Case of
 			
 			If (OK=1)
 				WParea:=WP Import document:C1318(Document)
-				
 				CLOSE DOCUMENT:C267($refDoc_h)
 			End if 
 			

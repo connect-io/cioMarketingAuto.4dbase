@@ -40,6 +40,32 @@
 					"class": "accentBackColor3",
 					"fill": "#19294F",
 					"right": 1361
+				},
+				"Texte": {
+					"type": "text",
+					"text": "Gestion des personnes",
+					"top": 9,
+					"left": 10,
+					"width": 185,
+					"height": 22,
+					"fontSize": 18,
+					"stroke": "#FFFFFF",
+					"textAlign": "left"
+				},
+				"Zone de saisie": {
+					"type": "input",
+					"left": 364,
+					"top": 9,
+					"width": 212,
+					"height": 22,
+					"dataSource": "\"Résultat (\"+String:C10(Form:C1466.personneCollection.length)+\")\"",
+					"fontSize": 18,
+					"fill": "transparent",
+					"borderStyle": "none",
+					"stroke": "#FFFFFF",
+					"enterable": false,
+					"focusable": false,
+					"contextMenu": "automatic"
 				}
 			}
 		},
@@ -249,7 +275,7 @@
 					"left": 174,
 					"width": 1,
 					"height": 48,
-					"stroke": "#A9A9A9"
+					"stroke": "#C9C9C9"
 				},
 				"Ligne1": {
 					"type": "line",
@@ -257,7 +283,7 @@
 					"left": 324,
 					"width": 1,
 					"height": 48,
-					"stroke": "#A9A9A9",
+					"stroke": "#C9C9C9",
 					"startPoint": "topLeft"
 				},
 				"Ligne5": {
@@ -266,7 +292,8 @@
 					"left": 25,
 					"width": 300,
 					"height": 1,
-					"startPoint": "topLeft"
+					"startPoint": "topLeft",
+					"stroke": "#C9C9C9"
 				},
 				"Ligne6": {
 					"type": "line",
@@ -274,7 +301,7 @@
 					"left": 24,
 					"width": 1,
 					"height": 48,
-					"stroke": "#A9A9A9"
+					"stroke": "#C9C9C9"
 				},
 				"filtreNom": {
 					"type": "input",
@@ -427,7 +454,7 @@
 					"selectionMode": "single",
 					"method": "ObjectMethods/listePersonne.4dm",
 					"horizontalLineStroke": "transparent",
-					"verticalLineStroke": "transparent",
+					"verticalLineStroke": "#C9C9C9",
 					"showHeaders": false,
 					"fill": "#F5FBFF",
 					"columns": [
@@ -460,37 +487,11 @@
 							"enterable": false
 						}
 					]
-				},
-				"Texte": {
-					"type": "text",
-					"text": "Gestion des personnes",
-					"top": 9,
-					"left": 10,
-					"width": 185,
-					"height": 22,
-					"fontSize": 18,
-					"stroke": "#FFFFFF",
-					"textAlign": "left"
-				},
-				"Zone de saisie": {
-					"type": "input",
-					"left": 364,
-					"top": 9,
-					"width": 212,
-					"height": 22,
-					"dataSource": "\"Résultat (\"+String:C10(Form:C1466.personneCollection.length)+\")\"",
-					"fontSize": 18,
-					"fill": "transparent",
-					"borderStyle": "none",
-					"stroke": "#FFFFFF",
-					"enterable": false,
-					"focusable": false,
-					"contextMenu": "automatic"
 				}
 			}
 		}
 	],
-	"geometryStamp": 491,
+	"geometryStamp": 493,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",

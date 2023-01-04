@@ -344,7 +344,7 @@ Function sendMailing($configPreCharge_o : Object)
 							$mime_o:=MAIL Convert from MIME:C1681($mime_t)
 							
 							If ($fichier_o.exists=True:C214)
-								$transporter_c:=cwStorage.eMail.transporter.query("name = :1"; String:C10($config_o.expediteur))
+								$transporter_c:=cwStorage.eMail.smtp.query("name = :1"; String:C10($config_o.expediteur))
 								
 								If ($transporter_c.length=1)
 									$mime_o.bodyValues.p0001.value:=Replace string:C233($mime_o.bodyValues.p0001.value; "nomVendeur"; $transporter_c[0].name)

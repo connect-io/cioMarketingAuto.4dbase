@@ -1,4 +1,4 @@
-﻿{
+{
 	"$4d": {
 		"version": "1",
 		"kind": "form"
@@ -33,7 +33,9 @@
 					"events": [
 						"onClick"
 					],
-					"method": "ObjectMethods/Bouton.4dm"
+					"method": "ObjectMethods/Bouton.4dm",
+					"class": "clickable",
+					"style": "roundedBevel"
 				},
 				"selectList": {
 					"type": "dropdown",
@@ -62,7 +64,7 @@
 			}
 		}
 	],
-	"geometryStamp": 1,
+	"geometryStamp": 3,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",

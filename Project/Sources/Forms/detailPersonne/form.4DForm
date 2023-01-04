@@ -109,20 +109,9 @@
 					"fill": "#19294F",
 					"right": 877
 				},
-				"Texte17": {
-					"type": "text",
-					"text": "Détail personne",
-					"top": 9,
-					"left": 10,
-					"width": 185,
-					"height": 22,
-					"fontSize": 18,
-					"stroke": "#FFFFFF",
-					"textAlign": "left"
-				},
 				"Zone de saisie2": {
 					"type": "input",
-					"left": 364,
+					"left": 10,
 					"top": 9,
 					"width": 412,
 					"height": 22,
@@ -846,7 +835,7 @@
 			}
 		}
 	],
-	"geometryStamp": 723,
+	"geometryStamp": 742,
 	"editor": {
 		"activeView": "View 1",
 		"defaultView": "View 1",
