@@ -23,9 +23,9 @@ Case of
 		Progress SET BUTTON ENABLED(progressBar_el; $3)
 		
 		If (Count parameters:C259=4)
-			Progress SET ICON(progressBar_el; Storage:C1525.image[$4]; True:C214)
+			Progress SET ICON(progressBar_el; Storage:C1525.automation.image[$4]; True:C214)
 		Else 
-			Progress SET ICON(progressBar_el; Storage:C1525.image["progress-bar"]; True:C214)
+			Progress SET ICON(progressBar_el; Storage:C1525.automation.image["progress-bar"]; True:C214)
 		End if 
 		
 	: ($2="arrêt") | (Progress Stopped(progressBar_el)=True:C214)

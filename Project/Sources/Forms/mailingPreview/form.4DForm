@@ -28,7 +28,8 @@
 					"height": 785,
 					"stroke": "transparent",
 					"sizingY": "grow",
-					"bottom": 825
+					"bottom": 825,
+					"sizingX": "grow"
 				},
 				"Rectangle3": {
 					"type": "rectangle",
@@ -72,11 +73,15 @@
 					"type": "dropdown",
 					"left": 130,
 					"top": 66,
-					"width": 200,
+					"width": 230,
 					"height": 24,
 					"events": [
+						"onLoad",
 						"onDataChange"
-					]
+					],
+					"method": "ObjectMethods/canalEnvoi.4dm",
+					"dataSourceTypeHint": "object",
+					"right": 360
 				},
 				"Texte5": {
 					"type": "text",
@@ -86,7 +91,8 @@
 					"width": 140,
 					"height": 15,
 					"fontFamily": "Arial",
-					"fontSize": 14
+					"fontSize": 14,
+					"sizingX": "move"
 				},
 				"modele": {
 					"type": "dropdown",
@@ -95,8 +101,12 @@
 					"width": 200,
 					"height": 24,
 					"events": [
+						"onLoad",
 						"onDataChange"
-					]
+					],
+					"method": "ObjectMethods/modele.4dm",
+					"dataSourceTypeHint": "object",
+					"sizingX": "move"
 				},
 				"WParea": {
 					"type": "write",
@@ -143,7 +153,7 @@
 		},
 		{
 			"objects": {
-				"Bouton": {
+				"testEnvoi": {
 					"type": "button",
 					"text": "Test envoi",
 					"top": 770,
@@ -151,12 +161,14 @@
 					"width": 150,
 					"height": 35,
 					"events": [
-						"onClick"
+						"onClick",
+						"onMouseMove"
 					],
 					"class": "clickable",
-					"style": "roundedBevel"
+					"style": "roundedBevel",
+					"method": "ObjectMethods/testEnvoi.4dm"
 				},
-				"Bouton1": {
+				"envoiMailing": {
 					"type": "button",
 					"text": "Envoi mailing",
 					"top": 770,
@@ -164,14 +176,17 @@
 					"width": 150,
 					"height": 35,
 					"events": [
-						"onClick"
+						"onClick",
+						"onMouseMove"
 					],
 					"class": "clickable",
-					"style": "roundedBevel"
+					"style": "roundedBevel",
+					"method": "ObjectMethods/envoiMailing.4dm",
+					"sizingX": "move"
 				},
 				"Texte6": {
 					"type": "text",
-					"text": "Transporteur",
+					"text": "Expéditeur",
 					"top": 111,
 					"left": 20,
 					"width": 85,
@@ -183,11 +198,14 @@
 					"type": "dropdown",
 					"left": 130,
 					"top": 106,
-					"width": 200,
+					"width": 230,
 					"height": 24,
 					"events": [
+						"onLoad",
 						"onDataChange"
-					]
+					],
+					"method": "ObjectMethods/transporteur.4dm",
+					"dataSourceTypeHint": "object"
 				},
 				"Texte1": {
 					"type": "text",
@@ -203,9 +221,9 @@
 					"type": "input",
 					"top": 152,
 					"left": 140,
-					"width": 190,
+					"width": 220,
 					"height": 16,
-					"dataSource": "Form:C1466.objet",
+					"dataSource": "Form:C1466.subject",
 					"borderStyle": "none",
 					"hideFocusRing": true,
 					"dragging": "none",
@@ -214,17 +232,17 @@
 						"onDataChange"
 					],
 					"bottom": 168,
-					"right": 330,
-					"textAlign": "right"
+					"right": 360,
+					"textAlign": "left"
 				},
 				"Line4": {
 					"type": "line",
 					"top": 167,
 					"left": 130,
-					"width": 200,
+					"width": 230,
 					"class": "accentColor2",
 					"height": 1,
-					"right": 330
+					"right": 360
 				},
 				"Texte2": {
 					"type": "text",
@@ -240,7 +258,7 @@
 					"type": "listbox",
 					"left": 20,
 					"top": 260,
-					"width": 310,
+					"width": 340,
 					"height": 303,
 					"events": [
 						"onDoubleClick"
@@ -253,10 +271,10 @@
 					"rowHeight": "25px",
 					"verticalAlign": "middle",
 					"scrollbarHorizontal": "hidden",
-					"dataSource": "Form:C1466.personneCollection",
+					"dataSource": "Form:C1466.MAPersonneSelection.personneCollection",
 					"horizontalLineStroke": "transparent",
 					"verticalLineStroke": "#C9C9C9",
-					"sizingY": "grow",
+					"sizingY": "fixed",
 					"sizingX": "fixed",
 					"selectionMode": "multiple",
 					"showFooters": false,
@@ -266,6 +284,7 @@
 					"method": "ObjectMethods/listePersonne.4dm",
 					"fill": "#F5FBFF",
 					"alternateFill": "#E1F2FC",
+					"right": 360,
 					"columns": [
 						{
 							"header": {
@@ -278,7 +297,8 @@
 							},
 							"width": 100,
 							"dataSource": "This:C1470.nom",
-							"alternateFill": "#E1F2FC"
+							"alternateFill": "#E1F2FC",
+							"enterable": false
 						},
 						{
 							"header": {
@@ -291,7 +311,8 @@
 							},
 							"width": 100,
 							"dataSource": "This:C1470.prenom",
-							"alternateFill": "#E1F2FC"
+							"alternateFill": "#E1F2FC",
+							"enterable": false
 						},
 						{
 							"header": {
@@ -302,9 +323,10 @@
 							"footer": {
 								"name": "Pied5"
 							},
-							"width": 95,
+							"width": 125,
 							"dataSource": "This:C1470.eMail",
-							"alternateFill": "#E1F2FC"
+							"alternateFill": "#E1F2FC",
+							"enterable": false
 						},
 						{
 							"header": {
@@ -364,11 +386,11 @@
 					"type": "line",
 					"top": 210,
 					"left": 20,
-					"width": 295,
+					"width": 325,
 					"height": 1,
 					"startPoint": "topLeft",
 					"stroke": "#C9C9C9",
-					"right": 315
+					"right": 345
 				},
 				"Ligne6": {
 					"type": "line",
@@ -441,17 +463,18 @@
 					"text": "Email",
 					"top": 216,
 					"left": 220,
-					"width": 95,
+					"width": 125,
 					"height": 16,
 					"textAlign": "center",
 					"fontWeight": "bold",
-					"stroke": "#21759B"
+					"stroke": "#21759B",
+					"right": 345
 				},
 				"filtreEMail": {
 					"type": "input",
 					"left": 230,
 					"top": 237,
-					"width": 75,
+					"width": 105,
 					"height": 17,
 					"dataSource": "Form:C1466.filtreEMail",
 					"placeholder": "jean.dupont@gmail.com",
@@ -460,14 +483,14 @@
 				"Ligne4": {
 					"type": "line",
 					"top": 210,
-					"left": 314,
+					"left": 344,
 					"width": 1,
 					"height": 49,
 					"stroke": "#C9C9C9"
 				},
 				"sortEmail": {
 					"type": "input",
-					"left": 294,
+					"left": 324,
 					"top": 216,
 					"width": 16,
 					"height": 16,
@@ -487,34 +510,34 @@
 				"Texte8": {
 					"type": "text",
 					"text": "Pièce-jointe",
-					"top": 583,
+					"top": 586,
 					"left": 19,
 					"width": 85,
 					"height": 15,
 					"fontFamily": "Arial",
 					"fontSize": 14
 				},
-				"listePersonne1": {
+				"listePieceJointe": {
 					"type": "listbox",
 					"left": 19,
 					"top": 611,
-					"width": 311,
+					"width": 341,
 					"height": 139,
 					"events": [
 						"onDoubleClick"
 					],
 					"listboxType": "collection",
-					"currentItemSource": "Form:C1466.PersonneCurrentElement",
-					"currentItemPositionSource": "Form:C1466.PersonneCurrentPosition",
-					"selectedItemsSource": "Form:C1466.PersonneSelectedElement",
+					"currentItemSource": "Form:C1466.PieceJointeCurrentElement",
+					"currentItemPositionSource": "Form:C1466.PieceJointeCurrentPosition",
+					"selectedItemsSource": "Form:C1466.PieceJointeSelectedElement",
 					"headerHeight": "20px",
 					"rowHeight": "25px",
 					"verticalAlign": "middle",
 					"scrollbarHorizontal": "hidden",
-					"dataSource": "Form:C1466.personneCollection",
+					"dataSource": "Form:C1466.pieceJointe",
 					"horizontalLineStroke": "transparent",
 					"verticalLineStroke": "#C9C9C9",
-					"sizingY": "grow",
+					"sizingY": "fixed",
 					"sizingX": "fixed",
 					"selectionMode": "multiple",
 					"showFooters": false,
@@ -523,6 +546,7 @@
 					"sortable": false,
 					"fill": "#F5FBFF",
 					"alternateFill": "#E1F2FC",
+					"right": 360,
 					"columns": [
 						{
 							"header": {
@@ -533,7 +557,7 @@
 							"footer": {
 								"name": "Pied1"
 							},
-							"width": 225,
+							"width": 255,
 							"dataSource": "This:C1470.nom",
 							"alternateFill": "#E1F2FC"
 						},
@@ -547,16 +571,37 @@
 								"name": "Pied2"
 							},
 							"width": 70,
-							"dataSource": "Form:C1466.trashImage",
+							"dataSource": "Form:C1466.imageTrash",
 							"alternateFill": "#E1F2FC",
-							"dataSourceTypeHint": "picture"
+							"dataSourceTypeHint": "picture",
+							"events": [
+								"onDoubleClick"
+							],
+							"pictureFormat": "proportionalCenter",
+							"method": "ObjectMethods/Prenom1.4dm"
 						}
 					]
+				},
+				"pieceJointe": {
+					"type": "pictureButton",
+					"left": 103,
+					"top": 583,
+					"width": 20,
+					"height": 20,
+					"events": [
+						"onClick",
+						"onMouseMove"
+					],
+					"picture": "/RESOURCES/Images/piece-jointe.png",
+					"method": "ObjectMethods/pieceJointe.4dm",
+					"loopBackToFirstFrame": true,
+					"switchBackWhenReleased": true,
+					"useLastFrameAsDisabled": true
 				}
 			}
 		}
 	],
-	"geometryStamp": 421,
+	"geometryStamp": 484,
 	"editor": {
 		"activeView": "View 1",
 		"defaultView": "View 1",

@@ -83,8 +83,7 @@ Historique
 	
 	ASSERT:C1129(This:C1470.transporter#Null:C1517; "Impossible d'utiliser la fonction send sans avoir initialisé un transporter")
 	
-	//On vérifie que l'on a bien notre transporter
-	If (This:C1470.transporter=Null:C1517)
+	If (This:C1470.transporter=Null:C1517)  // On vérifie que l'on a bien notre transporter
 		$error_t:="Il n'y a pas de transporter d'initialisé."
 	End if 
 	
@@ -92,31 +91,24 @@ Historique
 		$error_t:="Il manque le destinataire de votre e-mail. ($1.to)"
 	End if 
 	
-	//On vérifie que l'on a bien notre émetteur
-	If (String:C10(This:C1470.from)="")
+	If (String:C10(This:C1470.from)="")  // On vérifie que l'on a bien notre émetteur
 		This:C1470.from:=This:C1470.transporter.user
 	End if 
 	
-	//On vérifie que notre corps de message n'est pas vide (si This.bodyStructure est null ça veux dire qu'on ne passe pas par un mime mais par du code HTMLEUH classico-classique !)
-	If (String:C10(This:C1470.htmlBody)="") & (String:C10(This:C1470.textBody)="") & (This:C1470.bodyStructure=Null:C1517)
+	If (String:C10(This:C1470.htmlBody)="") & (String:C10(This:C1470.textBody)="") & (This:C1470.bodyStructure=Null:C1517)  // On vérifie que notre corps de message n'est pas vide (si This.bodyStructure est null ça veux dire qu'on ne passe pas par un mime mais par du code HTMLEUH classico-classique !)
 		$error_t:="Il manque le contenu de votre message."
 	End if 
 	
-	// Si aucune erreur, on envoie le mail
-	If ($error_t="")
+	If ($error_t="")  // Si aucune erreur, on envoie le mail
 		
-		// On vérifie que l'on à bien des pièces jointes
-		If (This:C1470.attachmentsPath_c.length#0)
+		If (This:C1470.attachmentsPath_c.length#0)  // On vérifie que l'on à bien des pièces jointes
 			This:C1470.attachments:=New collection:C1472()
 			
-			// on boucle sur les pièces jointes
-			For each ($cheminPj_t; This:C1470.attachmentsPath_c)
+			For each ($cheminPj_t; This:C1470.attachmentsPath_c)  // On boucle sur les pièces jointes
 				
-				// On vérifie que le chemin de pièce jointe est bien de type texte
-				If (Type:C295($cheminPj_t)=Est un texte:K8:3)
+				If (Type:C295($cheminPj_t)=Est un texte:K8:3)  // On vérifie que le chemin de pièce jointe est bien de type texte
 					
-					// On vérifie que la pièce jointe est bien un document existant sur le disque
-					If (Test path name:C476($cheminPj_t)=Est un document:K24:1)
+					If (Test path name:C476($cheminPj_t)=Est un document:K24:1)  // On vérifie que la pièce jointe est bien un document existant sur le disque
 						This:C1470.attachments.push(MAIL New attachment:C1644($cheminPj_t))
 					Else 
 						$error_t:="Le document suivant n'est pas présent sur le disque : "+$cheminPj_t
@@ -132,21 +124,10 @@ Historique
 		
 	End if 
 	
-	//Envoi du mail
-	If ($error_t="")
+	If ($error_t="")  //Envoi du mail
 		$mailStatus_o:=This:C1470.transporter.send(This:C1470)
 		
-		//Si l'envoie du mail = True
-		If ($mailStatus_o.success)
-			// ToDo à voir plus tard avec Greg ce qu'on décide
-			
-			//This.to:=Null
-			//This.from:=Null
-			//This.object:=Null
-			//This.htmlBody:=Null
-			//This.textBody:=Null
-			//This.attachmentsPath_c:=Créer collection()
-		Else 
+		If ($mailStatus_o.success=False:C215)  //Si l'envoie du mail = False
 			$error_t:="Une erreur est survenue lors de l'envoi de l'e-mail : "+$error_t+$mailStatus_o.statusText
 		End if 
 		
@@ -157,7 +138,6 @@ Historique
 		$mailStatus_o.status:=-1
 	End if 
 	
-	// Retourne les informations concernant l'envoie du mail
 	$retour_o:=$mailStatus_o
 	
 Function sendModel($model_t : Text; $parametre_o : Object)->$retour_o : Object

@@ -123,9 +123,20 @@ Historique
 		$allProprieteToOrder_t:=Substring:C12($allProprieteToOrder_t; 0; Length:C16($allProprieteToOrder_t)-1)  // J'enlève le dernier ","
 		$allProprieteToOrder_t:=Replace string:C233($allProprieteToOrder_t; ","; ", ")
 		
-		$collectionOrdered_v:=Form:C1466.personneCollection.orderBy($allProprieteToOrder_t)
+		If (Form:C1466.MAPersonneSelection#Null:C1517)
+			$collectionOrdered_v:=Form:C1466.MAPersonneSelection.personneCollection.orderBy($allProprieteToOrder_t)
+		Else 
+			$collectionOrdered_v:=Form:C1466.personneCollection.orderBy($allProprieteToOrder_t)
+		End if 
+		
 	Else 
-		$collectionOrdered_v:=Form:C1466.personneCollection.orderBy("UID")  // Aucune colonne n'a de tri on tri par défaut par UID
+		
+		If (Form:C1466.MAPersonneSelection#Null:C1517)
+			$collectionOrdered_v:=Form:C1466.MAPersonneSelection.personneCollection.orderBy("UID")  // Aucune colonne n'a de tri on tri par défaut par UID
+		Else 
+			$collectionOrdered_v:=Form:C1466.personneCollection.orderBy("UID")  // Aucune colonne n'a de tri on tri par défaut par UID
+		End if 
+		
 	End if 
 	
 Function reloadPerson($personneUID_v : Variant)
@@ -145,8 +156,18 @@ Historique
 	$class_o.loadByPrimaryKey(Form:C1466.PersonneCurrentElement.UID)
 	
 	// S'il y a eu une mise à jour il faut modifier l'entité dans la liste
-	$collection_c:=OB Keys:C1719(Form:C1466.personneCollection[Form:C1466.PersonneCurrentPosition-1])
-	
-	For each ($propriete_t; $collection_c)
-		Form:C1466.personneCollection[Form:C1466.PersonneCurrentPosition-1][$propriete_t]:=$class_o[$propriete_t]
-	End for each 
+	If (Form:C1466.MAPersonneSelection#Null:C1517)
+		$collection_c:=OB Keys:C1719(Form:C1466.MAPersonneSelection.personneCollection[Form:C1466.PersonneCurrentPosition-1])
+		
+		For each ($propriete_t; $collection_c)
+			Form:C1466.MAPersonneSelection.personneCollection[Form:C1466.PersonneCurrentPosition-1][$propriete_t]:=$class_o[$propriete_t]
+		End for each 
+		
+	Else 
+		$collection_c:=OB Keys:C1719(Form:C1466.personneCollection[Form:C1466.PersonneCurrentPosition-1])
+		
+		For each ($propriete_t; $collection_c)
+			Form:C1466.personneCollection[Form:C1466.PersonneCurrentPosition-1][$propriete_t]:=$class_o[$propriete_t]
+		End for each 
+		
+	End if 

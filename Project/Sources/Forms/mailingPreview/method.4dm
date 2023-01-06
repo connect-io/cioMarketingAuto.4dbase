@@ -1,6 +1,10 @@
+var $marketingAutomation_cs : Object
+
 Case of 
 	: (Form event code:C388=Sur chargement:K2:1)
-		Form:C1466.MAPersonneSelection:=cs:C1710.MAPersonneSelection().new()
+		$marketingAutomation_cs:=cmaToolGetClass("MarketingAutomation").new(True:C214)
+		
+		Form:C1466.MAPersonneSelection:=cmaToolGetClass("MAPersonneSelection").new()
 		Form:C1466.MAPersonneSelection.fromEntitySelection(Form:C1466.entitySelection)
 		
 		Form:C1466.MAPersonneSelection.toCollectionAndExtractField(New collection:C1472("nom"; "prenom"; "eMail"; "UID"))
@@ -12,6 +16,16 @@ Case of
 		Form:C1466.imageSortNom:=Storage:C1525.automation.image["sort"]
 		Form:C1466.imageSortPrenom:=Storage:C1525.automation.image["sort"]
 		Form:C1466.imageSortEMail:=Storage:C1525.automation.image["sort"]
+		
+		Form:C1466.imageTrash:=Storage:C1525.automation.image["trash"]
+		
+		Form:C1466.pieceJointe:=New collection:C1472
+		
+		OBJECT SET VISIBLE:C603(*; "Texte5"; False:C215)
+		OBJECT SET VISIBLE:C603(*; "modele"; False:C215)
+		
+		OBJECT SET VISIBLE:C603(*; "WPtoolbar"; False:C215)
+		OBJECT SET VISIBLE:C603(*; "WParea"; False:C215)
 	: (Form event code:C388=Sur données modifiées:K2:15)
 		Form:C1466.MAPersonneSelection.personneCollection:=Form:C1466.personneSelectionDisplayClass.manageFilter()
 		Form:C1466.MAPersonneSelection.personneCollection:=Form:C1466.personneSelectionDisplayClass.manageSort("")

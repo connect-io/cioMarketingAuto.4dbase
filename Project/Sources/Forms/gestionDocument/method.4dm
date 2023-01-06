@@ -11,19 +11,8 @@ Case of
 		
 		Case of 
 			: (Form:C1466.entree=1)  // Envoi d'un mailing à la table [Personne]
-				Form:C1466.imageSave:=Storage:C1525.automation.image["logout"]
 			: (Form:C1466.entree=2)  // Edition action scène
-				Form:C1466.imageSave:=Storage:C1525.automation.image["save"]
-				
-				OBJECT SET COORDINATES:C1248(*; "sauvegarderDocument"; 739; 15; 779; 55)
-				
-				OBJECT SET TITLE:C194(*; "Texte6"; "Sauvegarder et fermer")
-				OBJECT SET COORDINATES:C1248(*; "Texte6"; 694; 57; 825; 71)
-				
-				OBJECT SET COORDINATES:C1248(*; "Rectangle"; 86; 9; 835; 73)
-				
 				$version_o:=Form:C1466.donnee.sceneDetail.paramAction.modele[Lowercase:C14(Form:C1466.donnee.sceneTypeSelected)].version.query("titre = :1"; Form:C1466.donnee.sceneVersionSelected)[0]
-				
 				WParea:=WP New:C1317($version_o.contenu4WP)
 		End case 
 		
