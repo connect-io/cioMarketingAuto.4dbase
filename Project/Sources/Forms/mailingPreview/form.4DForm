@@ -277,7 +277,7 @@
 					"sizingY": "fixed",
 					"sizingX": "fixed",
 					"selectionMode": "multiple",
-					"showFooters": false,
+					"showFooters": true,
 					"focusable": false,
 					"showHeaders": false,
 					"sortable": false,
@@ -293,7 +293,10 @@
 							},
 							"name": "Nom",
 							"footer": {
-								"name": "Pied3"
+								"name": "Pied3",
+								"dataSourceTypeHint": "number",
+								"variableCalculation": "sum",
+								"numberFormat": "####0 pers."
 							},
 							"width": 100,
 							"dataSource": "This:C1470.nom",
