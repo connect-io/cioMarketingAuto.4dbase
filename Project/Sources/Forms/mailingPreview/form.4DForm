@@ -295,7 +295,7 @@
 							"footer": {
 								"name": "Pied3",
 								"dataSourceTypeHint": "number",
-								"variableCalculation": "sum",
+								"variableCalculation": "count",
 								"numberFormat": "####0 pers."
 							},
 							"width": 100,
@@ -567,7 +567,7 @@
 						{
 							"header": {
 								"name": "Entête2",
-								"text": "Suupprimer"
+								"text": "Supprimer"
 							},
 							"name": "Prenom1",
 							"footer": {
