@@ -52,7 +52,7 @@ Historique
 		: ($type_t="Email")
 			
 			If (Count parameters:C259=1)  // Envoi d'un email en manuel
-				$transporter_c:=cwStorage.eMail.smtp  // Choix du transporteur
+				$transporter_c:=cwStorage.eMail.transporter  // Choix du transporteur
 				cwToolWindowsForm("selectValue"; "center"; New object:C1471("collection"; $transporter_c; "property"; "name"; "selectSubTitle"; "Merci de sélectionner un expéditeur"; "title"; "Choix de l'expéditeur :"))
 			Else   // Envoi d'un email en automatique
 				selectValue_t:=$transporteur_t
@@ -77,7 +77,7 @@ Historique
 					
 					If (OK=1)
 						$eMail_o.attachmentsPath_c:=New collection:C1472
-						$document_t:=Select document:C905(""; "*"; "Fichiers à insérer en pièce-jointe"; Fichiers multiples:K24:7+Utiliser fenêtre feuille:K24:11; $attachmentsFiles_at)
+						$document_t:=Select document:C905(""; "*"; "Fichiers à insérer en pièce-jointe"; Multiple files:K24:7+Use sheet window:K24:11; $attachmentsFiles_at)
 						
 						// IMPORTANT NE FONCTIONNE QUE SUR LA MACHINE DU SERVEUR POUR DU CLIENT/SERVEUR IL FAUT CREER UNE TABLE PIECE-JOINTE (VOIR BASE CERFPA)
 						If (Size of array:C274($attachmentsFiles_at)>0)

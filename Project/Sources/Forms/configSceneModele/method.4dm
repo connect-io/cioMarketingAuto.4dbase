@@ -1,4 +1,4 @@
-If (Form event code:C388=Sur chargement:K2:1)
+If (Form event code:C388=On Load:K2:1)
 	var $gauche_el; $haut_el; $droite_el; $bas_el; $hauteurForm_el : Integer
 	
 	ARRAY TEXT:C222(versionList_at; 0)
@@ -36,8 +36,8 @@ If (Form event code:C388=Sur chargement:K2:1)
 		cmaToolResizeWindows(Frontmost window:C447; -120)
 	Else 
 		
-		If (cwStorage.eMail.smtp.length>0)
-			COLLECTION TO ARRAY:C1562(cwStorage.eMail.smtp; expediteurList_at; "name")
+		If (cwStorage.eMail.transporter.length>0)
+			COLLECTION TO ARRAY:C1562(cwStorage.eMail.transporter; expediteurList_at; "name")
 		End if 
 		
 	End if 

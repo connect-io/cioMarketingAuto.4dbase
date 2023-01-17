@@ -26,7 +26,7 @@ Historique
 	$server_o:=New object:C1471()
 	
 	// Vérifie que le nom du transporteur soit bien dans la config
-	$transporter_c:=cwStorage.eMail.smtp.query("name IS :1"; $transporter_t)
+	$transporter_c:=cwStorage.eMail.transporter.query("name IS :1"; $transporter_t)
 	
 	If ($transporter_c.length=1)
 		$server_o:=$transporter_c[0]
@@ -106,9 +106,9 @@ Historique
 			
 			For each ($cheminPj_t; This:C1470.attachmentsPath_c)  // On boucle sur les pièces jointes
 				
-				If (Type:C295($cheminPj_t)=Est un texte:K8:3)  // On vérifie que le chemin de pièce jointe est bien de type texte
+				If (Type:C295($cheminPj_t)=Is text:K8:3)  // On vérifie que le chemin de pièce jointe est bien de type texte
 					
-					If (Test path name:C476($cheminPj_t)=Est un document:K24:1)  // On vérifie que la pièce jointe est bien un document existant sur le disque
+					If (Test path name:C476($cheminPj_t)=Is a document:K24:1)  // On vérifie que la pièce jointe est bien un document existant sur le disque
 						This:C1470.attachments.push(MAIL New attachment:C1644($cheminPj_t))
 					Else 
 						$error_t:="Le document suivant n'est pas présent sur le disque : "+$cheminPj_t
