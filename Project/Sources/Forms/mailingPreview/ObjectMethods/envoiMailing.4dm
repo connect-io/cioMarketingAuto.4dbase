@@ -3,9 +3,9 @@ var $length_el; $moduloProgress_el; $i_el : Integer
 var $destinataire_o; $fiche_o; $statut_o; $compteur_o; $document_o : Object
 
 Case of 
-	: (Form event code:C388=Sur clic:K2:4)
+	: (Form event code:C388=On Clicked:K2:4)
 		
-		If (OBJECT Get pointer:C1124(Objet nommé:K67:5; "transporteur")->index=-1)
+		If (OBJECT Get pointer:C1124(Object named:K67:5; "transporteur")->index=-1)
 			ALERT:C41("Merci de sélectionner un expéditeur.")
 			return 
 		End if 
@@ -15,7 +15,7 @@ Case of
 			return 
 		End if 
 		
-		$canalEnvoi_t:=OBJECT Get pointer:C1124(Objet nommé:K67:5; "canalEnvoi")->currentValue
+		$canalEnvoi_t:=OBJECT Get pointer:C1124(Object named:K67:5; "canalEnvoi")->currentValue
 		
 		$document_o:=WP New:C1317(WParea)
 		$corps_t:=WP Get text:C1575($document_o; wk expressions as value:K81:255)
@@ -52,7 +52,7 @@ Case of
 					$corps_t:=WP Get text:C1575($document_o; wk expressions as value:K81:255)
 					
 					If ($corps_t#"@<p@")
-						$fichier_o:=File:C1566(Get 4D folder:C485(Dossier Resources courant:K5:16; *)+"cioMarketingAutomation"+Séparateur dossier:K24:12+"scene"+Séparateur dossier:K24:12+"signatureEmail.4wp"; fk chemin plateforme:K87:2)
+						$fichier_o:=File:C1566(Get 4D folder:C485(Current resources folder:K5:16; *)+"cioMarketingAutomation"+Folder separator:K24:12+"scene"+Folder separator:K24:12+"signatureEmail.4wp"; fk platform path:K87:2)
 						
 						If ($fichier_o.exists=True:C214)
 							WP INSERT BREAK:C1413($document_o; wk paragraph break:K81:259; wk append:K81:179)
@@ -87,7 +87,7 @@ Case of
 			// S'il s'agit d'un Courrier ou SMS ou un mail qui possède un corps non vide, on rajoute l'historique de l'envoi
 			If ($canalEnvoi_t#"Email") | (($canalEnvoi_t="Email") & ($corps_t#""))
 				WP FREEZE FORMULAS:C1708($document_o; wk recompute expressions:K81:311)
-				$fiche_o.updateCaMarketingStatistic(3; New object:C1471("type"; $canalEnvoi_t; "contenu4WP"; $document_o; "statut"; $statut_b))
+				$fiche_o.updateCaMarketingStatistic(3; New object:C1471("type"; $canalEnvoi_t; "contenu4WP"; $document_o; "statut"; $statut_b; "subject"; Form:C1466.subject))
 			End if 
 			
 			$i_el+=1
@@ -104,6 +104,6 @@ Case of
 			ALERT:C41("Le mailing n'a pas pu être envoyé à "+String:C10($compteur_o.fail)+" personne(s)")
 		End if 
 		
-	: (Form event code:C388=Sur survol:K2:35)
+	: (Form event code:C388=On Mouse Move:K2:35)
 		SET CURSOR:C469(9000)
 End case 

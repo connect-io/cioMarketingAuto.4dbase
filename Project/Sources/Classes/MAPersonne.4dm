@@ -330,7 +330,7 @@ Function sendMailing($configPreCharge_o : Object)
 						
 						If ($corps_t#"@<body@")  // Nouvelle façon d'envoyer des emails
 							// Ajout de la signature
-							$fichier_o:=File:C1566(Get 4D folder:C485(Dossier Resources courant:K5:16; *)+"cioMarketingAutomation"+Séparateur dossier:K24:12+"scene"+Séparateur dossier:K24:12+"signatureEmail.4wp"; fk chemin plateforme:K87:2)
+							$fichier_o:=File:C1566(Get 4D folder:C485(Current resources folder:K5:16; *)+"cioMarketingAutomation"+Folder separator:K24:12+"scene"+Folder separator:K24:12+"signatureEmail.4wp"; fk platform path:K87:2)
 							
 							If ($fichier_o.exists=True:C214)
 								WP INSERT BREAK:C1413($document_o; wk paragraph break:K81:259; wk append:K81:179)
@@ -501,7 +501,7 @@ Historique
 			$enregistrement_o.historique.detail.push(New object:C1471(\
 				"eventTs"; cmaTimestamp(Current date:C33; Current time:C178); \
 				"eventUser"; Current user:C182; \
-				"eventDetail"; New object:C1471("type"; String:C10($detail_o.type); "contenu4WP"; $detail_o.contenu4WP; "statut"; String:C10($detail_o.statut))))
+				"eventDetail"; New object:C1471("type"; String:C10($detail_o.type); "subject"; $detail_o.subject; "contenu4WP"; $detail_o.contenu4WP; "statut"; String:C10($detail_o.statut))))
 			
 	End case 
 	
