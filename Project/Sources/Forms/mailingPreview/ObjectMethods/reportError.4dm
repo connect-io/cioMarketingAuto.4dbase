@@ -5,7 +5,7 @@ Case of
 	: (Form event code:C388=On Clicked:K2:4)
 		
 		If (Form:C1466.emailFailed_c.length=0)
-			ALERT:C41("Tous les mails on bien été expédiés.")
+			ALERT:C41("Tous les mails ont bien été expédiés.")
 			return 
 		End if 
 		

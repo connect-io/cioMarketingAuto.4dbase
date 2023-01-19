@@ -1,7 +1,7 @@
 var $marketingAutomation_cs : Object
 
 Case of 
-	: (Form event code:C388=Sur chargement:K2:1)
+	: (Form event code:C388=On Load:K2:1)
 		$marketingAutomation_cs:=cmaToolGetClass("MarketingAutomation").new(True:C214)
 		
 		Form:C1466.MAPersonneSelection:=cmaToolGetClass("MAPersonneSelection").new()
@@ -26,7 +26,10 @@ Case of
 		
 		OBJECT SET VISIBLE:C603(*; "WPtoolbar"; False:C215)
 		OBJECT SET VISIBLE:C603(*; "WParea"; False:C215)
-	: (Form event code:C388=Sur données modifiées:K2:15)
+		
+		WParea:=WP New:C1317()
+		
+	: (Form event code:C388=On Data Change:K2:15)
 		Form:C1466.MAPersonneSelection.personneCollection:=Form:C1466.personneSelectionDisplayClass.manageFilter()
 		Form:C1466.MAPersonneSelection.personneCollection:=Form:C1466.personneSelectionDisplayClass.manageSort("")
 End case 
