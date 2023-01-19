@@ -1,5 +1,6 @@
 var $canalEnvoi_t : Text
 var $length_el; $moduloProgress_el; $i_el : Integer
+var $statut_b : Boolean
 var $destinataire_o; $fiche_o; $statut_o; $compteur_o; $document_o : Object
 
 Case of 
@@ -29,6 +30,7 @@ Case of
 		$moduloProgress_el:=Round:C94($length_el/5; 0)
 		
 		$compteur_o:=New object:C1471("success"; 0; "fail"; 0)
+		Form:C1466.emailFailed_c:=New collection:C1472()
 		
 		cmaProgressBar(0; "Initialisation"; True:C214)
 		
@@ -82,10 +84,11 @@ Case of
 				$compteur_o.success:=$compteur_o.success+1
 			Else 
 				$compteur_o.fail:=$compteur_o.fail+1
+				Form:C1466.emailFailed_c.push(New object:C1471("email"; Form:C1466.EMail.to; "status"; $statut_o.statusText))
 			End if 
 			
 			// S'il s'agit d'un Courrier ou SMS ou un mail qui possède un corps non vide, on rajoute l'historique de l'envoi
-			If ($canalEnvoi_t#"Email") | (($canalEnvoi_t="Email") & ($corps_t#""))
+			If (cmaToolRegexValidate(1; $destinataire_o.eMail)=True:C214) & (($canalEnvoi_t#"Email") | (($canalEnvoi_t="Email") & ($corps_t#"")))
 				WP FREEZE FORMULAS:C1708($document_o; wk recompute expressions:K81:311)
 				$fiche_o.updateCaMarketingStatistic(3; New object:C1471("type"; $canalEnvoi_t; "contenu4WP"; $document_o; "statut"; $statut_b; "subject"; Form:C1466.subject))
 			End if 

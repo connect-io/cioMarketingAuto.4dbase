@@ -600,11 +600,27 @@
 					"loopBackToFirstFrame": true,
 					"switchBackWhenReleased": true,
 					"useLastFrameAsDisabled": true
+				},
+				"reportError": {
+					"type": "button",
+					"text": "Rapport d'erreur",
+					"top": 770,
+					"left": 951,
+					"width": 150,
+					"height": 35,
+					"events": [
+						"onClick",
+						"onMouseMove"
+					],
+					"class": "clickable",
+					"style": "roundedBevel",
+					"method": "ObjectMethods/reportError.4dm",
+					"sizingX": "move"
 				}
 			}
 		}
 	],
-	"geometryStamp": 484,
+	"geometryStamp": 492,
 	"editor": {
 		"activeView": "View 1",
 		"defaultView": "View 1",
