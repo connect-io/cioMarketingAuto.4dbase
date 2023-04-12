@@ -182,7 +182,8 @@
 					"class": "clickable",
 					"style": "roundedBevel",
 					"method": "ObjectMethods/envoiMailing.4dm",
-					"sizingX": "move"
+					"sizingX": "move",
+					"sizingY": "move"
 				},
 				"Texte6": {
 					"type": "text",
@@ -615,12 +616,29 @@
 					"class": "clickable",
 					"style": "roundedBevel",
 					"method": "ObjectMethods/reportError.4dm",
-					"sizingX": "move"
+					"sizingX": "move",
+					"sizingY": "move"
+				},
+				"addLink": {
+					"type": "pictureButton",
+					"left": 440,
+					"top": 244,
+					"width": 38,
+					"height": 38,
+					"events": [
+						"onClick",
+						"onMouseMove"
+					],
+					"picture": "Images/link-web_1.png",
+					"method": "ObjectMethods/addLink.4dm",
+					"switchContinuously": true,
+					"switchWhenRollover": true,
+					"switchBackWhenReleased": true
 				}
 			}
 		}
 	],
-	"geometryStamp": 492,
+	"geometryStamp": 524,
 	"editor": {
 		"activeView": "View 1",
 		"defaultView": "View 1",

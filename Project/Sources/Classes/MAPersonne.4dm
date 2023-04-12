@@ -456,7 +456,6 @@ Historique
 					$enregistrement_o.lastClicked:=$detail_o.eventTs
 				: (String:C10($detail_o.eventNumber)="7")
 					$enregistrement_o.lastUnsubscribe:=$detail_o.eventTs
-					
 					$enregistrement_o.desabonementMail:=True:C214
 					
 					// Gestion du désabonnement qui peut avoir un traitement particulier suivant la base

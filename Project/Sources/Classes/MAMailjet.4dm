@@ -3,12 +3,12 @@ Class constructor
 	C_OBJECT:C1216($fichierConfig_o)
 	
 	If (Count parameters:C259=0)
-		This:C1470.configChemin:=Get 4D folder:C485(Dossier Resources courant:K5:16; *)+"cioMailjet"+Séparateur dossier:K24:12+"config.json"
+		This:C1470.configChemin:=Get 4D folder:C485(Current resources folder:K5:16; *)+"cioMailjet"+Folder separator:K24:12+"config.json"
 	Else 
 		This:C1470.configChemin:=$1
 	End if 
 	
-	$fichierConfig_o:=File:C1566(This:C1470.configChemin; fk chemin plateforme:K87:2)
+	$fichierConfig_o:=File:C1566(This:C1470.configChemin; fk platform path:K87:2)
 	
 	If ($fichierConfig_o.exists=True:C214)
 		This:C1470.config:=JSON Parse:C1218($fichierConfig_o.getText())
@@ -38,16 +38,15 @@ Function getHistoryRequestFile
 	
 	$config_o:=New object:C1471()
 	
-	$cheminFichier_t:=Get 4D folder:C485(Dossier Resources courant:K5:16; *)+"cioMailjet"+Séparateur dossier:K24:12+"historyRequest.json"
+	$cheminFichier_t:=Get 4D folder:C485(Current resources folder:K5:16; *)+"cioMailjet"+Folder separator:K24:12+"historyRequest.json"
 	
-	$fichier_o:=File:C1566($cheminFichier_t; fk chemin plateforme:K87:2)
+	$fichier_o:=File:C1566($cheminFichier_t; fk platform path:K87:2)
 	
 	If ($fichier_o.exists=False:C215)
 		
 		If ($fichier_o.create()=True:C214)
 			$config_o.lastRequest:=cmaTimestamp(Current date:C33; Current time:C178)-604800  // Par défaut on met que la dernière requête a eu lieu il y a 7 jours
-			
-			$fichier_o.setText(JSON Stringify:C1217($config_o; *); 2)
+			$fichier_o.setText(JSON Stringify:C1217($config_o; *))
 		End if 
 		
 	End if 

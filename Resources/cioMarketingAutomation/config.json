@@ -1,0 +1,89 @@
+{
+    "passerelle" : [
+        {
+            "tableComposant" : "Personne",
+            "tableHote" : "NomDeVotreTablePersonne",
+            "champ" : [
+                {
+                    "lib" : "adresse",
+                    "personAccess" : "champAdresse",
+                    "type" : "text"
+                },
+                {
+                    "lib" : "adresseComplement",
+                    "personAccess" : "chamAdresseComplement",
+                    "type" : "text"
+                },
+                {
+                    "lib" : "codePostal",
+                    "personAccess" : "champCodePostal",
+                    "type" : "text"
+                },
+                {
+                    "lib" : "dateCreation",
+                    "personAccess" : "champDateCreation",
+                    "type" : "date"
+                },
+                {
+                    "lib" : "dateNaissance",
+                    "personAccess" : "champDateNaissance",
+                    "type" : "date"
+                },
+                {
+                    "lib" : "nom",
+                    "personAccess" : "champNom",
+                    "type" : "text"
+                },
+                {
+                    "lib" : "prenom",
+                    "personAccess" : "champPrenom",
+                    "type" : "text"
+                },
+                {
+                    "lib" : "sexe",
+                    "personAccess" : "champSexe",
+                    "type" : "text"
+                },
+                {
+                    "lib" : "UID",
+                    "personAccess" : "champUID",
+                    "type" : "text"
+                },
+                {
+                    "lib" : "ville",
+                    "personAccess" : "champVille",
+                    "type" : "text"
+                },
+                {
+                    "lib" : "eMail",
+                    "personAccess" : "champEMail",
+                    "type" : "text"
+                },
+                {
+                    "lib" : "telFixe",
+                    "personAccess" : "champTelFixe",
+                    "type" : "text"
+                },
+                {
+                    "lib" : "telMobile",
+                    "personAccess" : "chaampTelMobile",
+                    "type" : "text"
+                }
+            ],
+            "libelleSexe" : [
+                {
+                    "lib" : "homme",
+                    "value" : ""
+                },
+                {
+                    "lib" : "femme",
+                    "value" : ""
+                },
+                {
+                    "lib" : "femme",
+                    "value" : ""
+                }
+            ]
+        }         
+    ]
+}
