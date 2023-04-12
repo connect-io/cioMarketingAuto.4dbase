@@ -629,7 +629,7 @@
 						"onClick",
 						"onMouseMove"
 					],
-					"picture": "Images/link-web_1.png",
+					"picture": "Images/link-web.png",
 					"method": "ObjectMethods/addLink.4dm",
 					"switchContinuously": true,
 					"switchWhenRollover": true,
