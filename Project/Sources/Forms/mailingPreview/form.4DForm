@@ -619,26 +619,28 @@
 					"sizingX": "move",
 					"sizingY": "move"
 				},
-				"addLink": {
-					"type": "pictureButton",
-					"left": 440,
-					"top": 244,
-					"width": 38,
-					"height": 38,
+				"addLink1": {
+					"type": "button",
+					"top": 772,
+					"left": 821,
+					"width": 119,
+					"height": 30,
+					"sizingY": "move",
+					"class": "clickable",
+					"focusable": false,
+					"text": "Ajouter un lien",
+					"iconFrames": 4,
+					"style": "roundedBevel",
+					"method": "ObjectMethods/addLink1.4dm",
 					"events": [
 						"onClick",
 						"onMouseMove"
-					],
-					"picture": "Images/link-web.png",
-					"method": "ObjectMethods/addLink.4dm",
-					"switchContinuously": true,
-					"switchWhenRollover": true,
-					"switchBackWhenReleased": true
+					]
 				}
 			}
 		}
 	],
-	"geometryStamp": 524,
+	"geometryStamp": 527,
 	"editor": {
 		"activeView": "View 1",
 		"defaultView": "View 1",

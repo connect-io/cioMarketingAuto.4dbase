@@ -4,6 +4,11 @@ var $lien_c : Collection
 
 Case of 
 	: (Form event code:C388=On Clicked:K2:4)
+		If (Form:C1466.Parameter_e=Null:C1517)
+			Form:C1466.notification_ic.popUp("warning"; ""; "Aucun courrier sélectionné.")
+			return 
+		End if 
+		
 		$plageSelect_o:=WP Selection range:C1340(*; "WParea")
 		$lien_c:=WP Get links:C1643($plageSelect_o)
 		
@@ -29,3 +34,4 @@ Case of
 		SET CURSOR:C469(9000)
 		
 End case 
+
