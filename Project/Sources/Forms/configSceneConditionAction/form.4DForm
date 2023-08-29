@@ -1,4 +1,4 @@
-﻿{
+{
 	"$4d": {
 		"version": "1",
 		"kind": "form"
@@ -12,7 +12,9 @@
 	"rightMargin": 10,
 	"bottomMargin": 10,
 	"events": [
-		"onLoad"
+		"onLoad",
+		"onClick",
+		"onDataChange"
 	],
 	"windowTitle": "Définition des conditions d'action",
 	"destination": "detailScreen",

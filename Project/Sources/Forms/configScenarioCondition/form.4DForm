@@ -358,7 +358,8 @@
 					"width": 203,
 					"height": 30,
 					"events": [
-						"onClick"
+						"onClick",
+						"onMouseMove"
 					],
 					"method": "ObjectMethods/Bouton.4dm",
 					"class": "clickable",
@@ -371,7 +372,8 @@
 					"width": 25,
 					"height": 25,
 					"events": [
-						"onClick"
+						"onClick",
+						"onMouseMove"
 					],
 					"picture": "/RESOURCES/Images/refresh.png",
 					"method": "ObjectMethods/refreshDateDebutMailClique.4dm",
@@ -386,7 +388,8 @@
 					"width": 25,
 					"height": 25,
 					"events": [
-						"onClick"
+						"onClick",
+						"onMouseMove"
 					],
 					"picture": "/RESOURCES/Images/refresh.png",
 					"method": "ObjectMethods/refreshDateFinMailClique.4dm",
@@ -401,7 +404,8 @@
 					"width": 25,
 					"height": 25,
 					"events": [
-						"onClick"
+						"onClick",
+						"onMouseMove"
 					],
 					"picture": "/RESOURCES/Images/refresh.png",
 					"method": "ObjectMethods/refreshDateDebutMailOuvert.4dm",
@@ -416,7 +420,8 @@
 					"width": 25,
 					"height": 25,
 					"events": [
-						"onClick"
+						"onClick",
+						"onMouseMove"
 					],
 					"picture": "/RESOURCES/Images/refresh.png",
 					"method": "ObjectMethods/refreshDateFinMailOuvert.4dm",

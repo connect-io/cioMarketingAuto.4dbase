@@ -1,4 +1,4 @@
-var $element_o; $enregistrement_o : Object
+var $enregistrement_o : Object
 
 Case of 
 	: (Form event code:C388=On Clicked:K2:4)
@@ -7,9 +7,7 @@ Case of
 			
 			If (Type:C295(entitySelection_o)#Is undefined:K8:13) & (Form:C1466.PersonneCurrentElement#Null:C1517)
 				
-				For each ($element_o; Form:C1466.PersonneSelectedElement)
-					$enregistrement_o:=ds:C1482[Storage:C1525.automation.passerelle.tableHote].get($element_o.UID)
-					
+				For each ($enregistrement_o; Form:C1466.PersonneSelectedElement)
 					entitySelection_o.add($enregistrement_o)  // Je le mets en dur car c'est moi qui le défini sur chargement du formulaire
 				End for each 
 				

@@ -485,13 +485,27 @@
 							"dataSource": "This:C1470.prenom",
 							"alternateFill": "#E1F2FC",
 							"enterable": false
+						},
+						{
+							"header": {
+								"name": "Entête2",
+								"text": "Entête2"
+							},
+							"name": "Colonne1",
+							"footer": {
+								"name": "Pied2"
+							},
+							"enterable": false,
+							"resizable": false,
+							"dataSource": "This:C1470.UID",
+							"alternateFill": "#E1F2FC"
 						}
 					]
 				}
 			}
 		}
 	],
-	"geometryStamp": 493,
+	"geometryStamp": 496,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",

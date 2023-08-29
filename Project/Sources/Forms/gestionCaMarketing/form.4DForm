@@ -82,7 +82,8 @@
 					"width": 165,
 					"height": 24,
 					"events": [
-						"onClick"
+						"onClick",
+						"onMouseMove"
 					],
 					"method": "ObjectMethods/Bouton3.4dm",
 					"class": "clickable",
@@ -96,7 +97,8 @@
 					"width": 165,
 					"height": 24,
 					"events": [
-						"onClick"
+						"onClick",
+						"onMouseMove"
 					],
 					"method": "ObjectMethods/Bouton4.4dm",
 					"class": "clickable",

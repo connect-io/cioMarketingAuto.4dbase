@@ -1,7 +1,8 @@
+var $pos_el : Integer
+var $collection_c : Collection
+
 Case of 
-	: (Form event code:C388=Sur clic:K2:4)
-		var $pos_el : Integer
-		var $collection_c : Collection
+	: (Form event code:C388=On Clicked:K2:4)
 		
 		If (versionList_at>0)
 			$collection_c:=Form:C1466.sceneDetail.paramAction.modele[Lowercase:C14(Form:C1466.sceneTypeSelected)].version.indices("titre = :1"; versionList_at{versionList_at})
@@ -31,6 +32,6 @@ Case of
 			ALERT:C41("Merci de sélectionner une version avant de pouvoir la supprimer")
 		End if 
 		
-	: (Form event code:C388=Sur survol:K2:35)
+	: (Form event code:C388=On Mouse Move:K2:35)
 		SET CURSOR:C469(9000)
 End case 

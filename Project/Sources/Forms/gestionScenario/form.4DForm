@@ -68,7 +68,8 @@
 					"width": 170,
 					"height": 30,
 					"events": [
-						"onClick"
+						"onClick",
+						"onMouseMove"
 					],
 					"method": "ObjectMethods/scenarioDetailBoutonSauvegarder.4dm",
 					"class": "clickable",
@@ -82,7 +83,8 @@
 					"width": 37,
 					"height": 23,
 					"events": [
-						"onClick"
+						"onClick",
+						"onMouseMove"
 					],
 					"method": "ObjectMethods/scenarioListeBoutonSupprimer.4dm",
 					"class": "clickable",
@@ -96,7 +98,8 @@
 					"width": 37,
 					"height": 23,
 					"events": [
-						"onClick"
+						"onClick",
+						"onMouseMove"
 					],
 					"method": "ObjectMethods/scenarioListeBoutonAjout.4dm",
 					"class": "clickable",
@@ -110,7 +113,8 @@
 					"width": 170,
 					"height": 30,
 					"events": [
-						"onClick"
+						"onClick",
+						"onMouseMove"
 					],
 					"method": "ObjectMethods/sceneDetailBoutonSauvegarder.4dm",
 					"class": "clickable",
@@ -134,7 +138,8 @@
 					"width": 170,
 					"height": 30,
 					"events": [
-						"onClick"
+						"onClick",
+						"onMouseMove"
 					],
 					"method": "ObjectMethods/scenarioDetailBoutonAppliquer.4dm",
 					"class": "clickable",
@@ -162,7 +167,8 @@
 					"width": 36,
 					"height": 23,
 					"events": [
-						"onClick"
+						"onClick",
+						"onMouseMove"
 					],
 					"method": "ObjectMethods/scenarioDetailPersonnePossible.4dm",
 					"class": "clickable",
@@ -190,7 +196,8 @@
 					"width": 36,
 					"height": 23,
 					"events": [
-						"onClick"
+						"onClick",
+						"onMouseMove"
 					],
 					"method": "ObjectMethods/scenarioDetailPersonneEnCours.4dm",
 					"class": "clickable",
@@ -338,7 +345,8 @@
 					"width": 195,
 					"height": 25,
 					"events": [
-						"onClick"
+						"onClick",
+						"onMouseMove"
 					],
 					"style": "roundedBevel",
 					"method": "ObjectMethods/scenarioDetailCondition.4dm",
@@ -403,7 +411,8 @@
 					"width": 37,
 					"height": 23,
 					"events": [
-						"onClick"
+						"onClick",
+						"onMouseMove"
 					],
 					"method": "ObjectMethods/sceneListeBoutonSupprimer.4dm",
 					"class": "clickable",
@@ -417,7 +426,8 @@
 					"width": 37,
 					"height": 23,
 					"events": [
-						"onClick"
+						"onClick",
+						"onMouseMove"
 					],
 					"method": "ObjectMethods/sceneListeBoutonAjout.4dm",
 					"class": "clickable",
@@ -481,7 +491,8 @@
 					"width": 195,
 					"height": 25,
 					"events": [
-						"onClick"
+						"onClick",
+						"onMouseMove"
 					],
 					"style": "roundedBevel",
 					"method": "ObjectMethods/sceneDetailConditionAction.4dm",
@@ -505,7 +516,8 @@
 					"width": 195,
 					"height": 25,
 					"events": [
-						"onClick"
+						"onClick",
+						"onMouseMove"
 					],
 					"style": "roundedBevel",
 					"method": "ObjectMethods/sceneDetailConditionSaut.4dm",
@@ -534,7 +546,8 @@
 					"width": 36,
 					"height": 23,
 					"events": [
-						"onClick"
+						"onClick",
+						"onMouseMove"
 					],
 					"method": "ObjectMethods/sceneDetailPersonneEnCours.4dm",
 					"class": "clickable",
@@ -557,7 +570,8 @@
 					"width": 195,
 					"height": 25,
 					"events": [
-						"onClick"
+						"onClick",
+						"onMouseMove"
 					],
 					"style": "roundedBevel",
 					"method": "ObjectMethods/scenarioDetailDecor.4dm",
@@ -580,7 +594,8 @@
 					"width": 195,
 					"height": 25,
 					"events": [
-						"onClick"
+						"onClick",
+						"onMouseMove"
 					],
 					"style": "roundedBevel",
 					"method": "ObjectMethods/sceneDetailParametre.4dm",

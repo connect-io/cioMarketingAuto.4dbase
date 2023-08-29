@@ -71,7 +71,8 @@
 					"width": 106,
 					"height": 34,
 					"events": [
-						"onClick"
+						"onClick",
+						"onMouseMove"
 					],
 					"method": "ObjectMethods/Bouton.4dm",
 					"class": "clickable",

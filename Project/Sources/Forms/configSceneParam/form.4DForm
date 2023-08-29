@@ -31,7 +31,8 @@
 					"width": 160,
 					"height": 30,
 					"events": [
-						"onClick"
+						"onClick",
+						"onMouseMove"
 					],
 					"method": "ObjectMethods/Bouton1.4dm",
 					"class": "clickable",

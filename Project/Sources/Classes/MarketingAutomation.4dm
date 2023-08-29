@@ -492,7 +492,6 @@ Historique
 						$eMail_o.subject:=$collection_c[0].subject
 						
 						$config_o:=New object:C1471("success"; True:C214; "type"; "Email"; "eMailConfig"; $eMail_o; "contenu4WP"; $collection_c[0].contenu4WP; "expediteur"; $collection_c[0].expediteur)
-						
 						$personne_o.sendMailing($config_o)
 						
 						// Ajout du log

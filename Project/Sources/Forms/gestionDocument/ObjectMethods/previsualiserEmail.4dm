@@ -1,6 +1,7 @@
+var $doc4WP : Object
+
 Case of 
-	: (Form event code:C388=Sur clic:K2:4)
-		var $doc4WP : Object
+	: (Form event code:C388=On Clicked:K2:4)
 		
 		If (WP Get text:C1575(WParea; wk expressions as value:K81:255)="@<p@") | (WP Get text:C1575(WParea; wk expressions as value:K81:255)="@<html@")
 			$doc4WP:=WParea
@@ -11,6 +12,6 @@ Case of
 			ALERT:C41("Le document 4D WPro ne contient pas de code html")
 		End if 
 		
-	: (Form event code:C388=Sur survol:K2:35)
+	: (Form event code:C388=On Mouse Move:K2:35)
 		SET CURSOR:C469(9000)
 End case 

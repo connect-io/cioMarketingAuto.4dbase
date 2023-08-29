@@ -1,7 +1,7 @@
+var $collection_c : Collection
+
 Case of 
-	: (Form event code:C388=Sur chargement:K2:1)
-		var $collection_c : Collection
-		
+	: (Form event code:C388=On Load:K2:1)
 		var toggle_i; toggleOn_i; toggleOff_i : Picture
 		
 		ARRAY TEXT:C222(conditionActionList_at; 0)

@@ -66,11 +66,11 @@ Historique
 	
 	Case of 
 		: (Num:C11($1.modeSelection)=1) | (Num:C11($1.modeSelection)=2) & (Bool:C1537($1.multiSelection)=False:C215)  // Sélection unique OU Sélection multi-lignes mais qu'une seule ligne sélectionnée
-			$1.resume:=Choose:C955($civilite_t#""; $civilite_t+" "; "")+$1.nom+" "+$1.prenom+", habite à "+$1.ville+" ("+$1.codePostal+")."+Char:C90(Retour à la ligne:K15:40)
+			$1.resume:=Choose:C955($civilite_t#""; $civilite_t+" "; "")+String:C10($1.nom)+" "+String:C10($1.prenom)+", habite à "+String:C10($1.ville)+" ("+String:C10($1.codePostal)+")."+Char:C90(Line feed:K15:40)
 			
-			$1.resume:=$1.resume+"• Adresse email : "+$1.eMail+Char:C90(Retour à la ligne:K15:40)
-			$1.resume:=$1.resume+"• Téléphone fixe : "+$1.telFixe+Char:C90(Retour à la ligne:K15:40)
-			$1.resume:=$1.resume+"• Téléphone portable : "+$1.telMobile
+			$1.resume:=$1.resume+"• Adresse email : "+String:C10($1.eMail)+Char:C90(Line feed:K15:40)
+			$1.resume:=$1.resume+"• Téléphone fixe : "+String:C10($1.telFixe)+Char:C90(Line feed:K15:40)
+			$1.resume:=$1.resume+"• Téléphone portable : "+String:C10($1.telMobile)
 			
 			$class_o:=cmaToolGetClass("MAPersonne").new()
 			$class_o.loadByPrimaryKey($1.UID)
@@ -94,25 +94,25 @@ Historique
 							$1.resumeMarketing:="• Rang : ambassadeur"
 					End case 
 					
-					$1.resumeMarketing:=$1.resumeMarketing+Char:C90(Retour à la ligne:K15:40)
-					$1.resumeMarketing:=$1.resumeMarketing+"Dernière(s) activité(s) des mails envoyés :"+Char:C90(Retour à la ligne:K15:40)
+					$1.resumeMarketing:=$1.resumeMarketing+Char:C90(Line feed:K15:40)
+					$1.resumeMarketing:=$1.resumeMarketing+"Dernière(s) activité(s) des mails envoyés :"+Char:C90(Line feed:K15:40)
 					
 					If ($table_o.lastOpened#0)
-						$1.resumeMarketing:=$1.resumeMarketing+"• Dernier mail ouvert : "+cmaTimestampLire("date"; $table_o.lastOpened)+Char:C90(Retour à la ligne:K15:40)
+						$1.resumeMarketing:=$1.resumeMarketing+"• Dernier mail ouvert : "+cmaTimestampLire("date"; $table_o.lastOpened)+Char:C90(Line feed:K15:40)
 					Else 
-						$1.resumeMarketing:=$1.resumeMarketing+"• Aucun email ouvert"+Char:C90(Retour à la ligne:K15:40)
+						$1.resumeMarketing:=$1.resumeMarketing+"• Aucun email ouvert"+Char:C90(Line feed:K15:40)
 					End if 
 					
 					If ($table_o.lastClicked#0)
-						$1.resumeMarketing:=$1.resumeMarketing+"• Dernier mail cliqué : "+cmaTimestampLire("date"; $table_o.lastClicked)+Char:C90(Retour à la ligne:K15:40)
+						$1.resumeMarketing:=$1.resumeMarketing+"• Dernier mail cliqué : "+cmaTimestampLire("date"; $table_o.lastClicked)+Char:C90(Line feed:K15:40)
 					Else 
-						$1.resumeMarketing:=$1.resumeMarketing+"• Aucun email cliqué"+Char:C90(Retour à la ligne:K15:40)
+						$1.resumeMarketing:=$1.resumeMarketing+"• Aucun email cliqué"+Char:C90(Line feed:K15:40)
 					End if 
 					
 					If ($table_o.lastBounce#0)
-						$1.resumeMarketing:=$1.resumeMarketing+"• Email détecté en bounce le : "+cmaTimestampLire("date"; $table_o.lastBounce)+Char:C90(Retour à la ligne:K15:40)
+						$1.resumeMarketing:=$1.resumeMarketing+"• Email détecté en bounce le : "+cmaTimestampLire("date"; $table_o.lastBounce)+Char:C90(Line feed:K15:40)
 					Else 
-						$1.resumeMarketing:=$1.resumeMarketing+"• Aucun bounce"+Char:C90(Retour à la ligne:K15:40)
+						$1.resumeMarketing:=$1.resumeMarketing+"• Aucun bounce"+Char:C90(Line feed:K15:40)
 					End if 
 					
 					If ($table_o.desabonementMail=True:C214)
@@ -176,14 +176,14 @@ Historique
 					$table_o:=$1.donnee.scenarioSelectionPossiblePersonne.get($enregistrement_o.UID)
 					
 					If ($table_o=Null:C1517)
-						LISTBOX SELECT ROW:C912(*; "listePersonne"; $1.personne.indexOf($enregistrement_o)+1; lk ajouter à sélection:K53:2)
+						LISTBOX SELECT ROW:C912(*; "listePersonne"; $1.personne.indexOf($enregistrement_o)+1; lk add to selection:K53:2)
 					End if 
 					
 				End for each 
 				
 			End if 
 			
-			LISTBOX SET PROPERTY:C1440(*; "listePersonne"; lk mode de sélection:K53:35; lk multilignes:K53:59)
+			LISTBOX SET PROPERTY:C1440(*; "listePersonne"; lk selection mode:K53:35; lk multiple:K53:59)
 		: ($1.entree=2)  // Gestion du scénario (Personne en cours)
 			
 			If ($1.donnee.scenarioPersonneEnCoursEntity#Null:C1517)  // On souhait voir les personnes où le scénario est déjà appliqué
@@ -194,9 +194,7 @@ Historique
 			End if 
 			
 		: ($1.entree=3)  // Gestion des personnes (Sans passer par Gestion du scénario)
-			//$class_o.loadAll()
 			$table_o:=ds:C1482[Storage:C1525.automation.passerelle.tableHote].all()
-			
 			$continue_b:=True:C214
 		: ($1.entree=4)  // Gestion de la scène (Personne en cours)
 			
@@ -220,7 +218,7 @@ Historique
 		Form:C1466.personneCollectionInit:=$table_o.copy()
 		
 		For ($i_el; 1; $column_c.length)
-			LISTBOX SET COLUMN FORMULA:C1203(*; cmaToolMajuscFirstChar($column_c[$i_el-1]); "This."+Storage:C1525.automation.formule.getFieldName(Storage:C1525.automation.passerelle.champ; $column_c[$i_el-1]); Est un texte:K8:3)
+			LISTBOX SET COLUMN FORMULA:C1203(*; cmaToolMajuscFirstChar($column_c[$i_el-1]); "This."+Storage:C1525.automation.formule.getFieldName(Storage:C1525.automation.passerelle.champ; $column_c[$i_el-1]); Is text:K8:3)
 		End for 
 		
 		$1.personneCollection:=Form:C1466.personneCollectionInit.copy()

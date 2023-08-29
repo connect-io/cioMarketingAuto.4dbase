@@ -48,7 +48,7 @@
 					"top": 8,
 					"width": 600,
 					"height": 22,
-					"dataSource": "\"Gestion des personnes (\"+Chaîne(Form:C1466.personneCollection.length)+\")\"",
+					"dataSource": "\"Gestion des personnes (\"+String:C10(Form:C1466.personneCollection.length)+\")\"",
 					"fontSize": 18,
 					"fill": "transparent",
 					"borderStyle": "none",

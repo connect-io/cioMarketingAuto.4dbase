@@ -1,9 +1,7 @@
+var $selectList_el : Integer
+
 Case of 
-	: (Form event code:C388=Sur clic:K2:4)
-		var $docFichier_t : Text
-		var $selectList_el : Integer
-		var $continue_b : Boolean
-		var $config_o : Object
+	: (Form event code:C388=On Clicked:K2:4)
 		
 		If (selectList_at>0)
 			$selectList_el:=selectList_at
@@ -24,6 +22,6 @@ Case of
 			ALERT:C41("Merci de sélectionner un canal d'envoi")
 		End if 
 		
-	: (Form event code:C388=Sur survol:K2:35)
+	: (Form event code:C388=On Mouse Move:K2:35)
 		SET CURSOR:C469(9000)
 End case 

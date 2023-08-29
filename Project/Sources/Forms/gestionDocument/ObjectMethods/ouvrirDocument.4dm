@@ -1,8 +1,8 @@
+var $refDoc_h : Time
+var $parameter_es : Object
+
 Case of 
-	: (Form event code:C388=Sur clic:K2:4)
-		var $chemin_t : Text
-		var $refDoc_h : Time
-		var $fichier_o; $model_o; $parameter_es : Object
+	: (Form event code:C388=On Clicked:K2:4)
 		
 		CONFIRM:C162("Voulez-vous ouvrir un modèle stocké dans le logiciel ?"; "Oui"; "Non")
 		
@@ -25,6 +25,6 @@ Case of
 			
 		End if 
 		
-	: (Form event code:C388=Sur survol:K2:35)
+	: (Form event code:C388=On Mouse Move:K2:35)
 		SET CURSOR:C469(9000)
 End case 

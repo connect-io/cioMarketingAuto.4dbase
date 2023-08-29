@@ -1,6 +1,7 @@
+var $version_o : Object
+
 Case of 
-	: (Form event code:C388=Sur clic:K2:4)
-		var $version_o : Object
+	: (Form event code:C388=On Clicked:K2:4)
 		
 		If (versionList_at>0)
 			
@@ -50,6 +51,6 @@ Case of
 			ALERT:C41("Merci de sélectionner une version avant de pouvoir la rendre active")
 		End if 
 		
-	: (Form event code:C388=Sur survol:K2:35)
+	: (Form event code:C388=On Mouse Move:K2:35)
 		SET CURSOR:C469(9000)
 End case 

@@ -25,7 +25,7 @@
 					"top": 40,
 					"left": 0,
 					"width": 877,
-					"height": 615,
+					"height": 675,
 					"stroke": "transparent"
 				},
 				"Onglet": {
@@ -34,7 +34,7 @@
 					"top": 55,
 					"left": 97,
 					"width": 760,
-					"height": 588,
+					"height": 645,
 					"labels": [
 						"Infos générales",
 						"Marketing"
@@ -51,33 +51,16 @@
 					"dataSourceTypeHint": "arrayText",
 					"action": "gotoPage"
 				},
-				"Zone de saisie1": {
-					"type": "input",
-					"left": 13,
-					"top": 60,
-					"width": 64,
-					"height": 64,
-					"dataSourceTypeHint": "picture",
-					"dataSource": "Form:C1466.imageSexe",
-					"enterable": false,
-					"contextMenu": "none",
-					"pictureFormat": "proportionalCenter",
-					"fill": "transparent",
-					"borderStyle": "none",
-					"events": [
-						"onLoad"
-					],
-					"method": "ObjectMethods/Zone de saisie1.4dm"
-				},
 				"Bouton4": {
 					"type": "button",
 					"text": "Valider",
-					"top": 605,
-					"left": 645,
+					"top": 660,
+					"left": 673,
 					"width": 165,
 					"height": 30,
 					"events": [
-						"onClick"
+						"onClick",
+						"onMouseMove"
 					],
 					"method": "ObjectMethods/Bouton4.4dm",
 					"class": "clickable",
@@ -86,12 +69,13 @@
 				"Bouton1": {
 					"type": "button",
 					"text": "Annuler",
-					"top": 605,
-					"left": 460,
+					"top": 660,
+					"left": 488,
 					"width": 165,
 					"height": 30,
 					"events": [
-						"onClick"
+						"onClick",
+						"onMouseMove"
 					],
 					"method": "ObjectMethods/Bouton1.4dm",
 					"class": "clickable",
@@ -123,28 +107,43 @@
 					"enterable": false,
 					"focusable": false,
 					"contextMenu": "automatic"
+				},
+				"Zone de saisie1": {
+					"type": "input",
+					"left": 13,
+					"top": 60,
+					"width": 64,
+					"height": 64,
+					"dataSourceTypeHint": "picture",
+					"dataSource": "Form:C1466.imageSexe",
+					"enterable": false,
+					"contextMenu": "none",
+					"pictureFormat": "proportionalCenter",
+					"fill": "transparent",
+					"borderStyle": "none",
+					"events": [
+						"onLoad"
+					],
+					"method": "ObjectMethods/Zone de saisie1.4dm"
 				}
 			}
 		},
 		{
 			"objects": {
-				"Texte16": {
-					"type": "text",
-					"top": 102,
-					"left": 166,
-					"width": 660,
-					"height": 16,
-					"fill": "#AAAAAA",
-					"stroke": "#0000FF",
-					"class": "",
-					"textAlign": "center",
-					"fontWeight": "bold",
-					"borderStyle": "solid",
-					"text": "É t a t   c i v i l"
+				"Rectangle7": {
+					"type": "rectangle",
+					"top": 99,
+					"left": 138,
+					"width": 700,
+					"height": 118,
+					"fill": "transparent",
+					"class": "secondary",
+					"bottom": 217,
+					"right": 838
 				},
 				"Champ2": {
 					"type": "input",
-					"top": 143,
+					"top": 132,
 					"left": 299,
 					"width": 250,
 					"height": 16,
@@ -162,16 +161,16 @@
 				},
 				"Texte3": {
 					"type": "text",
-					"top": 143,
-					"left": 129,
-					"width": 150,
+					"top": 132,
+					"left": 149,
+					"width": 130,
 					"height": 16,
 					"class": "cuLabel",
 					"text": "Nom / Prénom"
 				},
 				"Champ1": {
 					"type": "input",
-					"top": 143,
+					"top": 132,
 					"left": 576,
 					"width": 250,
 					"height": 16,
@@ -189,16 +188,16 @@
 				},
 				"Texte1": {
 					"type": "text",
-					"top": 179,
-					"left": 129,
-					"width": 150,
+					"top": 168,
+					"left": 149,
+					"width": 130,
 					"height": 16,
 					"class": "cuLabel",
 					"text": "Date de naissance"
 				},
 				"Champ3": {
 					"type": "input",
-					"top": 179,
+					"top": 168,
 					"left": 299,
 					"width": 527,
 					"height": 16,
@@ -216,20 +215,6 @@
 					"dataSourceTypeHint": "date",
 					"entryFilter": "##/##/####",
 					"max": ""
-				},
-				"Texte2": {
-					"type": "text",
-					"top": 220,
-					"left": 166,
-					"width": 660,
-					"height": 16,
-					"fill": "#AAAAAA",
-					"stroke": "#0000FF",
-					"class": "",
-					"textAlign": "center",
-					"fontWeight": "bold",
-					"borderStyle": "solid",
-					"text": "C o o r d o n n é e s"
 				},
 				"Champ4": {
 					"type": "input",
@@ -252,8 +237,8 @@
 				"Texte4": {
 					"type": "text",
 					"top": 261,
-					"left": 129,
-					"width": 150,
+					"left": 149,
+					"width": 130,
 					"height": 16,
 					"class": "cuLabel",
 					"text": "Adresse"
@@ -279,8 +264,8 @@
 				"Texte5": {
 					"type": "text",
 					"top": 297,
-					"left": 129,
-					"width": 150,
+					"left": 149,
+					"width": 130,
 					"height": 16,
 					"class": "cuLabel",
 					"text": "Adresse complément"
@@ -306,8 +291,8 @@
 				"Texte6": {
 					"type": "text",
 					"top": 333,
-					"left": 129,
-					"width": 150,
+					"left": 149,
+					"width": 130,
 					"height": 16,
 					"class": "cuLabel",
 					"text": "Code postal / Ville"
@@ -351,8 +336,8 @@
 				"Texte7": {
 					"type": "text",
 					"top": 369,
-					"left": 129,
-					"width": 150,
+					"left": 149,
+					"width": 130,
 					"height": 16,
 					"class": "cuLabel",
 					"text": "Adresse mail"
@@ -378,8 +363,8 @@
 				"Texte8": {
 					"type": "text",
 					"top": 405,
-					"left": 129,
-					"width": 150,
+					"left": 149,
+					"width": 130,
 					"height": 16,
 					"class": "cuLabel",
 					"text": "Téléphone fixe"
@@ -405,15 +390,15 @@
 				"Texte9": {
 					"type": "text",
 					"top": 441,
-					"left": 129,
-					"width": 150,
+					"left": 149,
+					"width": 130,
 					"height": 16,
 					"class": "cuLabel",
 					"text": "Téléphone mobile"
 				},
 				"Line6": {
 					"type": "line",
-					"top": 158,
+					"top": 147,
 					"left": 289,
 					"width": 260,
 					"class": "accentColor2",
@@ -422,7 +407,7 @@
 				},
 				"Line1": {
 					"type": "line",
-					"top": 158,
+					"top": 147,
 					"left": 566,
 					"width": 260,
 					"class": "accentColor2",
@@ -431,7 +416,7 @@
 				},
 				"Line2": {
 					"type": "line",
-					"top": 194,
+					"top": 183,
 					"left": 289,
 					"width": 537,
 					"class": "accentColor2",
@@ -500,26 +485,103 @@
 					"class": "accentColor2",
 					"right": 826,
 					"height": 1
+				},
+				"Rectangle6": {
+					"type": "rectangle",
+					"top": 99,
+					"left": 106,
+					"width": 33,
+					"height": 118,
+					"fill": "transparent",
+					"class": "secondary",
+					"bottom": 217
+				},
+				"Text13": {
+					"type": "text",
+					"top": 112,
+					"left": 105,
+					"width": 33,
+					"height": 92,
+					"textAlign": "center",
+					"fontWeight": "bold",
+					"textAngle": 270,
+					"text": "État\rcivil",
+					"class": "secondary"
+				},
+				"Rectangle2": {
+					"type": "rectangle",
+					"top": 253,
+					"left": 138,
+					"width": 700,
+					"height": 227,
+					"fill": "transparent",
+					"class": "secondary",
+					"bottom": 480,
+					"right": 838
+				},
+				"Rectangle4": {
+					"type": "rectangle",
+					"top": 253,
+					"left": 106,
+					"width": 33,
+					"height": 227,
+					"fill": "transparent",
+					"class": "secondary",
+					"bottom": 480
+				},
+				"Text1": {
+					"type": "text",
+					"top": 266,
+					"left": 112,
+					"width": 20,
+					"height": 200,
+					"textAlign": "center",
+					"fontWeight": "bold",
+					"textAngle": 270,
+					"text": "Coordonnées",
+					"class": "secondary"
 				}
 			}
 		},
 		{
 			"objects": {
+				"Rectangle9": {
+					"type": "rectangle",
+					"top": 323,
+					"left": 138,
+					"width": 700,
+					"height": 322,
+					"fill": "transparent",
+					"class": "secondary",
+					"bottom": 645,
+					"right": 838
+				},
+				"Rectangle5": {
+					"type": "rectangle",
+					"top": 99,
+					"left": 138,
+					"width": 700,
+					"height": 210,
+					"fill": "transparent",
+					"class": "secondary",
+					"bottom": 309,
+					"right": 838
+				},
 				"Texte": {
 					"type": "text",
-					"text": "Rang :",
+					"text": "Rang",
 					"top": 143,
-					"left": 129,
-					"width": 130,
+					"left": 149,
+					"width": 150,
 					"height": 16,
 					"fontWeight": "normal",
 					"class": "cuLabel"
 				},
 				"rang": {
 					"type": "input",
-					"left": 299,
+					"left": 319,
 					"top": 143,
-					"width": 527,
+					"width": 507,
 					"height": 16,
 					"dataSource": "Form:C1466.rang",
 					"borderStyle": "none",
@@ -527,17 +589,17 @@
 				},
 				"Texte10": {
 					"type": "text",
-					"text": "Actif (non désabonné) :",
+					"text": "Actif (non désabonné)",
 					"top": 179,
-					"left": 129,
-					"width": 160,
+					"left": 149,
+					"width": 150,
 					"height": 16,
 					"fontWeight": "normal",
 					"class": "cuLabel"
 				},
 				"imageDesabonnement": {
 					"type": "input",
-					"left": 299,
+					"left": 319,
 					"top": 179,
 					"width": 16,
 					"height": 16,
@@ -554,33 +616,19 @@
 				},
 				"Texte11": {
 					"type": "text",
-					"text": "Information Mailjet :",
-					"top": 215,
-					"left": 129,
-					"width": 130,
+					"text": "Information Mailjet",
+					"top": 216,
+					"left": 149,
+					"width": 150,
 					"height": 16,
 					"fontWeight": "normal",
 					"class": "cuLabel"
 				},
-				"Texte12": {
-					"type": "text",
-					"top": 102,
-					"left": 166,
-					"width": 660,
-					"height": 16,
-					"fill": "#AAAAAA",
-					"stroke": "#0000FF",
-					"class": "",
-					"textAlign": "center",
-					"fontWeight": "bold",
-					"borderStyle": "solid",
-					"text": "I n f o r m a t i o n  m a r k e t i n g"
-				},
 				"Zone de saisie": {
 					"type": "input",
-					"left": 299,
-					"top": 215,
-					"width": 527,
+					"left": 319,
+					"top": 216,
+					"width": 507,
 					"height": 80,
 					"dataSource": "Form:C1466.resumeMarketing",
 					"enterable": false,
@@ -588,25 +636,11 @@
 					"borderStyle": "none",
 					"events": []
 				},
-				"Texte14": {
-					"type": "text",
-					"top": 299,
-					"left": 166,
-					"width": 660,
-					"height": 16,
-					"fill": "#AAAAAA",
-					"stroke": "#0000FF",
-					"class": "",
-					"textAlign": "center",
-					"fontWeight": "bold",
-					"borderStyle": "solid",
-					"text": "S c é n a r i o s"
-				},
 				"Texte13": {
 					"type": "text",
 					"text": "Scénario(s) en cours :",
 					"top": 340,
-					"left": 129,
+					"left": 149,
 					"width": 150,
 					"height": 16,
 					"fontWeight": "bold",
@@ -614,9 +648,9 @@
 				},
 				"List Box": {
 					"type": "listbox",
-					"left": 129,
+					"left": 149,
 					"top": 376,
-					"width": 308,
+					"width": 312,
 					"height": 159,
 					"events": [
 						"onLoad",
@@ -769,7 +803,7 @@
 				},
 				"detailPersonneScenarioPersonneEnCoursString": {
 					"type": "input",
-					"left": 129,
+					"left": 149,
 					"top": 545,
 					"width": 156,
 					"height": 14,
@@ -785,11 +819,12 @@
 					"type": "button",
 					"text": "Voir/Modifier scénario",
 					"top": 564,
-					"left": 129,
+					"left": 149,
 					"width": 182,
 					"height": 30,
 					"events": [
-						"onClick"
+						"onClick",
+						"onMouseMove"
 					],
 					"method": "ObjectMethods/detailPersonneScenarioVoirModifier.4dm",
 					"class": "clickable",
@@ -799,11 +834,12 @@
 					"type": "button",
 					"text": "Enlever du scénario",
 					"top": 605,
-					"left": 129,
+					"left": 149,
 					"width": 182,
 					"height": 30,
 					"events": [
-						"onClick"
+						"onClick",
+						"onMouseMove"
 					],
 					"method": "ObjectMethods/detailPersonneScenarioEnleverPersonne.4dm",
 					"class": "clickable",
@@ -813,11 +849,12 @@
 					"type": "button",
 					"text": "Changer le statut",
 					"top": 564,
-					"left": 321,
-					"width": 116,
+					"left": 341,
+					"width": 120,
 					"height": 30,
 					"events": [
-						"onClick"
+						"onClick",
+						"onMouseMove"
 					],
 					"method": "ObjectMethods/detailPersonneScenarioActifInactif.4dm",
 					"class": "clickable",
@@ -826,8 +863,61 @@
 				"Line11": {
 					"type": "line",
 					"top": 158,
-					"left": 292,
-					"width": 537,
+					"left": 312,
+					"width": 517,
+					"class": "accentColor2",
+					"right": 829,
+					"height": 1
+				},
+				"Rectangle8": {
+					"type": "rectangle",
+					"top": 99,
+					"left": 106,
+					"width": 33,
+					"height": 210,
+					"fill": "transparent",
+					"class": "secondary",
+					"bottom": 309
+				},
+				"Text2": {
+					"type": "text",
+					"top": 112,
+					"left": 105,
+					"width": 33,
+					"height": 184,
+					"textAlign": "center",
+					"fontWeight": "bold",
+					"textAngle": 270,
+					"text": "Information\rmarketing",
+					"class": "secondary"
+				},
+				"Rectangle10": {
+					"type": "rectangle",
+					"top": 323,
+					"left": 106,
+					"width": 33,
+					"height": 322,
+					"fill": "transparent",
+					"class": "secondary",
+					"bottom": 645
+				},
+				"Text3": {
+					"type": "text",
+					"top": 336,
+					"left": 112,
+					"width": 20,
+					"height": 300,
+					"textAlign": "center",
+					"fontWeight": "bold",
+					"textAngle": 270,
+					"text": "Scénario",
+					"class": "secondary"
+				},
+				"Line12": {
+					"type": "line",
+					"top": 295,
+					"left": 312,
+					"width": 517,
 					"class": "accentColor2",
 					"right": 829,
 					"height": 1
@@ -835,7 +925,7 @@
 			}
 		}
 	],
-	"geometryStamp": 742,
+	"geometryStamp": 889,
 	"editor": {
 		"activeView": "View 1",
 		"defaultView": "View 1",

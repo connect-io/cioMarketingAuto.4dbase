@@ -12,19 +12,15 @@ var $1 : Boolean
 
 var $initComponent_b : Boolean
 
-//Si (Type application#4D mode distant)
-//$initComponent_b:=Vrai
-//Fin de si 
-
 // Instanciation de la class
 $0:=cmaToolGetClass("MarketingAutomation").new($1)
 
-If (Application type:C494#4D mode distant:K5:5)
+If (Application type:C494#4D Remote mode:K5:5)
 	$0.loadPasserelle("Personne")  // Création de la passerelle entre la class $marketingAutomation_o et la base hôte
 	
 	If ($1=True:C214)
 		
-		If (Application type:C494=4D mode local:K5:1) | (Application type:C494=4D Volume Desktop:K5:2)
+		If (Application type:C494=4D Local mode:K5:1) | (Application type:C494=4D Volume desktop:K5:2)
 			CONFIRM:C162("Voulez-vous démarrer cronos (cioMarketingAutomation) ?"; "Oui"; "Non")
 			
 			If (OK=1)

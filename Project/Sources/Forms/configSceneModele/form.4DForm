@@ -1,4 +1,4 @@
-﻿{
+{
 	"$4d": {
 		"version": "1",
 		"kind": "form"
@@ -30,9 +30,11 @@
 					"width": 202,
 					"height": 30,
 					"events": [
-						"onClick"
+						"onClick",
+						"onMouseMove"
 					],
-					"method": "ObjectMethods/Bouton.4dm"
+					"method": "ObjectMethods/Bouton.4dm",
+					"class": "clickable"
 				},
 				"versionList": {
 					"type": "dropdown",
@@ -173,7 +175,7 @@
 			}
 		}
 	],
-	"geometryStamp": 458,
+	"geometryStamp": 460,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",
