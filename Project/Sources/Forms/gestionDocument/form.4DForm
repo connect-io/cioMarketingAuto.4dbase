@@ -24,13 +24,13 @@
 					"type": "rectangle",
 					"top": 0,
 					"left": 0,
-					"width": 905,
+					"width": 1085,
 					"height": 40,
 					"sizingX": "grow",
 					"stroke": "transparent",
 					"class": "accentBackColor3",
 					"fill": "#19294F",
-					"right": 905
+					"right": 1085
 				},
 				"Zone de saisie": {
 					"type": "input",
@@ -237,8 +237,8 @@
 				},
 				"importHTML5": {
 					"type": "pictureButton",
-					"left": 784,
-					"top": 59,
+					"left": 967,
+					"top": 297,
 					"width": 40,
 					"height": 40,
 					"events": [
@@ -254,20 +254,138 @@
 				"Texte11": {
 					"type": "text",
 					"text": "Structure HTML5",
-					"top": 101,
-					"left": 749,
+					"top": 339,
+					"left": 932,
 					"width": 110,
 					"height": 15,
 					"fontFamily": "Arial",
 					"fontSize": 14,
 					"fontWeight": "normal"
+				},
+				"Rectangle1": {
+					"type": "rectangle",
+					"top": 137,
+					"left": 903,
+					"width": 168,
+					"height": 103,
+					"fill": "transparent",
+					"borderRadius": 10,
+					"right": 1071,
+					"bottom": 240,
+					"stroke": "#C9C9C9"
+				},
+				"importHTML1": {
+					"type": "pictureButton",
+					"left": 937,
+					"top": 180,
+					"width": 40,
+					"height": 40,
+					"events": [
+						"onClick",
+						"onMouseMove"
+					],
+					"picture": "/RESOURCES/Images/word.png",
+					"method": "ObjectMethods/importHTML1.4dm",
+					"loopBackToFirstFrame": true,
+					"switchBackWhenReleased": true,
+					"useLastFrameAsDisabled": true
+				},
+				"importHTML2": {
+					"type": "pictureButton",
+					"left": 997,
+					"top": 180,
+					"width": 40,
+					"height": 40,
+					"events": [
+						"onClick",
+						"onMouseMove"
+					],
+					"picture": "/RESOURCES/Images/image-defaut-4DWPRO.png",
+					"method": "ObjectMethods/importHTML2.4dm",
+					"loopBackToFirstFrame": true,
+					"switchBackWhenReleased": true,
+					"useLastFrameAsDisabled": true
+				},
+				"Texte2": {
+					"type": "text",
+					"text": "Export document\t",
+					"top": 148,
+					"left": 912,
+					"width": 150,
+					"height": 16,
+					"fontFamily": "Arial",
+					"fontSize": 18,
+					"fontWeight": "bold"
+				},
+				"Texte6": {
+					"type": "text",
+					"text": "Fermer la fenêtre",
+					"top": 101,
+					"left": 749,
+					"width": 115,
+					"height": 15,
+					"fontFamily": "Arial",
+					"fontSize": 14,
+					"fontWeight": "normal"
+				},
+				"sauvegarderDocument": {
+					"type": "input",
+					"left": 786,
+					"top": 59,
+					"width": 40,
+					"height": 40,
+					"dataSource": "Form:C1466.imageSave",
+					"dataSourceTypeHint": "picture",
+					"pictureFormat": "proportionalCenter",
+					"enterable": false,
+					"contextMenu": "none",
+					"fill": "transparent",
+					"borderStyle": "none",
+					"method": "ObjectMethods/sauvegarderDocument.4dm",
+					"events": [
+						"onClick",
+						"onMouseMove"
+					]
+				},
+				"Rectangle2": {
+					"type": "rectangle",
+					"top": 260,
+					"left": 903,
+					"width": 168,
+					"height": 103,
+					"fill": "transparent",
+					"borderRadius": 10,
+					"right": 1071,
+					"bottom": 363,
+					"stroke": "#C9C9C9"
+				},
+				"Texte7": {
+					"type": "text",
+					"text": "Insérer contenue",
+					"top": 271,
+					"left": 912,
+					"width": 150,
+					"height": 16,
+					"fontFamily": "Arial",
+					"fontSize": 18,
+					"fontWeight": "bold"
 				}
 			}
 		}
 	],
-	"geometryStamp": 376,
+	"geometryStamp": 450,
 	"method": "method.4dm",
 	"editor": {
+		"groups": {
+			"Group": [
+				"importHTML1",
+				"importHTML2"
+			],
+			"Group1": [
+				"importHTML5",
+				"Texte11"
+			]
+		},
 		"activeView": "View 1",
 		"defaultView": "View 1",
 		"views": {

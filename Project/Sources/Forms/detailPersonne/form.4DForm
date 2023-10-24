@@ -572,34 +572,35 @@
 					"text": "Rang",
 					"top": 143,
 					"left": 149,
-					"width": 150,
+					"width": 135,
 					"height": 16,
 					"fontWeight": "normal",
 					"class": "cuLabel"
 				},
 				"rang": {
 					"type": "input",
-					"left": 319,
+					"left": 289,
 					"top": 143,
-					"width": 507,
+					"width": 181,
 					"height": 16,
 					"dataSource": "Form:C1466.rang",
 					"borderStyle": "none",
-					"fill": "transparent"
+					"fill": "transparent",
+					"right": 470
 				},
 				"Texte10": {
 					"type": "text",
 					"text": "Actif (non désabonné)",
 					"top": 179,
 					"left": 149,
-					"width": 150,
+					"width": 135,
 					"height": 16,
 					"fontWeight": "normal",
 					"class": "cuLabel"
 				},
 				"imageDesabonnement": {
 					"type": "input",
-					"left": 319,
+					"left": 289,
 					"top": 179,
 					"width": 16,
 					"height": 16,
@@ -619,22 +620,23 @@
 					"text": "Information Mailjet",
 					"top": 216,
 					"left": 149,
-					"width": 150,
+					"width": 135,
 					"height": 16,
 					"fontWeight": "normal",
 					"class": "cuLabel"
 				},
 				"Zone de saisie": {
 					"type": "input",
-					"left": 319,
+					"left": 289,
 					"top": 216,
-					"width": 507,
+					"width": 181,
 					"height": 80,
 					"dataSource": "Form:C1466.resumeMarketing",
 					"enterable": false,
 					"fill": "transparent",
 					"borderStyle": "none",
-					"events": []
+					"events": [],
+					"right": 470
 				},
 				"Texte13": {
 					"type": "text",
@@ -863,10 +865,10 @@
 				"Line11": {
 					"type": "line",
 					"top": 158,
-					"left": 312,
-					"width": 517,
+					"left": 282,
+					"width": 188,
 					"class": "accentColor2",
-					"right": 829,
+					"right": 470,
 					"height": 1
 				},
 				"Rectangle8": {
@@ -916,16 +918,132 @@
 				"Line12": {
 					"type": "line",
 					"top": 295,
-					"left": 312,
-					"width": 517,
+					"left": 282,
+					"width": 188,
 					"class": "accentColor2",
-					"right": 829,
+					"right": 470,
 					"height": 1
+				},
+				"Texte2": {
+					"type": "text",
+					"text": "Historique Mailjet",
+					"top": 143,
+					"left": 479,
+					"width": 260,
+					"height": 16,
+					"fontWeight": "bold",
+					"class": "cuLabel"
+				},
+				"List Box2": {
+					"type": "listbox",
+					"left": 479,
+					"top": 172,
+					"width": 317,
+					"height": 124,
+					"events": [
+						"onLoad",
+						"onClick"
+					],
+					"scrollbarHorizontal": "hidden",
+					"dataSource": "Form:C1466.envoiMailEnCours",
+					"listboxType": "collection",
+					"currentItemSource": "Form:C1466.ScenarioPossibleCurrentElement",
+					"currentItemPositionSource": "Form:C1466.ScenarioPossibleCurrentPosition",
+					"selectedItemsSource": "Form:C1466.ScenarioPossibleSelectedElement",
+					"selectionMode": "single",
+					"headerHeight": "24px",
+					"horizontalLineStroke": "transparent",
+					"verticalLineStroke": "transparent",
+					"fill": "#F5FBFF",
+					"alternateFill": "#E1F2FC",
+					"columns": [
+						{
+							"header": {
+								"text": "Date & heure envoi",
+								"name": "Entête7",
+								"stroke": "#21759B"
+							},
+							"name": "Colonne7",
+							"footer": {
+								"name": "Pied7"
+							},
+							"alternateFill": "#E1F2FC",
+							"width": 127,
+							"dataSource": "\"Le \"+cmaTimestampLire(\"date\"; This:C1470.eventTs)+\"\\rà \"+cmaTimestampLire(\"heure\"; This:C1470.eventTs)",
+							"enterable": false
+						},
+						{
+							"header": {
+								"name": "Entête8",
+								"text": "Objet",
+								"stroke": "#21759B"
+							},
+							"name": "Colonne8",
+							"footer": {
+								"name": "Pied8"
+							},
+							"alternateFill": "#E1F2FC",
+							"width": 100,
+							"dataSource": "This:C1470.eventDetail.subject",
+							"dataSourceTypeHint": "text",
+							"enterable": false,
+							"fill": "#F5FBFF"
+						},
+						{
+							"header": {
+								"name": "Entête9",
+								"text": "Statut",
+								"stroke": "#21759B"
+							},
+							"name": "Colonne9",
+							"footer": {
+								"name": "Pied9"
+							},
+							"alternateFill": "#E1F2FC",
+							"width": 75,
+							"dataSource": "This:C1470.eventDetail.statutLib",
+							"dataSourceTypeHint": "text",
+							"enterable": false,
+							"resizable": false
+						}
+					]
+				},
+				"previewMessage": {
+					"type": "pictureButton",
+					"left": 806,
+					"top": 204,
+					"width": 23,
+					"height": 23,
+					"events": [
+						"onClick",
+						"onMouseMove"
+					],
+					"picture": "/RESOURCES/Images/preview.png",
+					"method": "ObjectMethods/previewMessage.4dm",
+					"loopBackToFirstFrame": true,
+					"switchBackWhenReleased": true,
+					"useLastFrameAsDisabled": true
+				},
+				"detailMessage": {
+					"type": "pictureButton",
+					"left": 806,
+					"top": 172,
+					"width": 23,
+					"height": 23,
+					"events": [
+						"onClick",
+						"onMouseMove"
+					],
+					"picture": "/RESOURCES/Images/magnifier.png",
+					"method": "ObjectMethods/detailMessage.4dm",
+					"loopBackToFirstFrame": true,
+					"switchBackWhenReleased": true,
+					"useLastFrameAsDisabled": true
 				}
 			}
 		}
 	],
-	"geometryStamp": 889,
+	"geometryStamp": 974,
 	"editor": {
 		"activeView": "View 1",
 		"defaultView": "View 1",
