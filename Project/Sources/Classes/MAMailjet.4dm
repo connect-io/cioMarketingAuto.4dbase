@@ -160,7 +160,7 @@ Function getMessageEvent($statut_t : Text; $tsFrom_el : Integer; $tsTo_el : Inte
 		$mailjet_p->:=New object:C1471("errorHttp"; $resultatHttp_t)
 	End if 
 	
-Function getMessageEventDetail($mailjet_o : Object; $messageEvent_t : Text; $tsFrom_el : Integer; $tsTo_el : Integer; $contactID_r : Real)->$retour_o : Object
+Function getMessageEventDetail($mailjet_o : Object; $messageEvent_t : Text; $tsFrom_el : Integer; $tsTo_el : Integer; $contactID_r : Real; $displayCompteur_b : Boolean)->$retour_o : Object
 	var $resultatHttp_t; $tsFrom_t; $tsTo_t; $contactID_t : Text
 	var $countMessage_el; $nbBoucle_el; $i_el; $offset_el : Integer
 	var $blob_b : Blob
@@ -178,7 +178,23 @@ Function getMessageEventDetail($mailjet_o : Object; $messageEvent_t : Text; $tsF
 		$countMessage_el:=Num:C11($mailjet_o.Count)
 		$nbBoucle_el:=Int:C8($countMessage_el/1000)+1
 		
+		If (Count parameters:C259=6)
+			
+			If ($displayCompteur_b=True:C214)
+				cmaProgressBar(0; "Initialisation"; True:C214)
+			End if 
+			
+		End if 
+		
 		For ($i_el; 1; $nbBoucle_el)
+			
+			If (Count parameters:C259=6)
+				
+				If ($displayCompteur_b=True:C214)
+					cmaProgressBar(($i_el/$nbBoucle_el); "Récupération des données de mailjet...")
+				End if 
+				
+			End if 
 			
 			If ($i_el>1)  // Il y a plus de 1000 résultats
 				$offset_el:=(1000*$i_el)+1
@@ -188,9 +204,29 @@ Function getMessageEventDetail($mailjet_o : Object; $messageEvent_t : Text; $tsF
 			
 			// Je demande dans un second temps les 1000 premiers mails de mon laps de temps recherché (entre $tsFrom_el et $tsTo_el) -> un jour à la fois normalement
 			cwToolWebHttpRequest("GET"; This:C1470.config.domainRequest+"/REST/message?MessageStatus="+$messageEvent_t+"&limit=1000"+$tsFrom_t+$tsTo_t+Choose:C955($contactID_t#""; "&Contact="+$contactID_t; "")+"&offset="+String:C10($offset_el)+"&ShowContactAlt=true&Sort=ArrivedAt+desc"; ""; ->$resultatHttp_t)
-			
 			$retour_o[String:C10($offset_el)+"to"+String:C10($offset_el+Choose:C955($offset_el=0; 1000; 999))]:=$resultatHttp_t
+			
+			If (Count parameters:C259=6)
+				
+				If ($displayCompteur_b=True:C214)
+					
+					If (progressBar_el=0)
+						$i_el:=$nbBoucle_el
+					End if 
+					
+				End if 
+				
+			End if 
+			
 		End for 
+		
+		If (Count parameters:C259=6)
+			
+			If ($displayCompteur_b=True:C214)
+				cmaProgressBar(1; "arrêt")
+			End if 
+			
+		End if 
 		
 	End if 
 	

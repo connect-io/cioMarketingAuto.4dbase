@@ -54,4 +54,9 @@ If (Form event code:C388=Sur chargement:K2:1)
 	
 	Form:C1466.scenarioEnCours:=Form:C1466.personne.AllCaPersonneScenario
 	Form:C1466.envoiMailEnCours:=$table_o.historique.detail
+	
+	If (Bool:C1537(Form:C1466.goToMarketingTab)=True:C214)
+		FORM GOTO PAGE:C247(2)
+	End if 
+	
 End if 

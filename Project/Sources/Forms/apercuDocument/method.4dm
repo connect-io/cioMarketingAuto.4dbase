@@ -1,6 +1,7 @@
+var $webCode_t : Text
+var $model_o; $fichier_o; $doc4WP_o : Object
+
 If (Form event code:C388=Sur chargement:K2:1)
-	var $webCode_t : Text
-	var $model_o; $fichier_o; $doc4WP_o : Object
 	var WParea : Object
 	
 	WParea:=WP New:C1317()
@@ -24,7 +25,6 @@ If (Form event code:C388=Sur chargement:K2:1)
 			OBJECT SET VISIBLE:C603(*; "WParea"; False:C215)
 		Else 
 			WParea:=$doc4WP_o
-			
 			OBJECT SET VISIBLE:C603(*; "Zone Web"; False:C215)
 		End if 
 		

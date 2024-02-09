@@ -14,5 +14,4 @@ $autreClass_o.personneSelection:=$class_o.loadCurrentPeople()
 $autreClass_o.toCollectionAndExtractField(New collection:C1472("UID"))
 
 Form:C1466.scenarioDetail.condition.UIDCollection:=$autreClass_o.personneCollection.extract("UID")
-
 Form:C1466.updateStringScenarioForm(3)

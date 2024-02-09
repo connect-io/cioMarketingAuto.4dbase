@@ -1,6 +1,4 @@
 If (Form event code:C388=Sur données modifiées:K2:15)
-	//var $destinataire_t; $to_t : Text
-	//var $modele_o : Object
 	var $titre_t : Text
 	var $pos_el : Integer
 	var $titreUnique_b : Boolean
@@ -106,34 +104,4 @@ If (Form event code:C388=Sur données modifiées:K2:15)
 	End if 
 	
 	Form:C1466.sceneVersionSelected:=$titre_t
-	//Si (modeleListe_at{modeleListe_at}#"")
-	
-	//Si (modeleListe_at{modeleListe_at}#"@.4WP") & (modeleListe_at{modeleListe_at}#"@.4W7")  // Modèle du composant cioWeb
-	//$modele_o:=Storage.eMail.model.query("name IS :1"; modeleListe_at{modeleListe_at})[0]
-	
-	//Form.modeleDetail:="• Objet de l'email : "+$modele_o.subject
-	
-	//Si ($modele_o.to#Null)
-	
-	//Pour chaque ($destinataire_t; $modele_o.to)
-	
-	//Si ($modele_o.to.indexOf($destinataire_t)#$modele_o.to.length)
-	//$to_t:=$to_t+$destinataire_t+", "
-	//Sinon 
-	//$to_t:=$to_t+$destinataire_t
-	//Fin de si 
-	
-	//Fin de chaque 
-	
-	//Form.modeleDetail:=Form.modeleDetail+"• Destinataire de l'email : "+$to_t
-	//Fin de si 
-	
-	//Sinon   // Modèle perso
-	//Form.modeleDetail:="• Modèle sélectionné sur votre ordinateur (Chemin d'accès : "+Form.modele[0].path+")"
-	//Fin de si 
-	
-	//Sinon 
-	//OB SUPPRIMER(Form; "modeleDetail")
-	//Fin de si 
-	
 End if 

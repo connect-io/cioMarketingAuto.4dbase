@@ -1,4 +1,4 @@
-﻿{
+{
 	"$4d": {
 		"version": "1",
 		"kind": "form"
@@ -304,7 +304,7 @@
 					"text": "Insérer contenue",
 					"top": 208,
 					"left": 902,
-					"width": 147,
+					"width": 150,
 					"height": 21,
 					"fontFamily": "Arial",
 					"fontSize": 18,
@@ -359,7 +359,7 @@
 			}
 		}
 	],
-	"geometryStamp": 223,
+	"geometryStamp": 226,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",

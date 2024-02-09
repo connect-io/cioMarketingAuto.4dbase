@@ -98,7 +98,6 @@ Function loadByField
 				
 				If ($table_o.length>0)
 					This:C1470.personne:=$table_o.first()
-					
 					This:C1470.load()
 				End if 
 				
@@ -114,7 +113,12 @@ Function loadByField
 				If ($table_o.length>0)
 					This:C1470.personne:=$table_o[0][$field_c[0].valueReturn]
 					
-					This:C1470.load()
+					// Modifié par : Scanu Rémy (08/12/2022)
+					// Pour certaines raisons il peut arriver que le lien avec une table [Enfant] soit cassée...
+					If (This:C1470.personne#Null:C1517)
+						This:C1470.load()
+					End if 
+					
 				End if 
 				
 				OB REMOVE:C1226(This:C1470; "childFieldValue")
