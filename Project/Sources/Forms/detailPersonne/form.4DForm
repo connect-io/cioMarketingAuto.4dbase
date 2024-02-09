@@ -793,11 +793,27 @@
 					"loopBackToFirstFrame": true,
 					"switchBackWhenReleased": true,
 					"useLastFrameAsDisabled": true
+				},
+				"testAPI": {
+					"type": "pictureButton",
+					"left": 816,
+					"top": 215,
+					"width": 23,
+					"height": 23,
+					"events": [
+						"onClick",
+						"onMouseMove"
+					],
+					"picture": "/RESOURCES/Images/api.png",
+					"method": "ObjectMethods/testAPI.4dm",
+					"loopBackToFirstFrame": true,
+					"switchBackWhenReleased": true,
+					"useLastFrameAsDisabled": true
 				}
 			}
 		}
 	],
-	"geometryStamp": 447,
+	"geometryStamp": 455,
 	"editor": {
 		"activeView": "View 1",
 		"defaultView": "View 1",

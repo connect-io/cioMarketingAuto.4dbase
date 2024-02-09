@@ -12,7 +12,6 @@ Class constructor
 	
 	If ($fichierConfig_o.exists=True:C214)
 		This:C1470.config:=JSON Parse:C1218($fichierConfig_o.getText())
-		
 		This:C1470.config.domainRequest:="https://"+This:C1470.config.smtpKeyPublic+":"+This:C1470.config.smtpKeySecret+"@api.mailjet.com/"+This:C1470.config.smtpVersion
 	Else 
 		ALERT:C41("Impossible d'intialiser le composant cioMailjet")
