@@ -126,18 +126,18 @@ Historique
 						End if 
 						
 						If ($stop_b=False:C215)
-							cmaToolDuplicateObjInForm($conditionAction_o.varName[$pos_el]; $conditionAction_o.titre; "Texte"; Est un texte:K8:3; True:C214; 10; $bas_el+10)
+							cmaToolDuplicateObjInForm($conditionAction_o.varName[$pos_el]; $conditionAction_o.titre; "Texte"; Is text:K8:3; True:C214; 10; $bas_el+10)
 							
 							$pos_el:=$conditionAction_o.varName.indexOf("imageBooleen@")
 							
 							// On duplique l'objet standard "booleen" et on le repositionne ensuite correctement
 							Case of 
 								: ($conditionAction_o.value=0)
-									cmaToolDuplicateObjInForm($conditionAction_o.varName[$pos_el]; ->toggleOff_i; "imageBooleen"; Est une variable chaîne:K8:2; True:C214; 10; $bas_el+40)
+									cmaToolDuplicateObjInForm($conditionAction_o.varName[$pos_el]; ->toggleOff_i; "imageBooleen"; Is string var:K8:2; True:C214; 10; $bas_el+40)
 								: ($conditionAction_o.value=1)
-									cmaToolDuplicateObjInForm($conditionAction_o.varName[$pos_el]; ->toggleOn_i; "imageBooleen"; Est une variable chaîne:K8:2; True:C214; 10; $bas_el+40)
+									cmaToolDuplicateObjInForm($conditionAction_o.varName[$pos_el]; ->toggleOn_i; "imageBooleen"; Is string var:K8:2; True:C214; 10; $bas_el+40)
 								: ($conditionAction_o.value=2)
-									cmaToolDuplicateObjInForm($conditionAction_o.varName[$pos_el]; ->toggle_i; "imageBooleen"; Est une variable chaîne:K8:2; True:C214; 10; $bas_el+40)
+									cmaToolDuplicateObjInForm($conditionAction_o.varName[$pos_el]; ->toggle_i; "imageBooleen"; Is string var:K8:2; True:C214; 10; $bas_el+40)
 							End case 
 							
 							OBJECT GET COORDINATES:C663(*; $conditionAction_o.varName[$pos_el]; $gauche_el; $haut_el; $droite_el; $bas_el)
@@ -146,9 +146,9 @@ Historique
 							$pos_el:=$conditionAction_o.varName.indexOf("deleteItemBooleen@")
 							
 							If ($hauteur_el>24)
-								cmaToolDuplicateObjInForm($conditionAction_o.varName[$pos_el]; Null:C1517; "deleteItem"; Est un pointeur:K8:14; True:C214; 430; $haut_el-Round:C94(((24-$hauteur_el)/2); 0))
+								cmaToolDuplicateObjInForm($conditionAction_o.varName[$pos_el]; Null:C1517; "deleteItem"; Is pointer:K8:14; True:C214; 430; $haut_el-Round:C94(((24-$hauteur_el)/2); 0))
 							Else 
-								cmaToolDuplicateObjInForm($conditionAction_o.varName[$pos_el]; Null:C1517; "deleteItem"; Est un pointeur:K8:14; True:C214; 430; $haut_el+Round:C94(((24-$hauteur_el)/2); 0))
+								cmaToolDuplicateObjInForm($conditionAction_o.varName[$pos_el]; Null:C1517; "deleteItem"; Is pointer:K8:14; True:C214; 430; $haut_el+Round:C94(((24-$hauteur_el)/2); 0))
 							End if 
 							
 						End if 
@@ -175,9 +175,9 @@ Historique
 								End case 
 								
 								If (Mod:C98($conditionAction_o.paramExtra.indexOf($paramExtra_o)+1; 2)=0)  // Si l'indice du X° paramExtra est un nombre paire
-									cmaToolDuplicateObjInForm($conditionAction_o.varParamExtra[$pos_el]; $paramExtra_o.label; "Texte"; Est un texte:K8:3; True:C214; 250; $bas_el+20)
+									cmaToolDuplicateObjInForm($conditionAction_o.varParamExtra[$pos_el]; $paramExtra_o.label; "Texte"; Is text:K8:3; True:C214; 250; $bas_el+20)
 								Else 
-									cmaToolDuplicateObjInForm($conditionAction_o.varParamExtra[$pos_el]; $paramExtra_o.label; "Texte"; Est un texte:K8:3; True:C214; 10; $bas_el+20)
+									cmaToolDuplicateObjInForm($conditionAction_o.varParamExtra[$pos_el]; $paramExtra_o.label; "Texte"; Is text:K8:3; True:C214; 10; $bas_el+20)
 								End if 
 								
 								OBJECT GET COORDINATES:C663(*; $conditionAction_o.varParamExtra[$pos_el]; $gauche_el; $haut_el; $droite_el; $bas_el)
@@ -187,18 +187,18 @@ Historique
 										
 										// On duplique la zone de saisie numérique
 										If (Mod:C98($conditionAction_o.paramExtra.indexOf($paramExtra_o)+1; 2)=0)  // Si l'indice du X° paramExtra est un nombre paire
-											cmaToolDuplicateObjInForm($conditionAction_o.varParamExtra[$pos_el+1]; ->$initInput_el; "inputNum"; Est un pointeur:K8:14; True:C214; 250; $bas_el+20)
+											cmaToolDuplicateObjInForm($conditionAction_o.varParamExtra[$pos_el+1]; ->$initInput_el; "inputNum"; Is pointer:K8:14; True:C214; 250; $bas_el+20)
 										Else 
-											cmaToolDuplicateObjInForm($conditionAction_o.varParamExtra[$pos_el+1]; ->$initInput_el; "inputNum"; Est un pointeur:K8:14; True:C214; 10; $bas_el+20)
+											cmaToolDuplicateObjInForm($conditionAction_o.varParamExtra[$pos_el+1]; ->$initInput_el; "inputNum"; Is pointer:K8:14; True:C214; 10; $bas_el+20)
 										End if 
 										
 									: ($paramExtra_o.format="inputDelai")
 										
 										// On duplique d'abord la zone de saisie numérique du délai
 										If (Mod:C98($conditionAction_o.paramExtra.indexOf($paramExtra_o)+1; 2)=0)  // Si l'indice du X° paramExtra est un nombre paire
-											cmaToolDuplicateObjInForm($conditionAction_o.varParamExtra[$pos_el+1]; ->$initInput_el; "inputDelai"; Est un pointeur:K8:14; True:C214; 250; $bas_el+20)
+											cmaToolDuplicateObjInForm($conditionAction_o.varParamExtra[$pos_el+1]; ->$initInput_el; "inputDelai"; Is pointer:K8:14; True:C214; 250; $bas_el+20)
 										Else 
-											cmaToolDuplicateObjInForm($conditionAction_o.varParamExtra[$pos_el+1]; ->$initInput_el; "inputDelai"; Est un pointeur:K8:14; True:C214; 10; $bas_el+20)
+											cmaToolDuplicateObjInForm($conditionAction_o.varParamExtra[$pos_el+1]; ->$initInput_el; "inputDelai"; Is pointer:K8:14; True:C214; 10; $bas_el+20)
 										End if 
 										
 										// Puis les boutons "inputDelaiUp, "inputDelaiDown", "inputDelaiEchelle" et "inputDelaiEchelleChange"
@@ -207,22 +207,22 @@ Historique
 											
 											Case of 
 												: ($i_el=1)
-													cmaToolDuplicateObjInForm($conditionAction_o.varParamExtra[$pos_el+$i_el+1]; Null:C1517; "inputDelaiUp"; Est une image:K8:10; True:C214; $droite_el+15; $haut_el-5)
+													cmaToolDuplicateObjInForm($conditionAction_o.varParamExtra[$pos_el+$i_el+1]; Null:C1517; "inputDelaiUp"; Is picture:K8:10; True:C214; $droite_el+15; $haut_el-5)
 												: ($i_el=2)
-													cmaToolDuplicateObjInForm($conditionAction_o.varParamExtra[$pos_el+$i_el+1]; Null:C1517; "inputDelaiDown"; Est une image:K8:10; True:C214; $gauche_el; $bas_el+1)
+													cmaToolDuplicateObjInForm($conditionAction_o.varParamExtra[$pos_el+$i_el+1]; Null:C1517; "inputDelaiDown"; Is picture:K8:10; True:C214; $gauche_el; $bas_el+1)
 												: ($i_el=3)
 													$initInput_t:="jour(s)"
 													
-													cmaToolDuplicateObjInForm($conditionAction_o.varParamExtra[$pos_el+$i_el+1]; "jour(s)"; "inputDelaiEchelleTexte"; Est un texte:K8:3; True:C214; $droite_el+8; $haut_el-9)
+													cmaToolDuplicateObjInForm($conditionAction_o.varParamExtra[$pos_el+$i_el+1]; "jour(s)"; "inputDelaiEchelleTexte"; Is text:K8:3; True:C214; $droite_el+8; $haut_el-9)
 												: ($i_el=4)
-													cmaToolDuplicateObjInForm($conditionAction_o.varParamExtra[$pos_el+$i_el+1]; Null:C1517; "inputDelaiEchelleChange"; Est une image:K8:10; True:C214; $droite_el+10; $haut_el)
+													cmaToolDuplicateObjInForm($conditionAction_o.varParamExtra[$pos_el+$i_el+1]; Null:C1517; "inputDelaiEchelleChange"; Is picture:K8:10; True:C214; $droite_el+10; $haut_el)
 											End case 
 											
 										End for 
 										
 								End case 
 								
-								$pointeur_p:=OBJECT Get pointer:C1124(Objet nommé:K67:5; $conditionAction_o.varParamExtra[$pos_el+1])
+								$pointeur_p:=OBJECT Get pointer:C1124(Object named:K67:5; $conditionAction_o.varParamExtra[$pos_el+1])
 								
 								If (Is nil pointer:C315($pointeur_p)=False:C215)
 									$posBis_el:=Num:C11(Substring:C12($conditionAction_o.varParamExtra[$pos_el+1]; Position:C15("Param"; $conditionAction_o.varParamExtra[$pos_el+1])))
@@ -338,18 +338,18 @@ Historique
 						End if 
 						
 						If ($stop_b=False:C215)
-							cmaToolDuplicateObjInForm($conditionSaut_o.varName[$pos_el]; $conditionSaut_o.titre; "Texte"; Est un texte:K8:3; True:C214; 10; $bas_el+10)
+							cmaToolDuplicateObjInForm($conditionSaut_o.varName[$pos_el]; $conditionSaut_o.titre; "Texte"; Is text:K8:3; True:C214; 10; $bas_el+10)
 							
 							$pos_el:=$conditionSaut_o.varName.indexOf("imageBooleen@")
 							
 							// On duplique l'objet standard "booleen" et on le repositionne ensuite correctement
 							Case of 
 								: ($conditionSaut_o.value=0)
-									cmaToolDuplicateObjInForm($conditionSaut_o.varName[$pos_el]; ->toggleOff_i; "imageBooleen"; Est une variable chaîne:K8:2; True:C214; 10; $bas_el+40)
+									cmaToolDuplicateObjInForm($conditionSaut_o.varName[$pos_el]; ->toggleOff_i; "imageBooleen"; Is string var:K8:2; True:C214; 10; $bas_el+40)
 								: ($conditionSaut_o.value=1)
-									cmaToolDuplicateObjInForm($conditionSaut_o.varName[$pos_el]; ->toggleOn_i; "imageBooleen"; Est une variable chaîne:K8:2; True:C214; 10; $bas_el+40)
+									cmaToolDuplicateObjInForm($conditionSaut_o.varName[$pos_el]; ->toggleOn_i; "imageBooleen"; Is string var:K8:2; True:C214; 10; $bas_el+40)
 								: ($conditionSaut_o.value=2)
-									cmaToolDuplicateObjInForm($conditionSaut_o.varName[$pos_el]; ->toggle_i; "imageBooleen"; Est une variable chaîne:K8:2; True:C214; 10; $bas_el+40)
+									cmaToolDuplicateObjInForm($conditionSaut_o.varName[$pos_el]; ->toggle_i; "imageBooleen"; Is string var:K8:2; True:C214; 10; $bas_el+40)
 							End case 
 							
 							OBJECT GET COORDINATES:C663(*; $conditionSaut_o.varName[$pos_el]; $gauche_el; $haut_el; $droite_el; $bas_el)
@@ -358,9 +358,9 @@ Historique
 							$pos_el:=$conditionSaut_o.varName.indexOf("deleteItemBooleen@")
 							
 							If ($hauteur_el>24)
-								cmaToolDuplicateObjInForm($conditionSaut_o.varName[$pos_el]; Null:C1517; "deleteItem"; Est un pointeur:K8:14; True:C214; 430; $haut_el-Round:C94(((24-$hauteur_el)/2); 0))
+								cmaToolDuplicateObjInForm($conditionSaut_o.varName[$pos_el]; Null:C1517; "deleteItem"; Is pointer:K8:14; True:C214; 430; $haut_el-Round:C94(((24-$hauteur_el)/2); 0))
 							Else 
-								cmaToolDuplicateObjInForm($conditionSaut_o.varName[$pos_el]; Null:C1517; "deleteItem"; Est un pointeur:K8:14; True:C214; 430; $haut_el+Round:C94(((24-$hauteur_el)/2); 0))
+								cmaToolDuplicateObjInForm($conditionSaut_o.varName[$pos_el]; Null:C1517; "deleteItem"; Is pointer:K8:14; True:C214; 430; $haut_el+Round:C94(((24-$hauteur_el)/2); 0))
 							End if 
 							
 						End if 
@@ -387,9 +387,9 @@ Historique
 								End case 
 								
 								If (Mod:C98($conditionSaut_o.paramExtra.indexOf($paramExtra_o)+1; 2)=0)  // Si l'indice du X° paramExtra est un nombre paire
-									cmaToolDuplicateObjInForm($conditionSaut_o.varParamExtra[$pos_el]; $paramExtra_o.label; "Texte"; Est un texte:K8:3; True:C214; 250; $bas_el+20)
+									cmaToolDuplicateObjInForm($conditionSaut_o.varParamExtra[$pos_el]; $paramExtra_o.label; "Texte"; Is text:K8:3; True:C214; 250; $bas_el+20)
 								Else 
-									cmaToolDuplicateObjInForm($conditionSaut_o.varParamExtra[$pos_el]; $paramExtra_o.label; "Texte"; Est un texte:K8:3; True:C214; 10; $bas_el+20)
+									cmaToolDuplicateObjInForm($conditionSaut_o.varParamExtra[$pos_el]; $paramExtra_o.label; "Texte"; Is text:K8:3; True:C214; 10; $bas_el+20)
 								End if 
 								
 								OBJECT GET COORDINATES:C663(*; $conditionSaut_o.varParamExtra[$pos_el]; $gauche_el; $haut_el; $droite_el; $bas_el)
@@ -398,18 +398,18 @@ Historique
 									: ($paramExtra_o.format="input")
 										
 										If (Mod:C98($conditionSaut_o.paramExtra.indexOf($paramExtra_o)+1; 2)=0)  // Si l'indice du X° paramExtra est un nombre paire
-											cmaToolDuplicateObjInForm($conditionSaut_o.varParamExtra[$pos_el+1]; ->$initInput_el; "inputNum"; Est un pointeur:K8:14; True:C214; 250; $bas_el+20)
+											cmaToolDuplicateObjInForm($conditionSaut_o.varParamExtra[$pos_el+1]; ->$initInput_el; "inputNum"; Is pointer:K8:14; True:C214; 250; $bas_el+20)
 										Else 
-											cmaToolDuplicateObjInForm($conditionSaut_o.varParamExtra[$pos_el+1]; ->$initInput_el; "inputNum"; Est un pointeur:K8:14; True:C214; 10; $bas_el+20)
+											cmaToolDuplicateObjInForm($conditionSaut_o.varParamExtra[$pos_el+1]; ->$initInput_el; "inputNum"; Is pointer:K8:14; True:C214; 10; $bas_el+20)
 										End if 
 										
 									: ($paramExtra_o.format="inputDelai")
 										
 										// On duplique d'abord la zone de saisie numérique du délai
 										If (Mod:C98($conditionSaut_o.paramExtra.indexOf($paramExtra_o)+1; 2)=0)  // Si l'indice du X° paramExtra est un nombre paire
-											cmaToolDuplicateObjInForm($conditionSaut_o.varParamExtra[$pos_el+1]; ->$initInput_el; "inputDelai"; Est un pointeur:K8:14; True:C214; 250; $bas_el+20)
+											cmaToolDuplicateObjInForm($conditionSaut_o.varParamExtra[$pos_el+1]; ->$initInput_el; "inputDelai"; Is pointer:K8:14; True:C214; 250; $bas_el+20)
 										Else 
-											cmaToolDuplicateObjInForm($conditionSaut_o.varParamExtra[$pos_el+1]; ->$initInput_el; "inputDelai"; Est un pointeur:K8:14; True:C214; 10; $bas_el+20)
+											cmaToolDuplicateObjInForm($conditionSaut_o.varParamExtra[$pos_el+1]; ->$initInput_el; "inputDelai"; Is pointer:K8:14; True:C214; 10; $bas_el+20)
 										End if 
 										
 										// Puis les boutons "inputDelaiUp, "inputDelaiDown", "inputDelaiEchelle" et "inputDelaiEchelleChange"
@@ -418,22 +418,22 @@ Historique
 											
 											Case of 
 												: ($i_el=1)
-													cmaToolDuplicateObjInForm($conditionSaut_o.varParamExtra[$pos_el+$i_el+1]; Null:C1517; "inputDelaiUp"; Est une image:K8:10; True:C214; $droite_el+15; $haut_el-5)
+													cmaToolDuplicateObjInForm($conditionSaut_o.varParamExtra[$pos_el+$i_el+1]; Null:C1517; "inputDelaiUp"; Is picture:K8:10; True:C214; $droite_el+15; $haut_el-5)
 												: ($i_el=2)
-													cmaToolDuplicateObjInForm($conditionSaut_o.varParamExtra[$pos_el+$i_el+1]; Null:C1517; "inputDelaiDown"; Est une image:K8:10; True:C214; $gauche_el; $bas_el+1)
+													cmaToolDuplicateObjInForm($conditionSaut_o.varParamExtra[$pos_el+$i_el+1]; Null:C1517; "inputDelaiDown"; Is picture:K8:10; True:C214; $gauche_el; $bas_el+1)
 												: ($i_el=3)
 													$initInput_t:="jour(s)"
 													
-													cmaToolDuplicateObjInForm($conditionSaut_o.varParamExtra[$pos_el+$i_el+1]; "jour(s)"; "inputDelaiEchelleTexte"; Est un texte:K8:3; True:C214; $droite_el+8; $haut_el-9)
+													cmaToolDuplicateObjInForm($conditionSaut_o.varParamExtra[$pos_el+$i_el+1]; "jour(s)"; "inputDelaiEchelleTexte"; Is text:K8:3; True:C214; $droite_el+8; $haut_el-9)
 												: ($i_el=4)
-													cmaToolDuplicateObjInForm($conditionSaut_o.varParamExtra[$pos_el+$i_el+1]; Null:C1517; "inputDelaiEchelleChange"; Est une image:K8:10; True:C214; $droite_el+10; $haut_el)
+													cmaToolDuplicateObjInForm($conditionSaut_o.varParamExtra[$pos_el+$i_el+1]; Null:C1517; "inputDelaiEchelleChange"; Is picture:K8:10; True:C214; $droite_el+10; $haut_el)
 											End case 
 											
 										End for 
 										
 								End case 
 								
-								$pointeur_p:=OBJECT Get pointer:C1124(Objet nommé:K67:5; $conditionSaut_o.varParamExtra[$pos_el+1])
+								$pointeur_p:=OBJECT Get pointer:C1124(Object named:K67:5; $conditionSaut_o.varParamExtra[$pos_el+1])
 								
 								If (Is nil pointer:C315($pointeur_p)=False:C215)
 									$posBis_el:=Num:C11(Substring:C12($conditionSaut_o.varParamExtra[$pos_el+1]; Position:C15("Param"; $conditionSaut_o.varParamExtra[$pos_el+1])))
@@ -703,7 +703,7 @@ Historique
 									If ($conditionAction_o.paramExtra[$posBis_el-1].format="inputDelai")
 										$element_t:=Substring:C12($nomObjet_t; 0; Position:C15("Delai"; $nomObjet_t)+4)
 										
-										$pointeurVar_p:=OBJECT Get pointer:C1124(Objet nommé:K67:5; $element_t)
+										$pointeurVar_p:=OBJECT Get pointer:C1124(Object named:K67:5; $element_t)
 										$texte_t:=OBJECT Get title:C1068(*; $element_t+"Echelle")
 										
 										Case of 
@@ -758,6 +758,78 @@ Historique
 					End if 
 					
 				End for each 
+				
+			End if 
+			
+	End case 
+	
+Function manageConditionSaut($conditionSaut_o : Object; $caPersonneScenario_o : Object)->$continue_b : Boolean
+/* -----------------------------------------------------------------------------
+Fonction : MAScene.manageConditionSaut
+	
+Permet de gérer les différents condition de saut possible
+	
+Historique
+19/10/21 - Rémy Scanu <remy@connect-io.fr> - Création
+-----------------------------------------------------------------------------*/
+	var $table_o; $enregistrement_o; $autreTable_o; $autreEnregistrement_o : Object
+	var $collection_c; $autreCollection_c : Collection
+	
+	ASSERT:C1129(This:C1470.scene#Null:C1517; "Impossible d'utiliser la fonction manageConditionSaut sans une scène de définie.")
+	
+	Case of 
+		: ($conditionSaut_o.titre="Mailing ouvert") | ($conditionSaut_o.titre="Mailing cliqué")  // Le mailing de la scène a été ouvert OU cliqué
+			$table_o:=ds:C1482.CaScene.query("scenarioID is :1 AND numOrdre = :2"; This:C1470.scene.scenarioID; This:C1470.scene.numOrdre)
+			
+			If ($table_o.length=1)
+				$enregistrement_o:=$table_o.first()
+				
+				If ($conditionSaut_o.titre="Mailing ouvert")
+					$table_o:=$enregistrement_o.AllCaScenarioEvent.query("information = :1 AND etat # :2 AND personneScenarioID = :3"; "Mailing ouvert"; "Terminé"; $caPersonneScenario_o.ID).orderBy("tsCreation desc")
+				Else 
+					$table_o:=$enregistrement_o.AllCaScenarioEvent.query("information = :1 AND etat # :2 AND personneScenarioID = :3"; "Mailing cliqué"; "Terminé"; $caPersonneScenario_o.ID).orderBy("tsCreation desc")
+				End if 
+				
+				$continue_b:=($table_o.length>0)  // On a bien trouvé un log, on prend le premier puisqu'on a trié par tsCreation décroissant
+			End if 
+			
+		: ($conditionSaut_o.titre="Mail de la scène précédente ouvert")  // On doit chercher si dans une scène précédente, il y en a au moins une qui a l'action Envoi email
+			$table_o:=ds:C1482.CaScene.query("scenarioID is :1 AND numOrdre < :2 AND action = :3"; This:C1470.scene.scenarioID; This:C1470.scene.numOrdre; "Envoi email").orderBy("numOrdre desc")
+			
+			If ($table_o.length>0)  // On a bien trouvé une des scènes précédentes au scénario dont l'action est "Envoi email", on prend la première puisqu'on a trié par numOrdre décroissant
+				$enregistrement_o:=$table_o.first()
+				
+				// On cherche parmi tous les logs de la scène, celles de la personne sur lequel on fait la vérification et dont l'action a été Envoi d'un email et qui est Terminé
+				$table_o:=$enregistrement_o.AllCaScenarioEvent.query("information = :1 AND etat = :2 AND personneScenarioID = :3"; "Envoi d'un email"; "Terminé"; $caPersonneScenario_o.ID).orderBy("tsCreation desc")
+				
+				If ($table_o.length>0)  // On a bien trouvé un log, on prend le premier puisqu'on a trié par tsCreation décroissant
+					$enregistrement_o:=$table_o.first()
+					
+					$autreTable_o:=$caPersonneScenario_o.OnePersonne.AllCaPersonneMarketing
+					
+					If ($autreTable_o.length=1)
+						$autreEnregistrement_o:=$autreTable_o.first()
+						$collection_c:=$autreEnregistrement_o.historique.detail.query("eventTs > :1 AND eventTs <= :2"; $enregistrement_o.tsCreation-60; $enregistrement_o.tsCreation)  // Je prends une marge d'1 minute pour être certain de prendre le bon mail
+						
+						If ($collection_c.length>0)  // C'est une solution du à peu près en attendant que je mette en place une solution plus précise
+							$autreCollection_c:=$conditionSaut_o.paramExtra.indices("titre = :1"; "Intervalle")
+							
+							Case of 
+								: ($conditionSaut_o.value=1)  // Le mail doit avoir été ouvert
+									$continue_b:=($autreEnregistrement_o.lastOpened>$collection_c[0].eventTs) | ($autreEnregistrement_o.lastClicked>$collection_c[0].eventTs)
+								: ($conditionSaut_o.value=0)  // Le mail ne doit pas avoir été ouvert ou cliqué
+									$continue_b:=Not:C34(($autreEnregistrement_o.lastOpened>$collection_c[0].eventTs) | ($autreEnregistrement_o.lastClicked>$collection_c[0].eventTs))
+							End case 
+							
+							If ($continue_b=True:C214) & (cmaTimestamp(Current date:C33; Current time:C178)<($collection_c[0].eventTs+$conditionSaut_o.paramExtra[$autreCollection_c[0]].value))  // Les conditions sont réunis pour faire un saut de scène mais le délai indiqué dans la condition de saut n'a pas encore été dépassée
+								CLEAR VARIABLE:C89($continue_b)
+							End if 
+							
+						End if 
+						
+					End if 
+					
+				End if 
 				
 			End if 
 			
@@ -887,7 +959,7 @@ Historique
 									If ($conditionSaut_o.paramExtra[$posBis_el-1].format="inputDelai")
 										$element_t:=Substring:C12($nomObjet_t; 0; Position:C15("Delai"; $nomObjet_t)+4)
 										
-										$pointeurVar_p:=OBJECT Get pointer:C1124(Objet nommé:K67:5; $element_t)
+										$pointeurVar_p:=OBJECT Get pointer:C1124(Object named:K67:5; $element_t)
 										$texte_t:=OBJECT Get title:C1068(*; $element_t+"Echelle")
 										
 										Case of 
@@ -942,78 +1014,6 @@ Historique
 					End if 
 					
 				End for each 
-				
-			End if 
-			
-	End case 
-	
-Function manageConditionSaut($conditionSaut_o : Object; $caPersonneScenario_o : Object)->$continue_b : Boolean
-/* -----------------------------------------------------------------------------
-Fonction : MAScene.manageConditionSaut
-	
-Permet de gérer les différents condition de saut possible
-	
-Historique
-19/10/21 - Rémy Scanu <remy@connect-io.fr> - Création
------------------------------------------------------------------------------*/
-	var $table_o; $enregistrement_o; $autreTable_o; $autreEnregistrement_o : Object
-	var $collection_c; $autreCollection_c : Collection
-	
-	ASSERT:C1129(This:C1470.scene#Null:C1517; "Impossible d'utiliser la fonction manageConditionSaut sans une scène de définie.")
-	
-	Case of 
-		: ($conditionSaut_o.titre="Mailing ouvert") | ($conditionSaut_o.titre="Mailing cliqué")  // Le mailing de la scène a été ouvert OU cliqué
-			$table_o:=ds:C1482.CaScene.query("scenarioID is :1 AND numOrdre = :2"; This:C1470.scene.scenarioID; This:C1470.scene.numOrdre)
-			
-			If ($table_o.length=1)
-				$enregistrement_o:=$table_o.first()
-				
-				If ($conditionSaut_o.titre="Mailing ouvert")
-					$table_o:=$enregistrement_o.AllCaScenarioEvent.query("information = :1 AND etat # :2 AND personneScenarioID = :3"; "Mailing ouvert"; "Terminé"; $caPersonneScenario_o.ID).orderBy("tsCreation desc")
-				Else 
-					$table_o:=$enregistrement_o.AllCaScenarioEvent.query("information = :1 AND etat # :2 AND personneScenarioID = :3"; "Mailing cliqué"; "Terminé"; $caPersonneScenario_o.ID).orderBy("tsCreation desc")
-				End if 
-				
-				$continue_b:=($table_o.length>0)  // On a bien trouvé un log, on prend le premier puisqu'on a trié par tsCreation décroissant
-			End if 
-			
-		: ($conditionSaut_o.titre="Mail de la scène précédente ouvert")  // On doit chercher si dans une scène précédente, il y en a au moins une qui a l'action Envoi email
-			$table_o:=ds:C1482.CaScene.query("scenarioID is :1 AND numOrdre < :2 AND action = :3"; This:C1470.scene.scenarioID; This:C1470.scene.numOrdre; "Envoi email").orderBy("numOrdre desc")
-			
-			If ($table_o.length>0)  // On a bien trouvé une des scènes précédentes au scénario dont l'action est "Envoi email", on prend la première puisqu'on a trié par numOrdre décroissant
-				$enregistrement_o:=$table_o.first()
-				
-				// On cherche parmi tous les logs de la scène, celles de la personne sur lequel on fait la vérification et dont l'action a été Envoi d'un email et qui est Terminé
-				$table_o:=$enregistrement_o.AllCaScenarioEvent.query("information = :1 AND etat = :2 AND personneScenarioID = :3"; "Envoi d'un email"; "Terminé"; $caPersonneScenario_o.ID).orderBy("tsCreation desc")
-				
-				If ($table_o.length>0)  // On a bien trouvé un log, on prend le premier puisqu'on a trié par tsCreation décroissant
-					$enregistrement_o:=$table_o.first()
-					
-					$autreTable_o:=$caPersonneScenario_o.OnePersonne.AllCaPersonneMarketing
-					
-					If ($autreTable_o.length=1)
-						$autreEnregistrement_o:=$autreTable_o.first()
-						$collection_c:=$autreEnregistrement_o.historique.detail.query("eventTs > :1 AND eventTs <= :2"; $enregistrement_o.tsCreation-60; $enregistrement_o.tsCreation)  // Je prends une marge d'1 minute pour être certain de prendre le bon mail
-						
-						If ($collection_c.length>0)  // C'est une solution du à peu près en attendant que je mette en place une solution plus précise
-							$autreCollection_c:=$conditionSaut_o.paramExtra.indices("titre = :1"; "Intervalle")
-							
-							Case of 
-								: ($conditionSaut_o.value=1)  // Le mail doit avoir été ouvert
-									$continue_b:=($autreEnregistrement_o.lastOpened>$collection_c[0].eventTs) | ($autreEnregistrement_o.lastClicked>$collection_c[0].eventTs)
-								: ($conditionSaut_o.value=0)  // Le mail ne doit pas avoir été ouvert ou cliqué
-									$continue_b:=Not:C34(($autreEnregistrement_o.lastOpened>$collection_c[0].eventTs) | ($autreEnregistrement_o.lastClicked>$collection_c[0].eventTs))
-							End case 
-							
-							If ($continue_b=True:C214) & (cmaTimestamp(Current date:C33; Current time:C178)<($collection_c[0].eventTs+$conditionSaut_o.paramExtra[$autreCollection_c[0]].value))  // Les conditions sont réunis pour faire un saut de scène mais le délai indiqué dans la condition de saut n'a pas encore été dépassée
-								CLEAR VARIABLE:C89($continue_b)
-							End if 
-							
-						End if 
-						
-					End if 
-					
-				End if 
 				
 			End if 
 			
@@ -1101,7 +1101,6 @@ Historique
 			
 			If ($return_o.etat=False:C215)  // Il y aura toujours une erreur sur le dernier enregistrement car si ce n'est pas celui-ci qui a été supprimé, son numéro d'ordre sera supérieur aux nombres de scènes
 				$scene_o.numOrdre:=$table_o.length
-				
 				$scene_o.save()
 			End if 
 			
@@ -1123,7 +1122,7 @@ Historique
 	$collection_c:=$scene_o.paramAction.modele[$type_t].version.query("actif = :1"; True:C214)
 	
 	If ($collection_c.length=1)
-		$modeleActif_t:="• Titre du modèle actif : "+$collection_c[0].titre+Char:C90(Retour à la ligne:K15:40)
+		$modeleActif_t:="• Titre du modèle actif : "+$collection_c[0].titre+Char:C90(Line feed:K15:40)
 		$modeleActif_t:=$modeleActif_t+"• Dernière modification fait le "+cmaTimestampLire("date"; $collection_c[0].modifierLe)+" par "+$collection_c[0].modifierPar
 	Else 
 		$modeleActif_t:="• Aucun modèle actif de défini"

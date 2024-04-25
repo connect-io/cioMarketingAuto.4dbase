@@ -34,7 +34,7 @@ Historique
 	
 	// Il est possible de surcharger le transporteur.
 	If (Count parameters:C259=2)
-		$server_o:=Formula from string:C1601("cwToolObjectMerge($server_o; $parametre_o)").call(This:C1470)
+		$server_o:=cmaToolObjectMerge($server_o; $parametre_o)
 	End if 
 	
 	If ($server_o#Null:C1517)

@@ -484,11 +484,39 @@
 						"onMouseMove"
 					],
 					"method": "ObjectMethods/imageMailingMarketing.4dm"
+				},
+				"Texte15": {
+					"type": "text",
+					"text": "Sans IBAN :",
+					"top": 381,
+					"left": 225,
+					"width": 172,
+					"height": 25,
+					"fontWeight": "bold"
+				},
+				"imageSansIBAN": {
+					"type": "input",
+					"left": 225,
+					"top": 408,
+					"width": 32,
+					"height": 32,
+					"dataSourceTypeHint": "picture",
+					"dataSource": "Form:C1466.imageSansIBAN",
+					"enterable": false,
+					"contextMenu": "none",
+					"pictureFormat": "proportionalCenter",
+					"fill": "transparent",
+					"borderStyle": "none",
+					"events": [
+						"onClick",
+						"onMouseMove"
+					],
+					"method": "ObjectMethods/imageSansIBAN.4dm"
 				}
 			}
 		}
 	],
-	"geometryStamp": 264,
+	"geometryStamp": 267,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",

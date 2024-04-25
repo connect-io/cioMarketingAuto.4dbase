@@ -20,18 +20,31 @@ Historique
 		This:C1470.personneSelection:=$entitySelectionToKeep_o
 	End if 
 	
-Function newScenario
+Function newScenario($nom_t : Text; $condition_o : Object)
 	var $0 : Boolean
 	
 	var $caScenario_o; $retour_o : Object
 	
 	$caScenario_o:=ds:C1482.CaScenario.new()
 	
-	$caScenario_o.nom:="Nouveau scénario"
+	$caScenario_o.nom:=$nom_t
+	
+	If ($caScenario_o.nom="")
+		$caScenario_o.nom:="Nouveau scénario"
+	End if 
+	
 	$caScenario_o.actif:=True:C214
 	$caScenario_o.condition:=New object:C1471("ageMinimum"; 0; "ageMaximum"; 0; "rang"; 0; "dateDebutMailClique"; !00-00-00!; "dateFinMailClique"; !00-00-00!; "dateDebutMailOuvert"; !00-00-00!; "dateFinMailOuvert"; !00-00-00!)
 	
+	If ($condition_o#Null:C1517)
+		$caScenario_o.condition:=cmaToolObjectMerge($caScenario_o.condition; $condition_o)
+	End if 
+	
 	$retour_o:=$caScenario_o.save()
+	
+	If ($retour_o.success=True:C214)
+		This:C1470.scenarioDetail:=$caScenario_o
+	End if 
 	
 	$0:=$retour_o.success
 	
@@ -205,7 +218,6 @@ Function searchPersonToScenario
 					
 				: ($cleValeur_o.key="sexe")
 					$lib_t:=Storage:C1525.automation.formule.getFieldName(Storage:C1525.automation.passerelle.champ; "sexe")
-					
 					$table_o:=ds:C1482[Storage:C1525.automation.passerelle.tableHote].query($lib_t+" = :1"; $cleValeur_o.value)
 					
 					$personne_o:=$personne_o.and($table_o)
@@ -234,6 +246,20 @@ Function searchPersonToScenario
 					If ($cleValeur_o.value#Null:C1517)  // Si dans les conditions, l'utisateur souhaite ajouter un critère sur le booléen mailing Marketing présent dans la table [Personnes] du client
 						$lib_t:=Storage:C1525.automation.formule.getFieldName(Storage:C1525.automation.passerelle.champ; "mailingMarketing")
 						$table_o:=ds:C1482[Storage:C1525.automation.passerelle.tableHote].query($lib_t+" = :1"; $cleValeur_o.value)
+						
+						$personne_o:=$personne_o.and($table_o)
+					End if 
+					
+				: ($cleValeur_o.key="sansIBAN")
+					
+					If ($cleValeur_o.value#Null:C1517)  // Si dans les conditions, l'utisateur souhaite ajouter un critère lié à l'IBAN
+						$lib_t:=Storage:C1525.automation.formule.getFieldName(Storage:C1525.automation.passerelle.champ; "iban")
+						
+						If ($cleValeur_o.value=True:C214)  // Si l'utilisateur souhaite uniquement celle qui n'ont pas d'IBAN
+							$table_o:=ds:C1482[Storage:C1525.automation.passerelle.tableHote].query($lib_t+" = :1"; "")
+						Else 
+							$table_o:=ds:C1482[Storage:C1525.automation.passerelle.tableHote].query($lib_t+" # :1"; "")
+						End if 
 						
 						$personne_o:=$personne_o.and($table_o)
 					End if 
@@ -306,7 +332,7 @@ Function loadImageScenarioCondition
 	This:C1470.imageDesabonnement:=Storage:C1525.automation.image["toggle"]
 	This:C1470.imageSansScenario:=Storage:C1525.automation.image["toggle"]
 	This:C1470.imageMailingMarketing:=Storage:C1525.automation.image["toggle"]
-	
+	This:C1470.imageSansIBAN:=Storage:C1525.automation.image["toggle"]
 	
 	If (This:C1470.scenarioDetail.condition.sexe#Null:C1517)
 		
@@ -359,6 +385,16 @@ Function loadImageScenarioCondition
 		
 	End if 
 	
+	If (This:C1470.scenarioDetail.condition.sansIBAN#Null:C1517)
+		
+		If (This:C1470.scenarioDetail.condition.sansIBAN=True:C214)
+			This:C1470.imageSansIBAN:=Storage:C1525.automation.image["toggle-on"]
+		Else 
+			This:C1470.imageSansIBAN:=Storage:C1525.automation.image["toggle-off"]
+		End if 
+		
+	End if 
+	
 Function updateStringScenarioForm
 	C_LONGINT:C283($1)  // Entier long qui indique l'endroit d'où est exécuté la fonction
 	
@@ -373,9 +409,9 @@ Function updateStringScenarioForm
 		This:C1470.scenarioPersonnePossible:="Applicable à "+String:C10(This:C1470.scenarioPersonnePossibleEntity.length)+" personne(s)."
 		
 		If (This:C1470.scenarioSelectionPossiblePersonne#Null:C1517) & ($1=1)
-			This:C1470.scenarioPersonnePossible:=This:C1470.scenarioPersonnePossible+Char:C90(Retour chariot:K15:38)+String:C10(This:C1470.scenarioSelectionPossiblePersonne.length)+" personne(s) sélectionnée(s)."
+			This:C1470.scenarioPersonnePossible:=This:C1470.scenarioPersonnePossible+Char:C90(Carriage return:K15:38)+String:C10(This:C1470.scenarioSelectionPossiblePersonne.length)+" personne(s) sélectionnée(s)."
 		Else 
-			This:C1470.scenarioPersonnePossible:=This:C1470.scenarioPersonnePossible+Char:C90(Retour chariot:K15:38)+"0 personne sélectionnée."
+			This:C1470.scenarioPersonnePossible:=This:C1470.scenarioPersonnePossible+Char:C90(Carriage return:K15:38)+"0 personne sélectionnée."
 			
 			If (This:C1470.scenarioSelectionPossiblePersonne#Null:C1517)
 				OB REMOVE:C1226(This:C1470; "scenarioSelectionPossiblePersonne")
@@ -386,9 +422,10 @@ Function updateStringScenarioForm
 		This:C1470.scenarioPersonneEnCours:="Appliqué à "+String:C10(This:C1470.scenarioPersonneEnCoursEntity.length)+" personne(s)."
 	End if 
 	
-Function newScene
-	C_BOOLEAN:C305($0)
-	C_OBJECT:C1216($caScene_o; $retour_o)
+Function newScene($nom_t : Text; $action_t : Text)
+	var $0 : Boolean
+	
+	var $caScene_o; $retour_o : Object
 	
 	$caScene_o:=ds:C1482.CaScene.new()
 	
@@ -396,17 +433,31 @@ Function newScene
 	// Je suis obligé d'attribuer un nouvel ID à la mano avec les imports possible de scénario sinon ça fou le bazarre dans l'index interne de 4D... vive les UUID moins de problème !
 	$caScene_o.ID:=cmaToolGetNewID("CaScene"; "ID")
 	
-	$caScene_o.nom:="Nouvelle scène"
-	$caScene_o.scenarioID:=This:C1470.scenarioDetail.getKey()
-	$caScene_o.action:="Attente"
-	$caScene_o.numOrdre:=(This:C1470.scenarioDetail.AllCaScene.length)+1
+	$caScene_o.nom:=$nom_t
 	
+	If ($caScene_o.nom="")
+		$caScene_o.nom:="Nouvelle scène"
+	End if 
+	
+	$caScene_o.scenarioID:=This:C1470.scenarioDetail.getKey()
+	
+	$caScene_o.action:=$action_t
+	
+	If ($caScene_o.action="")
+		$caScene_o.action:="Attente"
+	End if 
+	
+	$caScene_o.numOrdre:=(This:C1470.scenarioDetail.AllCaScene.length)+1
 	$caScene_o.paramAction:=New object:C1471("modele"; New object:C1471("email"; New object:C1471("version"; New collection:C1472); "sms"; New object:C1471("version"; New collection:C1472); "courrier"; New object:C1471("version"; New collection:C1472)))
 	
 	$caScene_o.conditionAction:=New object:C1471()
 	$caScene_o.conditionSaut:=New object:C1471()
 	
 	$retour_o:=$caScene_o.save()
+	
+	If ($retour_o.success=True:C214)
+		This:C1470.sceneDetail:=$caScene_o
+	End if 
 	
 	$0:=$retour_o.success
 	
@@ -467,14 +518,14 @@ Function saveFileActionScene
 	var $class_o : Object
 	
 	$texte_t:=WP Get text:C1575($3; wk expressions as source:K81:256)
-	$chemin_t:=Get 4D folder:C485(Dossier Resources courant:K5:16; *)+"cioMarketingAutomation"+Séparateur dossier:K24:12+"scenario"+Séparateur dossier:K24:12+$1+Séparateur dossier:K24:12
+	$chemin_t:=Get 4D folder:C485(Current resources folder:K5:16; *)+"cioMarketingAutomation"+Folder separator:K24:12+"scenario"+Folder separator:K24:12+$1+Folder separator:K24:12
 	
 	$class_o:=cmaToolGetClass("MarketingAutomation").new()
 	
 	$continue_b:=$class_o.createFolder($chemin_t)  // Création ou check du dossier scénario
 	
 	If ($continue_b=True:C214)  // Le dossier du scénario scenarioDetail.ID existe
-		$chemin_t:=$chemin_t+String:C10($2)+Séparateur dossier:K24:12
+		$chemin_t:=$chemin_t+String:C10($2)+Folder separator:K24:12
 		
 		$continue_b:=$class_o.createFolder($chemin_t)  // Création ou check du dossier de la scène
 	End if 
@@ -489,13 +540,13 @@ Function saveFileActionScene
 				: ($4="word")
 					WP EXPORT DOCUMENT:C1337($3; $chemin_t+"action.docx"; wk docx:K81:277)
 				: ($4="html")
-					WP EXPORT DOCUMENT:C1337($3; $chemin_t+"action.html"; wk page web complète:K81:2)
+					WP EXPORT DOCUMENT:C1337($3; $chemin_t+"action.html"; wk web page complete:K81:2)
 				: ($4="4wp")
 					WP EXPORT DOCUMENT:C1337($3; $chemin_t+"action.4WP"; wk 4wp:K81:4)
 			End case 
 			
 		Else 
-			$chemin_t:=Select document:C905(System folder:C487(Bureau:K41:16); ".4wp"; " title"; Saisie nom de fichier:K24:17)
+			$chemin_t:=Select document:C905(System folder:C487(Desktop:K41:16); ".4wp"; " title"; File name entry:K24:17)
 			
 			If ($chemin_t#"")
 				WP EXPORT DOCUMENT:C1337($3; document; wk 4wp:K81:4; wk normal:K81:7)

@@ -10,7 +10,7 @@ ARRAY TEXT:C222(scenarioSuivantID_at; 0)
 
 ARRAY LONGINT:C221(sceneSuivante_ai; 0)
 
-If (Form event code:C388=Sur clic:K2:4) & (Form:C1466.SceneCurrentElement#Null:C1517)
+If (Form event code:C388=On Clicked:K2:4) & (Form:C1466.SceneCurrentElement#Null:C1517)
 	Form:C1466.sceneDetail:=Form:C1466.SceneSelectedElement[0]
 	
 	$table_o:=Form:C1466.sceneDetail.OneCaScenario.AllCaScene.query("ID # :1"; Form:C1466.sceneDetail.ID)
@@ -36,7 +36,7 @@ If (Form event code:C388=Sur clic:K2:4) & (Form:C1466.SceneCurrentElement#Null:C
 		sceneSuivante_at{0}:="Sélection de la scène suivante"
 	End if 
 	
-	cmaToolAddToArray(->sceneAction_at; "Attente"; "Envoi email"; "Changement de scénario"; "Fin du scénario")
+	cmaToolAddToArray(->sceneAction_at; "Attente"; "Envoi email"; "Envoi SMS"; "Imprimer document"; "Changement de scénario"; "Fin du scénario")
 	
 	If (Form:C1466.sceneDetail.action#"")
 		$pos_el:=Find in array:C230(sceneAction_at; Form:C1466.sceneDetail.action)

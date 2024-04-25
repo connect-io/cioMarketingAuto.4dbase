@@ -1,4 +1,4 @@
-If (Form event code:C388=Sur données modifiées:K2:15)
+If (Form event code:C388=On Data Change:K2:15)
 	var $titre_t : Text
 	var $pos_el : Integer
 	var $titreUnique_b : Boolean
@@ -25,7 +25,6 @@ If (Form event code:C388=Sur données modifiées:K2:15)
 					APPEND TO ARRAY:C911(versionList_at; "Créer une nouvelle version...")
 					
 					versionList_at:=Find in array:C230(versionList_at; $titre_t)
-					
 					REDRAW:C174(versionList_at)
 					
 					If (Form:C1466.sceneDetail.paramAction.modele[Lowercase:C14(Form:C1466.sceneTypeSelected)].version.length>0)
@@ -59,8 +58,8 @@ If (Form event code:C388=Sur données modifiées:K2:15)
 	If ($titre_t#"")
 		$elementSelected_o:=Form:C1466.sceneDetail.paramAction.modele[Lowercase:C14(Form:C1466.sceneTypeSelected)].version.query("titre = :1"; $titre_t)[0]
 		
-		Form:C1466.modeleDetail:="• Titre : "+$elementSelected_o.titre+Char:C90(Retour à la ligne:K15:40)
-		Form:C1466.modeleDetail:=Form:C1466.modeleDetail+"• Créer le "+cmaTimestampLire("date"; $elementSelected_o.creerLe)+" par "+$elementSelected_o.creerPar+Char:C90(Retour à la ligne:K15:40)
+		Form:C1466.modeleDetail:="• Titre : "+$elementSelected_o.titre+Char:C90(Line feed:K15:40)
+		Form:C1466.modeleDetail:=Form:C1466.modeleDetail+"• Créer le "+cmaTimestampLire("date"; $elementSelected_o.creerLe)+" par "+$elementSelected_o.creerPar+Char:C90(Line feed:K15:40)
 		Form:C1466.modeleDetail:=Form:C1466.modeleDetail+"• Dernière modification fait le "+cmaTimestampLire("date"; $elementSelected_o.modifierLe)+" par "+$elementSelected_o.modifierPar
 		
 		If ($elementSelected_o.actif=True:C214)
