@@ -227,7 +227,7 @@ Historique
 	ASSERT:C1129(This:C1470.cronosImage#Null:C1517; "Impossible d'utiliser la fonction cronosAction sans avoir lancer la fonction loadCronos avant")
 	
 	// On recherche toutes les personnes qui ont un scénario actif et dont le prochain check est dépassé
-	$table_o:=ds:C1482.CaPersonneScenario.query("actif = :1 AND tsProchainCheck <= :2"; True:C214; cmaTimestamp(Current date:C33; Current time:C178))
+	$table_o:=ds:C1482["CaPersonneScenario"].query("actif = :1 AND tsProchainCheck <= :2"; True:C214; cmaTimestamp(Current date:C33; Current time:C178))
 	
 	$scene_cs:=cmaToolGetClass("MAScene").new()
 	
@@ -238,7 +238,7 @@ Historique
 		$caScenarioEvent_o:=$enregistrement_o.AllCaScenarioEvent
 		
 		If ($caScenarioEvent_o.length=0)  // Il n'y a pas encore de scène exécutée
-			$scene_o:=ds:C1482.CaScene.query("scenarioID is :1 AND numOrdre = :2"; $enregistrement_o.scenarioID; 1)
+			$scene_o:=ds:C1482["CaScene"].query("scenarioID is :1 AND numOrdre = :2"; $enregistrement_o.scenarioID; 1)
 			
 			If ($scene_o.length=1)  // On a trouvé la première scène
 				$scene_o:=$scene_o.first()
@@ -337,7 +337,7 @@ Historique
 						End for each 
 						
 						If ($continue_b=True:C214)  // Toutes les conditions sont réunis pour qu'on fasse... le grand Saut :D
-							$scene_o:=ds:C1482.CaScene.get(Num:C11($scene_o.conditionSaut.sceneSautID))
+							$scene_o:=ds:C1482["CaScene"].get(Num:C11($scene_o.conditionSaut.sceneSautID))
 							
 							If ($scene_o#Null:C1517)  // La scène a bien été trouvé, on note qu'on change de scène dans les logs
 								$scene_cs.addScenarioEvent("Changement de scène"; $enregistrement_o.ID)
@@ -363,7 +363,7 @@ Historique
 					If ($sautEffectue_b=False:C215)  // Si cet évènement n'a pas déclenché un saut de scène, on ne fait rien pour la suite
 						CLEAR VARIABLE:C89($continue_b)
 					Else   // Il faut cloturer le log de l'envoi du mailing qui a occasionné cet évènement mailjet
-						$autreTable_o:=ds:C1482.CaScenarioEvent.query("personneScenarioID = :1 AND sceneID = :2 AND etat = :3"; $caScenarioEvent_o.personneScenarioID; $caScenarioEvent_o.sceneID; "En cours")
+						$autreTable_o:=ds:C1482["CaScenarioEvent"].query("personneScenarioID = :1 AND sceneID = :2 AND etat = :3"; $caScenarioEvent_o.personneScenarioID; $caScenarioEvent_o.sceneID; "En cours")
 						
 						For each ($autreEnregistrement_o; $autreTable_o)
 							$autreEnregistrement_o.etat:="Terminé"

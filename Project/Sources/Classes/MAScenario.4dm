@@ -12,7 +12,7 @@ Instanciation de la class MAScenario
 Historique
 15/02/21 - Rémy Scanu remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
-	This:C1470.scenario:=ds:C1482.CaScenario.newSelection()
+	This:C1470.scenario:=ds:C1482["CaScenario"].newSelection()
 	This:C1470.scenarioDetail:=New object:C1471()
 	
 	// Modifié par : Rémy Scanu (10/05/2021)
@@ -20,13 +20,10 @@ Historique
 		This:C1470.personneSelection:=$entitySelectionToKeep_o
 	End if 
 	
-Function newScenario($nom_t : Text; $condition_o : Object)
-	var $0 : Boolean
-	
+Function newScenario($nom_t : Text; $condition_o : Object)->$return_b : Boolean
 	var $caScenario_o; $retour_o : Object
 	
-	$caScenario_o:=ds:C1482.CaScenario.new()
-	
+	$caScenario_o:=ds:C1482["CaScenario"].new()
 	$caScenario_o.nom:=$nom_t
 	
 	If ($caScenario_o.nom="")
@@ -46,18 +43,17 @@ Function newScenario($nom_t : Text; $condition_o : Object)
 		This:C1470.scenarioDetail:=$caScenario_o
 	End if 
 	
-	$0:=$retour_o.success
+	$return_b:=$retour_o.success
 	
 Function loadAllScenario
-	This:C1470.scenario:=ds:C1482.CaScenario.all().orderBy("nom asc")
+	This:C1470.scenario:=ds:C1482["CaScenario"].all().orderBy("nom asc")
 	
-Function loadScenarioDisplay
-	var $1 : Text  // Texte qui indique l'ID du scénario à charger
+Function loadScenarioDisplay($scenarioID_t : Text)
 	
 	If (Count parameters:C259=0)
 		This:C1470.loadAllScenario()
 	Else 
-		This:C1470.loadByPrimaryKey($1)
+		This:C1470.loadByPrimaryKey($scenarioID_t)
 		
 		This:C1470.disabledCreateDeleteScenarioButton:=True:C214
 	End if 
@@ -67,7 +63,7 @@ Function loadScenarioDisplay
 Function loadByPrimaryKey($id_t : Text)
 	var $table_o : Object
 	
-	This:C1470.scenario:=ds:C1482.CaScenario.query("ID is :1"; $id_t)
+	This:C1470.scenario:=ds:C1482["CaScenario"].query("ID is :1"; $id_t)
 	
 	If (This:C1470.scenario.length=1)
 		This:C1470.scenarioDetail:=This:C1470.scenario[0]
@@ -75,9 +71,7 @@ Function loadByPrimaryKey($id_t : Text)
 		This:C1470.scenarioDetail:=Null:C1517
 	End if 
 	
-Function searchPersonToScenario
-	var $1 : Integer  // Entier long qui indique l'endroit d'où est exécuté la fonction
-	
+Function searchPersonToScenario($provenance_el : Integer)
 	var $lib_t : Text
 	var $ts_el : Integer
 	var $condition_o; $personne_o; $personneAEnlever_o; $table_o; $statut_o; $class_o : Object
@@ -96,12 +90,12 @@ Function searchPersonToScenario
 	$personneAEnlever_o:=ds:C1482[Storage:C1525.automation.passerelle.tableHote].newSelection()
 	
 	Case of 
-		: ($1=1) | ($1=2)  // Gestion du scénario OU Après application d'un scénario à des personnes
+		: ($provenance_el=1) | ($provenance_el=2)  // Gestion du scénario OU Après application d'un scénario à des personnes
 			
 			If (This:C1470.scenarioDetail#Null:C1517)
 				$condition_o:=This:C1470.scenarioDetail.condition
 				
-				If ($1=2)  // Application d'un scénario à des personnes
+				If ($provenance_el=2)  // Application d'un scénario à des personnes
 					// On est obligé de sauver le scénartio sinon on n'aura pas les nouveaux enregistrements de la table [CaPersonneScenario]
 					This:C1470.scenarioDetail.save()
 					
@@ -147,8 +141,7 @@ Function searchPersonToScenario
 					If ($cleValeur_o.value#!00-00-00!)
 						$ts_el:=cmaTimestamp($cleValeur_o.value; ?00:00:00?)
 						
-						$table_o:=ds:C1482.CaPersonneMarketing.query("lastClicked # :1 AND lastClicked >= :2"; 0; $ts_el).OnePersonne
-						
+						$table_o:=ds:C1482["CaPersonneMarketing"].query("lastClicked # :1 AND lastClicked >= :2"; 0; $ts_el).OnePersonne
 						$personne_o:=$personne_o.and($table_o)
 					End if 
 					
@@ -157,8 +150,7 @@ Function searchPersonToScenario
 					If ($cleValeur_o.value#!00-00-00!)
 						$ts_el:=cmaTimestamp($cleValeur_o.value; ?23:59:59?)
 						
-						$table_o:=ds:C1482.CaPersonneMarketing.query("lastClicked # :1 AND lastClicked <= :2"; 0; $ts_el).OnePersonne
-						
+						$table_o:=ds:C1482["CaPersonneMarketing"].query("lastClicked # :1 AND lastClicked <= :2"; 0; $ts_el).OnePersonne
 						$personne_o:=$personne_o.and($table_o)
 					End if 
 					
@@ -167,8 +159,7 @@ Function searchPersonToScenario
 					If ($cleValeur_o.value#!00-00-00!)
 						$ts_el:=cmaTimestamp($cleValeur_o.value; ?00:00:00?)
 						
-						$table_o:=ds:C1482.CaPersonneMarketing.query("lastOpened # :1 AND lastOpened >= :2"; 0; $ts_el).OnePersonne
-						
+						$table_o:=ds:C1482["CaPersonneMarketing"].query("lastOpened # :1 AND lastOpened >= :2"; 0; $ts_el).OnePersonne
 						$personne_o:=$personne_o.and($table_o)
 					End if 
 					
@@ -177,8 +168,7 @@ Function searchPersonToScenario
 					If ($cleValeur_o.value#!00-00-00!)
 						$ts_el:=cmaTimestamp($cleValeur_o.value; ?23:59:59?)
 						
-						$table_o:=ds:C1482.CaPersonneMarketing.query("lastOpened # :1 AND lastOpened <= :2"; 0; $ts_el).OnePersonne
-						
+						$table_o:=ds:C1482["CaPersonneMarketing"].query("lastOpened # :1 AND lastOpened <= :2"; 0; $ts_el).OnePersonne
 						$personne_o:=$personne_o.and($table_o)
 					End if 
 					
@@ -211,8 +201,7 @@ Function searchPersonToScenario
 				: ($cleValeur_o.key="rang")
 					
 					If ($cleValeur_o.value#0)
-						$table_o:=ds:C1482.CaPersonneMarketing.query("rang = :1"; $cleValeur_o.value).OnePersonne
-						
+						$table_o:=ds:C1482["CaPersonneMarketing"].query("rang = :1"; $cleValeur_o.value).OnePersonne
 						$personne_o:=$personne_o.and($table_o)
 					End if 
 					
@@ -224,14 +213,14 @@ Function searchPersonToScenario
 				: ($cleValeur_o.key="desabonnement")
 					
 					If ($cleValeur_o.value#Null:C1517)  // Si dans les conditions, l'utisateur souhaite ajouter un critère par rapport au statut de désabonnement
-						$table_o:=ds:C1482.CaPersonneMarketing.query("desabonementMail = :1"; $cleValeur_o.value).OnePersonne
+						$table_o:=ds:C1482["CaPersonneMarketing"].query("desabonementMail = :1"; $cleValeur_o.value).OnePersonne
 						$personne_o:=$personne_o.and($table_o)
 					End if 
 					
 				: ($cleValeur_o.key="sansScenario")
 					
 					If ($cleValeur_o.value#Null:C1517)  // Si dans les conditions, l'utisateur souhaite ajouter un critère lié à la précense d'un scénario
-						$table_o:=ds:C1482.CaPersonneScenario.all().OnePersonne
+						$table_o:=ds:C1482["CaPersonneScenario"].all().OnePersonne
 						
 						If ($cleValeur_o.value=True:C214)  // Si l'utilisateur souhaite uniquement celle qui n'ont pas de scénario en cours
 							$personne_o:=$personne_o.minus($table_o)
@@ -283,7 +272,7 @@ Function applyScenarioToPerson
 	If (This:C1470.scenarioSelectionPossiblePersonne#Null:C1517)
 		
 		For each ($enregistrement_o; This:C1470.scenarioSelectionPossiblePersonne)
-			$caPersonneScenario_o:=ds:C1482.CaPersonneScenario.new()
+			$caPersonneScenario_o:=ds:C1482["CaPersonneScenario"].new()
 			
 			$caPersonneScenario_o.personneID:=$enregistrement_o.getKey()
 			$caPersonneScenario_o.scenarioID:=This:C1470.scenarioDetail.getKey()
@@ -304,19 +293,14 @@ Function applyScenarioToPerson
 		This:C1470.updateStringScenarioForm(2)  // On met à jour les deux variables qui indiquent les différentes applications possibles et en cours pour le scénario X
 	End if 
 	
-Function deleteScenarioToPerson
-	C_VARIANT:C1683($1)  // UID Personne
-	C_TEXT:C284($2)  // UID Scenario
-	C_BOOLEAN:C305($0)
+Function deleteScenarioToPerson($personneID_v : Variant; $scenarioID_t : Text)->$return_b : Boolean
+	var $table_o; $statut_o : Object
 	
-	C_OBJECT:C1216($table_o; $statut_o)
-	
-	$table_o:=ds:C1482.CaPersonneScenario.query("personneID is :1 AND scenarioID is :2"; $1; $2)
+	$table_o:=ds:C1482["CaPersonneScenario"].query("personneID is :1 AND scenarioID is :2"; $personneID_v; $scenarioID_t)
 	
 	If (Num:C11($table_o.length)=1)
 		$statut_o:=$table_o.first().drop()
-		
-		$0:=$statut_o.success
+		$return_b:=$statut_o.success
 	End if 
 	
 Function loadImageScenarioCondition
@@ -395,20 +379,19 @@ Function loadImageScenarioCondition
 		
 	End if 
 	
-Function updateStringScenarioForm
-	C_LONGINT:C283($1)  // Entier long qui indique l'endroit d'où est exécuté la fonction
+Function updateStringScenarioForm($provenance_el : Integer)
 	
 	Case of 
-		: ($1=1)  // Gestion du scénario
+		: ($provenance_el=1)  // Gestion du scénario
 			This:C1470.searchPersonToScenario(1)
-		: ($1=2)  // Application scénario à une sélection de personne
+		: ($provenance_el=2)  // Application scénario à une sélection de personne
 			This:C1470.searchPersonToScenario(2)
 	End case 
 	
-	If ($1=1) | ($1=2)
+	If ($provenance_el=1) | ($provenance_el=2)
 		This:C1470.scenarioPersonnePossible:="Applicable à "+String:C10(This:C1470.scenarioPersonnePossibleEntity.length)+" personne(s)."
 		
-		If (This:C1470.scenarioSelectionPossiblePersonne#Null:C1517) & ($1=1)
+		If (This:C1470.scenarioSelectionPossiblePersonne#Null:C1517) & ($provenance_el=1)
 			This:C1470.scenarioPersonnePossible:=This:C1470.scenarioPersonnePossible+Char:C90(Carriage return:K15:38)+String:C10(This:C1470.scenarioSelectionPossiblePersonne.length)+" personne(s) sélectionnée(s)."
 		Else 
 			This:C1470.scenarioPersonnePossible:=This:C1470.scenarioPersonnePossible+Char:C90(Carriage return:K15:38)+"0 personne sélectionnée."
@@ -422,17 +405,14 @@ Function updateStringScenarioForm
 		This:C1470.scenarioPersonneEnCours:="Appliqué à "+String:C10(This:C1470.scenarioPersonneEnCoursEntity.length)+" personne(s)."
 	End if 
 	
-Function newScene($nom_t : Text; $action_t : Text)
-	var $0 : Boolean
-	
+Function newScene($nom_t : Text; $action_t : Text)->$return_b : Boolean
 	var $caScene_o; $retour_o : Object
 	
-	$caScene_o:=ds:C1482.CaScene.new()
+	$caScene_o:=ds:C1482["CaScene"].new()
 	
 	// Modifié par : Rémy Scanu (10/06/2021)
 	// Je suis obligé d'attribuer un nouvel ID à la mano avec les imports possible de scénario sinon ça fou le bazarre dans l'index interne de 4D... vive les UUID moins de problème !
 	$caScene_o.ID:=cmaToolGetNewID("CaScene"; "ID")
-	
 	$caScene_o.nom:=$nom_t
 	
 	If ($caScene_o.nom="")
@@ -440,7 +420,6 @@ Function newScene($nom_t : Text; $action_t : Text)
 	End if 
 	
 	$caScene_o.scenarioID:=This:C1470.scenarioDetail.getKey()
-	
 	$caScene_o.action:=$action_t
 	
 	If ($caScene_o.action="")
@@ -459,15 +438,13 @@ Function newScene($nom_t : Text; $action_t : Text)
 		This:C1470.sceneDetail:=$caScene_o
 	End if 
 	
-	$0:=$retour_o.success
+	$return_b:=$retour_o.success
 	
-Function updateStringSceneForm
-	var $1 : Integer  // Entier long qui indique l'endroit d'où est exécuté la fonction
-	
+Function updateStringSceneForm($provenance_el : Integer)
 	This:C1470.scenePersonneEnCoursEntity:=ds:C1482[Storage:C1525.automation.passerelle.tableHote].newSelection()
 	
 	Case of 
-		: ($1=1)  // Gestion du scénario (et donc de la scène)
+		: ($provenance_el=1)  // Gestion du scénario (et donc de la scène)
 			
 			If (Num:C11(This:C1470.sceneDetail.AllCaScenarioEvent.length)>0)  // Il y a eu des logs pour cette scène
 				This:C1470.scenePersonneEnCoursEntity:=This:C1470.sceneDetail.AllCaScenarioEvent.OneCaPersonneScenario.OnePersonne
@@ -506,50 +483,43 @@ Function updateStringSceneForm
 Function loadImageSceneActionCondition
 	This:C1470.imageEmail:=Storage:C1525.automation.image["toggle"]
 	
-Function saveFileActionScene
-	var $1 : Text  // ID scenario
-	var $2 : Integer  // ID scene
-	var $3 : Object  // Objet Write Pro
-	var $4 : Text  // Extension du fichier
-	var $5 : Boolean  // Booléen qui indique si l'utilisateur choisi l'endroit du fichier de sauvegarde du fichier
-	
+Function saveFileActionScene($scenarioID_t : Text; $sceneID_el : Integer; $writePro_o : Object; $extension_t : Text; $folderChoice_b : Boolean)
 	var $texte_t; $chemin_t : Text
 	var $continue_b : Boolean
 	var $class_o : Object
 	
-	$texte_t:=WP Get text:C1575($3; wk expressions as source:K81:256)
-	$chemin_t:=Get 4D folder:C485(Current resources folder:K5:16; *)+"cioMarketingAutomation"+Folder separator:K24:12+"scenario"+Folder separator:K24:12+$1+Folder separator:K24:12
+	$texte_t:=WP Get text:C1575($writePro_o; wk expressions as source:K81:256)
+	$chemin_t:=Get 4D folder:C485(Current resources folder:K5:16; *)+"cioMarketingAutomation"+Folder separator:K24:12+"scenario"+Folder separator:K24:12+$scenarioID_t+Folder separator:K24:12
 	
 	$class_o:=cmaToolGetClass("MarketingAutomation").new()
 	
 	$continue_b:=$class_o.createFolder($chemin_t)  // Création ou check du dossier scénario
 	
 	If ($continue_b=True:C214)  // Le dossier du scénario scenarioDetail.ID existe
-		$chemin_t:=$chemin_t+String:C10($2)+Folder separator:K24:12
-		
+		$chemin_t:=$chemin_t+String:C10($sceneID_el)+Folder separator:K24:12
 		$continue_b:=$class_o.createFolder($chemin_t)  // Création ou check du dossier de la scène
 	End if 
 	
 	If ($continue_b=True:C214)  // Le dossier de la scène sceneDetail.ID du scénario scenarioDetail.ID existe
 		
-		If ($5=False:C215)
+		If ($folderChoice_b=False:C215)
 			
 			Case of 
-				: ($4="pdf")
-					WP EXPORT DOCUMENT:C1337($3; $chemin_t+"action.pdf"; wk pdf:K81:315)
-				: ($4="word")
-					WP EXPORT DOCUMENT:C1337($3; $chemin_t+"action.docx"; wk docx:K81:277)
-				: ($4="html")
-					WP EXPORT DOCUMENT:C1337($3; $chemin_t+"action.html"; wk web page complete:K81:2)
-				: ($4="4wp")
-					WP EXPORT DOCUMENT:C1337($3; $chemin_t+"action.4WP"; wk 4wp:K81:4)
+				: ($extension_t="pdf")
+					WP EXPORT DOCUMENT:C1337($writePro_o; $chemin_t+"action.pdf"; wk pdf:K81:315)
+				: ($extension_t="word")
+					WP EXPORT DOCUMENT:C1337($writePro_o; $chemin_t+"action.docx"; wk docx:K81:277)
+				: ($extension_t="html")
+					WP EXPORT DOCUMENT:C1337($writePro_o; $chemin_t+"action.html"; wk web page complete:K81:2)
+				: ($extension_t="4wp")
+					WP EXPORT DOCUMENT:C1337($writePro_o; $chemin_t+"action.4WP"; wk 4wp:K81:4)
 			End case 
 			
 		Else 
 			$chemin_t:=Select document:C905(System folder:C487(Desktop:K41:16); ".4wp"; " title"; File name entry:K24:17)
 			
 			If ($chemin_t#"")
-				WP EXPORT DOCUMENT:C1337($3; document; wk 4wp:K81:4; wk normal:K81:7)
+				WP EXPORT DOCUMENT:C1337($writePro_o; document; wk 4wp:K81:4; wk normal:K81:7)
 			End if 
 			
 		End if 

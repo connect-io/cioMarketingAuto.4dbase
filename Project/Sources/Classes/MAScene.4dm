@@ -27,7 +27,7 @@ Historique
 	
 	ASSERT:C1129(This:C1470.scene#Null:C1517; "Impossible d'utiliser la fonction addScenarioEvent sans une scène de définie.")
 	
-	$caScenarioEvent_o:=ds:C1482.CaScenarioEvent.new()
+	$caScenarioEvent_o:=ds:C1482["CaScenarioEvent"].new()
 	
 	$caScenarioEvent_o.personneScenarioID:=$personneScenarioID_v
 	$caScenarioEvent_o.sceneID:=This:C1470.scene.ID
@@ -88,7 +88,7 @@ Retrouve une scène via sa clé primaire.
 Historique
 15/02/21 - Rémy Scanu <remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
-	This:C1470.scene:=ds:C1482.CaScene.get($sceneID_i)
+	This:C1470.scene:=ds:C1482["CaScene"].get($sceneID_i)
 	
 	$isOk_b:=(This:C1470.scene#Null:C1517)
 	
@@ -531,7 +531,7 @@ Historique
 	
 	Case of 
 		: ($conditionAction_o.titre="Mail de la scène précédente ouvert")  // On doit chercher si dans une scène précédente, il y en a au moins une qui a l'action Envoi email
-			$table_o:=ds:C1482.CaScene.query("scenarioID is :1 AND numOrdre < :2 AND action = :3"; This:C1470.scene.scenarioID; This:C1470.scene.numOrdre; "Envoi email").orderBy("numOrdre desc")
+			$table_o:=ds:C1482["CaScene"].query("scenarioID is :1 AND numOrdre < :2 AND action = :3"; This:C1470.scene.scenarioID; This:C1470.scene.numOrdre; "Envoi email").orderBy("numOrdre desc")
 			
 			If ($table_o.length>0)  // On a bien trouvé une des scènes précédentes au scénario dont l'action est "Envoi email", on prend la première puisqu'on a trié par numOrdre décroissant
 				$enregistrement_o:=$table_o.first()
@@ -779,7 +779,7 @@ Historique
 	
 	Case of 
 		: ($conditionSaut_o.titre="Mailing ouvert") | ($conditionSaut_o.titre="Mailing cliqué")  // Le mailing de la scène a été ouvert OU cliqué
-			$table_o:=ds:C1482.CaScene.query("scenarioID is :1 AND numOrdre = :2"; This:C1470.scene.scenarioID; This:C1470.scene.numOrdre)
+			$table_o:=ds:C1482["CaScene"].query("scenarioID is :1 AND numOrdre = :2"; This:C1470.scene.scenarioID; This:C1470.scene.numOrdre)
 			
 			If ($table_o.length=1)
 				$enregistrement_o:=$table_o.first()
@@ -794,7 +794,7 @@ Historique
 			End if 
 			
 		: ($conditionSaut_o.titre="Mail de la scène précédente ouvert")  // On doit chercher si dans une scène précédente, il y en a au moins une qui a l'action Envoi email
-			$table_o:=ds:C1482.CaScene.query("scenarioID is :1 AND numOrdre < :2 AND action = :3"; This:C1470.scene.scenarioID; This:C1470.scene.numOrdre; "Envoi email").orderBy("numOrdre desc")
+			$table_o:=ds:C1482["CaScene"].query("scenarioID is :1 AND numOrdre < :2 AND action = :3"; This:C1470.scene.scenarioID; This:C1470.scene.numOrdre; "Envoi email").orderBy("numOrdre desc")
 			
 			If ($table_o.length>0)  // On a bien trouvé une des scènes précédentes au scénario dont l'action est "Envoi email", on prend la première puisqu'on a trié par numOrdre décroissant
 				$enregistrement_o:=$table_o.first()
@@ -846,7 +846,6 @@ Historique
 -----------------------------------------------------------------------------*/
 	var $element_t; $varParamExtra_t; $texte_t : Text
 	var $pos_el; $posBis_el; $value_el : Integer
-	var $pointeur_p : Pointer
 	var $conditionSaut_o : Object
 	
 	Case of 
@@ -1091,7 +1090,7 @@ Historique
 -----------------------------------------------------------------------------*/
 	var $table_o; $enregistrement_o; $scene_o; $return_o : Object
 	
-	$enregistrement_o:=ds:C1482.CaScenario.get($scenarioID_t)
+	$enregistrement_o:=ds:C1482["CaScenario"].get($scenarioID_t)
 	
 	If ($enregistrement_o#Null:C1517)
 		$table_o:=$enregistrement_o.AllCaScene.orderBy("numOrdre asc")

@@ -430,7 +430,7 @@ Historique
 	$table_o:=This:C1470.personne.AllCaPersonneMarketing
 	
 	If ($table_o.length=0)
-		$enregistrement_o:=ds:C1482.CaPersonneMarketing.new()
+		$enregistrement_o:=ds:C1482["CaPersonneMarketing"].new()
 		
 		$enregistrement_o.personneID:=This:C1470.UID
 		$enregistrement_o.rang:=1  // 1 pour Suspect

@@ -17,7 +17,7 @@ Historique
 	$class_o:=cs:C1710.MarketingAutomation.new()  // Instanciation de la class
 	$class_o.loadPasserelle("Personne")
 	
-Function updateScenarioListToPerson
+Function updateScenarioListToPerson()->$scenario_es : Object
 /* -----------------------------------------------------------------------------
 Fonction : MAPersonneDisplay.updateScenarioListToPerson
 	
@@ -26,20 +26,18 @@ Retourne la liste des scénarios d'une personne
 Historique
 15/04/22 - Rémy Scanu <remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
-	var $0 : Object
-	
 	var $class_o : Object
 	
-	$0:=ds:C1482.CaScenario.newSelection()
+	$scenario_es:=ds:C1482["CaScenario"].newSelection()
 	
 	$class_o:=cmaToolGetClass("MAPersonne").new()
 	$class_o.loadByPrimaryKey(Form:C1466.PersonneCurrentElement.UID)
 	
 	If ($class_o.personne#Null:C1517)
-		$0:=$class_o.personne.AllCaPersonneScenario.OneCaScenario
+		$scenario_es:=$class_o.personne.AllCaPersonneScenario.OneCaScenario
 	End if 
 	
-Function updateStringPersonneForm
+Function updateStringPersonneForm($personne_o : Object)
 /* -----------------------------------------------------------------------------
 Fonction : MAPersonneDisplay.updateStringPersonneForm
 	
@@ -48,8 +46,6 @@ Mets à jour une chaine de caractère suivant les infos de la personne chargée
 Historique
 15/04/22 - Rémy Scanu <remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
-	var $1 : Object  // Entity personne
-	
 	var $civilite_t : Text
 	var $table_o; $class_o : Object
 	var $libHomme_v; $libFemme_v : Variant
@@ -58,22 +54,22 @@ Historique
 	$libFemme_v:=Storage:C1525.automation.passerelle.libelleSexe.query("lib = :1"; "femme")[0].value
 	
 	Case of 
-		: ($1.sexe=$libHomme_v)
+		: ($personne_o.sexe=$libHomme_v)
 			$civilite_t:="Mr."
-		: ($1.sexe=$libFemme_v)
+		: ($personne_o.sexe=$libFemme_v)
 			$civilite_t:="Mme."
 	End case 
 	
 	Case of 
-		: (Num:C11($1.modeSelection)=1) | (Num:C11($1.modeSelection)=2) & (Bool:C1537($1.multiSelection)=False:C215)  // Sélection unique OU Sélection multi-lignes mais qu'une seule ligne sélectionnée
-			$1.resume:=Choose:C955($civilite_t#""; $civilite_t+" "; "")+String:C10($1.nom)+" "+String:C10($1.prenom)+", habite à "+String:C10($1.ville)+" ("+String:C10($1.codePostal)+")."+Char:C90(Line feed:K15:40)
+		: (Num:C11($personne_o.modeSelection)=1) | (Num:C11($personne_o.modeSelection)=2) & (Bool:C1537($personne_o.multiSelection)=False:C215)  // Sélection unique OU Sélection multi-lignes mais qu'une seule ligne sélectionnée
+			$personne_o.resume:=Choose:C955($civilite_t#""; $civilite_t+" "; "")+String:C10($personne_o.nom)+" "+String:C10($personne_o.prenom)+", habite à "+String:C10($personne_o.ville)+" ("+String:C10($personne_o.codePostal)+")."+Char:C90(Line feed:K15:40)
 			
-			$1.resume:=$1.resume+"• Adresse email : "+String:C10($1.eMail)+Char:C90(Line feed:K15:40)
-			$1.resume:=$1.resume+"• Téléphone fixe : "+String:C10($1.telFixe)+Char:C90(Line feed:K15:40)
-			$1.resume:=$1.resume+"• Téléphone portable : "+String:C10($1.telMobile)
+			$personne_o.resume:=$personne_o.resume+"• Adresse email : "+String:C10($personne_o.eMail)+Char:C90(Line feed:K15:40)
+			$personne_o.resume:=$personne_o.resume+"• Téléphone fixe : "+String:C10($personne_o.telFixe)+Char:C90(Line feed:K15:40)
+			$personne_o.resume:=$personne_o.resume+"• Téléphone portable : "+String:C10($personne_o.telMobile)
 			
 			$class_o:=cmaToolGetClass("MAPersonne").new()
-			$class_o.loadByPrimaryKey($1.UID)
+			$class_o.loadByPrimaryKey($personne_o.UID)
 			
 			If ($class_o.personne#Null:C1517)
 				$table_o:=$class_o.personne.AllCaPersonneMarketing
@@ -83,58 +79,58 @@ Historique
 					
 					Case of 
 						: ($table_o.rang=1)
-							$1.resumeMarketing:="• Rang : suspect"
+							$personne_o.resumeMarketing:="• Rang : suspect"
 						: ($table_o.rang=2)
-							$1.resumeMarketing:="• Rang : prospect"
+							$personne_o.resumeMarketing:="• Rang : prospect"
 						: ($table_o.rang=3)
-							$1.resumeMarketing:="• Rang : client"
+							$personne_o.resumeMarketing:="• Rang : client"
 						: ($table_o.rang=4)
-							$1.resumeMarketing:="• Rang : client fidèle"
+							$personne_o.resumeMarketing:="• Rang : client fidèle"
 						: ($table_o.rang=5)
-							$1.resumeMarketing:="• Rang : ambassadeur"
+							$personne_o.resumeMarketing:="• Rang : ambassadeur"
 					End case 
 					
-					$1.resumeMarketing:=$1.resumeMarketing+Char:C90(Line feed:K15:40)
-					$1.resumeMarketing:=$1.resumeMarketing+"Dernière(s) activité(s) des mails envoyés :"+Char:C90(Line feed:K15:40)
+					$personne_o.resumeMarketing:=$personne_o.resumeMarketing+Char:C90(Line feed:K15:40)
+					$personne_o.resumeMarketing:=$personne_o.resumeMarketing+"Dernière(s) activité(s) des mails envoyés :"+Char:C90(Line feed:K15:40)
 					
 					If ($table_o.lastOpened#0)
-						$1.resumeMarketing:=$1.resumeMarketing+"• Dernier mail ouvert : "+cmaTimestampLire("date"; $table_o.lastOpened)+Char:C90(Line feed:K15:40)
+						$personne_o.resumeMarketing:=$personne_o.resumeMarketing+"• Dernier mail ouvert : "+cmaTimestampLire("date"; $table_o.lastOpened)+Char:C90(Line feed:K15:40)
 					Else 
-						$1.resumeMarketing:=$1.resumeMarketing+"• Aucun email ouvert"+Char:C90(Line feed:K15:40)
+						$personne_o.resumeMarketing:=$personne_o.resumeMarketing+"• Aucun email ouvert"+Char:C90(Line feed:K15:40)
 					End if 
 					
 					If ($table_o.lastClicked#0)
-						$1.resumeMarketing:=$1.resumeMarketing+"• Dernier mail cliqué : "+cmaTimestampLire("date"; $table_o.lastClicked)+Char:C90(Line feed:K15:40)
+						$personne_o.resumeMarketing:=$personne_o.resumeMarketing+"• Dernier mail cliqué : "+cmaTimestampLire("date"; $table_o.lastClicked)+Char:C90(Line feed:K15:40)
 					Else 
-						$1.resumeMarketing:=$1.resumeMarketing+"• Aucun email cliqué"+Char:C90(Line feed:K15:40)
+						$personne_o.resumeMarketing:=$personne_o.resumeMarketing+"• Aucun email cliqué"+Char:C90(Line feed:K15:40)
 					End if 
 					
 					If ($table_o.lastBounce#0)
-						$1.resumeMarketing:=$1.resumeMarketing+"• Email détecté en bounce le : "+cmaTimestampLire("date"; $table_o.lastBounce)+Char:C90(Line feed:K15:40)
+						$personne_o.resumeMarketing:=$personne_o.resumeMarketing+"• Email détecté en bounce le : "+cmaTimestampLire("date"; $table_o.lastBounce)+Char:C90(Line feed:K15:40)
 					Else 
-						$1.resumeMarketing:=$1.resumeMarketing+"• Aucun bounce"+Char:C90(Line feed:K15:40)
+						$personne_o.resumeMarketing:=$personne_o.resumeMarketing+"• Aucun bounce"+Char:C90(Line feed:K15:40)
 					End if 
 					
 					If ($table_o.desabonementMail=True:C214)
-						$1.resumeMarketing:=$1.resumeMarketing+"• Désabonnement souhaité"
+						$personne_o.resumeMarketing:=$personne_o.resumeMarketing+"• Désabonnement souhaité"
 					Else 
-						$1.resumeMarketing:=$1.resumeMarketing+"• Aucune demande de désabonnement"
+						$personne_o.resumeMarketing:=$personne_o.resumeMarketing+"• Aucune demande de désabonnement"
 					End if 
 					
 				Else 
-					$1.resumeMarketing:="Aucune donnée disponible"
+					$personne_o.resumeMarketing:="Aucune donnée disponible"
 				End if 
 				
 			Else 
-				$1.resumeMarketing:="La personne n'a pas pu être retrouver dans votre base de donnée."
+				$personne_o.resumeMarketing:="La personne n'a pas pu être retrouver dans votre base de donnée."
 			End if 
 			
-		: (Num:C11($1.modeSelection)=2) & (Bool:C1537($1.multiSelection)=True:C214)  // Sélection multi-lignes
-			$1.resume:="Aperçu indisponible plusieurs personnes sélectionnées"
-			$1.resumeMarketing:="Aperçu indisponible plusieurs personnes sélectionnées"
+		: (Num:C11($personne_o.modeSelection)=2) & (Bool:C1537($personne_o.multiSelection)=True:C214)  // Sélection multi-lignes
+			$personne_o.resume:="Aperçu indisponible plusieurs personnes sélectionnées"
+			$personne_o.resumeMarketing:="Aperçu indisponible plusieurs personnes sélectionnées"
 	End case 
 	
-Function viewPersonList
+Function viewPersonList($formScenario_o : Object)
 /* -----------------------------------------------------------------------------
 Fonction : MAPersonneDisplay.updateStringPersonneForm
 	
@@ -144,8 +140,6 @@ gestionPersonne
 Historique
 15/04/22 - Rémy Scanu <remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
-	var $1 : Object  // Objet Form scénario
-	
 	var $i_el : Integer
 	var $continue_b : Boolean
 	var $table_o; $class_o; $enregistrement_o : Object
@@ -159,24 +153,24 @@ Historique
 	entitySelection_o:=ds:C1482[Storage:C1525.automation.passerelle.tableHote].newSelection()
 	
 	Case of 
-		: ($1.entree=1)  // Gestion du scénario (Personne possible)
+		: ($formScenario_o.entree=1)  // Gestion du scénario (Personne possible)
 			
-			If ($1.donnee.scenarioPersonnePossibleEntity#Null:C1517)  // On souhait voir les personnes possiblement applicable à un scénario
+			If ($formScenario_o.donnee.scenarioPersonnePossibleEntity#Null:C1517)  // On souhait voir les personnes possiblement applicable à un scénario
 				//$class_o.fromEntitySelection($1.donnee.scenarioPersonnePossibleEntity)
-				$table_o:=$1.donnee.scenarioPersonnePossibleEntity
+				$table_o:=$formScenario_o.donnee.scenarioPersonnePossibleEntity
 				
 				$continue_b:=True:C214
 			End if 
 			
 			OBJECT SET ENABLED:C1123(*; "supprimerScenarioEnCours"; False:C215)
 			
-			If ($1.donnee.scenarioSelectionPossiblePersonne#Null:C1517) & ($1.personne#Null:C1517)
+			If ($formScenario_o.donnee.scenarioSelectionPossiblePersonne#Null:C1517) & ($formScenario_o.personne#Null:C1517)
 				
-				For each ($enregistrement_o; $1.personne)
-					$table_o:=$1.donnee.scenarioSelectionPossiblePersonne.get($enregistrement_o.UID)
+				For each ($enregistrement_o; $formScenario_o.personne)
+					$table_o:=$formScenario_o.donnee.scenarioSelectionPossiblePersonne.get($enregistrement_o.UID)
 					
 					If ($table_o=Null:C1517)
-						LISTBOX SELECT ROW:C912(*; "listePersonne"; $1.personne.indexOf($enregistrement_o)+1; lk add to selection:K53:2)
+						LISTBOX SELECT ROW:C912(*; "listePersonne"; $formScenario_o.personne.indexOf($enregistrement_o)+1; lk add to selection:K53:2)
 					End if 
 					
 				End for each 
@@ -184,23 +178,23 @@ Historique
 			End if 
 			
 			LISTBOX SET PROPERTY:C1440(*; "listePersonne"; lk selection mode:K53:35; lk multiple:K53:59)
-		: ($1.entree=2)  // Gestion du scénario (Personne en cours)
+		: ($formScenario_o.entree=2)  // Gestion du scénario (Personne en cours)
 			
-			If ($1.donnee.scenarioPersonneEnCoursEntity#Null:C1517)  // On souhait voir les personnes où le scénario est déjà appliqué
+			If ($formScenario_o.donnee.scenarioPersonneEnCoursEntity#Null:C1517)  // On souhait voir les personnes où le scénario est déjà appliqué
 				//$class_o.fromEntitySelection($1.donnee.scenarioPersonneEnCoursEntity)
-				$table_o:=$1.donnee.scenarioPersonneEnCoursEntity
+				$table_o:=$formScenario_o.donnee.scenarioPersonneEnCoursEntity
 				
 				$continue_b:=True:C214
 			End if 
 			
-		: ($1.entree=3)  // Gestion des personnes (Sans passer par Gestion du scénario)
+		: ($formScenario_o.entree=3)  // Gestion des personnes (Sans passer par Gestion du scénario)
 			$table_o:=ds:C1482[Storage:C1525.automation.passerelle.tableHote].all()
 			$continue_b:=True:C214
-		: ($1.entree=4)  // Gestion de la scène (Personne en cours)
+		: ($formScenario_o.entree=4)  // Gestion de la scène (Personne en cours)
 			
-			If ($1.donnee.scenePersonneEnCoursEntity#Null:C1517)  // On souhait voir les personnes où la scène est en cours d'éxécution
+			If ($formScenario_o.donnee.scenePersonneEnCoursEntity#Null:C1517)  // On souhait voir les personnes où la scène est en cours d'éxécution
 				//$class_o.fromEntitySelection($1.donnee.scenePersonneEnCoursEntity)
-				$table_o:=$1.donnee.scenePersonneEnCoursEntity
+				$table_o:=$formScenario_o.donnee.scenePersonneEnCoursEntity
 				
 				$continue_b:=True:C214
 			End if 
@@ -221,5 +215,5 @@ Historique
 			LISTBOX SET COLUMN FORMULA:C1203(*; cmaToolMajuscFirstChar($column_c[$i_el-1]); "This."+Storage:C1525.automation.formule.getFieldName(Storage:C1525.automation.passerelle.champ; $column_c[$i_el-1]); Is text:K8:3)
 		End for 
 		
-		$1.personneCollection:=Form:C1466.personneCollectionInit.copy()
+		$formScenario_o.personneCollection:=Form:C1466.personneCollectionInit.copy()
 	End if 

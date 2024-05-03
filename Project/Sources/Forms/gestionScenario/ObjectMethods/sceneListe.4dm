@@ -47,7 +47,7 @@ If (Form event code:C388=On Clicked:K2:4) & (Form:C1466.SceneCurrentElement#Null
 		sceneAction_at{0}:="Sélection d'une action de scène"
 	End if 
 	
-	$table_o:=ds:C1482.CaScenario.query("ID # :1"; Form:C1466.sceneDetail.scenarioID)
+	$table_o:=ds:C1482["CaScenario"].query("ID # :1"; Form:C1466.sceneDetail.scenarioID)
 	
 	$collection_c:=$table_o.toCollection("nom,ID").orderBy("nom asc")
 	COLLECTION TO ARRAY:C1562($collection_c; scenarioSuivantNom_at; "nom"; scenarioSuivantID_at; "ID")

@@ -1,5 +1,5 @@
 Case of 
-	: (Form event code:C388=Sur clic:K2:4)
+	: (Form event code:C388=On Clicked:K2:4)
 		var $element_t; $idScenario_t : Text
 		var $collection_c : Collection
 		var $table_o; $enregistrement_o; $copy_o : Object
@@ -8,12 +8,12 @@ Case of
 			CONFIRM:C162("Voulez-vous vraiment faire une duplication du scénario "+Form:C1466.scenarioDetail.nom; "Oui"; "Non")
 			
 			If (OK=1)
-				$table_o:=ds:C1482.CaScenario.query("nom = :1"; Form:C1466.scenarioDetail.nom+"@")
+				$table_o:=ds:C1482["CaScenario"].query("nom = :1"; Form:C1466.scenarioDetail.nom+"@")
 				
 				$collection_c:=OB Keys:C1719(Form:C1466.scenarioDetail)
 				
 				// On commence par dupliquer la table [CaScenario]
-				$copy_o:=ds:C1482.CaScenario.new()
+				$copy_o:=ds:C1482["CaScenario"].new()
 				
 				For each ($element_t; $collection_c)
 					
@@ -32,7 +32,7 @@ Case of
 				For each ($enregistrement_o; Form:C1466.scenarioDetail.AllCaScene)
 					$collection_c:=OB Keys:C1719($enregistrement_o)
 					
-					$copy_o:=ds:C1482.CaScene.new()
+					$copy_o:=ds:C1482["CaScene"].new()
 					
 					For each ($element_t; $collection_c)
 						
@@ -56,6 +56,6 @@ Case of
 			ALERT:C41("Merci de sélectionner un scénario dans la liste ci-dessus afin de pouvoir le dupliquer")
 		End if 
 		
-	: (Form event code:C388=Sur survol:K2:35)
+	: (Form event code:C388=On Mouse Move:K2:35)
 		SET CURSOR:C469(9000)
 End case 
