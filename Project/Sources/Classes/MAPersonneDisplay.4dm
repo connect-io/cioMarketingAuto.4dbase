@@ -31,7 +31,7 @@ Historique
 	$scenario_es:=ds:C1482["CaScenario"].newSelection()
 	
 	$class_o:=cmaToolGetClass("MAPersonne").new()
-	$class_o.loadByPrimaryKey(Form:C1466.PersonneCurrentElement.UID)
+	$class_o.loadByPrimaryKey(Form:C1466.personneDetail.UID)
 	
 	If ($class_o.personne#Null:C1517)
 		$scenario_es:=$class_o.personne.AllCaPersonneScenario.OneCaScenario
@@ -141,13 +141,21 @@ Historique
 15/04/22 - Rémy Scanu <remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
 	var $i_el : Integer
-	var $continue_b : Boolean
+	var $continue_b; $companyName_b : Boolean
 	var $table_o; $class_o; $enregistrement_o : Object
 	var $column_c : Collection
 	
 	var entitySelection_o : Object
 	
 	$column_c:=New collection:C1472("nom"; "prenom"; "UID")
+	
+	If ($formScenario_o.donnee.scenarioDetail#Null:C1517)
+		
+		If ($formScenario_o.donnee.scenarioDetail.configuration#Null:C1517)
+			$companyName_b:=$formScenario_o.donnee.scenarioDetail.configuration.companyNameInPersonList
+		End if 
+		
+	End if 
 	
 	//$class_o:=cmaToolGetClass("MAPersonneSelection").new()  // Instanciation de la class
 	entitySelection_o:=ds:C1482[Storage:C1525.automation.passerelle.tableHote].newSelection()
@@ -167,7 +175,7 @@ Historique
 			If ($formScenario_o.donnee.scenarioSelectionPossiblePersonne#Null:C1517) & ($formScenario_o.personne#Null:C1517)
 				
 				For each ($enregistrement_o; $formScenario_o.personne)
-					$table_o:=$formScenario_o.donnee.scenarioSelectionPossiblePersonne.get($enregistrement_o.UID)
+					$table_o:=$formScenario_o.donnee.scenarioSelectionPossiblePersonne.get($enregistrement_o.getKey())
 					
 					If ($table_o=Null:C1517)
 						LISTBOX SELECT ROW:C912(*; "listePersonne"; $formScenario_o.personne.indexOf($enregistrement_o)+1; lk add to selection:K53:2)
@@ -213,6 +221,11 @@ Historique
 		
 		For ($i_el; 1; $column_c.length)
 			LISTBOX SET COLUMN FORMULA:C1203(*; cmaToolMajuscFirstChar($column_c[$i_el-1]); "This."+Storage:C1525.automation.formule.getFieldName(Storage:C1525.automation.passerelle.champ; $column_c[$i_el-1]); Is text:K8:3)
+			
+			If ($companyName_b=True:C214) & ($column_c[$i_el-1]="nom")
+				LISTBOX SET COLUMN FORMULA:C1203(*; cmaToolMajuscFirstChar($column_c[$i_el-1]); "This."+Storage:C1525.automation.formule.getFieldName(Storage:C1525.automation.passerelle.champ; "nomCompagnie"); Is text:K8:3)
+			End if 
+			
 		End for 
 		
 		$formScenario_o.personneCollection:=Form:C1466.personneCollectionInit.copy()

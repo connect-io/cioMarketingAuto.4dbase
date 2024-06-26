@@ -1,8 +1,7 @@
-If (Form event code:C388=Sur clic:K2:4) & (Form:C1466.ScenarioPersonneCurrentElement#Null:C1517)
+If (Form event code:C388=On Clicked:K2:4) & (Form:C1466.ScenarioPersonneCurrentElement#Null:C1517)
 	C_OBJECT:C1216($table_o)
 	
 	$table_o:=Form:C1466.ScenarioPersonneCurrentElement  // Gestion du scènario sélectionné
-	
 	Form:C1466.scene:=$table_o.AllCaScene.orderBy("numOrdre asc")  // Gestion des scènes du scénario sélectionné
 	
 	OBJECT SET ENABLED:C1123(*; "personneDetailListeScene"; True:C214)

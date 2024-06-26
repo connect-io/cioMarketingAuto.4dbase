@@ -5,7 +5,7 @@ Class : cs.MAEMail
 
 Class constructor($transporter_t : Text; $parametre_o : Object)
 /* -----------------------------------------------------------------------------
-Fonction : EMail.constructor
+Fonction : MAEMail.constructor
 	
 Instanciation de la class avec le nom du transporter à utiliser en paramètre (voir fichier de config)
 	

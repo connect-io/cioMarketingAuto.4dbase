@@ -19,6 +19,35 @@ Historique
 	// Chargement des éléments nécessaires au bon fonctionnement de la classe par rapport à la table [Personne] de la base hote.
 	This:C1470.passerelle:=OB Copy:C1225(Storage:C1525.automation.config.passerelle.query("tableComposant = :1"; "Personne")[0])
 	
+Function addScenario($scenarioID_t : Text)
+	var $scenario_o; $retour_o; $caPersonneMarketing_o : Object
+	
+	ASSERT:C1129(This:C1470.personne#Null:C1517; "Impossible d'utiliser la fonction sendMailing sans une personne de définie.")
+	
+	This:C1470.personne.reload()
+	$scenario_o:=ds:C1482["CaScenario"].get($scenarioID_t)
+	
+	If ($scenario_o#Null:C1517)
+		$caPersonneScenario_o:=ds:C1482["CaPersonneScenario"].new()
+		
+		$caPersonneScenario_o.personneID:=This:C1470.personne.getKey()
+		$caPersonneScenario_o.scenarioID:=$scenarioID_t
+		
+		$caPersonneScenario_o.actif:=$scenario_o.actif
+		$caPersonneScenario_o.situation:=New object:C1471("detail"; New collection:C1472)
+		$retour_o:=$caPersonneScenario_o.save()
+	End if 
+	
+	If (This:C1470.personne.AllCaPersonneMarketing.length=0)
+		$caPersonneMarketing_o:=ds:C1482["CaPersonneMarketing"].new()
+		
+		$caPersonneMarketing_o.personneID:=This:C1470.personne.getKey()
+		$caPersonneMarketing_o.rang:=1  // 1 pour Suspect
+		$caPersonneMarketing_o.historique:=New object:C1471("detail"; New collection:C1472)
+		
+		$retour_o:=$caPersonneMarketing_o.save()
+	End if 
+	
 Function getFieldName($field_t : Text)->$fieldName_t : Text
 	var $field_c : Collection
 	
@@ -74,15 +103,11 @@ Historique
 		
 	End for each 
 	
-Function loadByField
-	var $1 : Text  // Nom du champ
-	var $2 : Text  // Signe de la recherche
-	var $3 : Variant  // Valeur à rechercher
-	
+Function loadByField($fieldName_t : Text; $signComparaison_t : Text; $value_v : Variant)
 	var $table_o : Object
 	var $field_c : Collection
 	
-	$field_c:=This:C1470.passerelle.champ.query("lib = :1"; $1)
+	$field_c:=This:C1470.passerelle.champ.query("lib = :1"; $fieldName_t)
 	
 	This:C1470.personne:=Null:C1517  // Par défaut je ré-initialise la propriété
 	
@@ -91,8 +116,8 @@ Function loadByField
 		Case of 
 			: ($field_c[0].personAccess#Null:C1517) & ($field_c[0].directAccess=Null:C1517)  // La recherche doit se faire directement sur la table [Personne] de la base hôte
 				This:C1470.fieldName:=$field_c[0].personAccess
-				This:C1470.fieldSignComparaison:=$2
-				This:C1470.fieldValue:=$3
+				This:C1470.fieldSignComparaison:=$signComparaison_t
+				This:C1470.fieldValue:=$value_v
 				
 				$table_o:=Formula from string:C1601("ds[\""+This:C1470.passerelle.tableHote+"\"].query(\""+This:C1470.fieldName+" "+This:C1470.fieldSignComparaison+" :1\";This.fieldValue)").call(This:C1470)
 				
@@ -105,8 +130,8 @@ Function loadByField
 				OB REMOVE:C1226(This:C1470; "fieldSignComparaison")
 				OB REMOVE:C1226(This:C1470; "fieldValue")
 			: ($field_c[0].directAccess#Null:C1517)  // Il faut faire la recherche sur une table [Enfant]
-				This:C1470.childFieldSignComparaison:=$2
-				This:C1470.childFieldValue:=$3
+				This:C1470.childFieldSignComparaison:=$signComparaison_t
+				This:C1470.childFieldValue:=$value_v
 				
 				$table_o:=Formula from string:C1601($field_c[0].directAccess).call(This:C1470)
 				
@@ -173,7 +198,6 @@ Historique
 	
 	If (This:C1470.personne#Null:C1517)
 		This:C1470.load()
-		
 		$isOk_b:=True:C214
 	End if 
 	

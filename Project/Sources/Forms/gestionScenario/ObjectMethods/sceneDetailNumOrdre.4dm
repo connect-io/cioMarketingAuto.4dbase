@@ -27,7 +27,6 @@ If ($return_o.etat=False:C215)
 				
 			Else 
 				ALERT:C41("Impossible de trouver l'autre scène, merci de ré-essayer !")
-				
 				Form:C1466.sceneDetail.numOrdre:=$numOrdre_el
 			End if 
 			
@@ -37,7 +36,6 @@ If ($return_o.etat=False:C215)
 		
 	Else 
 		ALERT:C41($return_o.erreurDetail)
-		
 		Form:C1466.sceneDetail.numOrdre:=$numOrdre_el
 	End if 
 	

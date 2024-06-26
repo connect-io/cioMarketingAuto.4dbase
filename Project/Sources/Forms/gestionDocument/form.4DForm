@@ -369,11 +369,46 @@
 					"fontFamily": "Arial",
 					"fontSize": 18,
 					"fontWeight": "bold"
+				},
+				"externalReference": {
+					"type": "input",
+					"left": 903,
+					"top": 381,
+					"width": 145,
+					"height": 151,
+					"enterable": false,
+					"focusable": false,
+					"contextMenu": "none",
+					"fontFamily": "Arial",
+					"fontSize": 13,
+					"fill": "transparent",
+					"borderStyle": "none",
+					"visibility": "hidden",
+					"fontWeight": "bold",
+					"stroke": "#ff0000",
+					"textAlign": "automatic"
+				},
+				"sceneDetailVersionDeleteExternalReference": {
+					"type": "pictureButton",
+					"left": 1051,
+					"top": 381,
+					"width": 20,
+					"height": 20,
+					"events": [
+						"onClick",
+						"onMouseMove"
+					],
+					"picture": "/RESOURCES/Images/delete-item.png",
+					"method": "ObjectMethods/sceneDetailVersionDeleteExternalReference.4dm",
+					"loopBackToFirstFrame": true,
+					"switchBackWhenReleased": true,
+					"useLastFrameAsDisabled": true,
+					"visibility": "hidden"
 				}
 			}
 		}
 	],
-	"geometryStamp": 450,
+	"geometryStamp": 473,
 	"method": "method.4dm",
 	"editor": {
 		"groups": {

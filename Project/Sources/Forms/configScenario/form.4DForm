@@ -26,7 +26,7 @@
 				"Bouton": {
 					"type": "button",
 					"text": "Valider",
-					"top": 105,
+					"top": 165,
 					"left": 38,
 					"width": 202,
 					"height": 30,
@@ -59,10 +59,45 @@
 					"width": 172,
 					"height": 25,
 					"fontWeight": "bold"
+				},
+				"Texte5": {
+					"type": "text",
+					"text": "Utiliser le nom de la compagnie :",
+					"top": 82,
+					"left": 14,
+					"width": 220,
+					"height": 25,
+					"fontWeight": "bold"
+				},
+				"imageCompanyName": {
+					"type": "input",
+					"left": 14,
+					"top": 109,
+					"width": 32,
+					"height": 32,
+					"dataSourceTypeHint": "picture",
+					"dataSource": "Form:C1466.imageCompanyName",
+					"enterable": false,
+					"contextMenu": "none",
+					"pictureFormat": "proportionalCenter",
+					"fill": "transparent",
+					"borderStyle": "none",
+					"events": [
+						"onClick",
+						"onMouseMove"
+					],
+					"method": "ObjectMethods/imageCompanyName.4dm"
 				}
 			}
 		}
 	],
-	"geometryStamp": 206,
-	"method": "method.4dm"
+	"geometryStamp": 225,
+	"method": "method.4dm",
+	"editor": {
+		"activeView": "View 1",
+		"defaultView": "View 1",
+		"views": {
+			"View 1": {}
+		}
+	}
 }

@@ -5,7 +5,7 @@ Class de gestion du marketing automation
 
 -----------------------------------------------------------------------------*/
 
-Class constructor($initialisation_b : Boolean; $configChemin_t : Text)
+Class constructor($initialisation_b : Boolean)
 /* -----------------------------------------------------------------------------
 Fonction : MarketingAutomation.constructor
 	
@@ -221,16 +221,20 @@ Historique
 -----------------------------------------------------------------------------*/
 	var $numOrdre_el : Integer
 	var $continue_b; $saut_b; $sautEffectue_b; $finScenario_b : Boolean
-	var $table_o; $enregistrement_o; $caScenarioEvent_o; $scene_o; $personne_o; $eMail_o; $config_o; $conditionAction_o; $conditionSaut_o; $scene_cs; $retour_o; $scenario_o; $autreTable_o; $autreEnregistrement_o; $caPersonneMarketing_o : Object
-	var $collection_c : Collection
+	var $table_o; $enregistrement_o; $caScenarioEvent_o; $scene_o; $personne_o; $eMail_o; $config_o; $conditionAction_o; $conditionSaut_o; $scene_cs; $retour_o; \
+		$scenario_o; $autreTable_o; $autreEnregistrement_o; $caPersonneMarketing_o; $docWritePro_o : Object
+	var $collection_c; $detail_c : Collection
+	
+	var $formule_f : Object
+	var $parameter_es : Object
 	
 	ASSERT:C1129(This:C1470.cronosImage#Null:C1517; "Impossible d'utiliser la fonction cronosAction sans avoir lancer la fonction loadCronos avant")
 	
 	// On recherche toutes les personnes qui ont un scénario actif et dont le prochain check est dépassé
 	$table_o:=ds:C1482["CaPersonneScenario"].query("actif = :1 AND tsProchainCheck <= :2"; True:C214; cmaTimestamp(Current date:C33; Current time:C178))
-	
 	$scene_cs:=cmaToolGetClass("MAScene").new()
 	
+	TRACE:C157
 	For each ($enregistrement_o; $table_o)
 		Form:C1466.cronosMessage:="Gestion des scénarios..."+Char:C90(Line feed:K15:40)
 		Form:C1466.cronosMessage:=Form:C1466.cronosMessage+"Envoi de l'email automatique "+String:C10($enregistrement_o.indexOf($table_o)+1)+" / "+String:C10($table_o.length)
@@ -257,7 +261,7 @@ Historique
 						$caScenarioEvent_o.etat:="Terminé"
 						$caScenarioEvent_o.tsMiseAJour:=cmaTimestamp(Current date:C33; Current time:C178)
 						
-						$caScenarioEvent_o.save()
+						$retour_o:=$caScenarioEvent_o.save()
 						
 						Case of 
 							: ($caScenarioEvent_o.OneCaScene.sceneSuivanteID#0)  // On cherche la scène suivante
@@ -315,7 +319,6 @@ Historique
 			
 			Repeat   // Vérification des conditions de saut
 				$scene_cs.loadByPrimaryKey($scene_o.ID)
-				
 				CLEAR VARIABLE:C89($saut_b)
 				
 				Case of 
@@ -369,7 +372,7 @@ Historique
 							$autreEnregistrement_o.etat:="Terminé"
 							$autreEnregistrement_o.tsMiseAJour:=cmaTimestamp(Current date:C33; Current time:C178)
 							
-							$autreEnregistrement_o.save()
+							$retour_o:=$autreEnregistrement_o.save()
 						End for each 
 						
 					End if 
@@ -379,11 +382,11 @@ Historique
 					
 					// Je restitue le tsProchainCheck qu'il y avait avant la détection de l'évènement
 					$enregistrement_o.tsProchainCheck:=$caScenarioEvent_o.tsMiseAJour
-					$enregistrement_o.save()
+					$retour_o:=$enregistrement_o.save()
 					
 					// Et je mets à jour mon log avec le bon timeStamp cette fois-ci
 					$caScenarioEvent_o.tsMiseAJour:=cmaTimestamp(Current date:C33; Current time:C178)
-					$caScenarioEvent_o.save()
+					$retour_o:=$caScenarioEvent_o.save()
 				End if 
 				
 			End if 
@@ -410,8 +413,7 @@ Historique
 						
 						If ($continue_b=False:C215)  // Catastrophe, on ne peut pas jouer la scène car toutes les conditions ne sont pas réunis, il faut rappeler tous les comédiens :'(
 							$caScenarioEvent_o.etat:="En cours"
-							
-							$caScenarioEvent_o.save()
+							$retour_o:=$caScenarioEvent_o.save()
 						End if 
 						
 				End case 
@@ -419,20 +421,17 @@ Historique
 			End if 
 			
 			// On passe aux conditions d'action inhérentes
+			If ($continue_b=True:C214)
+				$personne_o:=cmaToolGetClass("MAPersonne").new()
+				$personne_o.loadByPrimaryKey($enregistrement_o.personneID)
+				
+				$continue_b:=($personne_o.personne#Null:C1517)
+			End if 
+			
 			Case of 
 				: ($continue_b=False:C215)
 				: ($scene_o.action="Envoi email")  // Si l'action de la scène est l'envoi d'un email, on doit faire des vérifications de base
-					$personne_o:=cmaToolGetClass("MAPersonne").new()
-					$personne_o.loadByPrimaryKey($enregistrement_o.personneID)
-					
-					If ($continue_b=True:C214)
-						$continue_b:=(String:C10($personne_o.eMail)#"") & (cmaToolRegexValidate(1; String:C10($personne_o.eMail))=True:C214)  // Si la personne possède bien un email et qu'il est valide
-						
-						If ($continue_b=False:C215)
-							$scene_cs.addScenarioEvent("Erreur email"; $enregistrement_o.ID)
-						End if 
-						
-					End if 
+					$continue_b:=(String:C10($personne_o.eMail)#"") & (cmaToolRegexValidate(1; String:C10($personne_o.eMail))=True:C214)  // Si la personne possède bien un email et qu'il est valide
 					
 					If ($continue_b=True:C214)  // Si la personne n'a pas un email en demande de désabonnement ou en bounce
 						$continue_b:=$personne_o.mailjetIsPossible()
@@ -459,11 +458,28 @@ Historique
 					If ($continue_b=True:C214)  // Si l'email qui est programmé n'est pas vide
 						$collection_c:=$scene_o.paramAction.modele.email.version.query("actif = :1"; True:C214)
 						
-						If ($collection_c.length=1)  // S'il y a bien une version d'email actif
+						If ($collection_c.length=1)  // S'il y a bien une version d'email active
 							
-							If ($collection_c[0].contenu4WP#Null:C1517)
-								$continue_b:=(WP Get text:C1575($collection_c[0].contenu4WP; wk expressions as value:K81:255)#"")
+							If ($collection_c[0].contenu4WP#Null:C1517) || ($collection_c[0].externalReference#Null:C1517)
+								
+								Case of 
+									: ($collection_c[0].externalReference#Null:C1517)
+										$parameter_es:=ds:C1482[$collection_c[0].externalReference.table].query($collection_c[0].externalReference.field+" = :1"; $collection_c[0].externalReference.value)
+										
+										If ($parameter_es.length>=1)
+											$docWritePro_o:=WP New:C1317($parameter_es.first().value_b)
+										Else 
+											$scene_cs.addScenarioEvent("Le document Write Pro "+$collection_c[0].externalReference.value+" n'a pas pu être trouvé dans la base de données cliente pour la version active email"; $enregistrement_o.ID)
+											$continue_b:=False:C215
+										End if 
+										
+									: ($collection_c[0].contenu4WP#Null:C1517)
+										$docWritePro_o:=$collection_c[0].contenu4WP
+								End case 
+								
+								$continue_b:=(WP Get text:C1575($docWritePro_o; wk expressions as value:K81:255)#"")
 							Else   // Il n'y a pas de document 4DWP assigné à cette version
+								$scene_cs.addScenarioEvent("Pas de document Write Pro dans la scène pour la version active email"; $enregistrement_o.ID)
 								$continue_b:=False:C215
 							End if 
 							
@@ -472,11 +488,87 @@ Historique
 							End if 
 							
 						Else   // Il n'y a aucune version d'email créée pour cette scène là
+							$scene_cs.addScenarioEvent("Version email de la scène manquante"; $enregistrement_o.ID)
 							$continue_b:=False:C215
 						End if 
 						
 					Else   // Dans ce cas là, soit le mail n'est pas bon, soit il est en demande de désabonnement ou soit il est en bounce
+						$scene_cs.addScenarioEvent("Erreur email"; $enregistrement_o.ID)
 						$finScenario_b:=True:C214
+					End if 
+					
+				: ($scene_o.action="Envoi SMS")  // Si l'action de la scène est l'impression d'un document, on doit faire des vérifications de base
+					$continue_b:=(String:C10($personne_o.telMobile)#"")
+					
+					If ($continue_b=True:C214)  // Si la personne a un numéro de téléphone
+						$collection_c:=$scene_o.paramAction.modele.sms.version.query("actif = :1"; True:C214)
+						
+						If ($collection_c.length=1)  // S'il y a bien une version sms active
+							
+							If ($collection_c[0].contenu4WP#Null:C1517) || ($collection_c[0].externalReference#Null:C1517)
+								
+								Case of 
+									: ($collection_c[0].externalReference#Null:C1517)
+										$parameter_es:=ds:C1482[$collection_c[0].externalReference.table].query($collection_c[0].externalReference.field+" = :1"; $collection_c[0].externalReference.value)
+										
+										If ($parameter_es.length>=1)
+											$docWritePro_o:=WP New:C1317($parameter_es.first().value_b)
+										Else 
+											$scene_cs.addScenarioEvent("Le document Write Pro "+$collection_c[0].externalReference.value+" n'a pas pu être trouvé dans la base de données cliente pour la version active sms"; $enregistrement_o.ID)
+											$continue_b:=False:C215
+										End if 
+										
+									: ($collection_c[0].contenu4WP#Null:C1517)
+										$docWritePro_o:=$collection_c[0].contenu4WP
+								End case 
+								
+								$continue_b:=(WP Get text:C1575($docWritePro_o; wk expressions as value:K81:255)#"")
+							Else   // Il n'y a pas de document 4DWP assigné à cette version
+								$scene_cs.addScenarioEvent("Pas de document Write Pro dans la scène pour la version active sms"; $enregistrement_o.ID)
+								$continue_b:=False:C215
+							End if 
+							
+						Else   // Il n'y a aucune version sms créée pour cette scène là
+							$scene_cs.addScenarioEvent("Version sms de la scène manquante"; $enregistrement_o.ID)
+							$continue_b:=False:C215
+						End if 
+						
+					Else   // Dans ce cas le téléphone mobile n'est pas bon
+						$scene_cs.addScenarioEvent("Erreur téléphone mobile"; $enregistrement_o.ID)
+						$finScenario_b:=True:C214
+					End if 
+					
+				: ($scene_o.action="Imprimer document")  // Si l'action de la scène est l'impression d'un document, on doit faire des vérifications de base
+					$collection_c:=$scene_o.paramAction.modele.courrier.version.query("actif = :1"; True:C214)
+					
+					If ($collection_c.length=1)  // S'il y a bien une version courrier active
+						
+						If ($collection_c[0].contenu4WP#Null:C1517) || ($collection_c[0].externalReference#Null:C1517)
+							
+							Case of 
+								: ($collection_c[0].externalReference#Null:C1517)
+									$parameter_es:=ds:C1482[$collection_c[0].externalReference.table].query($collection_c[0].externalReference.field+" = :1"; $collection_c[0].externalReference.value)
+									
+									If ($parameter_es.length>=1)
+										$docWritePro_o:=WP New:C1317($parameter_es.first().value_b)
+									Else 
+										$scene_cs.addScenarioEvent("Le document Write Pro "+$collection_c[0].externalReference.value+" n'a pas pu être trouvé dans la base de données cliente pour la version active sms"; $enregistrement_o.ID)
+										$continue_b:=False:C215
+									End if 
+									
+								: ($collection_c[0].contenu4WP#Null:C1517)
+									$docWritePro_o:=$collection_c[0].contenu4WP
+							End case 
+							
+							$continue_b:=(WP Get text:C1575($docWritePro_o; wk expressions as value:K81:255)#"")
+						Else   // Il n'y a pas de document 4DWP assigné à cette version
+							$scene_cs.addScenarioEvent("Pas de document Write Pro dans la scène pour la version active courrier"; $enregistrement_o.ID)
+							$continue_b:=False:C215
+						End if 
+						
+					Else   // Il n'y a aucune version courrier créée pour cette scène là
+						$scene_cs.addScenarioEvent("Version courrier de la scène manquante"; $enregistrement_o.ID)
+						$continue_b:=False:C215
 					End if 
 					
 			End case 
@@ -484,25 +576,41 @@ Historique
 			If ($continue_b=True:C214)  // La scène est exécutable, on va voir ce qu'on doit... l'exécuter :D
 				$scene_cs.loadByPrimaryKey($scene_o.ID)
 				
+				If ($scene_o.action="Envoi email") | ($scene_o.action="Envoi SMS") | ($scene_o.action="Imprimer document")
+					
+					If ($collection_c[0].externalReference#Null:C1517)
+						$formule_f:=Formula from string:C1601($parameter_es[0].formula)
+						$detail_c:=$enregistrement_o.situation.detail.query("scene = :1"; $scene_o.numOrdre)
+						
+						If ($detail_c.length>0)
+							$entity_e:=$formule_f.call(New object:C1471("value"; $detail_c[0].externalReference))
+							WP SET DATA CONTEXT:C1786($docWritePro_o; $entity_e)
+						End if 
+						
+					End if 
+					
+				End if 
+				
 				Case of 
 					: ($scene_o.action="Attente")  // L'action de la scène est juste une attente d'un certains délai... on créé donc le log
-						$scene_cs.addScenarioEvent($scene_o.action; $enregistrement_o.ID)
 					: ($scene_o.action="Envoi email")  // L'action de la scène est l'envoi d'un email
 						$eMail_o:=cmaToolGetClass("MAEMail").new($collection_c[0].expediteur)
 						$eMail_o.subject:=$collection_c[0].subject
 						
-						$config_o:=New object:C1471("success"; True:C214; "type"; "Email"; "eMailConfig"; $eMail_o; "contenu4WP"; $collection_c[0].contenu4WP; "expediteur"; $collection_c[0].expediteur)
+						$config_o:=New object:C1471("success"; True:C214; "type"; "Email"; "eMailConfig"; $eMail_o; "contenu4WP"; $docWritePro_o; "expediteur"; $collection_c[0].expediteur)
 						$personne_o.sendMailing($config_o)
-						
-						// Ajout du log
-						$scene_cs.addScenarioEvent($scene_o.action; $enregistrement_o.ID)
+					: ($scene_o.action="Envoi SMS")  // L'action de la scène est l'envoi d'un SMS
+						$eMail_o:=cmaToolGetClass("MASMS").new($collection_c[0].expediteur)
+					: ($scene_o.action="Imprimer document")  // L'action de la scène est l'impression d'un document
+						$config_o:=New object:C1471("success"; True:C214; "type"; "Courrier"; "contenu4WP"; $docWritePro_o)
+						$personne_o.sendMailing($config_o)
 					: ($scene_o.action="Changement de scénario") | ($scene_o.action="Fin du scénario")  // L'action de la scène est qu'on arrête le scénario de la personne ou qu'on change de scénario
 						// On passe en inactif l'inscription au scénario
 						$enregistrement_o.actif:=False:C215
-						
-						// Ajout du log
-						$scene_cs.addScenarioEvent($scene_o.action; $enregistrement_o.ID)
 				End case 
+				
+				// Ajout du log
+				$scene_cs.addScenarioEvent($scene_o.action; $enregistrement_o.ID)
 				
 				If ($scene_o.action="Changement de scénario") | ($scene_o.action="Fin du scénario")
 					$enregistrement_o.tsProchainCheck:=0
@@ -523,8 +631,7 @@ Historique
 		If ($finScenario_b=True:C214)  // Pas de scène "Fin de scénario" OU problème dans l'adresse email OU Désabonnement/Bounce
 			$enregistrement_o.actif:=False:C215
 			$enregistrement_o.tsProchainCheck:=0
-			
-			$enregistrement_o.save()
+			$retour_o:=$enregistrement_o.save()
 		End if 
 		
 		cmaToolCleanVariable(->$finScenario_b; ->$scene_o; ->$continue_b)

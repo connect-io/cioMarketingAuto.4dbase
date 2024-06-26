@@ -32,6 +32,7 @@ Function newScenario($nom_t : Text; $condition_o : Object)->$return_b : Boolean
 	
 	$caScenario_o.actif:=True:C214
 	$caScenario_o.condition:=New object:C1471("ageMinimum"; 0; "ageMaximum"; 0; "rang"; 0; "dateDebutMailClique"; !00-00-00!; "dateFinMailClique"; !00-00-00!; "dateDebutMailOuvert"; !00-00-00!; "dateFinMailOuvert"; !00-00-00!)
+	$caScenario_o.configuration:=New object:C1471("companyNameInPersonList"; False:C215)
 	
 	If ($condition_o#Null:C1517)
 		$caScenario_o.condition:=cmaToolObjectMerge($caScenario_o.condition; $condition_o)
@@ -379,6 +380,18 @@ Function loadImageScenarioCondition
 		
 	End if 
 	
+Function loadImageScenarioConfiguration
+	
+	This:C1470.imageCompanyName:=Storage:C1525.automation.image["toggle-off"]
+	
+	If (This:C1470.scenarioDetail.configuration.companyNameInPersonList#Null:C1517)
+		
+		If (This:C1470.scenarioDetail.configuration.companyNameInPersonList=True:C214)
+			This:C1470.imageCompanyName:=Storage:C1525.automation.image["toggle-on"]
+		End if 
+		
+	End if 
+	
 Function updateStringScenarioForm($provenance_el : Integer)
 	
 	Case of 
@@ -408,6 +421,7 @@ Function updateStringScenarioForm($provenance_el : Integer)
 Function newScene($nom_t : Text; $action_t : Text)->$return_b : Boolean
 	var $caScene_o; $retour_o : Object
 	
+	This:C1470.scenarioDetail.reload()
 	$caScene_o:=ds:C1482["CaScene"].new()
 	
 	// Modifié par : Rémy Scanu (10/06/2021)

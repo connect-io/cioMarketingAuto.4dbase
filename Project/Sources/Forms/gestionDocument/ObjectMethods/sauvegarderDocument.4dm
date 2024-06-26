@@ -1,7 +1,8 @@
+var $texte_t : Text
+var $version_o; $statut_o : Object
+
 Case of 
-	: (Form event code:C388=Sur clic:K2:4)
-		var $texte_t : Text
-		var $version_o : Object
+	: (Form event code:C388=On Clicked:K2:4)
 		
 		Case of 
 			: (Form:C1466.entree=2)  // Edition action scène
@@ -16,13 +17,17 @@ Case of
 						//Form.donnee.sceneDetail.paramAction.modelePerso:=Vrai
 						//Form.sceneDetail.paramAction.modele4WP:=WParea
 						$version_o:=Form:C1466.donnee.sceneDetail.paramAction.modele[Lowercase:C14(Form:C1466.donnee.sceneTypeSelected)].version.query("titre = :1"; Form:C1466.donnee.sceneVersionSelected)[0]
-						
 						$version_o.contenu4WP:=WParea
+						
+						If (Form:C1466.externalReference#Null:C1517)
+							$version_o.externalReference:=OB Copy:C1225(Form:C1466.externalReference)
+						End if 
 						
 						$version_o.modifierLe:=cmaTimestamp-cwToolHourSummerWinter(Current date:C33)
 						$version_o.modifierPar:=Current user:C182
 						
-						Form:C1466.donnee.sceneDetail.save()
+						$statut_o:=Form:C1466.donnee.sceneDetail.save()
+						OB REMOVE:C1226(Form:C1466; "externalReference")
 					End if 
 					
 				End if 
@@ -30,6 +35,6 @@ Case of
 		End case 
 		
 		ACCEPT:C269
-	: (Form event code:C388=Sur survol:K2:35)
+	: (Form event code:C388=On Mouse Move:K2:35)
 		SET CURSOR:C469(9000)
 End case 
