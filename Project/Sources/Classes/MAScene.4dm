@@ -40,8 +40,13 @@ Historique
 			$caScenarioEvent_o.information:="Attente de la prochaine scène"
 		: ($action_t="Envoi email")
 			$caScenarioEvent_o.etat:="En cours"
-			
 			$caScenarioEvent_o.information:="Envoi d'un email"
+		: ($action_t="Envoi SMS")
+			$caScenarioEvent_o.etat:="En cours"
+			$caScenarioEvent_o.information:="Envoi d'un sms"
+		: ($action_t="Imprimer document")
+			$caScenarioEvent_o.etat:="En cours"
+			$caScenarioEvent_o.information:="Impression d'un document"
 		: ($action_t="Évènement mailjet@")
 			$caScenarioEvent_o.etat:="Évènement mailjet"
 			
