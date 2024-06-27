@@ -3,7 +3,7 @@ Class : cs.MAPersonne
 
 Class de gestion du marketing automation pour une entité [Personne]
 
------------------------------------------------------------------------------*/
+------------------------------------------------------------------------------*/
 
 Class constructor
 /*-----------------------------------------------------------------------------
@@ -13,29 +13,53 @@ Instanciation de la class MAPersonne pour le marketing automotion
 	
 Historique
 26/01/21 - Grégory Fromain <gregory@connect-io.fr> - Clean code
------------------------------------------------------------------------------*/
+------------------------------------------------------------------------------*/
 	This:C1470.personne:=Null:C1517
 	
 	// Chargement des éléments nécessaires au bon fonctionnement de la classe par rapport à la table [Personne] de la base hote.
 	This:C1470.passerelle:=OB Copy:C1225(Storage:C1525.automation.config.passerelle.query("tableComposant = :1"; "Personne")[0])
 	
-Function addScenario($scenarioID_t : Text)
-	var $scenario_o; $retour_o; $caPersonneMarketing_o : Object
+	
+	
+Function addScenario($scenarioName_t : Text; $externalReference_t : Text)->$retour_o : Object
+/*-----------------------------------------------------------------------------
+Fonction : MAPersonne.addScenario
+	
+On vient lier la personne à un scénario
+	
+Historique
+27/06/24 - Grégory Fromain <gregory@connect-io.fr> - Relecture de code
+------------------------------------------------------------------------------*/
+	var $scenario_o; $caPersonneMarketing_o : Object
+	var $caPersonneScenario_o : Object
 	
 	ASSERT:C1129(This:C1470.personne#Null:C1517; "Impossible d'utiliser la fonction sendMailing sans une personne de définie.")
 	
 	This:C1470.personne.reload()
-	$scenario_o:=ds:C1482["CaScenario"].get($scenarioID_t)
+	$scenario_o:=ds:C1482["CaScenario"].query("nom = :1"; $scenarioName_t)
 	
-	If ($scenario_o#Null:C1517)
+	// On vient lier la personne à un scénario
+	If ($scenario_o.length>0)
+		$scenario_o:=$scenario_o.first()
 		$caPersonneScenario_o:=ds:C1482["CaPersonneScenario"].new()
 		
 		$caPersonneScenario_o.personneID:=This:C1470.personne.getKey()
-		$caPersonneScenario_o.scenarioID:=$scenarioID_t
+		$caPersonneScenario_o.scenarioID:=$scenario_o.getKey()
 		
 		$caPersonneScenario_o.actif:=$scenario_o.actif
 		$caPersonneScenario_o.situation:=New object:C1471("detail"; New collection:C1472)
+		
+		If ($externalReference_t#"")
+			For ($i; 1; $caPersonneScenario_o.OneCaScenario.AllCaScene.length)
+				$caPersonneScenario_o.situation.detail.push(New object:C1471("scene"; $i; "externalReference"; $externalReference_t))
+				
+			End for 
+		End if 
 		$retour_o:=$caPersonneScenario_o.save()
+		
+		If ($retour_o.success=False:C215)
+			return $retour_o
+		End if 
 	End if 
 	
 	If (This:C1470.personne.AllCaPersonneMarketing.length=0)
@@ -47,6 +71,10 @@ Function addScenario($scenarioID_t : Text)
 		
 		$retour_o:=$caPersonneMarketing_o.save()
 	End if 
+	
+	return $retour_o
+	
+	
 	
 Function getFieldName($field_t : Text)->$fieldName_t : Text
 	var $field_c : Collection
