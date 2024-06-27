@@ -222,10 +222,9 @@ Historique
 	var $numOrdre_el : Integer
 	var $continue_b; $saut_b; $sautEffectue_b; $finScenario_b : Boolean
 	var $table_o; $enregistrement_o; $caScenarioEvent_o; $scene_o; $personne_o; $eMail_o; $config_o; $conditionAction_o; $conditionSaut_o; $scene_cs; $retour_o; \
-		$scenario_o; $autreTable_o; $autreEnregistrement_o; $caPersonneMarketing_o; $docWritePro_o : Object
-	var $collection_c; $detail_c : Collection
+		$scenario_o; $autreTable_o; $autreEnregistrement_o; $caPersonneMarketing_o; $document_o : Object
+	var $collection_c : Collection
 	
-	var $formule_f : Object
 	var $parameter_es : Object
 	
 	ASSERT:C1129(This:C1470.cronosImage#Null:C1517; "Impossible d'utiliser la fonction cronosAction sans avoir lancer la fonction loadCronos avant")
@@ -234,7 +233,6 @@ Historique
 	$table_o:=ds:C1482["CaPersonneScenario"].query("actif = :1 AND tsProchainCheck <= :2"; True:C214; cmaTimestamp(Current date:C33; Current time:C178))
 	$scene_cs:=cmaToolGetClass("MAScene").new()
 	
-	TRACE:C157
 	For each ($enregistrement_o; $table_o)
 		Form:C1466.cronosMessage:="Gestion des scénarios..."+Char:C90(Line feed:K15:40)
 		Form:C1466.cronosMessage:=Form:C1466.cronosMessage+"Envoi de l'email automatique "+String:C10($enregistrement_o.indexOf($table_o)+1)+" / "+String:C10($table_o.length)
@@ -467,17 +465,17 @@ Historique
 										$parameter_es:=ds:C1482[$collection_c[0].externalReference.table].query($collection_c[0].externalReference.field+" = :1"; $collection_c[0].externalReference.value)
 										
 										If ($parameter_es.length>=1)
-											$docWritePro_o:=WP New:C1317($parameter_es.first().value_b)
+											$document_o:=WP New:C1317($parameter_es.first().value_b)
 										Else 
 											$scene_cs.addScenarioEvent("Le document Write Pro "+$collection_c[0].externalReference.value+" n'a pas pu être trouvé dans la base de données cliente pour la version active email"; $enregistrement_o.ID)
 											$continue_b:=False:C215
 										End if 
 										
 									: ($collection_c[0].contenu4WP#Null:C1517)
-										$docWritePro_o:=$collection_c[0].contenu4WP
+										$document_o:=$collection_c[0].contenu4WP
 								End case 
 								
-								$continue_b:=(WP Get text:C1575($docWritePro_o; wk expressions as value:K81:255)#"")
+								$continue_b:=(WP Get text:C1575($document_o; wk expressions as value:K81:255)#"")
 							Else   // Il n'y a pas de document 4DWP assigné à cette version
 								$scene_cs.addScenarioEvent("Pas de document Write Pro dans la scène pour la version active email"; $enregistrement_o.ID)
 								$continue_b:=False:C215
@@ -512,17 +510,17 @@ Historique
 										$parameter_es:=ds:C1482[$collection_c[0].externalReference.table].query($collection_c[0].externalReference.field+" = :1"; $collection_c[0].externalReference.value)
 										
 										If ($parameter_es.length>=1)
-											$docWritePro_o:=WP New:C1317($parameter_es.first().value_b)
+											$document_o:=WP New:C1317($parameter_es.first().value_b)
 										Else 
 											$scene_cs.addScenarioEvent("Le document Write Pro "+$collection_c[0].externalReference.value+" n'a pas pu être trouvé dans la base de données cliente pour la version active sms"; $enregistrement_o.ID)
 											$continue_b:=False:C215
 										End if 
 										
 									: ($collection_c[0].contenu4WP#Null:C1517)
-										$docWritePro_o:=$collection_c[0].contenu4WP
+										$document_o:=$collection_c[0].contenu4WP
 								End case 
 								
-								$continue_b:=(WP Get text:C1575($docWritePro_o; wk expressions as value:K81:255)#"")
+								$continue_b:=(WP Get text:C1575($document_o; wk expressions as value:K81:255)#"")
 							Else   // Il n'y a pas de document 4DWP assigné à cette version
 								$scene_cs.addScenarioEvent("Pas de document Write Pro dans la scène pour la version active sms"; $enregistrement_o.ID)
 								$continue_b:=False:C215
@@ -550,17 +548,17 @@ Historique
 									$parameter_es:=ds:C1482[$collection_c[0].externalReference.table].query($collection_c[0].externalReference.field+" = :1"; $collection_c[0].externalReference.value)
 									
 									If ($parameter_es.length>=1)
-										$docWritePro_o:=WP New:C1317($parameter_es.first().value_b)
+										$document_o:=WP New:C1317($parameter_es.first().value_b)
 									Else 
 										$scene_cs.addScenarioEvent("Le document Write Pro "+$collection_c[0].externalReference.value+" n'a pas pu être trouvé dans la base de données cliente pour la version active sms"; $enregistrement_o.ID)
 										$continue_b:=False:C215
 									End if 
 									
 								: ($collection_c[0].contenu4WP#Null:C1517)
-									$docWritePro_o:=$collection_c[0].contenu4WP
+									$document_o:=$collection_c[0].contenu4WP
 							End case 
 							
-							$continue_b:=(WP Get text:C1575($docWritePro_o; wk expressions as value:K81:255)#"")
+							$continue_b:=(WP Get text:C1575($document_o; wk expressions as value:K81:255)#"")
 						Else   // Il n'y a pas de document 4DWP assigné à cette version
 							$scene_cs.addScenarioEvent("Pas de document Write Pro dans la scène pour la version active courrier"; $enregistrement_o.ID)
 							$continue_b:=False:C215
@@ -576,33 +574,34 @@ Historique
 			If ($continue_b=True:C214)  // La scène est exécutable, on va voir ce qu'on doit... l'exécuter :D
 				$scene_cs.loadByPrimaryKey($scene_o.ID)
 				
-				If ($scene_o.action="Envoi email") | ($scene_o.action="Envoi SMS") | ($scene_o.action="Imprimer document")
-					
-					If ($collection_c[0].externalReference#Null:C1517)
-						$formule_f:=Formula from string:C1601($parameter_es[0].formula)
-						$detail_c:=$enregistrement_o.situation.detail.query("scene = :1"; $scene_o.numOrdre)
-						
-						If ($detail_c.length>0)
-							$entity_e:=$formule_f.call(New object:C1471("value"; $detail_c[0].externalReference))
-							WP SET DATA CONTEXT:C1786($docWritePro_o; $entity_e)
-						End if 
-						
-					End if 
-					
-				End if 
-				
 				Case of 
 					: ($scene_o.action="Attente")  // L'action de la scène est juste une attente d'un certains délai... on créé donc le log
 					: ($scene_o.action="Envoi email")  // L'action de la scène est l'envoi d'un email
 						$eMail_o:=cmaToolGetClass("MAEMail").new($collection_c[0].expediteur)
 						$eMail_o.subject:=$collection_c[0].subject
 						
-						$config_o:=New object:C1471("success"; True:C214; "type"; "Email"; "eMailConfig"; $eMail_o; "contenu4WP"; $docWritePro_o; "expediteur"; $collection_c[0].expediteur)
+						$config_o:=New object:C1471("success"; True:C214; "type"; "Email"; "eMailConfig"; $eMail_o; "contenu4WP"; $document_o; "expediteur"; $collection_c[0].expediteur)
+						
+						If ($collection_c[0].externalReference#Null:C1517)
+							$config_o.externalReference:=OB Copy:C1225($collection_c[0].externalReference)
+							
+							$config_o.externalReference.scene:=$scene_o.numOrdre
+							$config_o.externalReference.situation:=OB Copy:C1225($enregistrement_o.situation)
+						End if 
+						
 						$personne_o.sendMailing($config_o)
 					: ($scene_o.action="Envoi SMS")  // L'action de la scène est l'envoi d'un SMS
 						$eMail_o:=cmaToolGetClass("MASMS").new($collection_c[0].expediteur)
 					: ($scene_o.action="Imprimer document")  // L'action de la scène est l'impression d'un document
-						$config_o:=New object:C1471("success"; True:C214; "type"; "Courrier"; "contenu4WP"; $docWritePro_o)
+						$config_o:=New object:C1471("success"; True:C214; "type"; "Courrier"; "contenu4WP"; $document_o)
+						
+						If ($collection_c[0].externalReference#Null:C1517)
+							$config_o.externalReference:=OB Copy:C1225($collection_c[0].externalReference)
+							
+							$config_o.externalReference.scene:=$scene_o.numOrdre
+							$config_o.externalReference.situation:=OB Copy:C1225($enregistrement_o.situation)
+						End if 
+						
 						$personne_o.sendMailing($config_o)
 					: ($scene_o.action="Changement de scénario") | ($scene_o.action="Fin du scénario")  // L'action de la scène est qu'on arrête le scénario de la personne ou qu'on change de scénario
 						// On passe en inactif l'inscription au scénario

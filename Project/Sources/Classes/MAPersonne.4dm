@@ -304,8 +304,11 @@ Historique
 Function sendMailing($configPreCharge_o : Object)
 	var $canalEnvoi_t; $corps_t; $mime_t; $propriete_t; $contenu_t : Text
 	var $statut_b : Boolean
-	var $class_o; $config_o; $mime_o; $statut_o; $formule_o; $wpVar_o; $fichier_o; $signature_o; $document_o : Object
-	var $transporter_c : Collection
+	var $class_o; $config_o; $mime_o; $statut_o; $formule_o; $wpVar_o; $fichier_o; $signature_o; $document_o; $entity_e : Object
+	var $transporter_c; $detail_c : Collection
+	
+	var $formule_f : Object
+	var $parameter_es : Object
 	
 	ASSERT:C1129(This:C1470.personne#Null:C1517; "Impossible d'utiliser la fonction sendMailing sans une personne de définie.")
 	
@@ -350,6 +353,28 @@ Function sendMailing($configPreCharge_o : Object)
 				$document_o:=WP New:C1317($config_o.contenu4WP)
 			End if 
 			
+			If ($config_o.externalReference#Null:C1517)
+				$parameter_es:=ds:C1482[$config_o.externalReference.table].query($config_o.externalReference.field+" = :1"; $config_o.externalReference.value)
+				
+				If ($parameter_es.length>0)
+					
+					If ($parameter_es[0].formula#"")
+						$formule_f:=Formula from string:C1601($parameter_es[0].formula)
+						$detail_c:=$config_o.externalReference.situation.detail.query("scene = :1"; $config_o.externalReference.scene)
+						
+						If ($detail_c.length>0)
+							$entity_e:=$formule_f.call(New object:C1471("value"; $detail_c[0].externalReference))
+							WP SET DATA CONTEXT:C1786($document_o; $entity_e)
+						End if 
+						
+					End if 
+					
+				End if 
+				
+			End if 
+			
+			WP COMPUTE FORMULAS:C1707($document_o)
+			
 			Case of 
 				: ($canalEnvoi_t="Email")
 					$corps_t:=WP Get text:C1575($document_o; wk expressions as value:K81:255)
@@ -368,7 +393,6 @@ Function sendMailing($configPreCharge_o : Object)
 							End if 
 							
 							WP EXPORT VARIABLE:C1319($document_o; $mime_t; wk mime html:K81:1)  // Mime export of Write Pro document
-							
 							$mime_o:=MAIL Convert from MIME:C1681($mime_t)
 							
 							If ($fichier_o.exists=True:C214)
@@ -417,6 +441,11 @@ Function sendMailing($configPreCharge_o : Object)
 					End if 
 					
 				: ($canalEnvoi_t="Courrier")
+					
+					If (Is compiled mode:C492=False:C215)
+						PRINT SETTINGS:C106
+					End if 
+					
 					WP PRINT:C1343($document_o; wk 4D Write Pro layout:K81:176)
 				: ($canalEnvoi_t="SMS")
 			End case 
@@ -427,7 +456,7 @@ Function sendMailing($configPreCharge_o : Object)
 				If (Count parameters:C259=0)
 					This:C1470.updateCaMarketingStatistic(3; New object:C1471("type"; $canalEnvoi_t; "contenu4WP"; WParea; "statut"; "2"))
 				Else 
-					This:C1470.updateCaMarketingStatistic(3; New object:C1471("type"; $canalEnvoi_t; "contenu4WP"; $config_o.contenu4WP; "statut"; "2"))
+					This:C1470.updateCaMarketingStatistic(3; New object:C1471("type"; $canalEnvoi_t; "contenu4WP"; $document_o; "statut"; "2"))
 				End if 
 				
 			End if 

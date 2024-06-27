@@ -62,7 +62,7 @@ Case of
 						$version_o.modifierPar:=Current user:C182
 						
 						$statut_o:=Form:C1466.donnee.sceneDetail.save()
-						OB REMOVE:C1226(Form:C1466.externalReference)
+						OB REMOVE:C1226(Form:C1466; "externalReference")
 						//Form.donnee.saveFileActionScene(Form.donnee.scenarioDetail.ID; Form.donnee.sceneDetail.ID; WParea; "4wp"; Faux)
 					End if 
 					
