@@ -14,7 +14,7 @@ Initialisation du marketing automation
 Historique
 25/01/21 - Grégory Fromain <gregory@connect-io.fr> - clean code
 -----------------------------------------------------------------------------*/
-	var $chemin_t : Text
+	
 	var $configFile_o : 4D:C1709.File
 	var $scenarioFolder_o : 4D:C1709.Folder
 	
@@ -171,9 +171,8 @@ Historique
 	var $2 : Integer  // TS de fin
 	var ${3} : Text  // Numéro chez mailjet de l'eventMessage à mettre à jour exemple : 3 -> Opened, 4 -> Clicked etc.
 	
-	var $event_t : Text
 	var $i_el : Integer
-	var $mailjet_o; $mailjetDetail_o; $table_o; $class_o : Object
+	var $mailjet_o; $mailjetDetail_o; $class_o : Object
 	var $mailjetDetail_c : Collection
 	
 	ASSERT:C1129(This:C1470.cronosImage#Null:C1517; "Impossible d'utiliser la fonction cronosAction sans avoir lancer la fonction loadCronos avant")
@@ -222,7 +221,7 @@ Historique
 	var $numOrdre_el : Integer
 	var $continue_b; $saut_b; $sautEffectue_b; $finScenario_b : Boolean
 	var $table_o; $enregistrement_o; $caScenarioEvent_o; $scene_o; $personne_o; $eMail_o; $config_o; $conditionAction_o; $conditionSaut_o; $scene_cs; $retour_o; \
-		$scenario_o; $autreTable_o; $autreEnregistrement_o; $caPersonneMarketing_o; $document_o : Object
+		$autreTable_o; $autreEnregistrement_o; $caPersonneMarketing_o; $document_o : Object
 	var $collection_c : Collection
 	
 	var $parameter_es : Object

@@ -1,4 +1,4 @@
-var $lien_t; $texte_t : Text
+var $lien_t : Text
 var $plageSelect_o : Object
 var $lien_c : Collection
 

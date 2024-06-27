@@ -1,5 +1,5 @@
 var $webCode_t : Text
-var $model_o; $fichier_o; $doc4WP_o : Object
+var $doc4WP_o : Object
 
 If (Form event code:C388=On Load:K2:1)
 	var WParea : Object

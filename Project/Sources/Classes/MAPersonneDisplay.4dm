@@ -142,7 +142,7 @@ Historique
 -----------------------------------------------------------------------------*/
 	var $i_el : Integer
 	var $continue_b; $companyName_b : Boolean
-	var $table_o; $class_o; $enregistrement_o : Object
+	var $table_o; $enregistrement_o : Object
 	var $column_c : Collection
 	
 	var entitySelection_o : Object

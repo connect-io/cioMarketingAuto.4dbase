@@ -10,8 +10,6 @@ Historique
 var $0 : Object
 var $1 : Boolean
 
-var $initComponent_b : Boolean
-
 // Instanciation de la class
 $0:=cmaToolGetClass("MarketingAutomation").new($1)
 

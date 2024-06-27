@@ -16,7 +16,7 @@ var $2 : Collection  // Collection qui contient les propriétés à vérifier
 var $3 : Integer  // Entier long qui contient le nombre d'occurence qu'on souhaite extraire [optionnel]
 
 var $variable_t : Text
-var $i_el; $compteur_el : Integer
+var $compteur_el : Integer
 var $proprieteTrouver_b : Boolean
 
 $0:=New object:C1471()

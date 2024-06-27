@@ -1,4 +1,3 @@
-var $statut_t : Text
 var $enregistrement_o; $statut_o : Object
 
 Case of 

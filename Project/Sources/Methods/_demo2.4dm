@@ -9,8 +9,7 @@ Historique
 -----------------------------------------------------------------------------*/
 var $1 : Variant
 
-var $update_b : Boolean
-var $marketingAutomation_o; $personne_o; $caPersonneMarketing_o; $retour_o : Object
+var $marketingAutomation_o; $personne_o : Object
 
 // Instanciation de la class
 $marketingAutomation_o:=cmaToolGetClass("MarketingAutomation").new(True:C214)

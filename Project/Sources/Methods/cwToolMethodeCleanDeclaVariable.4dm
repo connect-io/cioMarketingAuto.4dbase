@@ -16,7 +16,6 @@ var $traduction_o : Object
 ARRAY TEXT:C222($tabNoms; 0)
 ARRAY LONGINT:C221(tab_pos_trouvée; 0)
 ARRAY LONGINT:C221(tab_long_trouvée; 0)
-ARRAY TEXT:C222($listeChanges; 0)
 
 METHOD GET NAMES:C1166($tabNoms)
 

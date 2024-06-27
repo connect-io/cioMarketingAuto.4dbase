@@ -26,7 +26,6 @@ Historique
 -----------------------------------------------------------------------------*/
 	var $propriete_t; $proprieteToFilter_t; $type_t : Text
 	var $verif_o; $passerelle_o : Object
-	var $collectionToFilter_c : Variant
 	
 	$collectionToFilter_v:=Form:C1466.personneCollectionInit
 	$verif_o:=cwToolProprieteExisteDansObjet(Form:C1466; New collection:C1472("filtre@"); -1)
@@ -40,7 +39,7 @@ Historique
 			
 			$type_t:=$passerelle_o.champ.query("lib = :1"; $proprieteToFilter_t)[0].type
 			
-			If (Value type:C1509(Form:C1466.personneCollectionInit)=Est un objet:K8:27)
+			If (Value type:C1509(Form:C1466.personneCollectionInit)=Is object:K8:27)
 				$proprieteToFilter_t:=Storage:C1525.automation.formule.getFieldName(Storage:C1525.automation.passerelle.champ; $proprieteToFilter_t)
 			End if 
 			
@@ -70,7 +69,7 @@ Gestion des tri dans le mode liste [Personne]
 Historique
 27/01/21 - RémyScanu remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
-	var $propriete_t; $proprieteToOrder_t; $allProprieteToOrder_t; $lib_t : Text
+	var $propriete_t; $proprieteToOrder_t; $allProprieteToOrder_t : Text
 	var $keepSort_b : Boolean
 	var $verif_o : Object
 	

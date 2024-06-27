@@ -1,4 +1,3 @@
-var $pos_el : Integer
 var $continue_b : Boolean
 var $retour_o : Object
 

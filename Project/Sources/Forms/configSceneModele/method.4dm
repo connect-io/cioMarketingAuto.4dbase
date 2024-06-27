@@ -1,5 +1,4 @@
 If (Form event code:C388=On Load:K2:1)
-	var $gauche_el; $haut_el; $droite_el; $bas_el; $hauteurForm_el : Integer
 	
 	ARRAY TEXT:C222(versionList_at; 0)
 	ARRAY TEXT:C222(expediteurList_at; 0)

@@ -1,8 +1,7 @@
 var $uuid_t : Text
 var $ajout_b : Boolean
-var $pointeur_p : Pointer
 var $conditionAction_o; $paramExtra_o : Object
-var $collection_c; $autreCollection_c : Collection
+var $collection_c : Collection
 
 If (Form:C1466.sceneDetail.conditionAction.elements=Null:C1517)  // Il n'y a pas eu de conditions d'action ajouter pour cette scène
 	$ajout_b:=True:C214

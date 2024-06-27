@@ -77,7 +77,6 @@ Historique
 -----------------------------------------------------------------------------*/
 	var $mailStatus_o : Object  // transporter, info sur mail et envoie de l'email
 	var $error_t : Text  // Info concernant les erreurs
-	var $cheminPj_v : Variant  // Chemin pièce jointe
 	
 	$mailStatus_o:=New object:C1471("success"; False:C215)
 	

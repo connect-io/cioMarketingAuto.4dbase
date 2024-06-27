@@ -62,7 +62,6 @@ Function loadScenarioDisplay($scenarioID_t : Text)
 	cwToolWindowsForm("gestionScenario"; New object:C1471("ecartHautEcran"; 30; "ecartBasEcran"; 90); This:C1470)
 	
 Function loadByPrimaryKey($id_t : Text)
-	var $table_o : Object
 	
 	This:C1470.scenario:=ds:C1482["CaScenario"].query("ID is :1"; $id_t)
 	
@@ -268,7 +267,7 @@ Function searchPersonToScenario($provenance_el : Integer)
 	This:C1470.scenarioPersonneEnCoursEntity:=$personneAEnlever_o
 	
 Function applyScenarioToPerson
-	var $enregistrement_o; $caPersonneScenario_o; $retour_o; $table_o : Object
+	var $enregistrement_o; $caPersonneScenario_o; $retour_o : Object
 	
 	If (This:C1470.scenarioSelectionPossiblePersonne#Null:C1517)
 		

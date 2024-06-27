@@ -1,6 +1,5 @@
 var $uuid_t : Text
 var $ajout_b : Boolean
-var $pointeur_p : Pointer
 var $conditionSaut_o : Object
 var $collection_c : Collection
 

@@ -3,12 +3,12 @@ Class constructor
 	C_OBJECT:C1216($fichierConfig_o)
 	
 	If (Count parameters:C259=0)
-		This:C1470.configChemin:=Get 4D folder:C485(Dossier Resources courant:K5:16; *)+"cioMailjet"+Séparateur dossier:K24:12+"config.json"
+		This:C1470.configChemin:=Get 4D folder:C485(Current resources folder:K5:16; *)+"cioMailjet"+Folder separator:K24:12+"config.json"
 	Else 
 		This:C1470.configChemin:=$1
 	End if 
 	
-	$fichierConfig_o:=File:C1566(This:C1470.configChemin; fk chemin plateforme:K87:2)
+	$fichierConfig_o:=File:C1566(This:C1470.configChemin; fk platform path:K87:2)
 	
 	If ($fichierConfig_o.exists=True:C214)
 		This:C1470.config:=JSON Parse:C1218($fichierConfig_o.getText())
@@ -30,7 +30,7 @@ Function AnalysisMessageEvent
 	var $contactID_r : Real
 	var $dateArrivedAt_d : Date
 	var $heureArrivedAt_h : Time
-	var $mailStatut_o; $statut_o; $contactDetail_o : Object
+	var $mailStatut_o; $statut_o : Object
 	
 	ARRAY TEXT:C222($email_at; 0)
 	ARRAY TEXT:C222($messageID_at; 0)
@@ -118,9 +118,9 @@ Function getHistoryRequestFile
 	
 	$config_o:=New object:C1471()
 	
-	$cheminFichier_t:=Get 4D folder:C485(Dossier Resources courant:K5:16; *)+"cioMailjet"+Séparateur dossier:K24:12+"historyRequest.json"
+	$cheminFichier_t:=Get 4D folder:C485(Current resources folder:K5:16; *)+"cioMailjet"+Folder separator:K24:12+"historyRequest.json"
 	
-	$fichier_o:=File:C1566($cheminFichier_t; fk chemin plateforme:K87:2)
+	$fichier_o:=File:C1566($cheminFichier_t; fk platform path:K87:2)
 	
 	If ($fichier_o.exists=False:C215)
 		
@@ -141,9 +141,7 @@ Function getHistoryRequestContent
 	End if 
 	
 Function getMessageEvent($statut_t : Text; $tsFrom_el : Integer; $tsTo_el : Integer; $mailjet_p : Pointer; $contactID_r : Real)
-	var $resultatHttp_t; $tsFrom_t; $tsTo_t; $contactID_t; $sort_t : Text
-	var $collection_c : Collection
-	var $element_o : Object
+	var $resultatHttp_t; $tsFrom_t; $tsTo_t; $contactID_t : Text
 	
 	$tsFrom_t:="&FromTS="+String:C10($tsFrom_el)
 	$tsTo_t:="&ToTS="+String:C10($tsTo_el)
@@ -163,7 +161,6 @@ Function getMessageEvent($statut_t : Text; $tsFrom_el : Integer; $tsTo_el : Inte
 Function getMessageEventDetail($mailjet_o : Object; $messageEvent_t : Text; $tsFrom_el : Integer; $tsTo_el : Integer; $contactID_r : Real; $displayCompteur_b : Boolean)->$retour_o : Object
 	var $resultatHttp_t; $tsFrom_t; $tsTo_t; $contactID_t : Text
 	var $countMessage_el; $nbBoucle_el; $i_el; $offset_el : Integer
-	var $blob_b : Blob
 	
 	$retour_o:=New object:C1471
 	
@@ -231,8 +228,7 @@ Function getMessageEventDetail($mailjet_o : Object; $messageEvent_t : Text; $tsF
 	End if 
 	
 Function getContactInformation($email_t : Text)->$contact_o : Object
-	var $url_t; $urlEncode_t; $resultatHttp_t : Text
-	var $result_b : Boolean
+	var $url_t; $resultatHttp_t : Text
 	
 	//Il faut encoder l'url... ou pas
 	$url_t:=This:C1470.config.domainRequest+"/REST/contact/"+$email_t
@@ -278,7 +274,7 @@ Function getMessageID
 					$chaineObjet_t:=Substring:C12($demonteChaine_t; 1; $positionAccolade_el)
 					
 					// $chaineObjet_t devrait ressembler à une chaine comme ça : {...}
-					If (Value type:C1509($2->)=Est une collection:K8:32)
+					If (Value type:C1509($2->)=Is collection:K8:32)
 						$detail_o:=JSON Parse:C1218($chaineObjet_t)
 						
 						$2->push(New object:C1471("arrivedAt"; cmaTimestamp(Date:C102($detail_o.ArrivedAt); Time:C179($detail_o.ArrivedAt)); "messageID"; ""))
@@ -294,7 +290,7 @@ Function getMessageID
 							$messageID_t:=Substring:C12($chaineObjet_t; 1; $positionVirgule_el-1)
 							
 							// Enfin on est arrivé au bout !
-							If (Value type:C1509($2->)=Est une collection:K8:32)
+							If (Value type:C1509($2->)=Is collection:K8:32)
 								$2->[$2->length-1].messageID:=$messageID_t
 							Else 
 								APPEND TO ARRAY:C911($2->; $messageID_t)
@@ -450,7 +446,7 @@ Function getMessageHistoryDetail($messageID_t : Text)->$messageHistoryDetail_t :
 					$messageHistoryDetail_t:=$messageHistoryDetail_t+"Action : "+$messageDetail_o.EventType+", le "+cmaTimestampLire("date"; $messageDetail_o.EventAt)+" à "+cmaTimestampLire("heure"; $messageDetail_o.EventAt)
 					
 					If ($i_el<Size of array:C274($dataDetail_ao))
-						$messageHistoryDetail_t:=$messageHistoryDetail_t+Char:C90(Retour à la ligne:K15:40)
+						$messageHistoryDetail_t:=$messageHistoryDetail_t+Char:C90(Line feed:K15:40)
 					End if 
 					
 			End case 

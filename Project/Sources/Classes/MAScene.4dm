@@ -595,7 +595,7 @@ Historique
 17/05/21 - Rémy Scanu <remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
 	var $element_t; $varParamExtra_t; $texte_t : Text
-	var $pos_el; $posBis_el; $value_el : Integer
+	var $pos_el; $posBis_el : Integer
 	var $pointeurVar_p : Pointer
 	var $conditionAction_o : Object
 	
@@ -850,7 +850,7 @@ Historique
 25/05/21 - Rémy Scanu <remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
 	var $element_t; $varParamExtra_t; $texte_t : Text
-	var $pos_el; $posBis_el; $value_el : Integer
+	var $pos_el; $posBis_el : Integer
 	var $conditionSaut_o : Object
 	
 	Case of 

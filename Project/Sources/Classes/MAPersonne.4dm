@@ -295,7 +295,7 @@ Historique
 	var ${2} : Text
 	
 	var $i_el : Integer
-	var $class_o; $mailjet_o; $mailjetDetail_o; $personne_o; $fichier_o : Object
+	var $class_o; $mailjet_o; $mailjetDetail_o; $personne_o : Object
 	var $mailjetDetail_c : Collection
 	
 	ASSERT:C1129(This:C1470.personne#Null:C1517; "Impossible d'utiliser la fonction mailjetGetDetailStat sans une personne de définie.")
@@ -330,9 +330,9 @@ Historique
 	End for 
 	
 Function sendMailing($configPreCharge_o : Object)
-	var $canalEnvoi_t; $corps_t; $mime_t; $propriete_t; $contenu_t : Text
+	var $canalEnvoi_t; $corps_t; $mime_t; $propriete_t : Text
 	var $statut_b : Boolean
-	var $class_o; $config_o; $mime_o; $statut_o; $formule_o; $wpVar_o; $fichier_o; $signature_o; $document_o; $entity_e : Object
+	var $class_o; $config_o; $mime_o; $statut_o; $wpVar_o; $fichier_o; $signature_o; $document_o; $entity_e : Object
 	var $transporter_c; $detail_c : Collection
 	
 	var $formule_f : Object

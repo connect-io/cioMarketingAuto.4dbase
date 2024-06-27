@@ -1,6 +1,5 @@
 var $texte_t : Text
-var $image_i : Picture
-var $fichier_o; $version_o; $statut_o; $parameter_es : Object
+var $version_o; $statut_o; $parameter_es : Object
 
 Case of 
 	: (Form event code:C388=On Load:K2:1)
