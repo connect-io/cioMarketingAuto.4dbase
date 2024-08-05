@@ -12,6 +12,8 @@ var $1 : Text  // Type de requête demandé
 var $2 : Text  // Url demandée
 var $3 : Variant  // Body de la requête peut varié d'une requête à l'autre
 var $4 : Pointer  // Pointeur de la réponse attendue de l'url $2
+var $5 : Collection  // Collection headerNames [optionnel]
+var $6 : Collection  // Collection headerValues [optionnel]
 
 var $reponse_v : Variant
 var $etat_el : Integer
@@ -19,6 +21,11 @@ var $blobVide_b : Blob
 
 ARRAY TEXT:C222($headerNames_at; 0)
 ARRAY TEXT:C222($headerValues_at; 0)
+
+If (Count parameters:C259>4)
+	COLLECTION TO ARRAY:C1562($5; $headerNames_at)
+	COLLECTION TO ARRAY:C1562($6; $headerValues_at)
+End if 
 
 Case of 
 	: (Value type:C1509($4->)=Est un texte:K8:3)

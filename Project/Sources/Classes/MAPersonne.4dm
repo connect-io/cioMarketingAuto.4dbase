@@ -19,8 +19,6 @@ Historique
 	// Chargement des éléments nécessaires au bon fonctionnement de la classe par rapport à la table [Personne] de la base hote.
 	This:C1470.passerelle:=OB Copy:C1225(Storage:C1525.automation.config.passerelle.query("tableComposant = :1"; "Personne")[0])
 	
-	
-	
 Function addScenario($scenarioName_t : Text; $externalReference_t : Text)->$retour_o : Object
 /*-----------------------------------------------------------------------------
 Fonction : MAPersonne.addScenario
@@ -33,7 +31,7 @@ Historique
 	var $scenario_o; $caPersonneMarketing_o : Object
 	var $caPersonneScenario_o : Object
 	
-	ASSERT:C1129(This:C1470.personne#Null:C1517; "Impossible d'utiliser la fonction sendMailing sans une personne de définie.")
+	ASSERT:C1129(This:C1470.personne#Null:C1517; "Impossible d'utiliser la fonction addScenario sans une personne de définie.")
 	
 	This:C1470.personne.reload()
 	$scenario_o:=ds:C1482["CaScenario"].query("nom = :1"; $scenarioName_t)
@@ -50,16 +48,19 @@ Historique
 		$caPersonneScenario_o.situation:=New object:C1471("detail"; New collection:C1472)
 		
 		If ($externalReference_t#"")
+			
 			For ($i; 1; $caPersonneScenario_o.OneCaScenario.AllCaScene.length)
 				$caPersonneScenario_o.situation.detail.push(New object:C1471("scene"; $i; "externalReference"; $externalReference_t))
-				
 			End for 
+			
 		End if 
+		
 		$retour_o:=$caPersonneScenario_o.save()
 		
 		If ($retour_o.success=False:C215)
 			return $retour_o
 		End if 
+		
 	End if 
 	
 	If (This:C1470.personne.AllCaPersonneMarketing.length=0)
@@ -73,8 +74,6 @@ Historique
 	End if 
 	
 	return $retour_o
-	
-	
 	
 Function getFieldName($field_t : Text)->$fieldName_t : Text
 	var $field_c : Collection
@@ -205,7 +204,6 @@ Historique
 	
 	If (This:C1470.personne#Null:C1517)
 		This:C1470.load()
-		
 		$isOk_b:=True:C214
 	End if 
 	
@@ -329,9 +327,9 @@ Historique
 		
 	End for 
 	
-Function sendMailing($configPreCharge_o : Object)
-	var $canalEnvoi_t; $corps_t; $mime_t; $propriete_t : Text
-	var $statut_b : Boolean
+Function sendMailing($configPreCharge_o : Object) : Object
+	var $canalEnvoi_t; $corps_t; $mime_t; $propriete_t; $retour_t : Text
+	var $erreur_b : Boolean
 	var $class_o; $config_o; $mime_o; $statut_o; $wpVar_o; $fichier_o; $signature_o; $document_o; $entity_e : Object
 	var $transporter_c; $detail_c : Collection
 	
@@ -372,7 +370,6 @@ Function sendMailing($configPreCharge_o : Object)
 			// Modifié par : Rémy Scanu (21/05/2021)
 			// Permet d'instancier la variable wpVar_o utilisée dans les documents 4WPRO créé depuis le composant
 			$wpVar_o:=This:C1470.personne
-			
 			Formula from string:C1601("_cmaInit4WPVar(this)").call($wpVar_o)
 			
 			If (Count parameters:C259=0)
@@ -411,7 +408,7 @@ Function sendMailing($configPreCharge_o : Object)
 						
 						If ($corps_t#"@<body@")  // Nouvelle façon d'envoyer des emails
 							// Ajout de la signature
-							$fichier_o:=File:C1566(Get 4D folder:C485(Current resources folder:K5:16; *)+"cioMarketingAutomation"+Folder separator:K24:12+"scene"+Folder separator:K24:12+"signatureEmail.4wp"; fk platform path:K87:2)
+							$fichier_o:=File:C1566(Get 4D folder:C485(Dossier Resources courant:K5:16; *)+"cioMarketingAutomation"+Séparateur dossier:K24:12+"scene"+Séparateur dossier:K24:12+"signatureEmail.4wp"; fk chemin plateforme:K87:2)
 							
 							If ($fichier_o.exists=True:C214)
 								WP INSERT BREAK:C1413($document_o; wk paragraph break:K81:259; wk append:K81:179)
@@ -452,13 +449,15 @@ Function sendMailing($configPreCharge_o : Object)
 						ON ERR CALL:C155("outilsCatchErrorSendMail")
 						
 						$statut_o:=$config_o.eMailConfig.send()
-						$statut_b:=(String:C10($statut_o.statusText)="ok@")
+						$retour_t:=String:C10($statut_o.statusText)
+						
+						$erreur_b:=($retour_t#"ok@")
 						
 						ON ERR CALL:C155("")
 						
 						If (Count parameters:C259=0)  // Le mailing ne part pas en automatique, on affiche l'alerte sur le statut d'envoi du mail 
 							
-							If ($statut_b=True:C214)  // Statut de l'envoie du mail
+							If ($erreur_b=False:C215)  // Statut de l'envoie du mail
 								ALERT:C41("Votre email a bien été envoyé")
 							Else 
 								ALERT:C41("Statut erreur envoi de l'e-mail : "+$statut_o.statusText)
@@ -476,22 +475,43 @@ Function sendMailing($configPreCharge_o : Object)
 					
 					WP PRINT:C1343($document_o; wk 4D Write Pro layout:K81:176)
 				: ($canalEnvoi_t="SMS")
+					$corps_t:=WP Get text:C1575($document_o; wk expressions as value:K81:255)
+					
+					If ($corps_t#"")
+						
+						Case of 
+							: ($config_o.SMSConfig.prestataire.nom="SMSBox")
+								$retour_t:=$config_o.SMSConfig.SMSBOXSendMessage(True:C214; $corps_t; This:C1470.telMobile; Current date:C33; Current time:C178; "Reponse"; 4)
+								$erreur_b:=($retour_t#"Le sms a bien été envoyé !")
+							: ($config_o.SMSConfig.prestataire.nom="Mailjet")
+								$retour_t:=$config_o.SMSConfig.MailjetSendMessage($corps_t; This:C1470.telMobile)
+						End case 
+						
+					End if 
+					
 			End case 
 			
 			// S'il s'agit d'un Courrier ou SMS ou un mail qui possède un corps non vide, on rajoute l'historique de l'envoi
-			If ($canalEnvoi_t#"Email") | (($canalEnvoi_t="Email") & ($corps_t#""))
+			If ($erreur_b=False:C215) && (($canalEnvoi_t#"Email") | (($canalEnvoi_t="Email") & ($corps_t#"")))
 				
 				If (Count parameters:C259=0)
-					This:C1470.updateCaMarketingStatistic(3; New object:C1471("type"; $canalEnvoi_t; "contenu4WP"; WParea; "statut"; "2"))
+					$param_o:=New object:C1471("type"; $canalEnvoi_t; "contenu4WP"; WParea; "statut"; "2")
 				Else 
-					This:C1470.updateCaMarketingStatistic(3; New object:C1471("type"; $canalEnvoi_t; "contenu4WP"; $document_o; "statut"; "2"))
+					$param_o:=New object:C1471("type"; $canalEnvoi_t; "contenu4WP"; $document_o; "statut"; "2")
 				End if 
 				
+				If ($config_o.externalReference#Null:C1517)
+					$param_o.externalReference:=$config_o.externalReference
+				End if 
+				
+				This:C1470.updateCaMarketingStatistic(3; $param_o)
 			End if 
 			
 		End if 
 		
 	End if 
+	
+	return {success: Not:C34($erreur_b); erreurDetail: $retour_t}
 	
 Function updateCaMarketingStatistic($provenance_el : Integer; $detail_o : Object)->$isOk_b : Boolean
 /*------------------------------------------------------------------------------
@@ -566,9 +586,9 @@ Historique
 						
 						Case of 
 							: (String:C10($detail_o.eventNumber)="3")  // Si ouvert, on met à jour le log de la scène de la personne
-								$scene_cs.addScenarioEvent("Évènement mailjet, mail ouvert"; $caScenarioPersonne_o.ID; $caScenarioPersonne_o.tsProchainCheck)
+								$scene_cs.addScenarioEvent("Évènement mailjet, mail ouvert"; $caScenarioPersonne_o.ID; $caScenarioPersonne_o.tsProchainCheck; "")
 							: (String:C10($detail_o.eventNumber)="4")  // Si clic, on met à jour le log de la scène de la personne
-								$scene_cs.addScenarioEvent("Évènement mailjet, mail cliqué"; $caScenarioPersonne_o.ID; $caScenarioPersonne_o.tsProchainCheck)
+								$scene_cs.addScenarioEvent("Évènement mailjet, mail cliqué"; $caScenarioPersonne_o.ID; $caScenarioPersonne_o.tsProchainCheck; "")
 						End case 
 						
 						// On force le timeStamp du prochainCheck à maintenant pour voir si cet évènement déclenchera un saut de scène par exemple
@@ -584,7 +604,7 @@ Historique
 			
 			$enregistrement_o.historique.detail.push(New object:C1471(\
 				"eventTs"; cmaTimestamp(Current date:C33; Current time:C178); \
-				"eventUser"; Current user:C182; \
+				"eventUser"; ($detail_o.currentUser#Null:C1517) ? $detail_o.currentUser : Current user:C182; \
 				"eventDetail"; New object:C1471("type"; String:C10($detail_o.type); \
 				"nomDocument"; String:C10($detail_o.nomDocument); \
 				"contenu4WP"; $detail_o.contenu4WP; \
@@ -592,6 +612,7 @@ Historique
 				"statutLib"; cmaToolMailjetGetLib(String:C10($detail_o.statut)); \
 				"statutColor"; cmaToolMailjetGetColor(String:C10($detail_o.statut)); \
 				"subject"; String:C10($detail_o.subject); \
+				"externalReference"; ($detail_o.externalReference#Null:C1517) ? $detail_o.externalReference : Null:C1517; \
 				"messageID"; "")))
 			
 			If ($detail_o.uuid#Null:C1517)

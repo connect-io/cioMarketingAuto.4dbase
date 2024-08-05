@@ -41,7 +41,6 @@ Historique
 		This:C1470.transporter:=SMTP New transporter:C1608($server_o)
 	Else 
 		ALERT:C41("Aucune occurence trouvé au sein du fichier JSON")
-		
 		This:C1470.transporter:=New object:C1471()
 	End if 
 	

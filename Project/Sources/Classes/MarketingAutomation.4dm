@@ -25,10 +25,10 @@ Historique
 		End use 
 		
 		// Chargement du fichier de config
-		$configFile_o:=Folder:C1567(fk resources folder:K87:11; *).file("cioMarketingAutomation/config.json")
+		$configFile_o:=Folder:C1567(fk dossier ressources:K87:11; *).file("cioMarketingAutomation/config.json")
 		
 		If (Not:C34($configFile_o.exists))  // Il n'existe pas de fichier de config dans la base hote, on le génère.
-			Folder:C1567(fk resources folder:K87:11).file("modelAutomation/config.json").copyTo($configFile_o.parent; $configFile_o.fullName)
+			Folder:C1567(fk dossier ressources:K87:11).file("modelAutomation/config.json").copyTo($configFile_o.parent; $configFile_o.fullName)
 		End if 
 		
 		If ($configFile_o.exists=True:C214)
@@ -49,7 +49,7 @@ Historique
 			ALERT:C41("Impossible d'intialiser le composant caMarketingAutomation, le fichier de configuration n'a pas pu être trouvé dans la base hôte.")
 		End if 
 		
-		$scenarioFolder_o:=Folder:C1567(fk resources folder:K87:11; *).folder("scenario")
+		$scenarioFolder_o:=Folder:C1567(fk dossier ressources:K87:11; *).folder("scenario")
 		
 		If ($scenarioFolder_o.exists=False:C215)
 			$scenarioFolder_o.create()
@@ -68,7 +68,7 @@ Historique
 -----------------------------------------------------------------------------*/
 	var $dossier_o : Object
 	
-	$dossier_o:=Folder:C1567($chemin_t; fk platform path:K87:2)
+	$dossier_o:=Folder:C1567($chemin_t; fk chemin plateforme:K87:2)
 	
 	If ($dossier_o.exists=False:C215)  // Création du dossier $chemin_t
 		$isOk_b:=$dossier_o.create()
@@ -221,7 +221,7 @@ Historique
 	var $numOrdre_el : Integer
 	var $continue_b; $saut_b; $sautEffectue_b; $finScenario_b : Boolean
 	var $table_o; $enregistrement_o; $caScenarioEvent_o; $scene_o; $personne_o; $eMail_o; $config_o; $conditionAction_o; $conditionSaut_o; $scene_cs; $retour_o; \
-		$autreTable_o; $autreEnregistrement_o; $caPersonneMarketing_o; $document_o : Object
+		$autreTable_o; $autreEnregistrement_o; $caPersonneMarketing_o; $document_o; $sms_o; $retourB_o : Object
 	var $collection_c : Collection
 	
 	var $parameter_es : Object
@@ -233,7 +233,7 @@ Historique
 	$scene_cs:=cmaToolGetClass("MAScene").new()
 	
 	For each ($enregistrement_o; $table_o)
-		Form:C1466.cronosMessage:="Gestion des scénarios..."+Char:C90(Line feed:K15:40)
+		Form:C1466.cronosMessage:="Gestion des scénarios..."+Char:C90(Retour à la ligne:K15:40)
 		Form:C1466.cronosMessage:=Form:C1466.cronosMessage+"Envoi de l'email automatique "+String:C10($enregistrement_o.indexOf($table_o)+1)+" / "+String:C10($table_o.length)
 		
 		$caScenarioEvent_o:=$enregistrement_o.AllCaScenarioEvent
@@ -280,7 +280,7 @@ Historique
 									$scene_cs.loadByPrimaryKey($caScenarioEvent_o.OneCaScene.ID)
 									
 									// Ajout du log
-									$scene_cs.addScenarioEvent("Fin du scénario"; $enregistrement_o.ID)
+									$scene_cs.addScenarioEvent("Fin du scénario"; $enregistrement_o.ID; 0; "")
 									$finScenario_b:=True:C214
 								Else   // L'utilisateur a oublié de programmer une scène suivante
 									CLEAR VARIABLE:C89($scene_o)
@@ -340,7 +340,7 @@ Historique
 							$scene_o:=ds:C1482["CaScene"].get(Num:C11($scene_o.conditionSaut.sceneSautID))
 							
 							If ($scene_o#Null:C1517)  // La scène a bien été trouvé, on note qu'on change de scène dans les logs
-								$scene_cs.addScenarioEvent("Changement de scène"; $enregistrement_o.ID)
+								$scene_cs.addScenarioEvent("Changement de scène"; $enregistrement_o.ID; 0; "")
 								
 								$saut_b:=True:C214
 								$sautEffectue_b:=True:C214
@@ -441,9 +441,9 @@ Historique
 								
 								Case of 
 									: ($caPersonneMarketing_o.desabonementMail=True:C214)
-										$scene_cs.addScenarioEvent("Désabonnement"; $enregistrement_o.ID)
+										$scene_cs.addScenarioEvent("Désabonnement"; $enregistrement_o.ID; 0; "")
 									: ($caPersonneMarketing_o.lastBounce#0)
-										$scene_cs.addScenarioEvent("Bounce"; $enregistrement_o.ID)
+										$scene_cs.addScenarioEvent("Bounce"; $enregistrement_o.ID; 0; "")
 								End case 
 								
 							End if 
@@ -466,7 +466,7 @@ Historique
 										If ($parameter_es.length>=1)
 											$document_o:=WP New:C1317($parameter_es.first().value_b)
 										Else 
-											$scene_cs.addScenarioEvent("Le document Write Pro "+$collection_c[0].externalReference.value+" n'a pas pu être trouvé dans la base de données cliente pour la version active email"; $enregistrement_o.ID)
+											$scene_cs.addScenarioEvent("Autre"; $enregistrement_o.ID; 0; "Le document Write Pro "+$collection_c[0].externalReference.value+" n'a pas pu être trouvé dans la base de données cliente pour la version active email")
 											$continue_b:=False:C215
 										End if 
 										
@@ -476,7 +476,7 @@ Historique
 								
 								$continue_b:=(WP Get text:C1575($document_o; wk expressions as value:K81:255)#"")
 							Else   // Il n'y a pas de document 4DWP assigné à cette version
-								$scene_cs.addScenarioEvent("Pas de document Write Pro dans la scène pour la version active email"; $enregistrement_o.ID)
+								$scene_cs.addScenarioEvent("Autre"; $enregistrement_o.ID; 0; "Pas de document Write Pro dans la scène pour la version active email")
 								$continue_b:=False:C215
 							End if 
 							
@@ -485,12 +485,12 @@ Historique
 							End if 
 							
 						Else   // Il n'y a aucune version d'email créée pour cette scène là
-							$scene_cs.addScenarioEvent("Version email de la scène manquante"; $enregistrement_o.ID)
+							$scene_cs.addScenarioEvent("Autre"; $enregistrement_o.ID; 0; "Version email de la scène manquante")
 							$continue_b:=False:C215
 						End if 
 						
 					Else   // Dans ce cas là, soit le mail n'est pas bon, soit il est en demande de désabonnement ou soit il est en bounce
-						$scene_cs.addScenarioEvent("Erreur email"; $enregistrement_o.ID)
+						$scene_cs.addScenarioEvent("Erreur email"; $enregistrement_o.ID; 0; "")
 						$finScenario_b:=True:C214
 					End if 
 					
@@ -511,7 +511,7 @@ Historique
 										If ($parameter_es.length>=1)
 											$document_o:=WP New:C1317($parameter_es.first().value_b)
 										Else 
-											$scene_cs.addScenarioEvent("Le document Write Pro "+$collection_c[0].externalReference.value+" n'a pas pu être trouvé dans la base de données cliente pour la version active sms"; $enregistrement_o.ID)
+											$scene_cs.addScenarioEvent("Autre"; $enregistrement_o.ID; 0; "Le document Write Pro "+$collection_c[0].externalReference.value+" n'a pas pu être trouvé dans la base de données cliente pour la version active sms")
 											$continue_b:=False:C215
 										End if 
 										
@@ -521,17 +521,17 @@ Historique
 								
 								$continue_b:=(WP Get text:C1575($document_o; wk expressions as value:K81:255)#"")
 							Else   // Il n'y a pas de document 4DWP assigné à cette version
-								$scene_cs.addScenarioEvent("Pas de document Write Pro dans la scène pour la version active sms"; $enregistrement_o.ID)
+								$scene_cs.addScenarioEvent("Autre"; $enregistrement_o.ID; 0; "Pas de document Write Pro dans la scène pour la version active sms")
 								$continue_b:=False:C215
 							End if 
 							
 						Else   // Il n'y a aucune version sms créée pour cette scène là
-							$scene_cs.addScenarioEvent("Version sms de la scène manquante"; $enregistrement_o.ID)
+							$scene_cs.addScenarioEvent("Autre"; $enregistrement_o.ID; 0; "Version sms de la scène manquante")
 							$continue_b:=False:C215
 						End if 
 						
 					Else   // Dans ce cas le téléphone mobile n'est pas bon
-						$scene_cs.addScenarioEvent("Erreur téléphone mobile"; $enregistrement_o.ID)
+						$scene_cs.addScenarioEvent("Erreur téléphone mobile"; $enregistrement_o.ID; 0; "")
 						$finScenario_b:=True:C214
 					End if 
 					
@@ -549,7 +549,7 @@ Historique
 									If ($parameter_es.length>=1)
 										$document_o:=WP New:C1317($parameter_es.first().value_b)
 									Else 
-										$scene_cs.addScenarioEvent("Le document Write Pro "+$collection_c[0].externalReference.value+" n'a pas pu être trouvé dans la base de données cliente pour la version active sms"; $enregistrement_o.ID)
+										$scene_cs.addScenarioEvent("Autre"; $enregistrement_o.ID; 0; "Le document Write Pro "+$collection_c[0].externalReference.value+" n'a pas pu être trouvé dans la base de données cliente pour la version active sms")
 										$continue_b:=False:C215
 									End if 
 									
@@ -559,12 +559,12 @@ Historique
 							
 							$continue_b:=(WP Get text:C1575($document_o; wk expressions as value:K81:255)#"")
 						Else   // Il n'y a pas de document 4DWP assigné à cette version
-							$scene_cs.addScenarioEvent("Pas de document Write Pro dans la scène pour la version active courrier"; $enregistrement_o.ID)
+							$scene_cs.addScenarioEvent("Autre"; $enregistrement_o.ID; 0; "Pas de document Write Pro dans la scène pour la version active courrier")
 							$continue_b:=False:C215
 						End if 
 						
 					Else   // Il n'y a aucune version courrier créée pour cette scène là
-						$scene_cs.addScenarioEvent("Version courrier de la scène manquante"; $enregistrement_o.ID)
+						$scene_cs.addScenarioEvent("Autre"; $enregistrement_o.ID; 0; "Version courrier de la scène manquante")
 						$continue_b:=False:C215
 					End if 
 					
@@ -588,9 +588,19 @@ Historique
 							$config_o.externalReference.situation:=OB Copy:C1225($enregistrement_o.situation)
 						End if 
 						
-						$personne_o.sendMailing($config_o)
+						$retourB_o:=$personne_o.sendMailing($config_o)
 					: ($scene_o.action="Envoi SMS")  // L'action de la scène est l'envoi d'un SMS
-						$eMail_o:=cmaToolGetClass("MASMS").new($collection_c[0].expediteur)
+						$sms_o:=cmaToolGetClass("MASms").new(False:C215; $collection_c[0].expediteur)
+						$config_o:=New object:C1471("success"; True:C214; "type"; "SMS"; "SMSConfig"; $sms_o; "contenu4WP"; $document_o; "expediteur"; $collection_c[0].expediteur)
+						
+						If ($collection_c[0].externalReference#Null:C1517)
+							$config_o.externalReference:=OB Copy:C1225($collection_c[0].externalReference)
+							
+							$config_o.externalReference.scene:=$scene_o.numOrdre
+							$config_o.externalReference.situation:=OB Copy:C1225($enregistrement_o.situation)
+						End if 
+						
+						$retourB_o:=$personne_o.sendMailing($config_o)
 					: ($scene_o.action="Imprimer document")  // L'action de la scène est l'impression d'un document
 						$config_o:=New object:C1471("success"; True:C214; "type"; "Courrier"; "contenu4WP"; $document_o)
 						
@@ -601,14 +611,22 @@ Historique
 							$config_o.externalReference.situation:=OB Copy:C1225($enregistrement_o.situation)
 						End if 
 						
-						$personne_o.sendMailing($config_o)
+						$retourB_o:=$personne_o.sendMailing($config_o)
 					: ($scene_o.action="Changement de scénario") | ($scene_o.action="Fin du scénario")  // L'action de la scène est qu'on arrête le scénario de la personne ou qu'on change de scénario
 						// On passe en inactif l'inscription au scénario
 						$enregistrement_o.actif:=False:C215
 				End case 
 				
-				// Ajout du log
-				$scene_cs.addScenarioEvent($scene_o.action; $enregistrement_o.ID)
+				$continue_b:=True:C214
+				
+				If ($retourB_o#Null:C1517)
+					$continue_b:=Bool:C1537($retourB_o.success)
+				End if 
+				
+			End if 
+			
+			If ($continue_b=True:C214)  // Ajout du log
+				$scene_cs.addScenarioEvent($scene_o.action; $enregistrement_o.ID; 0; "")
 				
 				If ($scene_o.action="Changement de scénario") | ($scene_o.action="Fin du scénario")
 					$enregistrement_o.tsProchainCheck:=0
@@ -624,6 +642,7 @@ Historique
 				
 			End if 
 			
+			
 		End if 
 		
 		If ($finScenario_b=True:C214)  // Pas de scène "Fin de scénario" OU problème dans l'adresse email OU Désabonnement/Bounce
@@ -632,7 +651,7 @@ Historique
 			$retour_o:=$enregistrement_o.save()
 		End if 
 		
-		cmaToolCleanVariable(->$finScenario_b; ->$scene_o; ->$continue_b)
+		cmaToolCleanVariable(->$finScenario_b; ->$scene_o; ->$continue_b; ->$retourB_o)
 	End for each 
 	
 Function loadCronos
@@ -702,9 +721,9 @@ Historique
 		This:C1470.image:=New object:C1471()
 	End if 
 	
-	$dossier_o:=Folder:C1567(Get 4D folder:C485(Current resources folder:K5:16)+"Images"+Folder separator:K24:12; fk platform path:K87:2)
+	$dossier_o:=Folder:C1567(Get 4D folder:C485(Dossier Resources courant:K5:16)+"Images"+Séparateur dossier:K24:12; fk chemin plateforme:K87:2)
 	
-	For each ($fichier_o; $dossier_o.files(fk ignore invisible:K87:22))
+	For each ($fichier_o; $dossier_o.files(fk ignorer invisibles:K87:22))
 		$blob_b:=$fichier_o.getContent()
 		
 		BLOB TO PICTURE:C682($blob_b; $image_i)
@@ -744,7 +763,7 @@ Historique
 	
 	ASSERT:C1129(Storage:C1525.automation#Null:C1517; "Impossible d'utiliser la fonction loadSceneConditionActionList sans avoir fait une initialisation complète de la class MarketingAutomation")
 	
-	$fichierConfig_o:=File:C1566(Get 4D folder:C485(Current resources folder:K5:16; *)+"cioMarketingAutomation"+Folder separator:K24:12+"scene"+Folder separator:K24:12+"conditionAction.json"; fk platform path:K87:2)
+	$fichierConfig_o:=File:C1566(Get 4D folder:C485(Dossier Resources courant:K5:16; *)+"cioMarketingAutomation"+Séparateur dossier:K24:12+"scene"+Séparateur dossier:K24:12+"conditionAction.json"; fk chemin plateforme:K87:2)
 	
 	If ($fichierConfig_o.exists=True:C214)
 		
@@ -767,7 +786,7 @@ Historique
 	
 	ASSERT:C1129(Storage:C1525.automation#Null:C1517; "Impossible d'utiliser la fonction loadSceneConditionSautList sans avoir fait une initialisation complète de la class MarketingAutomation")
 	
-	$fichierConfig_o:=File:C1566(Get 4D folder:C485(Current resources folder:K5:16; *)+"cioMarketingAutomation"+Folder separator:K24:12+"scene"+Folder separator:K24:12+"conditionSaut.json"; fk platform path:K87:2)
+	$fichierConfig_o:=File:C1566(Get 4D folder:C485(Dossier Resources courant:K5:16; *)+"cioMarketingAutomation"+Séparateur dossier:K24:12+"scene"+Séparateur dossier:K24:12+"conditionSaut.json"; fk chemin plateforme:K87:2)
 	
 	If ($fichierConfig_o.exists=True:C214)
 		
