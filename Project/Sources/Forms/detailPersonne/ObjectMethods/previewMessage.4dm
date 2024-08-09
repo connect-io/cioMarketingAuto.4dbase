@@ -1,7 +1,7 @@
 var $colonne_i; $ligne_i : Integer
 
 Case of 
-	: (Événement formulaire code=Sur clic)
+	: (Form event code:C388=On Clicked:K2:4)
 		LISTBOX GET CELL POSITION:C971(*; "List Box2"; $colonne_i; $ligne_i)
 		
 		If ($ligne_i>0)
@@ -14,6 +14,6 @@ Case of
 			
 		End if 
 		
-	: (Événement formulaire code=Sur survol)
+	: (Form event code:C388=On Mouse Move:K2:35)
 		SET CURSOR:C469(9000)
 End case 

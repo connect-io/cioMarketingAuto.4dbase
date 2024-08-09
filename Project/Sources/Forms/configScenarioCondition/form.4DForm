@@ -353,7 +353,7 @@
 				"Bouton": {
 					"type": "button",
 					"text": "Valider",
-					"top": 473,
+					"top": 553,
 					"left": 120,
 					"width": 203,
 					"height": 30,
@@ -512,11 +512,39 @@
 						"onMouseMove"
 					],
 					"method": "ObjectMethods/imageSansIBAN.4dm"
+				},
+				"Texte16": {
+					"type": "text",
+					"text": "Téléphone mobile existant :",
+					"top": 460,
+					"left": 14,
+					"width": 172,
+					"height": 25,
+					"fontWeight": "bold"
+				},
+				"imageTelMobile": {
+					"type": "input",
+					"left": 14,
+					"top": 487,
+					"width": 32,
+					"height": 32,
+					"dataSourceTypeHint": "picture",
+					"dataSource": "Form:C1466.imageTelMobile",
+					"enterable": false,
+					"contextMenu": "none",
+					"pictureFormat": "proportionalCenter",
+					"fill": "transparent",
+					"borderStyle": "none",
+					"events": [
+						"onClick",
+						"onMouseMove"
+					],
+					"method": "ObjectMethods/imageTelMobile.4dm"
 				}
 			}
 		}
 	],
-	"geometryStamp": 267,
+	"geometryStamp": 278,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",

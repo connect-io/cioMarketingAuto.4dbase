@@ -253,6 +253,32 @@ Function searchPersonToScenario($provenance_el : Integer)
 						$personne_o:=$personne_o.and($table_o)
 					End if 
 					
+				: ($cleValeur_o.key="telMobile")
+					// Instanciation de la class
+					$class_o:=cmaToolGetClass("MAPersonneSelection").new()
+					$class_o.loadByField("telMobile"; "#"; "")
+					
+					// Modifié par : Rémy Scanu (10/05/2021)
+					If (This:C1470.personneSelection#Null:C1517)
+						$class_o.personneSelection:=This:C1470.personneSelection.and($class_o.personneSelection)
+					End if 
+					
+					If ($class_o.personneSelection.length>0)  // Des personnes de ma sélection ont bien un téléphone mobile
+						
+						If ($cleValeur_o.value=True:C214)  // Si dans les conditions, l'utisateur souhaite uniquement les personnes avec un téléphone mobile
+							$personne_o:=$personne_o.and($class_o.personneSelection)
+						Else 
+							$personne_o:=$personne_o.minus($class_o.personneSelection)
+						End if 
+						
+					Else 
+						
+						If ($cleValeur_o.value=True:C214)  // Si dans les conditions, l'utisateur souhaite uniquement les personnes avec un téléphone mobile
+							$personne_o:=ds:C1482[Storage:C1525.automation.passerelle.tableHote].newSelection()
+						End if 
+						
+					End if 
+					
 			End case 
 			
 		End for each 
@@ -317,6 +343,7 @@ Function loadImageScenarioCondition
 	This:C1470.imageSansScenario:=Storage:C1525.automation.image["toggle"]
 	This:C1470.imageMailingMarketing:=Storage:C1525.automation.image["toggle"]
 	This:C1470.imageSansIBAN:=Storage:C1525.automation.image["toggle"]
+	This:C1470.imageTelMobile:=Storage:C1525.automation.image["toggle"]
 	
 	If (This:C1470.scenarioDetail.condition.sexe#Null:C1517)
 		
@@ -375,6 +402,16 @@ Function loadImageScenarioCondition
 			This:C1470.imageSansIBAN:=Storage:C1525.automation.image["toggle-on"]
 		Else 
 			This:C1470.imageSansIBAN:=Storage:C1525.automation.image["toggle-off"]
+		End if 
+		
+	End if 
+	
+	If (This:C1470.scenarioDetail.condition.telMobile#Null:C1517)
+		
+		If (This:C1470.scenarioDetail.condition.telMobile=True:C214)
+			This:C1470.imageTelMobile:=Storage:C1525.automation.image["toggle-on"]
+		Else 
+			This:C1470.imageTelMobile:=Storage:C1525.automation.image["toggle-off"]
 		End if 
 		
 	End if 

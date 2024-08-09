@@ -328,15 +328,16 @@ Historique
 	End for 
 	
 Function sendMailing($configPreCharge_o : Object) : Object
-	var $canalEnvoi_t; $corps_t; $mime_t; $propriete_t; $retour_t : Text
+	var $canalEnvoi_t; $corps_t; $mime_t; $propriete_t; $retour_t; $strategy_t : Text
 	var $erreur_b : Boolean
-	var $class_o; $config_o; $mime_o; $statut_o; $wpVar_o; $fichier_o; $signature_o; $document_o; $entity_e : Object
+	var $class_o; $config_o; $mime_o; $statut_o; $wpVar_o; $fichier_o; $signature_o; $document_o; $entity_e; $param_o : Object
 	var $transporter_c; $detail_c : Collection
 	
 	var $formule_f : Object
 	var $parameter_es : Object
 	
 	ASSERT:C1129(This:C1470.personne#Null:C1517; "Impossible d'utiliser la fonction sendMailing sans une personne de définie.")
+	$param_o:=New object:C1471
 	
 	If (Count parameters:C259=0)  // Le mailing ne part pas en automatique, on sélectionne le canal d'envoi
 		// Instanciation de la class
@@ -348,7 +349,9 @@ Function sendMailing($configPreCharge_o : Object) : Object
 		$canalEnvoi_t:=$configPreCharge_o.type
 	End if 
 	
-	If ($canalEnvoi_t#"")
+	$erreur_b:=($canalEnvoi_t="")
+	
+	If ($erreur_b=False:C215)
 		
 		If (Count parameters:C259=0)  // Le mailing ne part pas en automatique, on configure correctement le mailing
 			$config_o:=$class_o.sendGetConfig($canalEnvoi_t)
@@ -361,7 +364,9 @@ Function sendMailing($configPreCharge_o : Object) : Object
 			
 		End if 
 		
-		If ($config_o.success=True:C214)
+		$erreur_b:=Not:C34($config_o.success)
+		
+		If ($erreur_b=False:C215)
 			
 			If (Count parameters:C259=0)  // Le mailing ne part pas en automatique, on configure le contenu du mailing
 				cwToolWindowsForm("gestionDocument"; New object:C1471("ecartHautEcran"; 30; "ecartBasEcran"; 70); New object:C1471("entree"; 1))
@@ -408,7 +413,7 @@ Function sendMailing($configPreCharge_o : Object) : Object
 						
 						If ($corps_t#"@<body@")  // Nouvelle façon d'envoyer des emails
 							// Ajout de la signature
-							$fichier_o:=File:C1566(Get 4D folder:C485(Dossier Resources courant:K5:16; *)+"cioMarketingAutomation"+Séparateur dossier:K24:12+"scene"+Séparateur dossier:K24:12+"signatureEmail.4wp"; fk chemin plateforme:K87:2)
+							$fichier_o:=File:C1566(Get 4D folder:C485(Current resources folder:K5:16; *)+"cioMarketingAutomation"+Folder separator:K24:12+"scene"+Folder separator:K24:12+"signatureEmail.4wp"; fk platform path:K87:2)
 							
 							If ($fichier_o.exists=True:C214)
 								WP INSERT BREAK:C1413($document_o; wk paragraph break:K81:259; wk append:K81:179)
@@ -472,7 +477,7 @@ Function sendMailing($configPreCharge_o : Object) : Object
 					If (Is compiled mode:C492=False:C215)
 						PRINT SETTINGS:C106
 					End if 
-					
+					TRACE:C157
 					WP PRINT:C1343($document_o; wk 4D Write Pro layout:K81:176)
 				: ($canalEnvoi_t="SMS")
 					$corps_t:=WP Get text:C1575($document_o; wk expressions as value:K81:255)
@@ -481,7 +486,14 @@ Function sendMailing($configPreCharge_o : Object) : Object
 						
 						Case of 
 							: ($config_o.SMSConfig.prestataire.nom="SMSBox")
-								$retour_t:=$config_o.SMSConfig.SMSBOXSendMessage(True:C214; $corps_t; This:C1470.telMobile; Current date:C33; Current time:C178; "Reponse"; 4)
+								TRACE:C157
+								If (Bool:C1537($config_o.SMSConfig.prestataire.smsMarketing)=True:C214)
+									$strategy_t:="4"
+								Else 
+									$strategy_t:="2"
+								End if 
+								
+								$retour_t:=$config_o.SMSConfig.SMSBOXSendMessage(True:C214; $corps_t; This:C1470.telMobile; Current date:C33; Current time:C178; "Reponse"; $strategy_t)
 								$erreur_b:=($retour_t#"Le sms a bien été envoyé !")
 							: ($config_o.SMSConfig.prestataire.nom="Mailjet")
 								$retour_t:=$config_o.SMSConfig.MailjetSendMessage($corps_t; This:C1470.telMobile)
@@ -504,13 +516,29 @@ Function sendMailing($configPreCharge_o : Object) : Object
 					$param_o.externalReference:=$config_o.externalReference
 				End if 
 				
-				This:C1470.updateCaMarketingStatistic(3; $param_o)
 			End if 
 			
+		Else 
+			$retour_t:="Le mailing n'a pas pu être initialiser pour le canal d'envoi "+$canalEnvoi_t+", voici le détail :"+JSON Stringify:C1217($config_o; *)
 		End if 
 		
+	Else 
+		$retour_t:="Aucun canal d'envoi sélectionné"
 	End if 
 	
+	If ($erreur_b=True:C214)
+		
+		If (Count parameters:C259=0)
+			$param_o:=New object:C1471("type"; $canalEnvoi_t; "contenu4WP"; WParea; "statut"; "2")
+		Else 
+			$param_o:=New object:C1471("type"; $canalEnvoi_t; "contenu4WP"; $document_o; "statut"; "2")
+		End if 
+		
+		$param_o.statutLib:="Erreur"
+		$param_o.externalReference:=New object:C1471("value"; $retour_t)
+	End if 
+	
+	This:C1470.updateCaMarketingStatistic(3; $param_o)
 	return {success: Not:C34($erreur_b); erreurDetail: $retour_t}
 	
 Function updateCaMarketingStatistic($provenance_el : Integer; $detail_o : Object)->$isOk_b : Boolean
@@ -609,7 +637,7 @@ Historique
 				"nomDocument"; String:C10($detail_o.nomDocument); \
 				"contenu4WP"; $detail_o.contenu4WP; \
 				"statut"; String:C10($detail_o.statut); \
-				"statutLib"; cmaToolMailjetGetLib(String:C10($detail_o.statut)); \
+				"statutLib"; ($detail_o.statutLib#Null:C1517) ? String:C10($detail_o.statutLib) : cmaToolMailjetGetLib(String:C10($detail_o.statut)); \
 				"statutColor"; cmaToolMailjetGetColor(String:C10($detail_o.statut)); \
 				"subject"; String:C10($detail_o.subject); \
 				"externalReference"; ($detail_o.externalReference#Null:C1517) ? $detail_o.externalReference : Null:C1517; \

@@ -69,31 +69,29 @@ If (Form event code:C388=On Data Change:K2:15)
 		End if 
 		
 		If (Lowercase:C14(Form:C1466.sceneTypeSelected)="email")
-			Form:C1466.modeleObjetEmail:=$elementSelected_o.subject
-			
+			Form:C1466.modeleObjetEmail:=String:C10($elementSelected_o.subject)
+			OBJECT SET ENTERABLE:C238(*; "modeleObjetEmail"; True:C214)
+		End if 
+		
+		If (Lowercase:C14(Form:C1466.sceneTypeSelected)="email") | (Lowercase:C14(Form:C1466.sceneTypeSelected)="sms")
 			$pos_el:=Find in array:C230(expediteurList_at; String:C10($elementSelected_o.expediteur))
 			
 			If ($pos_el>0)
 				expediteurList_at:=$pos_el
-				
 				expediteurList_at{expediteurList_at}:=expediteurList_at{$pos_el}
 			End if 
 			
-			OBJECT SET ENTERABLE:C238(*; "modeleObjetEmail"; True:C214)
 			OBJECT SET ENTERABLE:C238(*; "expediteurList"; True:C214)
 		End if 
 		
 	Else 
 		versionList_at:=0
-		
 		Form:C1466.modeleDetail:=""
 		
-		If (Lowercase:C14(Form:C1466.sceneTypeSelected)="email")
-			Form:C1466.modeleObjetEmail:=""
-			
-			OBJECT SET ENTERABLE:C238(*; "modeleObjetEmail"; False:C215)
-		End if 
+		Form:C1466.modeleObjetEmail:=""
+		OBJECT SET ENTERABLE:C238(*; "modeleObjetEmail"; False:C215)
 		
+		Form:C1466.smsMarketing:=False:C215
 	End if 
 	
 	Form:C1466.sceneVersionSelected:=$titre_t

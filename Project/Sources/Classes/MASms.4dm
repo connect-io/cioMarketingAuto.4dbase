@@ -24,10 +24,10 @@ Historique
 		End use 
 		
 		// Chargement du fichier de config
-		$configFile_o:=Folder:C1567(fk dossier ressources:K87:11; *).file("cioMarketingAutomation/sms/config.json")
+		$configFile_o:=Folder:C1567(fk resources folder:K87:11; *).file("cioMarketingAutomation/sms/config.json")
 		
 		If (Not:C34($configFile_o.exists))  // Il n'existe pas de fichier de config dans la base hote, on le génère.
-			Folder:C1567(fk dossier ressources:K87:11).file("cioMarketingAutomation/sms/config.json").copyTo($configFile_o.parent; $configFile_o.fullName)
+			Folder:C1567(fk resources folder:K87:11).file("cioMarketingAutomation/sms/config.json").copyTo($configFile_o.parent; $configFile_o.fullName)
 		End if 
 		
 		If ($configFile_o.exists=True:C214)
@@ -57,6 +57,9 @@ Historique
 	$prestataire_o:=cmaToolObjectMerge($prestataire_o; $parametre_o)
 	This:C1470.prestataire:=$prestataire_o
 	
+	This:C1470.message:=""
+	This:C1470.destinataire:=""
+	
 Function MailjetSendMessage($message_t : Text; $destinataire_t : Text) : Text
 /* -----------------------------------------------------------------------------
 Fonction : MASms.MailjetSendMessage()
@@ -76,13 +79,14 @@ Function SMSBOXCheckCredit()->$creditOK_b : Boolean
 Fonction : MASms.SMSBOXCheckCredit()
 	
 Vérifie si suffisament de crédit pour envoyer un SMS
+Note pour nouveau compte il faut utiliser authentification par entête HTTP
 	
 Historique
 02/08/24 - Rémy Scanu <remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
 	var $reponse_t : Text
 	
-	cwToolWebHttpRequest("GET"; "https://api.smsbox.pro/api.php?login="+This:C1470.prestataire.login+"&pass="+This:C1470.prestataire.password+"&action=credit"; ""; ->$reponse_t)
+	cwToolWebHttpRequest("GET"; "https://api.smsbox.pro/1.1/api.php?action=credit"; ""; ->$reponse_t; New collection:C1472("Authorization"); New collection:C1472("App "+This:C1470.prestataire.apiKey))
 	$creditOK_b:=($reponse_t#"CREDIT 0") & ($reponse_t#"ERROR@")
 	
 Function SMSBOXSendMessage($checkCredit_b : Boolean; $message_t : Text; $destinataire_t : Text; $date_d : Date; $heure_h : Time; $mode_t : Text; $strategy_t : Text) : Text
@@ -98,31 +102,30 @@ Historique
 	
 	$mode_t:=Replace string:C233($mode_t; "é"; "e")
 	
-	If (Day number:C114($date_d)=Dimanche:K10:19) | ((cmaToolDateIsPublicHoliday("fr"; $date_d)=True:C214) & ($destinataire_t="33@"))
+	If (Day number:C114($date_d)=Sunday:K10:19) | ((cmaToolDateIsPublicHoliday("fr"; $date_d)=True:C214) & (($destinataire_t="33@") | ($destinataire_t="+33@")))
 		$strategy_t:="2"
 	End if 
 	
+	This:C1470.destinataire:=$destinataire_t
 	This:C1470.message:=$message_t
 	
 	// Gestion de la desinscription
 	Case of 
 		: ($mode_t="Expert") & ($strategy_t="4")
-			This:C1470.message:=This:C1470.message+Char:C90(Retour à la ligne:K15:40)+"STOP SMS #XYZ#"  // 17 car.
+			This:C1470.message:=This:C1470.message+Char:C90(Line feed:K15:40)+"STOP SMS #XYZ#"  // 17 car.
 		: ($mode_t="Standard") & ($strategy_t="4")
-			This:C1470.message:=This:C1470.message+Char:C90(Retour à la ligne:K15:40)+"STOP si refus SMS"  // 17 car.
+			This:C1470.message:=This:C1470.message+Char:C90(Line feed:K15:40)+"STOP si refus SMS"  // 17 car.
 		: ($mode_t="Reponse") & ($strategy_t="4")
-			This:C1470.message:=This:C1470.message+Char:C90(Retour à la ligne:K15:40)+"STOP SMS 36111"  // 17 car.
+			This:C1470.message:=This:C1470.message+Char:C90(Line feed:K15:40)+"STOP SMS 36111"  // 17 car.
 	End case 
 	
 	This:C1470.cleanMessage()
 	
 	If ($mode_t#"Expert") | ($mode_t#"expert")
-		This:C1470.url:="https://api.smsbox.pro/1.1/api.php?login="+This:C1470.prestataire.login+"&pass="+This:C1470.prestataire.password+\
-			"&dest="+$destinataire_t+"&msg="+This:C1470.messageEncode+"&mode="+$mode_t+"&date="+String:C10($date_d)+\
+		This:C1470.url:="https://api.smsbox.pro/1.1/api.php?dest="+$destinataire_t+"&msg="+This:C1470.messageEncode+"&mode="+$mode_t+"&date="+String:C10($date_d)+\
 			"&heure="+Time string:C180($heure_h)+"&strategy="+$strategy_t
 	Else 
-		This:C1470.url:="https://api.smsbox.pro/1.1/api.php?login="+This:C1470.prestataire.login+"&pass="+This:C1470.prestataire.password+\
-			"&dest="+$destinataire_t+"&msg="+This:C1470.messageEncode+"&mode="+$mode_t+"&date="+String:C10($date_d)+\
+		This:C1470.url:="https://api.smsbox.pro/1.1/api.php?dest="+$destinataire_t+"&msg="+This:C1470.messageEncode+"&mode="+$mode_t+"&date="+String:C10($date_d)+\
 			"&heure="+Time string:C180($heure_h)+"&origine="+This:C1470.prestataire.origine+"&strategy="+$strategy_t
 	End if 
 	
@@ -133,19 +136,19 @@ Historique
 	End if 
 	
 	// Envoi du message
-	cwToolWebHttpRequest("GET"; This:C1470.url; ""; ->$reponse_t)
+	cwToolWebHttpRequest("GET"; This:C1470.url; ""; ->$reponse_t; New collection:C1472("Authorization"); New collection:C1472("App "+This:C1470.prestataire.apiKey))
 	
 	Case of 
 		: ($reponse_t="OK")  // Pas d'erreur
 			return "Le sms a bien été envoyé !"
 		: ($reponse_t="ERROR 01")  // Paramètres manquants
-			return "Le sms n'a pas pu être envoyé, des paramètres sont manquants !"+Char:C90(Retour à la ligne:K15:40)+"Url : "+This:C1470.url
+			return "Le sms n'a pas pu être envoyé, des paramètres sont manquants !"+Char:C90(Line feed:K15:40)+"Url : "+This:C1470.url
 		: ($reponse_t="ERROR 02")  // Identifiants incorrects, clé API suspendue
-			return "Le sms n'a pas pu être envoyé, car les identifiants utilisés sont incorrects !"+Char:C90(Retour à la ligne:K15:40)+"Login : "+This:C1470.prestataire.login+", mot de passe : "+This:C1470.prestataire.password
+			return "Le sms n'a pas pu être envoyé, car les identifiants utilisés sont incorrects !"+Char:C90(Line feed:K15:40)+"Login : "+This:C1470.prestataire.login+", mot de passe : "+This:C1470.prestataire.password
 		: ($reponse_t="ERROR 03")  // Solde épuisé
 			return "Le sms n'a pas pu être envoyé, car votre solde est épuisé !"
 		: ($reponse_t="ERROR 04")  // Téléphone destinataire invalide
-			return "Le sms n'a pas pu être envoyé, car le numéro du destinataire n'est pas au bon format !"+Char:C90(Retour à la ligne:K15:40)+"Téléphone : "+$destinataire_t
+			return "Le sms n'a pas pu être envoyé, car le numéro du destinataire n'est pas au bon format !"+Char:C90(Line feed:K15:40)+"Téléphone : "+$destinataire_t
 		Else 
 			return $reponse_t
 	End case 
@@ -180,3 +183,17 @@ Historique
 	
 	This:C1470.messageEncode:=Replace string:C233(This:C1470.messageEncode; "$"; "%")
 	
+Function cleanMobilePhone($isoCode_t : Text)
+/* -----------------------------------------------------------------------------
+Fonction : MASms.cleanMobilePhone()
+	
+Met au format international le numéro de téléphone mobile
+	
+Historique
+07/08/24 - Rémy Scanu <remy@connect-io.fr> - Création
+-----------------------------------------------------------------------------*/
+	
+	Case of 
+		: ($isoCode_t="fr")
+			
+	End case 

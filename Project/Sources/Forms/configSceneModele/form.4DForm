@@ -171,11 +171,25 @@
 					"loopBackToFirstFrame": true,
 					"switchBackWhenReleased": true,
 					"useLastFrameAsDisabled": true
+				},
+				"smsMarketing": {
+					"type": "checkbox",
+					"text": "SMS Mark.",
+					"top": 110,
+					"left": 274,
+					"width": 90,
+					"height": 20,
+					"events": [
+						"onClick"
+					],
+					"dataSourceTypeHint": "boolean",
+					"dataSource": "Form:C1466.smsMarketing",
+					"method": "ObjectMethods/smsMarketing.4dm"
 				}
 			}
 		}
 	],
-	"geometryStamp": 460,
+	"geometryStamp": 474,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",

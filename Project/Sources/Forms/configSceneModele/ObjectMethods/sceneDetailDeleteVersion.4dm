@@ -24,6 +24,8 @@ Case of
 					
 					Form:C1466.modeleDetail:=""
 					Form:C1466.modeleObjetEmail:=""
+					
+					Form:C1466.smsMarketing:=False:C215
 				End if 
 				
 			End if 

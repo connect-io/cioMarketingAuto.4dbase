@@ -36,7 +36,7 @@ Case of
 				
 				Form:C1466.cronosMessage:=""
 				Form:C1466.cronosVerifMailjet:=cmaTimestamp(Current date:C33; Current time:C178)+$prochaineVerif_el  // On incrémente d'1 heure par défaut sinon le temps défini par l'utilisateur
-			: (Form:C1466.cronosMessage="Gestion des scénarios...")
+			: (Form:C1466.cronosMessage="Gestion des scénarios...") & (Day number:C114(Current date:C33(*))#Sunday:K10:19)
 				Form:C1466.cronosManageScenario()
 				
 				Form:C1466.cronosMessage:=""

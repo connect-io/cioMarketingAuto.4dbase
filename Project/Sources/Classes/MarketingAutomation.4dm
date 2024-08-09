@@ -25,10 +25,10 @@ Historique
 		End use 
 		
 		// Chargement du fichier de config
-		$configFile_o:=Folder:C1567(fk dossier ressources:K87:11; *).file("cioMarketingAutomation/config.json")
+		$configFile_o:=Folder:C1567(fk resources folder:K87:11; *).file("cioMarketingAutomation/config.json")
 		
 		If (Not:C34($configFile_o.exists))  // Il n'existe pas de fichier de config dans la base hote, on le génère.
-			Folder:C1567(fk dossier ressources:K87:11).file("modelAutomation/config.json").copyTo($configFile_o.parent; $configFile_o.fullName)
+			Folder:C1567(fk resources folder:K87:11).file("modelAutomation/config.json").copyTo($configFile_o.parent; $configFile_o.fullName)
 		End if 
 		
 		If ($configFile_o.exists=True:C214)
@@ -49,7 +49,7 @@ Historique
 			ALERT:C41("Impossible d'intialiser le composant caMarketingAutomation, le fichier de configuration n'a pas pu être trouvé dans la base hôte.")
 		End if 
 		
-		$scenarioFolder_o:=Folder:C1567(fk dossier ressources:K87:11; *).folder("scenario")
+		$scenarioFolder_o:=Folder:C1567(fk resources folder:K87:11; *).folder("scenario")
 		
 		If ($scenarioFolder_o.exists=False:C215)
 			$scenarioFolder_o.create()
@@ -68,7 +68,7 @@ Historique
 -----------------------------------------------------------------------------*/
 	var $dossier_o : Object
 	
-	$dossier_o:=Folder:C1567($chemin_t; fk chemin plateforme:K87:2)
+	$dossier_o:=Folder:C1567($chemin_t; fk platform path:K87:2)
 	
 	If ($dossier_o.exists=False:C215)  // Création du dossier $chemin_t
 		$isOk_b:=$dossier_o.create()
@@ -233,7 +233,7 @@ Historique
 	$scene_cs:=cmaToolGetClass("MAScene").new()
 	
 	For each ($enregistrement_o; $table_o)
-		Form:C1466.cronosMessage:="Gestion des scénarios..."+Char:C90(Retour à la ligne:K15:40)
+		Form:C1466.cronosMessage:="Gestion des scénarios..."+Char:C90(Line feed:K15:40)
 		Form:C1466.cronosMessage:=Form:C1466.cronosMessage+"Envoi de l'email automatique "+String:C10($enregistrement_o.indexOf($table_o)+1)+" / "+String:C10($table_o.length)
 		
 		$caScenarioEvent_o:=$enregistrement_o.AllCaScenarioEvent
@@ -590,8 +590,8 @@ Historique
 						
 						$retourB_o:=$personne_o.sendMailing($config_o)
 					: ($scene_o.action="Envoi SMS")  // L'action de la scène est l'envoi d'un SMS
-						$sms_o:=cmaToolGetClass("MASms").new(False:C215; $collection_c[0].expediteur)
-						$config_o:=New object:C1471("success"; True:C214; "type"; "SMS"; "SMSConfig"; $sms_o; "contenu4WP"; $document_o; "expediteur"; $collection_c[0].expediteur)
+						$sms_o:=cmaToolGetClass("MASms").new(False:C215; New object:C1471("nom"; $collection_c[0].expediteur))
+						$config_o:=New object:C1471("success"; True:C214; "type"; "SMS"; "SMSConfig"; $sms_o; "contenu4WP"; $document_o; "expediteur"; $collection_c[0].expediteur; "smsMarketing"; Bool:C1537($collection_c[0].smsMarketing))
 						
 						If ($collection_c[0].externalReference#Null:C1517)
 							$config_o.externalReference:=OB Copy:C1225($collection_c[0].externalReference)
@@ -721,9 +721,9 @@ Historique
 		This:C1470.image:=New object:C1471()
 	End if 
 	
-	$dossier_o:=Folder:C1567(Get 4D folder:C485(Dossier Resources courant:K5:16)+"Images"+Séparateur dossier:K24:12; fk chemin plateforme:K87:2)
+	$dossier_o:=Folder:C1567(Get 4D folder:C485(Current resources folder:K5:16)+"Images"+Folder separator:K24:12; fk platform path:K87:2)
 	
-	For each ($fichier_o; $dossier_o.files(fk ignorer invisibles:K87:22))
+	For each ($fichier_o; $dossier_o.files(fk ignore invisible:K87:22))
 		$blob_b:=$fichier_o.getContent()
 		
 		BLOB TO PICTURE:C682($blob_b; $image_i)
@@ -763,7 +763,7 @@ Historique
 	
 	ASSERT:C1129(Storage:C1525.automation#Null:C1517; "Impossible d'utiliser la fonction loadSceneConditionActionList sans avoir fait une initialisation complète de la class MarketingAutomation")
 	
-	$fichierConfig_o:=File:C1566(Get 4D folder:C485(Dossier Resources courant:K5:16; *)+"cioMarketingAutomation"+Séparateur dossier:K24:12+"scene"+Séparateur dossier:K24:12+"conditionAction.json"; fk chemin plateforme:K87:2)
+	$fichierConfig_o:=File:C1566(Get 4D folder:C485(Current resources folder:K5:16; *)+"cioMarketingAutomation"+Folder separator:K24:12+"scene"+Folder separator:K24:12+"conditionAction.json"; fk platform path:K87:2)
 	
 	If ($fichierConfig_o.exists=True:C214)
 		
@@ -786,7 +786,7 @@ Historique
 	
 	ASSERT:C1129(Storage:C1525.automation#Null:C1517; "Impossible d'utiliser la fonction loadSceneConditionSautList sans avoir fait une initialisation complète de la class MarketingAutomation")
 	
-	$fichierConfig_o:=File:C1566(Get 4D folder:C485(Dossier Resources courant:K5:16; *)+"cioMarketingAutomation"+Séparateur dossier:K24:12+"scene"+Séparateur dossier:K24:12+"conditionSaut.json"; fk chemin plateforme:K87:2)
+	$fichierConfig_o:=File:C1566(Get 4D folder:C485(Current resources folder:K5:16; *)+"cioMarketingAutomation"+Folder separator:K24:12+"scene"+Folder separator:K24:12+"conditionSaut.json"; fk platform path:K87:2)
 	
 	If ($fichierConfig_o.exists=True:C214)
 		
