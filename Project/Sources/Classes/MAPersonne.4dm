@@ -477,7 +477,7 @@ Function sendMailing($configPreCharge_o : Object) : Object
 					If (Is compiled mode:C492=False:C215)
 						PRINT SETTINGS:C106
 					End if 
-					TRACE:C157
+					
 					WP PRINT:C1343($document_o; wk 4D Write Pro layout:K81:176)
 				: ($canalEnvoi_t="SMS")
 					$corps_t:=WP Get text:C1575($document_o; wk expressions as value:K81:255)
@@ -486,7 +486,7 @@ Function sendMailing($configPreCharge_o : Object) : Object
 						
 						Case of 
 							: ($config_o.SMSConfig.prestataire.nom="SMSBox")
-								TRACE:C157
+								
 								If (Bool:C1537($config_o.SMSConfig.prestataire.smsMarketing)=True:C214)
 									$strategy_t:="4"
 								Else 
