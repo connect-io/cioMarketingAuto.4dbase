@@ -388,13 +388,16 @@ Function sendMailing($configPreCharge_o : Object) : Object
 				
 				If ($parameter_es.length>0)
 					
+					If (Count parameters:C259>0)
+						$document_o:=WP New:C1317($parameter_es.first().value_b)
+					End if 
+					
 					If ($parameter_es[0].formula#"")
 						$formule_f:=Formula from string:C1601($parameter_es[0].formula)
 						$detail_c:=$config_o.externalReference.situation.detail.query("scene = :1"; $config_o.externalReference.scene)
 						
 						If ($detail_c.length>0)
-							$entity_e:=$formule_f.call(New object:C1471("value"; $detail_c[0].externalReference))
-							WP SET DATA CONTEXT:C1786($document_o; $entity_e)
+							WP SET DATA CONTEXT:C1786($document_o; $formule_f.call({value: $detail_c[0].externalReference}))
 						End if 
 						
 					End if 
