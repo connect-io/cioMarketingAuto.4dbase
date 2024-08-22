@@ -17,7 +17,7 @@ Historique
 	
 	var $configFile_o : 4D:C1709.File
 	
-	If (Bool:C1537($initialisation_b)=True:C214)  // On initialise tout ça uniquement au premier appel (Normalement Sur ouverture de la base)
+	If (Bool:C1537($initialisation_b)=True:C214) | (Storage:C1525.sms.config=Null:C1517)  // On initialise tout ça uniquement au premier appel (Normalement Sur ouverture de la base)
 		
 		Use (Storage:C1525)
 			Storage:C1525.sms:=New shared object:C1526()
