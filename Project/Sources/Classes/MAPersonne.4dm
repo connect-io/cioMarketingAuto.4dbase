@@ -388,10 +388,6 @@ Function sendMailing($configPreCharge_o : Object) : Object
 				
 				If ($parameter_es.length>0)
 					
-					If (Count parameters:C259>0)
-						$document_o:=WP New:C1317($parameter_es.first().value_b)
-					End if 
-					
 					If ($parameter_es[0].formula#"")
 						$formule_f:=Formula from string:C1601($parameter_es[0].formula)
 						$detail_c:=$config_o.externalReference.situation.detail.query("scene = :1"; $config_o.externalReference.scene)
