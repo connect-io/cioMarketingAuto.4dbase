@@ -617,7 +617,7 @@
 				},
 				"Texte11": {
 					"type": "text",
-					"text": "Information Mailjet",
+					"text": "Information",
 					"top": 216,
 					"left": 149,
 					"width": 135,
@@ -926,7 +926,7 @@
 				},
 				"Texte2": {
 					"type": "text",
-					"text": "Historique Mailjet",
+					"text": "Historique Mailing",
 					"top": 143,
 					"left": 479,
 					"width": 260,
@@ -959,6 +959,23 @@
 					"columns": [
 						{
 							"header": {
+								"name": "Entête8",
+								"text": "Type",
+								"stroke": "#21759B"
+							},
+							"name": "Colonne8",
+							"footer": {
+								"name": "Pied8"
+							},
+							"alternateFill": "#E1F2FC",
+							"width": 50,
+							"dataSource": "This:C1470.eventDetail.type",
+							"dataSourceTypeHint": "text",
+							"enterable": false,
+							"fill": "#F5FBFF"
+						},
+						{
+							"header": {
 								"text": "Date & heure envoi",
 								"name": "Entête7",
 								"stroke": "#21759B"
@@ -968,26 +985,11 @@
 								"name": "Pied7"
 							},
 							"alternateFill": "#E1F2FC",
-							"width": 127,
-							"dataSource": "\"Le \"+cmaTimestampLire(\"date\"; This:C1470.eventTs)+\"\\rà \"+cmaTimestampLire(\"heure\"; This:C1470.eventTs)",
-							"enterable": false
-						},
-						{
-							"header": {
-								"name": "Entête8",
-								"text": "Objet",
-								"stroke": "#21759B"
-							},
-							"name": "Colonne8",
-							"footer": {
-								"name": "Pied8"
-							},
-							"alternateFill": "#E1F2FC",
-							"width": 100,
-							"dataSource": "This:C1470.eventDetail.subject",
-							"dataSourceTypeHint": "text",
+							"width": 197,
+							"dataSource": "\"Le \"+cmaTimestampLire(\"date\"; This:C1470.eventTs)+\" à \"+cmaTimestampLire(\"heure\"; This:C1470.eventTs)",
 							"enterable": false,
-							"fill": "#F5FBFF"
+							"wordwrap": "none",
+							"truncateMode": "withEllipsis"
 						},
 						{
 							"header": {
@@ -1000,7 +1002,7 @@
 								"name": "Pied9"
 							},
 							"alternateFill": "#E1F2FC",
-							"width": 75,
+							"width": 55,
 							"dataSource": "This:C1470.eventDetail.statutLib",
 							"dataSourceTypeHint": "text",
 							"enterable": false,

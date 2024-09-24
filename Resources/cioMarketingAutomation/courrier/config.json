@@ -1,0 +1,143 @@
+{
+    "prestataire" : [
+		{
+			"nom" : "Maileva",
+			"environnement": [
+				{
+					"nom": "sandbox",
+					"urlAPI": "https://api.sandbox.maileva.com/mail/v2",
+					"username": "",
+					"password": "",
+					"clientID": "",
+					"clientSecret": ""
+				},
+				{
+					"nom": "production",
+					"urlAPI": "https://api.maileva.net/mail/v2",
+					"username": "",
+					"password": "",
+					"clientID": "",
+					"clientSecret": ""
+				}
+			],
+			"requestList": [
+				{
+					"lib": "getToken",
+					"method": "POST",
+					"url": "https://connexion.maileva.com/auth/realms/services/protocol/openid-connect/token",
+					"messageError": "Erreur lors de la requête : obtenir un token."
+				},
+				{
+					"lib": "sendingNew",
+					"method": "POST",
+					"url": "/sendings",
+					"messageError": "Erreur lors de la requête : créer un envoi."
+				},
+				{
+					"lib": "sendingList",
+					"method": "GET",
+					"url": "/sendings",
+					"messageError": "Erreur lors de la requête : liste des envois."
+				},
+				{
+					"lib": "sendingDetail",
+					"method": "GET",
+					"url": "/sendings/sendingPK",
+					"messageError": "Erreur lors de la requête : détail d'un envoi."
+				},
+				{
+					"lib": "sendingDelete",
+					"method": "DELETE",
+					"url": "/sendings/sendingPK",
+					"messageError": "Erreur lors de la requête : suppression d'un envoi."
+				},
+				{
+					"lib": "setDocument",
+					"formDataList": [
+						{
+							"type": "document",
+							"name": "name"
+						},
+						{
+							"type": "text",
+							"name": "priority"
+						}
+					],
+					"method": "POST",
+					"url": "/sendings/sendingPK/documents",
+					"messageError": "Erreur lors de la requête : ajout d'un document à un envoi."
+				},
+				{
+					"lib": "sendingDocumentList",
+					"method": "GET",
+					"url": "/sendings/sendingPK/documents",
+					"messageError": "Erreur lors de la requête : liste des document d'un envoi."
+				},
+				{
+					"lib": "documentDetail",
+					"method": "GET",
+					"url": "/sendings/sendingPK/documents/documentPK",
+					"messageError": "Erreur lors de la requête : détail d'un document."
+				},
+				{
+					"lib": "documentDelete",
+					"method": "DELETE",
+					"url": "/sendings/sendingPK/documents/documentPK",
+					"messageError": "Erreur lors de la requête : suppression d'un document."
+				},
+				{
+					"lib": "recepientAdd",
+					"method": "POST",
+					"url": "/sendings/sendingPK/recipients",
+					"messageError": "Erreur lors de la requête : ajout d'un destinataire."
+				},
+				{
+					"lib": "recepientList",
+					"method": "GET",
+					"url": "/sendings/sendingPK/recipients",
+					"messageError": "Erreur lors de la requête : liste des destinataires d'un envoi."
+				},
+				{
+					"lib": "recepientAllDelete",
+					"method": "DELETE",
+					"url": "/sendings/sendingPK/recipients",
+					"messageError": "Erreur lors de la requête : suppression de tous les destinataires."
+				},
+				{
+					"lib": "recepientDetail",
+					"method": "GET",
+					"url": "/sendings/sendingPK/recipients/recipientPK",
+					"messageError": "Erreur lors de la requête : détail d'un destinataire."
+				},
+				{
+					"lib": "recepientDelete",
+					"method": "DELETE",
+					"url": "/sendings/sendingPK/recipients/recipientPK",
+					"messageError": "Erreur lors de la requête : suppression d'un destinataire."
+				}
+			],
+			"postageType": [
+				{
+					"lib": "URGENT",
+					"delay": 2
+				},
+				{
+					"lib": "FAST",
+					"delay": 3
+				},
+				{
+					"lib": "ECONOMIC",
+					"delay": 4
+				}
+			]
+		},
+		{
+			"nom" : "Imprimante courante",
+			"environnement": [
+				{
+					"nom": "production"
+				}
+			]
+		}
+	]
+}

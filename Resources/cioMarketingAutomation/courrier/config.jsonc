@@ -1,0 +1,197 @@
+{
+    "prestataire" : [
+		{
+			"nom" : "Maileva",
+			"environnement": [
+				{
+					"nom": "sandbox",
+					"urlAPI": "https://api.sandbox.maileva.net/mail/v2",
+					"username": "",
+					"password": "",
+					"clientID": "",
+					"clientSecret": ""
+				},
+				{
+					"nom": "production",
+					"urlAPI": "https://api.maileva.com/mail/v2",
+					"username": "",
+					"password": "",
+					"clientID": "",
+					"clientSecret": ""
+				}
+			],
+			"requestList": [
+				{
+					"lib": "getToken",
+					"method": "POST",
+					"url": "https://connexion.maileva.com/auth/realms/services/protocol/openid-connect/token",
+					"messageError": "Erreur lors de la requête : obtenir un token."
+				},
+				{
+					/*
+						Paramètre du body :
+						name : string 256 characters max (Nom de l'envoi)
+						custom_id : string 36 characters max (Identifiant de l'envoi défini par le client)
+						custom_data : string 255 characters max (Information libre fournie par le client)
+						color_printing : boolean (Impression couleur) - par défaut true
+						duplex_printing : boolean (Impression recto verso) - par défaut true
+						notification_email : string (E-mail du destinataire des notifications)
+						print_sender_address : boolean (Impression de l'adresse expéditeur) - par défaut false
+						sender_address_line_1 : string (Ligne d'adresse n°1 (Société) de l'expéditeur)
+						sender_address_line_2 : string (Ligne d'adresse n°2 (Civilité, Prénom, Nom) de l'expéditeur)
+						sender_address_line_3 : string (Ligne d'adresse n°3 (Résidence, Bâtiement ...) de l'expéditeur)
+						sender_address_line_4 : string (Ligne d'adresse n°4 (N° et libellé de la voie) de l'expéditeur)
+						sender_address_line_5 : string (Ligne d'adresse n°5 (Lieu dit, BP...) de l'expéditeur)
+						sender_address_line_6 : string (Ligne d'adresse n°6 (Code postal et ville) de l'expéditeur)
+						sender_country_code : string (Code du pays (Code ISO-3166))
+						postage_type : string, énumération "FAST";"ECONOMIC";"URGENT" (URGENT Important J+2;FAST Courant J+3;ECONOMIC Economique J+4)
+					*/
+					"lib": "sendingNew",
+					"method": "POST",
+					"url": "/sendings",
+					"messageError": "Erreur lors de la requête : créer un envoi."
+				},
+				{
+					/*
+						Paramètre du body :
+						start_index : number (Le premier élément à retourner) - par défaut 1
+						count : number (Le nombre d'élément à retourner) - par défaut 50
+					*/
+					"lib": "sendingList",
+					"method": "GET",
+					"url": "/sendings",
+					"messageError": "Erreur lors de la requête : liste des envois."
+				},
+				{
+					"lib": "sendingDetail",
+					"method": "GET",
+					"url": "/sendings/sendingPK",
+					"messageError": "Erreur lors de la requête : détail d'un envoi."
+				},
+				{
+					"lib": "sendingDelete",
+					"method": "DELETE",
+					"url": "/sendings/sendingPK",
+					"messageError": "Erreur lors de la requête : suppression d'un envoi."
+				},
+				{
+					/*
+						Type de document accepté :
+						Adobe (.pdf)
+						Word (.doc, .docx et .rtf)
+						Texte (.txt)
+						Excel (.xls, .xlsx)
+						Pas plus de 20 Mo par document. Le nombre total de documents est limité à 30 par envoi.
+					*/
+					"lib": "setDocument",
+					"formDataList": [
+						{
+							"type": "document",
+							"name": "name"
+						},
+						{
+							"type": "text",
+							"name": "priority"
+						}
+					],
+					"method": "POST",
+					"url": "/sendings/sendingPK/documents",
+					"messageError": "Erreur lors de la requête : ajout d'un document à un envoi."
+				},
+				{
+					/*
+						Paramètre du body :
+						start_index : number (Le premier élément à retourner) - par défaut 1
+						count : number (Le nombre d'élément à retourner) - par défaut 50
+					*/
+					"lib": "sendingDocumentList",
+					"method": "GET",
+					"url": "/sendings/sendingPK/documents",
+					"messageError": "Erreur lors de la requête : liste des document d'un envoi."
+				},
+				{
+					"lib": "documentDetail",
+					"method": "GET",
+					"url": "/sendings/sendingPK/documents/documentPK",
+					"messageError": "Erreur lors de la requête : détail d'un document."
+				},
+				{
+					"lib": "documentDelete",
+					"method": "DELETE",
+					"url": "/sendings/sendingPK/documents/documentPK",
+					"messageError": "Erreur lors de la requête : suppression d'un document."
+				},
+				{
+					/*
+						Paramètre du body :
+						custom_id : string 36 characters max (Identifiant du destinataire fourni par le client)
+						custom_data : string 255 characters max (Information libre fournie par le client)
+						address_line_1 : string (Ligne d'adresse n°1 (Société) de l'expéditeur)
+						address_line_2 : string (Ligne d'adresse n°2 (Civilité, Prénom, Nom) de l'expéditeur)
+						address_line_3 : string (Ligne d'adresse n°3 (Résidence, Bâtiement ...) de l'expéditeur)
+						address_line_4 : string (Ligne d'adresse n°4 (N° et libellé de la voie) de l'expéditeur)
+						address_line_5 : string (Ligne d'adresse n°5 (Lieu dit, BP...) de l'expéditeur)
+						address_line_6 : string (Ligne d'adresse n°6 (Code postal et ville) de l'expéditeur)
+						country_code : string (Code du pays (Code ISO-3166))
+						postage_type : string, énumération "FAST";"ECONOMIC";"URGENT" (URGENT Important J+2;FAST Courant J+3;ECONOMIC Economique J+4)
+					*/
+					"lib": "recepientAdd",
+					"method": "POST",
+					"url": "/sendings/sendingPK/recipients",
+					"messageError": "Erreur lors de la requête : ajout d'un destinataire."
+				},
+				{
+					/*
+						Paramètre du body :
+						start_index : number (Le premier élément à retourner) - par défaut 1
+						count : number (Le nombre d'élément à retourner) - par défaut 50
+					*/
+					"lib": "recepientList",
+					"method": "GET",
+					"url": "/sendings/sendingPK/recipients",
+					"messageError": "Erreur lors de la requête : liste des destinataires d'un envoi."
+				},
+				{
+					"lib": "recepientAllDelete",
+					"method": "DELETE",
+					"url": "/sendings/sendingPK/recipients",
+					"messageError": "Erreur lors de la requête : suppression de tous les destinataires."
+				},
+				{
+					"lib": "recepientDetail",
+					"method": "GET",
+					"url": "/sendings/sendingPK/recipients/recipientPK",
+					"messageError": "Erreur lors de la requête : détail d'un destinataire."
+				},
+				{
+					"lib": "recepientDelete",
+					"method": "DELETE",
+					"url": "/sendings/sendingPK/recipients/recipientPK",
+					"messageError": "Erreur lors de la requête : suppression d'un destinataire."
+				}
+			],
+			"postageType": [
+				{
+					"lib": "URGENT",
+					"delay": 2
+				},
+				{
+					"lib": "FAST",
+					"delay": 3
+				},
+				{
+					"lib": "ECONOMIC",
+					"delay": 4
+				}
+			]
+		},
+		{
+			"nom" : "Imprimante courante",
+			"environnement": [
+				{
+					"nom": "production"
+				}
+			]
+		}
+	]
+}
