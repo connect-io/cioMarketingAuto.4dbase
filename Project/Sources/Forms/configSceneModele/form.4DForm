@@ -26,7 +26,7 @@
 					"type": "button",
 					"text": "Valider",
 					"top": 345,
-					"left": 38,
+					"left": 83,
 					"width": 202,
 					"height": 30,
 					"events": [
@@ -185,11 +185,39 @@
 					"dataSourceTypeHint": "boolean",
 					"dataSource": "Form:C1466.smsMarketing",
 					"method": "ObjectMethods/smsMarketing.4dm"
+				},
+				"notifEmail": {
+					"type": "checkbox",
+					"text": "Notif. Email",
+					"top": 110,
+					"left": 274,
+					"width": 90,
+					"height": 20,
+					"events": [
+						"onClick"
+					],
+					"dataSourceTypeHint": "boolean",
+					"dataSource": "Form:C1466.notifEmail",
+					"method": "ObjectMethods/notifEmail.4dm"
+				},
+				"configNotifEmail": {
+					"type": "button",
+					"text": "Configurer",
+					"top": 130,
+					"left": 274,
+					"width": 90,
+					"height": 30,
+					"events": [
+						"onClick",
+						"onMouseMove"
+					],
+					"method": "ObjectMethods/configNotifEmail.4dm",
+					"class": "clickable"
 				}
 			}
 		}
 	],
-	"geometryStamp": 474,
+	"geometryStamp": 486,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",

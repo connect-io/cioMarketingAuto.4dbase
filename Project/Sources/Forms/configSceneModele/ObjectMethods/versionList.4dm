@@ -68,22 +68,25 @@ If (Form event code:C388=On Data Change:K2:15)
 			Form:C1466.imageModeleActif:=Storage:C1525.automation.image["toggle-off"]
 		End if 
 		
-		If (Lowercase:C14(Form:C1466.sceneTypeSelected)="email")
-			Form:C1466.modeleObjetEmail:=String:C10($elementSelected_o.subject)
-			OBJECT SET ENTERABLE:C238(*; "modeleObjetEmail"; True:C214)
+		Case of 
+			: (Lowercase:C14(Form:C1466.sceneTypeSelected)="email")
+				Form:C1466.modeleObjetEmail:=String:C10($elementSelected_o.subject)
+				OBJECT SET ENTERABLE:C238(*; "modeleObjetEmail"; True:C214)
+			: (Lowercase:C14(Form:C1466.sceneTypeSelected)="sms")
+				Form:C1466.smsMarketing:=Bool:C1537($elementSelected_o.smsMarketing)
+			: (Lowercase:C14(Form:C1466.sceneTypeSelected)="courrier")
+				Form:C1466.notifEmail:=Bool:C1537($elementSelected_o.notifEmail)
+				OBJECT SET ENABLED:C1123(*; "configNotifEmail"; Form:C1466.notifEmail)
+		End case 
+		
+		$pos_el:=Find in array:C230(expediteurList_at; String:C10($elementSelected_o.expediteur))
+		
+		If ($pos_el>0)
+			expediteurList_at:=$pos_el
+			expediteurList_at{expediteurList_at}:=expediteurList_at{$pos_el}
 		End if 
 		
-		If (Lowercase:C14(Form:C1466.sceneTypeSelected)="email") | (Lowercase:C14(Form:C1466.sceneTypeSelected)="sms")
-			$pos_el:=Find in array:C230(expediteurList_at; String:C10($elementSelected_o.expediteur))
-			
-			If ($pos_el>0)
-				expediteurList_at:=$pos_el
-				expediteurList_at{expediteurList_at}:=expediteurList_at{$pos_el}
-			End if 
-			
-			OBJECT SET ENTERABLE:C238(*; "expediteurList"; True:C214)
-		End if 
-		
+		OBJECT SET ENTERABLE:C238(*; "expediteurList"; True:C214)
 	Else 
 		versionList_at:=0
 		Form:C1466.modeleDetail:=""
@@ -92,6 +95,7 @@ If (Form event code:C388=On Data Change:K2:15)
 		OBJECT SET ENTERABLE:C238(*; "modeleObjetEmail"; False:C215)
 		
 		Form:C1466.smsMarketing:=False:C215
+		Form:C1466.notifEmail:=False:C215
 	End if 
 	
 	Form:C1466.sceneVersionSelected:=$titre_t
