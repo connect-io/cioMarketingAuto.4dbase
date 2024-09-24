@@ -89,6 +89,25 @@ Historique
 	cwToolWebHttpRequest("GET"; "https://api.smsbox.pro/1.1/api.php?action=credit"; ""; ->$reponse_t; New collection:C1472("Authorization"); New collection:C1472("App "+This:C1470.prestataire.apiKey))
 	$creditOK_b:=($reponse_t#"CREDIT 0") & ($reponse_t#"ERROR@")
 	
+Function SMSBOXGetNbCredit()->$credit_r : Real
+/* -----------------------------------------------------------------------------
+Fonction : MASms.SMSBOXGetNbCredit()
+	
+Retourne le nombre de crédit SMS
+	
+Historique
+10/09/24 - Rémy Scanu <remy@connect-io.fr> - Création
+-----------------------------------------------------------------------------*/
+	var $reponse_t : Text
+	
+	cwToolWebHttpRequest("GET"; "https://api.smsbox.pro/1.1/api.php?action=credit"; ""; ->$reponse_t; New collection:C1472("Authorization"); New collection:C1472("App "+This:C1470.prestataire.apiKey))
+	
+	If ($reponse_t="ERROR@")
+		return 
+	End if 
+	
+	$credit_r:=Num:C11(Replace string:C233($reponse_t; "."; ","))
+	
 Function SMSBOXSendMessage($checkCredit_b : Boolean; $message_t : Text; $destinataire_t : Text; $date_d : Date; $heure_h : Time; $mode_t : Text; $strategy_t : Text) : Text
 /* -----------------------------------------------------------------------------
 Fonction : MASms.SMSBOXSendMessage()
