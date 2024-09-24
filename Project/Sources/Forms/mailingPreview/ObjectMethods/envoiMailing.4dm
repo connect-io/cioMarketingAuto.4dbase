@@ -53,6 +53,17 @@ Case of
 		Form:C1466.failed_c:=New collection:C1472()
 		
 		If ($canalEnvoi_t="Courrier")
+			
+			If (Form:C1466.Courrier.prestataire.nom="Imprimante courante")
+				PRINT SETTINGS:C106
+				
+				If (OK=0)
+					ALERT:C41("Envoi annulé")
+					return 
+				End if 
+				
+			End if 
+			
 			OPEN PRINTING JOB:C995
 		End if 
 		
@@ -95,7 +106,7 @@ Case of
 							
 							$config_o:=New object:C1471("success"; True:C214; "type"; "SMS"; "SMSConfig"; Form:C1466.Sms; "contenu4WP"; $document_o; "smsMarketing"; True:C214)
 						: ($canalEnvoi_t="Courrier")
-							$config_o:=New object:C1471("success"; True:C214; "type"; "Courrier"; "CourrierConfig"; Form:C1466.Courrier; "contenu4WP"; $document_o)
+							$config_o:=New object:C1471("success"; True:C214; "type"; "Courrier"; "CourrierConfig"; Form:C1466.Courrier; "contenu4WP"; $document_o; "displayPrintSetting"; False:C215)
 							
 							If (Form:C1466.contextValue#Null:C1517)
 								$config_o.externalReference:=New object:C1471("table"; "Parameter"; "field"; "wording"; "value"; OBJECT Get pointer:C1124(Object named:K67:5; "modele")->currentValue)
