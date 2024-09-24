@@ -221,7 +221,7 @@ Historique
 	var $numOrdre_el : Integer
 	var $continue_b; $saut_b; $sautEffectue_b; $finScenario_b : Boolean
 	var $table_o; $enregistrement_o; $caScenarioEvent_o; $scene_o; $personne_o; $eMail_o; $config_o; $conditionAction_o; $conditionSaut_o; $scene_cs; $retour_o; \
-		$autreTable_o; $autreEnregistrement_o; $caPersonneMarketing_o; $document_o; $sms_o; $retourB_o : Object
+		$autreTable_o; $autreEnregistrement_o; $caPersonneMarketing_o; $document_o; $sms_o; $retourB_o; $notif_o : Object
 	var $collection_c : Collection
 	
 	var $parameter_es : Object
@@ -591,7 +591,7 @@ Historique
 						$retourB_o:=$personne_o.sendMailing($config_o)
 					: ($scene_o.action="Envoi SMS")  // L'action de la scène est l'envoi d'un SMS
 						$sms_o:=cmaToolGetClass("MASms").new(False:C215; New object:C1471("nom"; $collection_c[0].expediteur))
-						$config_o:=New object:C1471("success"; True:C214; "type"; "SMS"; "SMSConfig"; $sms_o; "contenu4WP"; $document_o; "expediteur"; $collection_c[0].expediteur; "smsMarketing"; Bool:C1537($collection_c[0].smsMarketing))
+						$config_o:=New object:C1471("success"; True:C214; "type"; "SMS"; "SMSConfig"; $sms_o; "contenu4WP"; $document_o; "smsMarketing"; Bool:C1537($collection_c[0].smsMarketing))
 						
 						If ($collection_c[0].externalReference#Null:C1517)
 							$config_o.externalReference:=OB Copy:C1225($collection_c[0].externalReference)
@@ -602,7 +602,13 @@ Historique
 						
 						$retourB_o:=$personne_o.sendMailing($config_o)
 					: ($scene_o.action="Imprimer document")  // L'action de la scène est l'impression d'un document
-						$config_o:=New object:C1471("success"; True:C214; "type"; "Courrier"; "contenu4WP"; $document_o)
+						$notif_o:=New object:C1471
+						
+						If ($collection_c[0].notif#Null:C1517)
+							$notif_o:=$collection_c[0].notif
+						End if 
+						
+						$config_o:=New object:C1471("success"; True:C214; "type"; "Courrier"; "contenu4WP"; $document_o; "notifEmail"; Bool:C1537($collection_c[0].notifEmail); "notif"; $notif_o)
 						
 						If ($collection_c[0].externalReference#Null:C1517)
 							$config_o.externalReference:=OB Copy:C1225($collection_c[0].externalReference)
