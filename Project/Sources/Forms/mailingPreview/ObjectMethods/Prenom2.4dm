@@ -5,5 +5,5 @@ CONFIRM:C162("Souhaitez-vous vraiment supprimer la pièce-jointe « "+Form:C1466
 
 If (OK=1)
 	Form:C1466.pieceJointe.remove($ligne_el-1)
-	Form:C1466.EMail.attachmentsPath_c.remove($ligne_el-1)
+	Form:C1466.Courrier.attachmentsPath_c.remove($ligne_el-1)
 End if 

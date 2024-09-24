@@ -14,14 +14,15 @@ Case of
 		OBJECT SET VISIBLE:C603(*; "WParea"; True:C214)
 		
 		$canalEnvoi_t:=OBJECT Get pointer:C1124(Object current:K67:2)->currentValue
+		OB REMOVE:C1226(Form:C1466; "pieceJointe")
 		
 		Case of 
 			: ($canalEnvoi_t="EMail")
 				FORM GOTO PAGE:C247(2)
 			: ($canalEnvoi_t="SMS")
-				ALERT:C41("Fonction indisponible")
+				FORM GOTO PAGE:C247(3)
 			: ($canalEnvoi_t="Courrier")
-				ALERT:C41("Fonction indisponible")
+				FORM GOTO PAGE:C247(4)
 		End case 
 		
 End case 

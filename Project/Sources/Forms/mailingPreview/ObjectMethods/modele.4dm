@@ -12,6 +12,7 @@ Case of
 		$parameter_es:=Form:C1466.modele.query("wording = :1"; OBJECT Get pointer:C1124(Object current:K67:2)->currentValue)
 		
 		If ($parameter_es.length>0)
+			Form:C1466.wpFormula:=String:C10($parameter_es.first().formula)
 			WParea:=WP New:C1317($parameter_es.first().value_b)
 		End if 
 		
