@@ -18,7 +18,7 @@ Case of
 				OBJECT SET VISIBLE:C603(*; "externalReference"; True:C214)
 				OBJECT SET VISIBLE:C603(*; "sceneDetailVersionDeleteExternalReference"; True:C214)
 				
-				OBJECT SET VALUE:C1742("externalReference"; "Le document 4D write Pro pointe  actuellement sur la table « "+String:C10(Form:C1466.externalReference.table)+" » et dont le nom est « "+String:C10(Form:C1466.externalReference.wording)+" »")
+				OBJECT SET VALUE:C1742("externalReference"; "Le document 4D write Pro pointe  actuellement sur la table « "+String:C10(Form:C1466.externalReference.table)+" » et dont le nom est « "+String:C10(Form:C1466.externalReference.value)+" »")
 			End if 
 			
 		Else 

@@ -32,6 +32,23 @@ Case of
 					
 				End if 
 				
+			: (Form:C1466.entree=3)  // Edition document notification email
+				$texte_t:=WP Get text:C1575(WParea; wk expressions as source:K81:256)
+				
+				If ($texte_t#"")
+					CONFIRM:C162("Voulez-vous sauvegarder le document en cours ?"; "Oui"; "Non")
+					
+					If (OK=1)
+						Form:C1466.donnee.notif.contenu4WP:=WParea
+						
+						If (Form:C1466.externalReference#Null:C1517)
+							Form:C1466.donnee.notif.externalReference:=OB Copy:C1225(Form:C1466.externalReference)
+						End if 
+						
+					End if 
+					
+				End if 
+				
 		End case 
 		
 		ACCEPT:C269
