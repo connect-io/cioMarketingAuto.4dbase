@@ -333,8 +333,9 @@ Function sendMailing($configPreCharge_o : Object) : Object
 	var $erreur_b; $printSetting_b : Boolean
 	var $date_d : Date
 	var $time_t : Time
-	var $class_o; $config_o; $mime_o; $statut_o; $wpVar_o; $fichier_o; $signature_o; $document_o; $entity_e; $param_o; $body_o : Object
+	var $class_o; $config_o; $mime_o; $statut_o; $wpVar_o; $fichier_o; $signature_o; $document_o; $entity_e; $param_o; $body_o; $externalReference_o : Object
 	var $transporter_c; $detail_c; $context_c : Collection
+	var $file_f : 4D:C1709.File
 	
 	var $formule_f : Object
 	var $parameter_es : Object
@@ -629,6 +630,17 @@ Function sendMailing($configPreCharge_o : Object) : Object
 			
 			$MAEmail_cs.to:=This:C1470.eMail
 			
+			$folder_f:=Folder:C1567(fk resources folder:K87:11; *).folder("TEMP")
+			
+			If ($folder_f.exists=False:C215)
+				$folder_f.create()
+			End if 
+			
+			$file_f:=$folder_f.file(Generate UUID:C1066+".pdf")
+			WP EXPORT DOCUMENT:C1337($document_o; $file_f.platformPath; wk pdf:K81:315)
+			
+			$MAEmail_cs.attachmentsPath_c:=New collection:C1472($file_f.platformPath)
+			
 			If ($config_o.notif.contenu4WP#Null:C1517) || ($config_o.notif.externalReference#Null:C1517)
 				
 				Case of 
@@ -643,10 +655,14 @@ Function sendMailing($configPreCharge_o : Object) : Object
 						$document_o:=$config_o.notif.contenu4WP
 				End case 
 				
+				If ($config_o.notif.externalReference#Null:C1517)
+					$externalReference_o:=OB Copy:C1225($config_o.notif.externalReference)
+				End if 
+				
 				$config_o:=New object:C1471("success"; True:C214; "type"; "Email"; "eMailConfig"; $MAEmail_cs; "contenu4WP"; $document_o; "expediteur"; $config_o.notif.expediteur)
 				
-				If ($config_o.notif.externalReference#Null:C1517)
-					$config_o.externalReference:=OB Copy:C1225($config_o.notif.externalReference)
+				If ($externalReference_o#Null:C1517)
+					$config_o.externalReference:=OB Copy:C1225($externalReference_o)
 				End if 
 				
 				$retour_o:=This:C1470.sendMailing($config_o)
