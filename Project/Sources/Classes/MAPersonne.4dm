@@ -329,9 +329,12 @@ Historique
 	
 Function sendMailing($configPreCharge_o : Object) : Object
 	var $canalEnvoi_t; $corps_t; $mime_t; $propriete_t; $retour_t; $strategy_t : Text
-	var $erreur_b : Boolean
-	var $class_o; $config_o; $mime_o; $statut_o; $wpVar_o; $fichier_o; $signature_o; $document_o; $entity_e; $param_o : Object
-	var $transporter_c; $detail_c : Collection
+	var $i_el : Integer
+	var $erreur_b; $printSetting_b : Boolean
+	var $date_d : Date
+	var $time_t : Time
+	var $class_o; $config_o; $mime_o; $statut_o; $wpVar_o; $fichier_o; $signature_o; $document_o; $entity_e; $param_o; $body_o : Object
+	var $transporter_c; $detail_c; $context_c : Collection
 	
 	var $formule_f : Object
 	var $parameter_es : Object
@@ -390,7 +393,38 @@ Function sendMailing($configPreCharge_o : Object) : Object
 					
 					If ($parameter_es[0].formula#"")
 						$formule_f:=Formula from string:C1601($parameter_es[0].formula)
-						$detail_c:=$config_o.externalReference.situation.detail.query("scene = :1"; $config_o.externalReference.scene)
+						
+						Case of 
+							: ($config_o.externalReference.situation#Null:C1517)  // Concerne un scénario
+								$detail_c:=$config_o.externalReference.situation.detail.query("scene = :1"; $config_o.externalReference.scene)
+							: ($config_o.contextValue#Null:C1517)  // Mailing de masse
+								
+								If ($config_o.contextValue="This@")
+									$context_c:=Split string:C1554($config_o.contextValue; ".")
+									$config_o.contextValue:=This:C1470.personne
+									
+									For each ($propriete_t; $context_c)
+										
+										If ($i_el=0)
+											$i_el+=1
+											continue
+										End if 
+										
+										If ($config_o.contextValue[$propriete_t]#Null:C1517)
+											$config_o.contextValue:=$config_o.contextValue[$propriete_t]
+										End if 
+										
+										$i_el+=1
+									End for each 
+									
+									If (Value type:C1509($config_o.contextValue)#Is text:K8:3)
+										$config_o.contextValue:=""
+									End if 
+									
+								End if 
+								
+								$detail_c:=New collection:C1472(New object:C1471("externalReference"; $config_o.contextValue))
+						End case 
 						
 						If ($detail_c.length>0)
 							WP SET DATA CONTEXT:C1786($document_o; $formule_f.call({value: $detail_c[0].externalReference}))
@@ -425,7 +459,7 @@ Function sendMailing($configPreCharge_o : Object) : Object
 							$mime_o:=MAIL Convert from MIME:C1681($mime_t)
 							
 							If ($fichier_o.exists=True:C214)
-								$transporter_c:=cwStorage.eMail.transporter.query("name = :1"; String:C10($config_o.expediteur))
+								$transporter_c:=cwStorage.eMail.transporter.query("name = :1 AND type = :2"; String:C10($config_o.expediteur); "smtp")
 								
 								If ($transporter_c.length=1)
 									$mime_o.bodyValues.p0001.value:=Replace string:C233($mime_o.bodyValues.p0001.value; "nomVendeur"; $transporter_c[0].name)
@@ -473,11 +507,49 @@ Function sendMailing($configPreCharge_o : Object) : Object
 					
 				: ($canalEnvoi_t="Courrier")
 					
-					If (Is compiled mode:C492=False:C215)
-						PRINT SETTINGS:C106
+					If (Is compiled mode:C492=False:C215) && (($config_o.CourrierConfig=Null:C1517) || ($config_o.CourrierConfig.prestataire.nom="Imprimante courante"))
+						$printSetting_b:=True:C214
+						
+						If ($config_o.displayPrintSetting#Null:C1517)
+							$printSetting_b:=Bool:C1537($config_o.displayPrintSetting)
+						End if 
+						
+						If ($printSetting_b=True:C214)
+							PRINT SETTINGS:C106
+							$erreur_b:=(OK=0)
+						End if 
+						
 					End if 
 					
-					WP PRINT:C1343($document_o; wk 4D Write Pro layout:K81:176)
+					Case of 
+						: ($config_o.CourrierConfig=Null:C1517) || (Bool:C1537($config_o.CourrierConfig.useCurrentPrinter)=True:C214)
+							
+							If ($erreur_b=False:C215)
+								WP PRINT:C1343($document_o; wk 4D Write Pro layout:K81:176)
+							End if 
+							
+						: ($config_o.CourrierConfig.prestataire.nom="Maileva")
+							// Première requête on créé l'envoi
+							$body_o:=New object:C1471
+							$body_o.name:=String:C10($config_o.CourrierConfig.sendingName)
+							$body_o.custom_id:=String:C10($config_o.CourrierConfig.custom_id)
+							$body_o.custom_data:=String:C10($config_o.CourrierConfig.custom_data)
+							$body_o.duplex_printing:=Bool:C1537($config_o.CourrierConfig.duplexPrinting)
+							$body_o.color_printing:=Bool:C1537($config_o.CourrierConfig.printColor)
+							$body_o.notification_email:=String:C10($config_o.CourrierConfig.deliveryEmail)
+							
+							$body_o.print_sender_address:=Bool:C1537($config_o.CourrierConfig.senderPrintAdress)
+							$body_o.sender_address_line_1:=String:C10($config_o.CourrierConfig.senderAdressLine1)
+							$body_o.sender_address_line_2:=String:C10($config_o.CourrierConfig.senderAdressLine2)
+							$body_o.sender_address_line_3:=String:C10($config_o.CourrierConfig.senderAdressLine3)
+							$body_o.sender_address_line_4:=String:C10($config_o.CourrierConfig.senderAdressLine4)
+							$body_o.sender_address_line_5:=String:C10($config_o.CourrierConfig.senderAdressLine5)
+							$body_o.sender_address_line_6:=String:C10($config_o.CourrierConfig.senderAdressLine6)
+							
+							$body_o.sender_country_code:=String:C10($config_o.CourrierConfig.senderCountryISOCode)
+							$config_o.CourrierConfig.request("sendingNew"; $body_o)
+					End case 
+					
 				: ($canalEnvoi_t="SMS")
 					$corps_t:=WP Get text:C1575($document_o; wk expressions as value:K81:255)
 					
@@ -486,13 +558,24 @@ Function sendMailing($configPreCharge_o : Object) : Object
 						Case of 
 							: ($config_o.SMSConfig.prestataire.nom="SMSBox")
 								
-								If (Bool:C1537($config_o.SMSConfig.prestataire.smsMarketing)=True:C214)
+								If (Bool:C1537($config_o.smsMarketing)=True:C214)
 									$strategy_t:="4"
 								Else 
 									$strategy_t:="2"
 								End if 
 								
-								$retour_t:=$config_o.SMSConfig.SMSBOXSendMessage(True:C214; $corps_t; This:C1470.telMobile; Current date:C33; Current time:C178; "Reponse"; $strategy_t)
+								$date_d:=Current date:C33
+								$time_t:=Current time:C178
+								
+								If ($config_o.SMSConfig.date#Null:C1517)
+									$date_d:=Date:C102($config_o.SMSConfig.date)
+								End if 
+								
+								If ($config_o.SMSConfig.time#Null:C1517)
+									$time_t:=Time:C179($config_o.SMSConfig.time)
+								End if 
+								
+								$retour_t:=$config_o.SMSConfig.SMSBOXSendMessage(True:C214; $corps_t; This:C1470.telMobile; $date_d; $time_t; "Reponse"; $strategy_t)
 								$erreur_b:=($retour_t#"Le sms a bien été envoyé !")
 							: ($config_o.SMSConfig.prestataire.nom="Mailjet")
 								$retour_t:=$config_o.SMSConfig.MailjetSendMessage($corps_t; This:C1470.telMobile)
@@ -502,8 +585,7 @@ Function sendMailing($configPreCharge_o : Object) : Object
 					
 			End case 
 			
-			// S'il s'agit d'un Courrier ou SMS ou un mail qui possède un corps non vide, on rajoute l'historique de l'envoi
-			If ($erreur_b=False:C215) && (($canalEnvoi_t#"Email") | (($canalEnvoi_t="Email") & ($corps_t#"")))
+			If ($erreur_b=False:C215)  // S'il s'agit d'un Courrier ou SMS ou un mail qui possède un corps non vide, on rajoute l'historique de l'envoi
 				
 				If (Count parameters:C259=0)
 					$param_o:=New object:C1471("type"; $canalEnvoi_t; "contenu4WP"; WParea; "statut"; "2")
@@ -525,7 +607,7 @@ Function sendMailing($configPreCharge_o : Object) : Object
 		$retour_t:="Aucun canal d'envoi sélectionné"
 	End if 
 	
-	If ($erreur_b=True:C214)
+	If ($erreur_b=True:C214)  // S'il y a eu une erreur
 		
 		If (Count parameters:C259=0)
 			$param_o:=New object:C1471("type"; $canalEnvoi_t; "contenu4WP"; WParea; "statut"; "2")
@@ -538,6 +620,42 @@ Function sendMailing($configPreCharge_o : Object) : Object
 	End if 
 	
 	This:C1470.updateCaMarketingStatistic(3; $param_o)
+	
+	If ($erreur_b=False:C215) & ($canalEnvoi_t="Courrier") & (Bool:C1537($config_o.notifEmail)=True:C214)  // L'utilisateur souhaite notifier par email de l'envoi d'un courrier avec le courrier en pièce-jointe
+		
+		If (String:C10(This:C1470.eMail)#"") & (cmaToolRegexValidate(1; String:C10(This:C1470.eMail))=True:C214)
+			$MAEmail_cs:=cs:C1710.MAEMail.new(String:C10($config_o.notif.expediteur))
+			$MAEmail_cs.subject:=String:C10($config_o.notif.subject)
+			
+			$MAEmail_cs.to:=This:C1470.eMail
+			
+			If ($config_o.notif.contenu4WP#Null:C1517) || ($config_o.notif.externalReference#Null:C1517)
+				
+				Case of 
+					: ($config_o.notif.externalReference#Null:C1517)
+						$parameter_es:=ds:C1482[$config_o.notif.externalReference.table].query($config_o.notif.externalReference.field+" = :1"; $config_o.notif.externalReference.value)
+						
+						If ($parameter_es.length>=1)
+							$document_o:=WP New:C1317($parameter_es.first().value_b)
+						End if 
+						
+					: ($config_o.notif.contenu4WP#Null:C1517)
+						$document_o:=$config_o.notif.contenu4WP
+				End case 
+				
+				$config_o:=New object:C1471("success"; True:C214; "type"; "Email"; "eMailConfig"; $MAEmail_cs; "contenu4WP"; $document_o; "expediteur"; $config_o.notif.expediteur)
+				
+				If ($config_o.notif.externalReference#Null:C1517)
+					$config_o.externalReference:=OB Copy:C1225($config_o.notif.externalReference)
+				End if 
+				
+				$retour_o:=This:C1470.sendMailing($config_o)
+			End if 
+			
+		End if 
+		
+	End if 
+	
 	return {success: Not:C34($erreur_b); erreurDetail: $retour_t}
 	
 Function updateCaMarketingStatistic($provenance_el : Integer; $detail_o : Object)->$isOk_b : Boolean
