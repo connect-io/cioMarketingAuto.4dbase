@@ -1,6 +1,5 @@
 //%attributes = {"invisible":true,"lang":"en"}
 C_VARIANT:C1683(corps_t)
-C_VARIANT:C1683(cwStorage)
 C_DATE:C307(dateDebutMailClique)
 C_DATE:C307(dateDebutMailOuvert)
 C_DATE:C307(dateFinMailClique)

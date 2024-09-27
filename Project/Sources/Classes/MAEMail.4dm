@@ -19,14 +19,14 @@ Historique
 	
 	ASSERT:C1129($transporter_t#""; "EMail.constructor : le Param $transporter_t est obligatoire.")
 	
-	If (cwStorage.eMail=Null:C1517)
+	If (cmaStorage.eMail.detail=Null:C1517)
 		$function_o:=Formula from string:C1601("cwEMailConfigLoad").call(This:C1470)
 	End if 
 	
 	$server_o:=New object:C1471()
 	
 	// Vérifie que le nom du transporteur soit bien dans la config
-	$transporter_c:=cwStorage.eMail.transporter.query("name IS :1 AND type = :2"; $transporter_t; "smtp")
+	$transporter_c:=cmaStorage.eMail.detail.transporter.query("name IS :1 AND type = :2"; $transporter_t; "smtp")
 	
 	If ($transporter_c.length=1)
 		$server_o:=$transporter_c[0]
@@ -51,8 +51,8 @@ Historique
 		This:C1470.from:=$server_o.from
 	End if 
 	
-	If (cwStorage.eMail.globalVar#Null:C1517)
-		This:C1470.globalVar:=OB Copy:C1225(cwStorage.eMail.globalVar)
+	If (cmaStorage.eMail.detail.globalVar#Null:C1517)
+		This:C1470.globalVar:=OB Copy:C1225(cmaStorage.eMail.detail.globalVar)
 	End if 
 	
 Function send()->$retour_o : Object
@@ -167,17 +167,17 @@ Historique
 	End if 
 	
 	// Vérification fichier modèle
-	$model_c:=cwStorage.eMail.model.query("name IS :1"; $model_t)
+	$model_c:=cmaStorage.eMail.detail.model.query("name IS :1"; $model_t)
 	
 	// Retrouver les informations du modèle
 	If ($model_c.length=1)
 		$model_o:=$model_c[0]
 		
-		corps_t:=File:C1566(cwStorage.eMail.modelPath+$model_o.source).getText()
+		corps_t:=File:C1566(cmaStorage.eMail.detail.modelPath+$model_o.source).getText()
 		
 		// Gestion du layout
 		If (String:C10($model_o.layout)#"")
-			This:C1470.htmlBody:=File:C1566(cwStorage.eMail.modelPath+$model_o.layout).getText()
+			This:C1470.htmlBody:=File:C1566(cmaStorage.eMail.detail.modelPath+$model_o.layout).getText()
 		Else 
 			This:C1470.htmlBody:=corps_t
 		End if 

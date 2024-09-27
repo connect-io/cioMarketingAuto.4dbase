@@ -28,8 +28,8 @@ If (Form event code:C388=On Load:K2:1)
 	Case of 
 		: (Lowercase:C14(Form:C1466.sceneTypeSelected)="email")
 			
-			If (cwStorage.eMail.transporter.query("type = :1"; "smtp").length>0)
-				COLLECTION TO ARRAY:C1562(cwStorage.eMail.transporter.query("type = :1"; "smtp"); expediteurList_at; "name")
+			If (cmaStorage.eMail.detail.transporter.query("type = :1"; "smtp").length>0)
+				COLLECTION TO ARRAY:C1562(cmaStorage.eMail.detail.transporter.query("type = :1"; "smtp"); expediteurList_at; "name")
 			End if 
 			
 		: (Lowercase:C14(Form:C1466.sceneTypeSelected)="sms")

@@ -4,8 +4,8 @@ If (Form event code:C388=On Load:K2:1)
 	expediteurListForNotif_at{0}:="Merci de sélectionner un expéditeur"
 	expediteurListForNotif_at:=0
 	
-	If (cwStorage.eMail.transporter.query("type = :1"; "smtp").length>0)
-		COLLECTION TO ARRAY:C1562(cwStorage.eMail.transporter.query("type = :1"; "smtp"); expediteurListForNotif_at; "name")
+	If (cmaStorage.eMail.detail.transporter.query("type = :1"; "smtp").length>0)
+		COLLECTION TO ARRAY:C1562(cmaStorage.eMail.detail.transporter.query("type = :1"; "smtp"); expediteurListForNotif_at; "name")
 	End if 
 	
 	If (String:C10(Form:C1466.notif.expediteur)#"")

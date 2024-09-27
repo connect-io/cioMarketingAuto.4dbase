@@ -52,7 +52,7 @@ Historique
 		: ($type_t="Email")
 			
 			If (Count parameters:C259=1)  // Envoi d'un email en manuel
-				$transporter_c:=cwStorage.eMail.transporter.query("type = :1"; "smtp")  // Choix du transporteur
+				$transporter_c:=cmaStorage.eMail.detail.transporter.query("type = :1"; "smtp")  // Choix du transporteur
 				cwToolWindowsForm("selectValue"; "center"; New object:C1471("collection"; $transporter_c; "property"; "name"; "selectSubTitle"; "Merci de sélectionner un expéditeur"; "title"; "Choix de l'expéditeur :"))
 			Else   // Envoi d'un email en automatique
 				selectValue_t:=$transporteur_t
