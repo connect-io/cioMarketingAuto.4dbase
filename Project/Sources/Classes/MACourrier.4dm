@@ -74,6 +74,7 @@ Historique
 		return 
 	End if 
 	
+	This:C1470.attachmentsPath_c:=New collection:C1472
 	This:C1470.useCurrentPrinter:=($parametre_o.nom="Imprimante courante")
 	This:C1470.environnement:=$environnement_c[0]
 	This:C1470.token:=""

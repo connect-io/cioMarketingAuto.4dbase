@@ -583,7 +583,7 @@
 					"type": "input",
 					"top": 765,
 					"left": 774,
-					"width": 300,
+					"width": 240,
 					"height": 17,
 					"dataSource": "Form:C1466.wpFormula",
 					"borderStyle": "none",
@@ -594,7 +594,7 @@
 					"fontWeight": "normal",
 					"dataSourceTypeHint": "text",
 					"textAlign": "left",
-					"right": 1074,
+					"right": 1014,
 					"sizingX": "fixed",
 					"sizingY": "move"
 				},
@@ -602,10 +602,10 @@
 					"type": "line",
 					"top": 780,
 					"left": 764,
-					"width": 310,
+					"width": 250,
 					"class": "accentColor2",
 					"height": 1,
-					"right": 1074,
+					"right": 1014,
 					"startPoint": "topLeft",
 					"sizingX": "fixed",
 					"sizingY": "move"
@@ -625,7 +625,7 @@
 					"type": "input",
 					"top": 788,
 					"left": 774,
-					"width": 300,
+					"width": 240,
 					"height": 17,
 					"dataSource": "Form:C1466.contextValue",
 					"borderStyle": "none",
@@ -636,7 +636,7 @@
 					"fontWeight": "normal",
 					"dataSourceTypeHint": "text",
 					"textAlign": "left",
-					"right": 1074,
+					"right": 1014,
 					"sizingX": "fixed",
 					"sizingY": "move"
 				},
@@ -644,10 +644,10 @@
 					"type": "line",
 					"top": 803,
 					"left": 764,
-					"width": 310,
+					"width": 250,
 					"class": "accentColor2",
 					"height": 1,
-					"right": 1074,
+					"right": 1014,
 					"startPoint": "topLeft",
 					"sizingX": "fixed",
 					"sizingY": "move"
@@ -857,7 +857,7 @@
 				"addLink1": {
 					"type": "button",
 					"top": 770,
-					"left": 821,
+					"left": 1038,
 					"width": 119,
 					"height": 35,
 					"sizingY": "move",
@@ -1308,7 +1308,7 @@
 			}
 		}
 	],
-	"geometryStamp": 1062,
+	"geometryStamp": 1097,
 	"editor": {
 		"activeView": "View 1",
 		"defaultView": "View 1",

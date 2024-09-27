@@ -8,7 +8,7 @@ Case of
 			Form:C1466.rowHeight:=1
 		End if 
 		
-		LISTBOX SET ROW HEIGHT:C1409(*; "listePersonne"; Form:C1466.rowHeight; lk lines:K53:23)
+		LISTBOX SET ROWS HEIGHT:C835(*; "listePersonne"; Form:C1466.rowHeight; lk lines:K53:23)
 	: (Form event code:C388=On Mouse Move:K2:35)
 		SET CURSOR:C469(9000)
 End case 

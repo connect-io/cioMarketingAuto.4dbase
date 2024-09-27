@@ -12,10 +12,6 @@ Case of
 			return 
 		End if 
 		
-		If (Form:C1466.Courrier#Null:C1517)
-			Form:C1466.Courrier.attachmentsPath_c:=New collection:C1472
-		End if 
-		
 		$document_t:=Select document:C905(""; "*"; "Fichiers à insérer en pièce-jointe"; Multiple files:K24:7+Use sheet window:K24:11; $attachmentsFiles_at)
 		
 		If ($document_t#"")

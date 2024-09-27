@@ -278,7 +278,7 @@
 					"text": "Gestion des scénarios",
 					"top": 96,
 					"left": 1058,
-					"width": 140,
+					"width": 150,
 					"height": 14,
 					"fontFamily": "Arial",
 					"fontSize": 14,
@@ -783,7 +783,7 @@
 					"text": "Génération des données de marketing",
 					"top": 96,
 					"left": 618,
-					"width": 240,
+					"width": 250,
 					"height": 14,
 					"fontFamily": "Arial",
 					"fontSize": 14,
@@ -835,7 +835,7 @@
 			]
 		}
 	],
-	"geometryStamp": 1283,
+	"geometryStamp": 1285,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",
