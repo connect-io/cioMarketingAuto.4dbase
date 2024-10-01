@@ -328,9 +328,9 @@ Historique
 	End for 
 	
 Function sendMailing($configPreCharge_o : Object) : Object
-	var $canalEnvoi_t; $corps_t; $mime_t; $propriete_t; $retour_t; $strategy_t : Text
+	var $canalEnvoi_t; $corps_t; $mime_t; $propriete_t; $retour_t; $strategy_t; $attchmentPath_t : Text
 	var $i_el : Integer
-	var $erreur_b; $printSetting_b : Boolean
+	var $erreur_b; $printSetting_b; $notifScenario_b : Boolean
 	var $date_d : Date
 	var $time_t : Time
 	var $class_o; $config_o; $mime_o; $statut_o; $wpVar_o; $fichier_o; $signature_o; $document_o; $entity_e; $param_o; $body_o; $externalReference_o : Object
@@ -492,6 +492,19 @@ Function sendMailing($configPreCharge_o : Object) : Object
 						
 						$erreur_b:=($retour_t#"ok@")
 						
+						If ($config_o.eMailConfig.attachmentsPath_c#Null:C1517) && ($config_o.eMailConfig.attachmentsPath_c.length>0)
+							
+							For each ($attchmentPath_t; $config_o.eMailConfig.attachmentsPath_c)
+								$file_f:=File:C1566($attchmentPath_t; fk platform path:K87:2)
+								
+								If ($file_f.exists=True:C214)
+									$file_f.delete()
+								End if 
+								
+							End for each 
+							
+						End if 
+						
 						ON ERR CALL:C155("")
 						
 						If (Count parameters:C259=0)  // Le mailing ne part pas en automatique, on affiche l'alerte sur le statut d'envoi du mail 
@@ -630,6 +643,10 @@ Function sendMailing($configPreCharge_o : Object) : Object
 			
 			$MAEmail_cs.to:=This:C1470.eMail
 			
+			If (String:C10($config_o.notif.cc)#"")
+				$MAEmail_cs.bcc:=String:C10($config_o.notif.cc)
+			End if 
+			
 			$folder_f:=Folder:C1567(fk resources folder:K87:11; *).folder("TEMP")
 			
 			If ($folder_f.exists=False:C215)
@@ -657,6 +674,11 @@ Function sendMailing($configPreCharge_o : Object) : Object
 				
 				If ($config_o.notif.externalReference#Null:C1517)
 					$externalReference_o:=OB Copy:C1225($config_o.notif.externalReference)
+				End if 
+				
+				If ($config_o.externalReference#Null:C1517) && ($config_o.externalReference.situation#Null:C1517) && ($config_o.externalReference.scene#Null:C1517)  // La notification concerne une scène d'un scénario avec un contexte particulier
+					$externalReference_o.scene:=$config_o.externalReference.scene
+					$externalReference_o.situation:=OB Copy:C1225($config_o.externalReference.situation)
 				End if 
 				
 				$config_o:=New object:C1471("success"; True:C214; "type"; "Email"; "eMailConfig"; $MAEmail_cs; "contenu4WP"; $document_o; "expediteur"; $config_o.notif.expediteur)
