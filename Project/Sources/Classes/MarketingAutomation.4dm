@@ -579,6 +579,10 @@ Historique
 						$eMail_o:=cmaToolGetClass("MAEMail").new($collection_c[0].expediteur)
 						$eMail_o.subject:=$collection_c[0].subject
 						
+						If (String:C10($collection_c[0].cc)#"")
+							$eMail_o.bcc:=String:C10($collection_c[0].cc)
+						End if 
+						
 						$config_o:=New object:C1471("success"; True:C214; "type"; "Email"; "eMailConfig"; $eMail_o; "contenu4WP"; $document_o; "expediteur"; $collection_c[0].expediteur)
 						
 						If ($collection_c[0].externalReference#Null:C1517)
@@ -647,7 +651,6 @@ Historique
 				End if 
 				
 			End if 
-			
 			
 		End if 
 		

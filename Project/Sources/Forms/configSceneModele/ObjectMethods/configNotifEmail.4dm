@@ -5,7 +5,7 @@ Case of
 		$elementSelected_o:=Form:C1466.sceneDetail.paramAction.modele[Lowercase:C14(Form:C1466.sceneTypeSelected)].version.query("titre = :1"; versionList_at{versionList_at})[0]
 		
 		If ($elementSelected_o.notif=Null:C1517)
-			$elementSelected_o.notif:=New object:C1471("subject"; ""; "expediteur"; ""; "contenu4WP"; WP New:C1317)
+			$elementSelected_o.notif:=New object:C1471("subject"; ""; "expediteur"; ""; "cc"; ""; "contenu4WP"; WP New:C1317)
 		End if 
 		
 		cwToolWindowsForm("configNotificationEmail"; "center"; New object:C1471("notif"; $elementSelected_o.notif))

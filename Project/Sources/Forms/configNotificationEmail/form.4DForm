@@ -25,7 +25,7 @@
 				"Bouton": {
 					"type": "button",
 					"text": "Valider",
-					"top": 165,
+					"top": 227,
 					"left": 60,
 					"width": 202,
 					"height": 30,
@@ -94,11 +94,32 @@
 					"dataSource": "expediteurListForNotif_at",
 					"method": "ObjectMethods/expediteurListForNotif.4dm",
 					"focusable": true
+				},
+				"Texte1": {
+					"type": "text",
+					"text": "Email en copie",
+					"top": 150,
+					"left": 14,
+					"width": 130,
+					"height": 20,
+					"fontWeight": "bold"
+				},
+				"objetEmail1": {
+					"type": "input",
+					"left": 14,
+					"top": 180,
+					"width": 250,
+					"height": 20,
+					"dataSource": "Form:C1466.notif.cc",
+					"enterable": true,
+					"events": [
+						"onDataChange"
+					]
 				}
 			}
 		}
 	],
-	"geometryStamp": 515,
+	"geometryStamp": 544,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",

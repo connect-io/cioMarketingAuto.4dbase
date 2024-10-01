@@ -71,7 +71,10 @@ If (Form event code:C388=On Data Change:K2:15)
 		Case of 
 			: (Lowercase:C14(Form:C1466.sceneTypeSelected)="email")
 				Form:C1466.modeleObjetEmail:=String:C10($elementSelected_o.subject)
+				Form:C1466.modeleCCEmail:=String:C10($elementSelected_o.cc)
+				
 				OBJECT SET ENTERABLE:C238(*; "modeleObjetEmail"; True:C214)
+				OBJECT SET ENTERABLE:C238(*; "modeleCCEmail"; True:C214)
 			: (Lowercase:C14(Form:C1466.sceneTypeSelected)="sms")
 				Form:C1466.smsMarketing:=Bool:C1537($elementSelected_o.smsMarketing)
 			: (Lowercase:C14(Form:C1466.sceneTypeSelected)="courrier")
@@ -92,7 +95,10 @@ If (Form event code:C388=On Data Change:K2:15)
 		Form:C1466.modeleDetail:=""
 		
 		Form:C1466.modeleObjetEmail:=""
+		Form:C1466.modeleCCEmail:=""
+		
 		OBJECT SET ENTERABLE:C238(*; "modeleObjetEmail"; False:C215)
+		OBJECT SET ENTERABLE:C238(*; "modeleCCEmail"; False:C215)
 		
 		Form:C1466.smsMarketing:=False:C215
 		Form:C1466.notifEmail:=False:C215

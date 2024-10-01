@@ -25,7 +25,7 @@
 				"Bouton": {
 					"type": "button",
 					"text": "Valider",
-					"top": 345,
+					"top": 405,
 					"left": 83,
 					"width": 202,
 					"height": 30,
@@ -60,7 +60,7 @@
 				"Texte1": {
 					"type": "text",
 					"text": "Information sur version du modèle sélectionné : ",
-					"top": 200,
+					"top": 260,
 					"left": 14,
 					"width": 250,
 					"height": 31,
@@ -70,14 +70,14 @@
 				"modeleDetail": {
 					"type": "input",
 					"left": 14,
-					"top": 250,
+					"top": 310,
 					"width": 250,
 					"height": 80,
 					"dataSource": "Form:C1466.modeleDetail",
 					"enterable": false,
 					"fill": "transparent",
 					"borderStyle": "none",
-					"bottom": 330
+					"bottom": 390
 				},
 				"sceneDetailApercuModele": {
 					"type": "pictureButton",
@@ -213,11 +213,33 @@
 					],
 					"method": "ObjectMethods/configNotifEmail.4dm",
 					"class": "clickable"
+				},
+				"Texte4": {
+					"type": "text",
+					"text": "Copie du mail :",
+					"top": 200,
+					"left": 14,
+					"width": 130,
+					"height": 20,
+					"fontWeight": "bold"
+				},
+				"modeleCCEmail": {
+					"type": "input",
+					"left": 14,
+					"top": 230,
+					"width": 250,
+					"height": 20,
+					"dataSource": "Form:C1466.modeleCCEmail",
+					"enterable": false,
+					"events": [
+						"onDataChange"
+					],
+					"method": "ObjectMethods/modeleCCEmail.4dm"
 				}
 			}
 		}
 	],
-	"geometryStamp": 486,
+	"geometryStamp": 495,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",
