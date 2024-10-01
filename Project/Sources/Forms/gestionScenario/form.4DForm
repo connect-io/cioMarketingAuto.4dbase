@@ -120,16 +120,6 @@
 					"class": "clickable",
 					"style": "roundedBevel"
 				},
-				"Texte4": {
-					"type": "text",
-					"text": "Gestion des scénarios",
-					"top": 19,
-					"left": 20,
-					"width": 179,
-					"height": 19,
-					"fontWeight": "bold",
-					"fontSize": 16
-				},
 				"scenarioDetailBoutonAppliquer": {
 					"type": "button",
 					"text": "Appliquer le scénario",
@@ -220,7 +210,7 @@
 					"selectedItemsSource": "Form:C1466.ScenarioSelectedElement",
 					"fill": "#F5FBFF",
 					"scrollbarHorizontal": "hidden",
-					"rowHeight": "30px",
+					"rowHeight": "2em",
 					"verticalAlign": "middle",
 					"method": "ObjectMethods/scenarioListe.4dm",
 					"selectionMode": "single",
@@ -369,7 +359,7 @@
 					"selectedItemsSource": "Form:C1466.SceneSelectedElement",
 					"fill": "automatic",
 					"scrollbarHorizontal": "hidden",
-					"rowHeight": "30px",
+					"rowHeight": "2em",
 					"verticalAlign": "middle",
 					"method": "ObjectMethods/sceneListe.4dm",
 					"selectionMode": "single",
@@ -876,7 +866,7 @@
 			}
 		}
 	],
-	"geometryStamp": 855,
+	"geometryStamp": 856,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",

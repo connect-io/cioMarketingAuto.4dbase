@@ -1,5 +1,5 @@
-C_BOOLEAN:C305($suppr_b; $supprAll_b)
-C_OBJECT:C1216($personne_o)
+var $suppr_b; $supprAll_b : Boolean
+var $personne_o : Object
 
 Case of 
 	: (Form event code:C388=On Clicked:K2:4)
@@ -9,7 +9,6 @@ Case of
 			
 			If (Form:C1466.PersonneCurrentElement=Null:C1517)
 				CONFIRM:C162("Cette action supprimera le scénario pour toutes les personnes de la liste, souhaitez-vous vraiment le supprimer pour toutes ces personnes ?"; "Oui"; "Annuler")
-				
 				$supprAll_b:=(OK=1)
 			End if 
 			
@@ -20,13 +19,13 @@ Case of
 						: ($supprAll_b=True:C214)
 							
 							For each ($personne_o; Form:C1466.personneCollection) Until ($suppr_b=False:C215)
-								$suppr_b:=Form:C1466.donnee.deleteScenarioToPerson($personne_o.UID; Form:C1466.donnee.scenarioDetail.getKey())
+								$suppr_b:=Form:C1466.donnee.deleteScenarioToPerson($personne_o.getKey(); Form:C1466.donnee.scenarioDetail.getKey())
 							End for each 
 							
 						: (Form:C1466.PersonneCurrentElement#Null:C1517)
 							
 							For each ($personne_o; Form:C1466.PersonneSelectedElement) Until ($suppr_b=False:C215)
-								$suppr_b:=Form:C1466.donnee.deleteScenarioToPerson($personne_o.UID; Form:C1466.donnee.scenarioDetail.getKey())
+								$suppr_b:=Form:C1466.donnee.deleteScenarioToPerson($personne_o.getKey(); Form:C1466.donnee.scenarioDetail.getKey())
 							End for each 
 							
 					End case 
