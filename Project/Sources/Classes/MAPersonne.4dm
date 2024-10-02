@@ -93,12 +93,14 @@ Charge le profil de la personne depuis la base hôte.
 Historique
 26/01/21 - Grégory Fromain <gregory@connect-io.fr> - Ré-écriture
 -----------------------------------------------------------------------------*/
-	var $formule_t : Text
-	var $field_t : Text  // Lib du champ
-	var $collectionField_c; $collection_c : Collection
+	var $formule_t; $field_t : Text
+	var $i_el : Integer
+	var $collectionField_c; $collection_c; $personAccess_c : Collection
 	
 	$collection_c:=New collection:C1472
 	$collectionField_c:=New collection:C1472
+	
+	$personAccess_c:=New collection:C1472
 	
 	// On récupére la liste des champs que l'on souhaite intégrer à la personne.
 	If (Count parameters:C259=0)
@@ -117,13 +119,27 @@ Historique
 		
 		// Reset de la formule.
 		$formule_t:="This.personne"
+		$personAccess_c:=Split string:C1554($collection_c[0].personAccess; ".")
 		
-		For each ($element_t; Split string:C1554($collection_c[0].personAccess; ".")) Until (This:C1470[$field_t]=Null:C1517)
+		For each ($element_t; $personAccess_c) Until (This:C1470[$field_t]=Null:C1517)
+			$i_el+=1
+			
 			// On concaténe la formule.
 			$formule_t:=$formule_t+"."+$element_t
 			
 			// On applique la formule et l'on fixe le résultat dans this.
 			This:C1470[$field_t]:=Formula from string:C1601($formule_t).call(This:C1470)
+			
+			If ($i_el=$personAccess_c.length) | (This:C1470[$field_t]=Null:C1517)
+				
+				Case of 
+					: ($collection_c[0].type="text")
+					: ($collection_c[0].type="int")
+					: ($collection_c[0].type="bool@")
+					: ($collection_c[0].type="date")
+				End case 
+				
+			End if 
 			
 			// Si This[$field_t] = null, on sort de la boucle.
 		End for each 
@@ -330,11 +346,11 @@ Historique
 Function sendMailing($configPreCharge_o : Object) : Object
 	var $canalEnvoi_t; $corps_t; $mime_t; $propriete_t; $retour_t; $strategy_t; $attchmentPath_t : Text
 	var $i_el : Integer
-	var $erreur_b; $printSetting_b; $notifScenario_b : Boolean
+	var $erreur_b; $printSetting_b; $notifScenario_b; $npai_b : Boolean
 	var $date_d : Date
 	var $time_t : Time
 	var $class_o; $config_o; $mime_o; $statut_o; $wpVar_o; $fichier_o; $signature_o; $document_o; $entity_e; $param_o; $body_o; $externalReference_o : Object
-	var $transporter_c; $detail_c; $context_c : Collection
+	var $transporter_c; $detail_c; $context_c; $collection_c : Collection
 	var $file_f : 4D:C1709.File
 	
 	var $formule_f : Object
@@ -520,6 +536,20 @@ Function sendMailing($configPreCharge_o : Object) : Object
 					End if 
 					
 				: ($canalEnvoi_t="Courrier")
+					$collection_c:=This:C1470.passerelle.champ.query("lib is :1"; "npai")
+					
+					If ($collection_c.length=1)  // Gestion du npai
+						
+						Case of 
+							: ($collection_c[0].type="int")
+								$npai_b:=(Num:C11(This:C1470.npai)=1)
+							: ($collection_c[0].type="bool@")
+								$npai_b:=Bool:C1537(This:C1470.npai)
+							: ($collection_c[0].type="date")
+								$npai_b:=(Date:C102(This:C1470.npai)#!00-00-00!)
+						End case 
+						
+					End if 
 					
 					If (Is compiled mode:C492=False:C215) && (($config_o.CourrierConfig=Null:C1517) || ($config_o.CourrierConfig.prestataire.nom="Imprimante courante"))
 						$printSetting_b:=True:C214
@@ -536,6 +566,8 @@ Function sendMailing($configPreCharge_o : Object) : Object
 					End if 
 					
 					Case of 
+						: ($npai_b=True:C214)
+							$retour_t:="NPAI"
 						: ($config_o.CourrierConfig=Null:C1517) || (Bool:C1537($config_o.CourrierConfig.useCurrentPrinter)=True:C214)
 							
 							If ($erreur_b=False:C215)
@@ -621,7 +653,7 @@ Function sendMailing($configPreCharge_o : Object) : Object
 		$retour_t:="Aucun canal d'envoi sélectionné"
 	End if 
 	
-	If ($erreur_b=True:C214)  // S'il y a eu une erreur
+	If ($erreur_b=True:C214) | ($npai_b=True:C214)  // S'il y a eu une erreur OU que la personne est en npai
 		
 		If (Count parameters:C259=0)
 			$param_o:=New object:C1471("type"; $canalEnvoi_t; "contenu4WP"; WParea; "statut"; "2")

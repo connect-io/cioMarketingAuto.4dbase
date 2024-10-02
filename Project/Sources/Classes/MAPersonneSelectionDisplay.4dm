@@ -50,7 +50,7 @@ Historique
 					$collectionToFilter_v:=$collectionToFilter_v.query($proprieteToFilter_t+" = :1"; Num:C11($verif_o["filtre@"].value[$verif_o["filtre@"].propriete.indexOf($propriete_t)]))
 				: ($type_t="date")
 					$collectionToFilter_v:=$collectionToFilter_v.query($proprieteToFilter_t+" = :1"; Date:C102($verif_o["filtre@"].value[$verif_o["filtre@"].propriete.indexOf($propriete_t)]))
-				: ($type_t="bool")
+				: ($type_t="bool@")
 					$collectionToFilter_v:=$collectionToFilter_v.query($proprieteToFilter_t+" = :1"; Bool:C1537($verif_o["filtre@"].value[$verif_o["filtre@"].propriete.indexOf($propriete_t)]))
 			End case 
 			
