@@ -13,8 +13,10 @@
 	"bottomMargin": 20,
 	"events": [
 		"onLoad",
+		"onClick",
 		"onCloseBox",
-		"onTimer"
+		"onTimer",
+		"onMouseMove"
 	],
 	"windowTitle": "Gestion de cronos",
 	"destination": "detailScreen",
@@ -66,7 +68,7 @@
 				"Bouton": {
 					"type": "button",
 					"text": "Arrêt Cronos",
-					"top": 29,
+					"top": 14,
 					"left": 124,
 					"width": 106,
 					"height": 34,
@@ -77,10 +79,34 @@
 					"method": "ObjectMethods/Bouton.4dm",
 					"class": "clickable",
 					"style": "roundedBevel"
+				},
+				"inactivity": {
+					"type": "pictureButton",
+					"left": 166,
+					"top": 52,
+					"width": 64,
+					"height": 64,
+					"events": [
+						"onClick",
+						"onMouseMove"
+					],
+					"picture": "/RESOURCES/Images/inactivity.png",
+					"method": "ObjectMethods/inactivity.4dm",
+					"loopBackToFirstFrame": true,
+					"switchBackWhenReleased": true,
+					"useLastFrameAsDisabled": true,
+					"visibility": "hidden"
 				}
 			}
 		}
 	],
-	"geometryStamp": 43,
-	"method": "method.4dm"
+	"geometryStamp": 73,
+	"method": "method.4dm",
+	"editor": {
+		"activeView": "View 1",
+		"defaultView": "View 1",
+		"views": {
+			"View 1": {}
+		}
+	}
 }

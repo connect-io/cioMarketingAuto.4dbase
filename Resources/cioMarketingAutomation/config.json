@@ -85,5 +85,52 @@
                 }
             ]
         }         
+    ],
+    "activity" : [
+        {
+            "numeroJour" : 2,
+            "detail" : [
+                {
+                    "heureDebut" : 25200,
+                    "heureFin" : 72000
+                }
+            ]
+        },
+        {
+            "numeroJour" : 3,
+            "detail" : [
+                {
+                    "heureDebut" : 25200,
+                    "heureFin" : 72000
+                }
+            ]
+        },
+        {
+            "numeroJour" : 4,
+            "detail" : [
+                {
+                    "heureDebut" : 25200,
+                    "heureFin" : 72000
+                }
+            ]
+        },
+        {
+            "numeroJour" : 5,
+            "detail" : [
+                {
+                    "heureDebut" : 25200,
+                    "heureFin" : 72000
+                }
+            ]
+        },
+        {
+            "numeroJour" : 6,
+            "detail" : [
+                {
+                    "heureDebut" : 25200,
+                    "heureFin" : 72000
+                }
+            ]
+        }
     ]
 }

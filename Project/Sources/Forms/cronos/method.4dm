@@ -1,5 +1,7 @@
 var $tsFrom_el; $tsTo_el; $prochaineVerif_el : Integer
+var $continue_b : Boolean
 var $lastRequest_o : Object
+var $activityToday_c : Collection
 
 Case of 
 	: (Form event code:C388=On Load:K2:1)
@@ -36,8 +38,26 @@ Case of
 				
 				Form:C1466.cronosMessage:=""
 				Form:C1466.cronosVerifMailjet:=cmaTimestamp(Current date:C33; Current time:C178)+$prochaineVerif_el  // On incrémente d'1 heure par défaut sinon le temps défini par l'utilisateur
-			: (Form:C1466.cronosMessage="Gestion des scénarios...") & (Day number:C114(Current date:C33(*))#Sunday:K10:19)
-				Form:C1466.cronosManageScenario()
+			: (Form:C1466.cronosMessage="Gestion des scénarios...")
+				
+				If (Storage:C1525.automation.config.activity=Null:C1517)
+					ALERT:C41("Aucune période d'activité n'est renseigné dans le fichier de configuration du composant !\rAucune relance ne sera envoyée.")
+				Else 
+					$activityToday_c:=Storage:C1525.automation.config.activity.query("numeroJour = :1"; Day number:C114(Current date:C33(*)))
+					$continue_b:=($activityToday_c.length=1)
+					
+					If ($continue_b=True:C214)
+						$activityToday_c:=$activityToday_c[0].detail.query("heureDebut <= :1 AND heureFin >= :1"; Num:C11(Current time:C178(*)))
+						$continue_b:=($activityToday_c.length=1)
+					End if 
+					
+				End if 
+				
+				If ($continue_b=True:C214)
+					Form:C1466.cronosManageScenario()
+				End if 
+				
+				OBJECT SET VISIBLE:C603(*; "inactivity"; Not:C34($continue_b))
 				
 				Form:C1466.cronosMessage:=""
 				Form:C1466.cronosVerifScenario:=cmaTimestamp(Current date:C33; Current time:C178)+120  // On incrémente de 2 min
