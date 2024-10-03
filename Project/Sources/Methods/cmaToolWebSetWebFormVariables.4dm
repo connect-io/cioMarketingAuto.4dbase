@@ -42,47 +42,60 @@ UUID
 	
 	For ($i_el; 1; Size of array:C274($1->))  // build body of post
 		
-		If ($2->{$i_el}="{{RAW_JFIF_DATA}}")  // picture data requires special handling
+		Case of 
+			: ($2->{$i_el}="{{RAW_JFIF_DATA}}")  // picture data requires special handling
 /*
 Correspond à :
 Content-Disposition: form-data; name="myFile"; filename="foo.txt" 
 Content-Type: text/plain 
-			
+				
 (content of the uploaded file foo.txt)
 --UUID
 */
-			
-			Case of 
-				: ($1->{$i_el}="@.pdf@")
-					$contentType_t:="application/pdf"
-				: ($1->{$i_el}="@.png@")
-					$contentType_t:="image/png"
-				: ($1->{$i_el}="@.jpg@") | ($1->{$i_el}="@.jpeg@")
-					$contentType_t:="image/jpeg"
-			End case 
-			
-			// picture data requires special handling
-			TEXT TO BLOB:C554("Content-Disposition: form-data; name=\""+$1->{$i_el}+$crlf_t+"Content-Type: "+$contentType_t+$crlf_t+$crlf_t; $3->; UTF8 text without length:K22:17; *)
-			
-			$offset_el:=BLOB size:C605($3->)  // get offset for where document will be placed
-			
-			COPY BLOB:C558(${$compteur_el}->; $3->; 0; $offset_el; BLOB size:C605(${$compteur_el}->))  // copy the document into the blob
-			TEXT TO BLOB:C554($crlf_t+$separation_t; $3->; UTF8 text without length:K22:17; *)
-			
-			If (Count parameters:C259>4)  // Il y a plusieurs documents à intégrer
-				$compteur_el:=$compteur_el+1
-			End if 
-			
-		Else   // not picture or document data so do regular handling
+				
+				Case of 
+					: ($1->{$i_el}="@.pdf@")
+						$contentType_t:="application/pdf"
+					: ($1->{$i_el}="@.png@")
+						$contentType_t:="image/png"
+					: ($1->{$i_el}="@.jpg@") | ($1->{$i_el}="@.jpeg@")
+						$contentType_t:="image/jpeg"
+				End case 
+				
+				// picture data requires special handling
+				TEXT TO BLOB:C554("Content-Disposition: form-data; name=\""+$1->{$i_el}+$crlf_t+"Content-Type: "+$contentType_t+$crlf_t+$crlf_t; $3->; UTF8 text without length:K22:17; *)
+				
+				$offset_el:=BLOB size:C605($3->)  // get offset for where document will be placed
+				
+				COPY BLOB:C558(${$compteur_el}->; $3->; 0; $offset_el; BLOB size:C605(${$compteur_el}->))  // copy the document into the blob
+				TEXT TO BLOB:C554($crlf_t+$separation_t; $3->; UTF8 text without length:K22:17; *)
+				
+				If (Count parameters:C259>4)  // Il y a plusieurs documents à intégrer
+					$compteur_el:=$compteur_el+1
+				End if 
+				
+			: ($2->{$i_el}="{@}")  // Envoi d'un objet json
+/*
+Correspond à :
+Content-Disposition: form-data; name="metadata" 
+				
+{
+  "street": "3, Garden St",
+  "city": "Hillsbery, UT"
+}
+--UUID
+*/
+				TEXT TO BLOB:C554("Content-Disposition: form-data; name=\""+$1->{$i_el}+"\""+$crlf_t+"Content-Type: application/json"+$crlf_t+$crlf_t+$2->{$i_el}+$crlf_t+$separation_t; $3->; UTF8 text without length:K22:17; *)
+			Else   // not picture or document data so do regular handling
 /*
 Correspond à :
 Content-Disposition: form-data; name="description" 
-			
+				
 some text
 --UUID
 */
-			TEXT TO BLOB:C554("Content-Disposition: form-data; name=\""+$1->{$i_el}+"\""+$crlf_t+$crlf_t+$2->{$i_el}+$crlf_t+$separation_t; $3->; UTF8 text without length:K22:17; *)
-		End if 
+				TEXT TO BLOB:C554("Content-Disposition: form-data; name=\""+$1->{$i_el}+"\""+$crlf_t+$crlf_t+$2->{$i_el}+$crlf_t+$separation_t; $3->; UTF8 text without length:K22:17; *)
+		End case 
 		
 		If ($i_el<Size of array:C274($1->))
 			TEXT TO BLOB:C554($crlf_t; $3->; UTF8 text without length:K22:17; *)

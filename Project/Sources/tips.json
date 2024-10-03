@@ -1,5 +1,5 @@
-﻿{
-	"": "",
+{
 	"Aide pour rang": "• Rang 1 : Suspect\r• Rang 2 : Prospect\r• Rang 3 : Client\r• Rang 4 : Client fidèle\r• Rang 5 : Ambassadeur",
-	"Aide act. scène": "• Attente\r• Envoi email\r• Changement de scénario\r• Fin du scénario"
+	"Aide act. scène": "• Attente\r• Envoi email\r• Changement de scénario\r• Fin du scénario",
+	"Aide Maileva 1": "Ligne d'adresse n°1 (Société) de l'expéditeur"
 }

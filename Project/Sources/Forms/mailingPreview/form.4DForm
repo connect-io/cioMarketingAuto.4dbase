@@ -417,7 +417,7 @@
 					"currentItemPositionSource": "Form:C1466.PersonneCurrentPosition",
 					"selectedItemsSource": "Form:C1466.PersonneSelectedElement",
 					"headerHeight": "20px",
-					"rowHeight": "25px",
+					"rowHeight": "2em",
 					"verticalAlign": "middle",
 					"scrollbarHorizontal": "hidden",
 					"dataSource": "Form:C1466.MAPersonneSelection.personneCollection",
@@ -1212,45 +1212,6 @@
 					"switchBackWhenReleased": true,
 					"useLastFrameAsDisabled": true
 				},
-				"Texte17": {
-					"type": "text",
-					"text": "Nom envoi",
-					"top": 510,
-					"left": 380,
-					"width": 85,
-					"height": 16,
-					"fontFamily": "Arial",
-					"fontSize": 14
-				},
-				"sendingName": {
-					"type": "input",
-					"top": 510,
-					"left": 501,
-					"width": 89,
-					"height": 16,
-					"dataSource": "Form:C1466.Courrier.sendingName",
-					"borderStyle": "none",
-					"hideFocusRing": true,
-					"dragging": "none",
-					"dropping": "custom",
-					"events": [
-						"onDataChange"
-					],
-					"bottom": 526,
-					"right": 590,
-					"textAlign": "left",
-					"enterable": false,
-					"focusable": false
-				},
-				"Line5": {
-					"type": "line",
-					"top": 525,
-					"left": 491,
-					"width": 99,
-					"class": "accentColor2",
-					"height": 1,
-					"right": 590
-				},
 				"printColor": {
 					"type": "checkbox",
 					"text": "Impression couleur",
@@ -1304,11 +1265,28 @@
 					"fontWeight": "bold",
 					"stroke": "#ff0000",
 					"textAlign": "right"
+				},
+				"configSend": {
+					"type": "button",
+					"text": "Configuration envoi",
+					"top": 501,
+					"left": 380,
+					"width": 230,
+					"height": 35,
+					"events": [
+						"onClick",
+						"onMouseMove"
+					],
+					"class": "clickable",
+					"style": "roundedBevel",
+					"method": "ObjectMethods/configSend.4dm",
+					"sizingX": "move",
+					"sizingY": "move"
 				}
 			}
 		}
 	],
-	"geometryStamp": 1097,
+	"geometryStamp": 1108,
 	"editor": {
 		"activeView": "View 1",
 		"defaultView": "View 1",

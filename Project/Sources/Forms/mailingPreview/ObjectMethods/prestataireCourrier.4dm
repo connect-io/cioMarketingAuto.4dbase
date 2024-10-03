@@ -6,7 +6,7 @@ Case of
 		OBJECT Get pointer:C1124(Object current:K67:2)->index:=-1
 	: (Form event code:C388=On Data Change:K2:15)
 		Form:C1466.delaiCourrier:=""
-		OBJECT SET ENTERABLE:C238(*; "sendingName"; False:C215)
+		OBJECT SET ENABLED:C1123(*; "configSend"; False:C215)
 		OBJECT Get pointer:C1124(Object named:K67:5; "typeEnvoiCourrier")->values:=New collection:C1472
 		
 		OBJECT Get pointer:C1124(Object named:K67:5; "typeEnvoiCourrier")->currentValue:="Sélection d'un type d'envoi"
@@ -28,7 +28,8 @@ Case of
 		If (OBJECT Get pointer:C1124(Object current:K67:2)->currentValue="Maileva")
 			Form:C1466.Courrier.getTokenAPIMaileva()
 			OBJECT Get pointer:C1124(Object named:K67:5; "typeEnvoiCourrier")->values:=Form:C1466.Courrier.prestataire.postageType.extract("lib")  // Mise à jour du select pour type d'envoi
+			
+			OBJECT SET ENABLED:C1123(*; "configSend"; True:C214)
 		End if 
 		
-		OBJECT SET ENTERABLE:C238(*; "sendingName"; True:C214)
 End case 

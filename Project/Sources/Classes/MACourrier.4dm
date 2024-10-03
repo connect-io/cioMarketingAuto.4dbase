@@ -77,7 +77,7 @@ Historique
 	This:C1470.attachmentsPath_c:=New collection:C1472
 	This:C1470.useCurrentPrinter:=($parametre_o.nom="Imprimante courante")
 	This:C1470.environnement:=$environnement_c[0]
-	This:C1470.token:=""
+	This:C1470.token:=New object:C1471
 	
 Function getTokenAPIMaileva()->$result_o : Object
 /*------------------------------------------------------------------------------
@@ -100,17 +100,17 @@ Historique
 		return 
 	End if 
 	
-	$parameter_t:="grant_type=password&username="+This:C1470.environnement.username+"&password="+This:C1470.environnement.password+""
-	CONVERT FROM TEXT:C1011($parameter_t; "utf-8"; $body_b)
-	
 	$option_o:=New object:C1471()
 	$option_o.method:="POST"
 	
 	$option_o.headers:=New object:C1471("Content-Type"; "application/x-www-form-urlencoded")
-	$option_o.serverAuthentication:=New object:C1471("name"; This:C1470.environnement.clientID; "password"; This:C1470.environnement.clientSecret)
-	$option_o.body:=$body_b
+	$option_o.body:="grant_type=password&client_id="+This:C1470.environnement.clientID+"&client_secret="+This:C1470.environnement.clientSecret+"&username="+This:C1470.environnement.username+"&password="+This:C1470.environnement.password
 	
-	$url_t:=This:C1470.content_o.requestElement.query("lib = :1"; "getToken")[0]
+	If (This:C1470.environnement.urlAPI="@sandbox@")
+		$url_t:=This:C1470.prestataire.requestList.query("lib = :1"; "getToken")[0].urlSandbox
+	Else 
+		$url_t:=This:C1470.prestataire.requestList.query("lib = :1"; "getToken")[0].url
+	End if 
 	
 	$request_hr:=4D:C1709.HTTPRequest.new($url_t; $option_o)
 	$request_hr.wait()
@@ -140,8 +140,13 @@ Historique
 	
 	var $request_hr : 4D:C1709.HTTPRequest
 	
+	If (This:C1470.token.access_token=Null:C1517)
+		ALERT:C41("Aucun token n'est trouvé, impossible de faire une requête")
+		return 
+	End if 
+	
 	$result_o:=New object:C1471
-	$requestElement_o:=OB Copy:C1225(This:C1470.content_o.requestElement.query("lib = :1"; $lib_t)[0])
+	$requestElement_o:=OB Copy:C1225(This:C1470.prestataire.requestList.query("lib = :1"; $lib_t)[0])
 	
 	$option_o:=New object:C1471()
 	$option_o.method:=$requestElement_o.method
@@ -151,11 +156,17 @@ Historique
 		For each ($formData_o; $requestElement_o.formDataList)
 			
 			If ($formData_o.type="document")
-				APPEND TO ARRAY:C911($key_at; $formData_o.name+"\"; filename=\""+$body_v.file.name+"\"")
+				APPEND TO ARRAY:C911($key_at; $formData_o.name+"\"; filename=\""+$body_v.file.fullName+"\"")
 				APPEND TO ARRAY:C911($val_at; "{{RAW_JFIF_DATA}}")
 			Else 
 				APPEND TO ARRAY:C911($key_at; $formData_o.name)
-				APPEND TO ARRAY:C911($val_at; String:C10($body_v[$formData_o.name]))
+				
+				If (Value type:C1509($body_v[$formData_o.name])=Is object:K8:27)
+					APPEND TO ARRAY:C911($val_at; JSON Stringify:C1217($body_v[$formData_o.name]; *))
+				Else 
+					APPEND TO ARRAY:C911($val_at; String:C10($body_v[$formData_o.name]))
+				End if 
+				
 			End if 
 			
 		End for each 
@@ -173,7 +184,7 @@ Historique
 		$option_o.headers:=New object:C1471("Content-Type"; "application/json")
 	End if 
 	
-	$option_o.headers.Authorization:="Bearer "+String:C10(This:C1470.token)
+	$option_o.headers.Authorization:="Bearer "+String:C10(This:C1470.token.access_token)
 	$url_t:=This:C1470.environnement.urlAPI+$requestElement_o.url
 	
 	Case of 

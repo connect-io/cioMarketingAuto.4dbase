@@ -349,7 +349,7 @@ Function sendMailing($configPreCharge_o : Object) : Object
 	var $erreur_b; $printSetting_b; $notifScenario_b; $npai_b : Boolean
 	var $date_d : Date
 	var $time_t : Time
-	var $class_o; $config_o; $mime_o; $statut_o; $wpVar_o; $fichier_o; $signature_o; $document_o; $entity_e; $param_o; $body_o; $externalReference_o : Object
+	var $class_o; $config_o; $mime_o; $statut_o; $wpVar_o; $fichier_o; $signature_o; $document_o; $entity_e; $param_o; $body_o; $externalReference_o; $retour_o; $extraDetail_o : Object
 	var $transporter_c; $detail_c; $context_c; $collection_c : Collection
 	var $file_f : 4D:C1709.File
 	
@@ -575,25 +575,100 @@ Function sendMailing($configPreCharge_o : Object) : Object
 							End if 
 							
 						: ($config_o.CourrierConfig.prestataire.nom="Maileva")
-							// Première requête on créé l'envoi
+							// Création de l'envoi avec information de l'expéditeur
 							$body_o:=New object:C1471
 							$body_o.name:=String:C10($config_o.CourrierConfig.sendingName)
 							$body_o.custom_id:=String:C10($config_o.CourrierConfig.custom_id)
 							$body_o.custom_data:=String:C10($config_o.CourrierConfig.custom_data)
 							$body_o.duplex_printing:=Bool:C1537($config_o.CourrierConfig.duplexPrinting)
 							$body_o.color_printing:=Bool:C1537($config_o.CourrierConfig.printColor)
-							$body_o.notification_email:=String:C10($config_o.CourrierConfig.deliveryEmail)
+							$body_o.notification_email:=This:C1470.eMail
 							
 							$body_o.print_sender_address:=Bool:C1537($config_o.CourrierConfig.senderPrintAdress)
-							$body_o.sender_address_line_1:=String:C10($config_o.CourrierConfig.senderAdressLine1)
-							$body_o.sender_address_line_2:=String:C10($config_o.CourrierConfig.senderAdressLine2)
-							$body_o.sender_address_line_3:=String:C10($config_o.CourrierConfig.senderAdressLine3)
-							$body_o.sender_address_line_4:=String:C10($config_o.CourrierConfig.senderAdressLine4)
-							$body_o.sender_address_line_5:=String:C10($config_o.CourrierConfig.senderAdressLine5)
-							$body_o.sender_address_line_6:=String:C10($config_o.CourrierConfig.senderAdressLine6)
+							$body_o.sender_address_line_1:=String:C10($config_o.CourrierConfig.sender_address_line_1)
+							$body_o.sender_address_line_2:=String:C10($config_o.CourrierConfig.sender_address_line_2)
+							$body_o.sender_address_line_3:=String:C10($config_o.CourrierConfig.sender_address_line_3)
+							$body_o.sender_address_line_4:=String:C10($config_o.CourrierConfig.sender_address_line_4)
+							$body_o.sender_address_line_5:=String:C10($config_o.CourrierConfig.sender_address_line_5)
+							$body_o.sender_address_line_6:=String:C10($config_o.CourrierConfig.sender_address_line_6)
 							
-							$body_o.sender_country_code:=String:C10($config_o.CourrierConfig.senderCountryISOCode)
-							$config_o.CourrierConfig.request("sendingNew"; $body_o)
+							$body_o.sender_country_code:="FR"
+							$retour_o:=$config_o.CourrierConfig.request("sendingNew"; $body_o)
+							$erreur_b:=($retour_o.messageError#Null:C1517)
+							
+							If ($erreur_b=True:C214)
+								$retour_t:="Erreur lors de la création de l'envoi chez Maileva, détail de l'erreur : "+$retour_o.messageError
+							Else 
+								$extraDetail_o:=New object:C1471("sendingInformation"; $retour_o)
+							End if 
+							
+							If ($erreur_b=False:C215)  // Ajout d'un destinataire
+								$body_o:=New object:C1471
+								$body_o.modifyURL:=New object:C1471("sendingPK"; $extraDetail_o.sendingInformation.id)
+								
+								$body_o.custom_id:=""
+								$body_o.custom_data:=This:C1470.personne.getKey()
+								
+								$body_o.address_line_1:=""  // Ligne d'adresse n°1 (Société)
+								$body_o.address_line_2:=This:C1470.prenom+" "+This:C1470.nom  // Ligne d'adresse n°2 (Civilité, Prénom, Nom)
+								$body_o.address_line_3:=This:C1470.adresseComplement  // Ligne d'adresse n°3 (Résidence, Bâtiement ...)
+								$body_o.address_line_4:=This:C1470.adresse  // Ligne d'adresse n°4 (N° et libellé de la voie)
+								$body_o.address_line_5:=""  // Ligne d'adresse n°5 (Lieu dit, BP...)
+								$body_o.address_line_6:=This:C1470.codePostal+" "+This:C1470.ville  // Ligne d'adresse n°6 (Code postal et ville)
+								
+								$body_o.country_code:="FR"
+								$retour_o:=$config_o.CourrierConfig.request("recepientAdd"; $body_o)
+								$erreur_b:=($retour_o.messageError#Null:C1517)
+								
+								If ($erreur_b=True:C214)
+									$retour_t:="Erreur lors de l'ajout d'un destinataire à l'envoi "+$extraDetail_o.sendingInformation.id+" chez Maileva, détail de l'erreur : "+$retour_o.messageError
+								Else 
+									$extraDetail_o.recipientInformation:=$retour_o
+								End if 
+								
+							End if 
+							
+							If ($erreur_b=False:C215)  // Ajout du document
+								$folder_f:=Folder:C1567(fk resources folder:K87:11; *).folder("TEMP")
+								
+								If ($folder_f.exists=False:C215)
+									$folder_f.create()
+								End if 
+								
+								$file_f:=$folder_f.file(Generate UUID:C1066+".pdf")
+								WP EXPORT DOCUMENT:C1337($document_o; $file_f.platformPath; wk pdf:K81:315)
+								
+								$body_o:=New object:C1471
+								$body_o.modifyURL:=New object:C1471("sendingPK"; $extraDetail_o.sendingInformation.id)
+								
+								$body_o.file:=$file_f
+								$body_o.metadata:=New object:C1471("priority"; 1; "name"; $file_f.fullName; "shrink"; True:C214)
+								
+								$retour_o:=$config_o.CourrierConfig.request("setDocument"; $body_o)
+								$erreur_b:=($retour_o.messageError#Null:C1517)
+								
+								If ($erreur_b=True:C214)
+									$retour_t:="Erreur lors de l'ajout d'un document à l'envoi "+$extraDetail_o.sendingInformation.id+" chez Maileva, détail de l'erreur : "+$retour_o.messageError
+								Else 
+									$extraDetail_o.documentInformation:=$retour_o
+									$file_f.delete()
+								End if 
+								
+							End if 
+							
+							If ($erreur_b=False:C215)  // Soumission de l'envoi
+								$body_o:=New object:C1471
+								$body_o.modifyURL:=New object:C1471("sendingPK"; $extraDetail_o.sendingInformation.id)
+								
+								$retour_o:=$config_o.CourrierConfig.request("sendingSubmit"; $body_o)
+								$erreur_b:=($retour_o.messageError#Null:C1517)
+								
+								If ($erreur_b=True:C214)
+									$retour_t:="Erreur lors de la soumission de l'envoi "+$extraDetail_o.sendingInformation.id+" chez Maileva, détail de l'erreur : "+$retour_o.messageError
+								End if 
+								
+							End if 
+							
 					End case 
 					
 				: ($canalEnvoi_t="SMS")
@@ -641,6 +716,10 @@ Function sendMailing($configPreCharge_o : Object) : Object
 				
 				If ($config_o.externalReference#Null:C1517)
 					$param_o.externalReference:=$config_o.externalReference
+				End if 
+				
+				If ($extraDetail_o#Null:C1517)
+					$param_o.extraDetail:=OB Copy:C1225($extraDetail_o)
 				End if 
 				
 			End if 
@@ -828,6 +907,7 @@ Historique
 				"statutColor"; cmaToolMailjetGetColor(String:C10($detail_o.statut)); \
 				"subject"; String:C10($detail_o.subject); \
 				"externalReference"; ($detail_o.externalReference#Null:C1517) ? $detail_o.externalReference : Null:C1517; \
+				"extraDetail"; ($detail_o.extraDetail#Null:C1517) ? $detail_o.extraDetail : Null:C1517; \
 				"messageID"; "")))
 			
 			If ($detail_o.uuid#Null:C1517)

@@ -62,9 +62,9 @@ Case of
 					return 
 				End if 
 				
+				OPEN PRINTING JOB:C995
 			End if 
 			
-			OPEN PRINTING JOB:C995
 		End if 
 		
 		cmaProgressBar(0; "Initialisation"; True:C214)
@@ -144,7 +144,11 @@ Case of
 		cmaProgressBar(1; "arrêt")
 		
 		If ($canalEnvoi_t="Courrier")
-			CLOSE PRINTING JOB:C996
+			
+			If (Form:C1466.Courrier.prestataire.nom="Imprimante courante")
+				CLOSE PRINTING JOB:C996
+			End if 
+			
 		End if 
 		
 		If ($compteur_o.success>0)

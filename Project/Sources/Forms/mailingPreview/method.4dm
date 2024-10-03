@@ -28,6 +28,8 @@ Case of
 		OBJECT SET VISIBLE:C603(*; "WPtoolbar"; False:C215)
 		OBJECT SET VISIBLE:C603(*; "WParea"; False:C215)
 		
+		OBJECT SET ENABLED:C1123(*; "configSend"; False:C215)
+		
 		WParea:=WP New:C1317()
 	: (Form event code:C388=On Data Change:K2:15)
 		Form:C1466.MAPersonneSelection.personneCollection:=Form:C1466.personneSelectionDisplayClass.manageFilter()

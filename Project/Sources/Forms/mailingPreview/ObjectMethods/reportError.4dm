@@ -14,4 +14,6 @@ Case of
 		End for each 
 		
 		ALERT:C41($textDisplay_t)
+	: (Form event code:C388=On Mouse Move:K2:35)
+		SET CURSOR:C469(9000)
 End case 
