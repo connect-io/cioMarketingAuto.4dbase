@@ -92,8 +92,6 @@ Case of
 					Formula from string:C1601("_cmaInit4WPVar(this)").call($person_cs.personne)
 					$document_o:=WP New:C1317(WParea)
 					
-					$corps_t:=WP Get text:C1575($document_o; wk expressions as value:K81:255)
-					
 					Case of 
 						: ($canalEnvoi_t="EMail")
 							Form:C1466.EMail.subject:=Form:C1466.subject
