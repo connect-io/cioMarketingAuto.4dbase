@@ -1249,7 +1249,8 @@
 					],
 					"method": "ObjectMethods/typeEnvoiCourrier.4dm",
 					"dataSourceTypeHint": "object",
-					"right": 330
+					"right": 330,
+					"dataSource": "Form:C1466.Courrier.postage_type"
 				},
 				"Zone de saisie1": {
 					"type": "input",

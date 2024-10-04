@@ -413,28 +413,6 @@
 	],
 	"geometryStamp": 106,
 	"editor": {
-		"groups": {
-			"Group": [
-				"Texte1",
-				"senderAdressLine1",
-				"Line4",
-				"Texte2",
-				"senderAdressLine2",
-				"Line1",
-				"Texte3",
-				"senderAdressLine4",
-				"Line2",
-				"Texte4",
-				"senderAdressLine3",
-				"Line3",
-				"Texte5",
-				"senderAdressLine5",
-				"Line5",
-				"Texte6",
-				"senderAdressLine6",
-				"Line6"
-			]
-		},
 		"activeView": "View 1",
 		"defaultView": "View 1",
 		"views": {

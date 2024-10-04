@@ -13,6 +13,7 @@ pour envoyer un courrier de manière dématérialiser
 Historique
 14/05/24 - Rémy Scanu <remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
+	var $propriete_t : Text
 	var $prestataire_o : Object
 	var $prestataire_c; $environnement_c : Collection
 	
@@ -78,6 +79,14 @@ Historique
 	This:C1470.useCurrentPrinter:=($parametre_o.nom="Imprimante courante")
 	This:C1470.environnement:=$environnement_c[0]
 	This:C1470.token:=New object:C1471
+	
+	If (String:C10(This:C1470.prestataire.nom)="Maileva")
+		
+		For each ($propriete_t; This:C1470.prestataire.senderDetail)
+			This:C1470[$propriete_t]:=This:C1470.prestataire.senderDetail[$propriete_t]
+		End for each 
+		
+	End if 
 	
 Function getTokenAPIMaileva()->$result_o : Object
 /*------------------------------------------------------------------------------

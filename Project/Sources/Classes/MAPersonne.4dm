@@ -577,7 +577,7 @@ Function sendMailing($configPreCharge_o : Object) : Object
 						: ($config_o.CourrierConfig.prestataire.nom="Maileva")
 							// Création de l'envoi avec information de l'expéditeur
 							$body_o:=New object:C1471
-							$body_o.name:=String:C10($config_o.CourrierConfig.sendingName)
+							$body_o.name:=(String:C10($config_o.CourrierConfig.sendingName)="") ? "Envoi "+Substring:C12(Generate UUID:C1066; 1; 5) : String:C10($config_o.CourrierConfig.sendingName)
 							$body_o.custom_id:=String:C10($config_o.CourrierConfig.custom_id)
 							$body_o.custom_data:=String:C10($config_o.CourrierConfig.custom_data)
 							$body_o.duplex_printing:=Bool:C1537($config_o.CourrierConfig.duplexPrinting)
@@ -591,8 +591,9 @@ Function sendMailing($configPreCharge_o : Object) : Object
 							$body_o.sender_address_line_4:=String:C10($config_o.CourrierConfig.sender_address_line_4)
 							$body_o.sender_address_line_5:=String:C10($config_o.CourrierConfig.sender_address_line_5)
 							$body_o.sender_address_line_6:=String:C10($config_o.CourrierConfig.sender_address_line_6)
+							$body_o.postage_type:=(String:C10($config_o.CourrierConfig.postage_type)="") ? "ECONOMIC" : String:C10($config_o.CourrierConfig.postage_type)
 							
-							$body_o.sender_country_code:="FR"
+							$body_o.sender_country_code:=(String:C10($config_o.CourrierConfig.sender_country_code)="") ? "FR" : String:C10($config_o.CourrierConfig.sender_country_code)
 							$retour_o:=$config_o.CourrierConfig.request("sendingNew"; $body_o)
 							$erreur_b:=($retour_o.messageError#Null:C1517)
 							

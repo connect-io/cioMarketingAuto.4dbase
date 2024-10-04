@@ -221,7 +221,7 @@ Historique
 	var $numOrdre_el : Integer
 	var $continue_b; $saut_b; $sautEffectue_b; $finScenario_b : Boolean
 	var $table_o; $enregistrement_o; $caScenarioEvent_o; $scene_o; $personne_o; $eMail_o; $config_o; $conditionAction_o; $conditionSaut_o; $scene_cs; $retour_o; \
-		$autreTable_o; $autreEnregistrement_o; $caPersonneMarketing_o; $document_o; $sms_o; $retourB_o; $notif_o : Object
+		$autreTable_o; $autreEnregistrement_o; $caPersonneMarketing_o; $document_o; $sms_o; $courrier_o; $retourB_o; $notif_o : Object
 	var $collection_c : Collection
 	
 	var $parameter_es : Object
@@ -612,13 +612,36 @@ Historique
 							$notif_o:=$collection_c[0].notif
 						End if 
 						
-						$config_o:=New object:C1471("success"; True:C214; "type"; "Courrier"; "contenu4WP"; $document_o; "notifEmail"; Bool:C1537($collection_c[0].notifEmail); "notif"; $notif_o)
-						
-						If ($collection_c[0].externalReference#Null:C1517)
-							$config_o.externalReference:=OB Copy:C1225($collection_c[0].externalReference)
+						If ($collection_c[0].expediteur#"Imprimante courante")
+							$courrier_o:=cmaToolGetClass("MACourrier").new(False:C215; New object:C1471("nom"; $collection_c[0].expediteur; "environnement"; "sandbox"))
 							
-							$config_o.externalReference.scene:=$scene_o.numOrdre
-							$config_o.externalReference.situation:=OB Copy:C1225($enregistrement_o.situation)
+							Case of 
+								: ($collection_c[0].expediteur="Maileva")
+									$courrier_o.getTokenAPIMaileva()
+									
+									If ($courrier_o.token.access_token=Null:C1517)
+										$scene_cs.addScenarioEvent("Autre"; $enregistrement_o.ID; 0; "Impossible de générer un token chez Maileva")
+										$continue_b:=False:C215
+									End if 
+									
+							End case 
+							
+						End if 
+						
+						If ($continue_b=True:C214)
+							$config_o:=New object:C1471("success"; True:C214; "type"; "Courrier"; "contenu4WP"; $document_o; "notifEmail"; Bool:C1537($collection_c[0].notifEmail); "notif"; $notif_o)
+							
+							If ($collection_c[0].externalReference#Null:C1517)
+								$config_o.externalReference:=OB Copy:C1225($collection_c[0].externalReference)
+								
+								$config_o.externalReference.scene:=$scene_o.numOrdre
+								$config_o.externalReference.situation:=OB Copy:C1225($enregistrement_o.situation)
+							End if 
+							
+							If ($courrier_o#Null:C1517)
+								$config_o.CourrierConfig:=$courrier_o
+							End if 
+							
 						End if 
 						
 						$retourB_o:=$personne_o.sendMailing($config_o)
@@ -660,7 +683,7 @@ Historique
 			$retour_o:=$enregistrement_o.save()
 		End if 
 		
-		cmaToolCleanVariable(->$finScenario_b; ->$scene_o; ->$continue_b; ->$retourB_o)
+		cmaToolCleanVariable(->$finScenario_b; ->$scene_o; ->$continue_b; ->$retourB_o; ->$courrier_o)
 	End for each 
 	
 Function loadCronos

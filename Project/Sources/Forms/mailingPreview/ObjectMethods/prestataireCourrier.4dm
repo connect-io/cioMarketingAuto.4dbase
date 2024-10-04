@@ -23,7 +23,7 @@ Case of
 		End if 
 		
 		Form:C1466.environnementCourrier:=selectValue_t
-		Form:C1466.Courrier:=cmaToolGetClass("MACourrier").new(False:C215; New object:C1471("nom"; OBJECT Get pointer:C1124(Object current:K67:2)->currentValue; "environnement"; Form:C1466.environnementCourrier))
+		Form:C1466.Courrier:=cmaToolGetClass("MACourrier").new(False:C215; New object:C1471("nom"; OBJECT Get pointer:C1124(Object current:K67:2)->currentValue; "environnement"; String:C10(Form:C1466.environnementCourrier)))
 		
 		If (OBJECT Get pointer:C1124(Object current:K67:2)->currentValue="Maileva")
 			Form:C1466.Courrier.getTokenAPIMaileva()
