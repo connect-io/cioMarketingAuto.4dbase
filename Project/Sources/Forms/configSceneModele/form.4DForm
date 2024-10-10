@@ -235,11 +235,25 @@
 						"onDataChange"
 					],
 					"method": "ObjectMethods/modeleCCEmail.4dm"
+				},
+				"configEnvoiCourrier": {
+					"type": "button",
+					"text": "Conf. envoi",
+					"top": 170,
+					"left": 274,
+					"width": 90,
+					"height": 30,
+					"events": [
+						"onClick",
+						"onMouseMove"
+					],
+					"method": "ObjectMethods/configEnvoiCourrier.4dm",
+					"class": "clickable"
 				}
 			}
 		}
 	],
-	"geometryStamp": 495,
+	"geometryStamp": 498,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",

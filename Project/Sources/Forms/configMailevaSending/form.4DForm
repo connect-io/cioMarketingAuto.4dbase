@@ -13,20 +13,9 @@
 	"bottomMargin": 0,
 	"events": [
 		"onLoad",
-		"onPageChange",
-		"onValidate",
 		"onClick",
-		"onDoubleClick",
-		"onOutsideCall",
-		"onBeginDragOver",
-		"onDragOver",
-		"onDrop",
-		"onAfterKeystroke",
-		"onMenuSelect",
-		"onPluginArea",
-		"onAfterEdit",
-		"onTimer",
-		"onBoundVariableChange"
+		"onDataChange",
+		"onMouseMove"
 	],
 	"windowTitle": "Configuration envoi Maileva",
 	"destination": "detailScreen",
@@ -38,10 +27,10 @@
 					"top": 40,
 					"left": 0,
 					"width": 708,
-					"height": 345,
+					"height": 510,
 					"stroke": "transparent",
 					"sizingY": "grow",
-					"bottom": 385,
+					"bottom": 550,
 					"sizingX": "grow",
 					"right": 708
 				},
@@ -63,7 +52,7 @@
 					"top": 8,
 					"width": 330,
 					"height": 22,
-					"dataSource": "\"Configuration expéditeur pour Maileva\"",
+					"dataSource": "\"Configuration envoi Maileva\"",
 					"fontSize": 18,
 					"fill": "transparent",
 					"borderStyle": "none",
@@ -79,29 +68,29 @@
 			"objects": {
 				"Rectangle7": {
 					"type": "rectangle",
-					"top": 119,
+					"top": 99,
 					"left": 52,
 					"width": 643,
 					"height": 189,
 					"fill": "transparent",
 					"class": "secondary",
-					"bottom": 308,
+					"bottom": 288,
 					"right": 695,
 					"sizingX": "grow"
 				},
 				"Rectangle6": {
 					"type": "rectangle",
-					"top": 119,
+					"top": 99,
 					"left": 20,
 					"width": 33,
 					"height": 189,
 					"fill": "transparent",
 					"class": "secondary",
-					"bottom": 308
+					"bottom": 288
 				},
 				"Text13": {
 					"type": "text",
-					"top": 129,
+					"top": 109,
 					"left": 19,
 					"width": 33,
 					"height": 170,
@@ -114,7 +103,7 @@
 				"Texte1": {
 					"type": "text",
 					"text": "Nom Société",
-					"top": 130,
+					"top": 110,
 					"left": 62,
 					"width": 100,
 					"height": 16,
@@ -123,7 +112,7 @@
 				},
 				"senderAdressLine1": {
 					"type": "input",
-					"top": 130,
+					"top": 110,
 					"left": 182,
 					"width": 487,
 					"height": 16,
@@ -135,14 +124,14 @@
 					"events": [
 						"onDataChange"
 					],
-					"bottom": 146,
+					"bottom": 126,
 					"right": 669,
 					"textAlign": "left",
 					"placeholder": "Ligne d'adresse n°1 (Société) de l'expéditeur"
 				},
 				"Line4": {
 					"type": "line",
-					"top": 145,
+					"top": 125,
 					"left": 172,
 					"width": 497,
 					"class": "accentColor2",
@@ -152,7 +141,7 @@
 				"Texte2": {
 					"type": "text",
 					"text": "Civ. Nom Pr.",
-					"top": 160,
+					"top": 140,
 					"left": 62,
 					"width": 100,
 					"height": 16,
@@ -161,7 +150,7 @@
 				},
 				"senderAdressLine2": {
 					"type": "input",
-					"top": 160,
+					"top": 140,
 					"left": 182,
 					"width": 487,
 					"height": 16,
@@ -173,14 +162,14 @@
 					"events": [
 						"onDataChange"
 					],
-					"bottom": 176,
+					"bottom": 156,
 					"right": 669,
 					"textAlign": "left",
 					"placeholder": "Ligne d'adresse n°2 (Civilité, Prénom, Nom) de l'expéditeur"
 				},
 				"Line1": {
 					"type": "line",
-					"top": 175,
+					"top": 155,
 					"left": 172,
 					"width": 497,
 					"class": "accentColor2",
@@ -190,7 +179,7 @@
 				"Texte3": {
 					"type": "text",
 					"text": "Adresse",
-					"top": 190,
+					"top": 170,
 					"left": 62,
 					"width": 100,
 					"height": 16,
@@ -199,7 +188,7 @@
 				},
 				"senderAdressLine4": {
 					"type": "input",
-					"top": 190,
+					"top": 170,
 					"left": 182,
 					"width": 487,
 					"height": 16,
@@ -211,7 +200,7 @@
 					"events": [
 						"onDataChange"
 					],
-					"bottom": 206,
+					"bottom": 186,
 					"right": 669,
 					"textAlign": "left",
 					"placeholder": "Ligne d'adresse n°4 (N° et libellé de la voie) de l'expéditeur",
@@ -219,7 +208,7 @@
 				},
 				"Line2": {
 					"type": "line",
-					"top": 205,
+					"top": 185,
 					"left": 172,
 					"width": 497,
 					"class": "accentColor2",
@@ -229,7 +218,7 @@
 				"Texte4": {
 					"type": "text",
 					"text": "Comp. Adresse",
-					"top": 220,
+					"top": 200,
 					"left": 62,
 					"width": 100,
 					"height": 16,
@@ -238,7 +227,7 @@
 				},
 				"senderAdressLine3": {
 					"type": "input",
-					"top": 220,
+					"top": 200,
 					"left": 182,
 					"width": 487,
 					"height": 16,
@@ -250,14 +239,14 @@
 					"events": [
 						"onDataChange"
 					],
-					"bottom": 236,
+					"bottom": 216,
 					"right": 669,
 					"textAlign": "left",
 					"placeholder": "Ligne d'adresse n°3 (Résidence, Bâtiement ...) de l'expéditeur"
 				},
 				"Line3": {
 					"type": "line",
-					"top": 235,
+					"top": 215,
 					"left": 172,
 					"width": 497,
 					"class": "accentColor2",
@@ -267,7 +256,7 @@
 				"Texte5": {
 					"type": "text",
 					"text": "Lieu dit BP",
-					"top": 250,
+					"top": 230,
 					"left": 62,
 					"width": 100,
 					"height": 16,
@@ -276,7 +265,7 @@
 				},
 				"senderAdressLine5": {
 					"type": "input",
-					"top": 250,
+					"top": 230,
 					"left": 182,
 					"width": 487,
 					"height": 16,
@@ -288,14 +277,14 @@
 					"events": [
 						"onDataChange"
 					],
-					"bottom": 266,
+					"bottom": 246,
 					"right": 669,
 					"textAlign": "left",
 					"placeholder": "Ligne d'adresse n°5 (Lieu dit, BP...) de l'expéditeur"
 				},
 				"Line5": {
 					"type": "line",
-					"top": 265,
+					"top": 245,
 					"left": 172,
 					"width": 497,
 					"class": "accentColor2",
@@ -305,7 +294,7 @@
 				"Texte6": {
 					"type": "text",
 					"text": "CP Ville",
-					"top": 280,
+					"top": 260,
 					"left": 62,
 					"width": 100,
 					"height": 16,
@@ -314,7 +303,7 @@
 				},
 				"senderAdressLine6": {
 					"type": "input",
-					"top": 280,
+					"top": 260,
 					"left": 182,
 					"width": 487,
 					"height": 16,
@@ -326,14 +315,14 @@
 					"events": [
 						"onDataChange"
 					],
-					"bottom": 296,
+					"bottom": 276,
 					"right": 669,
 					"textAlign": "left",
 					"placeholder": "Ligne d'adresse n°6 (Code postal et ville) de l'expéditeur"
 				},
 				"Line6": {
 					"type": "line",
-					"top": 295,
+					"top": 275,
 					"left": 172,
 					"width": 497,
 					"class": "accentColor2",
@@ -383,7 +372,7 @@
 				"Bouton": {
 					"type": "button",
 					"text": "Valider",
-					"top": 336,
+					"top": 495,
 					"left": 545,
 					"width": 150,
 					"height": 35,
@@ -397,6 +386,193 @@
 					"sizingY": "move",
 					"action": "",
 					"method": "ObjectMethods/Bouton.4dm"
+				},
+				"senderPrintAdress": {
+					"type": "checkbox",
+					"text": "Imprimer adresse expéditeur",
+					"top": 308,
+					"left": 19,
+					"width": 200,
+					"height": 25,
+					"events": [
+						"onClick"
+					],
+					"dataSource": "Form:C1466.print_sender_address",
+					"sizingY": "fixed"
+				},
+				"Texte8": {
+					"type": "text",
+					"text": "Email notif.",
+					"top": 439,
+					"left": 20,
+					"width": 100,
+					"height": 16,
+					"fontFamily": "Arial",
+					"fontSize": 14
+				},
+				"notificationEmail": {
+					"type": "input",
+					"top": 439,
+					"left": 140,
+					"width": 555,
+					"height": 16,
+					"dataSource": "Form:C1466.notification_email",
+					"borderStyle": "none",
+					"hideFocusRing": true,
+					"dragging": "none",
+					"dropping": "custom",
+					"events": [
+						"onDataChange"
+					],
+					"bottom": 455,
+					"right": 695,
+					"textAlign": "left",
+					"placeholder": "no_reply@gmail.com",
+					"sizingX": "grow"
+				},
+				"Line8": {
+					"type": "line",
+					"top": 454,
+					"left": 130,
+					"width": 565,
+					"class": "accentColor2",
+					"height": 1,
+					"right": 695,
+					"sizingX": "grow"
+				},
+				"duplexPrinting": {
+					"type": "checkbox",
+					"text": "Imprimer recto / verso",
+					"top": 308,
+					"left": 253,
+					"width": 200,
+					"height": 25,
+					"events": [
+						"onClick"
+					],
+					"dataSource": "Form:C1466.duplex_printing",
+					"sizingY": "fixed"
+				},
+				"colorPrinting": {
+					"type": "checkbox",
+					"text": "Imprimer en couleur",
+					"top": 308,
+					"left": 495,
+					"width": 200,
+					"height": 25,
+					"events": [
+						"onClick"
+					],
+					"dataSource": "Form:C1466.color_printing",
+					"sizingY": "fixed"
+				},
+				"Texte18": {
+					"type": "text",
+					"text": "Type d'envoi",
+					"top": 386,
+					"left": 19,
+					"width": 85,
+					"height": 16,
+					"fontFamily": "Arial",
+					"fontSize": 14
+				},
+				"postageType": {
+					"type": "dropdown",
+					"left": 130,
+					"top": 382,
+					"width": 200,
+					"height": 24,
+					"events": [
+						"onLoad",
+						"onDataChange"
+					],
+					"method": "ObjectMethods/postageType.4dm",
+					"dataSourceTypeHint": "object",
+					"right": 330,
+					"dataSource": ""
+				},
+				"Zone de saisie1": {
+					"type": "input",
+					"left": 192,
+					"top": 408,
+					"width": 138,
+					"height": 17,
+					"enterable": false,
+					"focusable": false,
+					"fill": "transparent",
+					"borderStyle": "none",
+					"dataSource": "Form:C1466.delaiCourrier",
+					"fontWeight": "bold",
+					"stroke": "#ff0000",
+					"textAlign": "right"
+				},
+				"Texte9": {
+					"type": "text",
+					"text": "Type d'enveloppe",
+					"top": 386,
+					"left": 368,
+					"width": 115,
+					"height": 16,
+					"fontFamily": "Arial",
+					"fontSize": 14
+				},
+				"envelopeWindowsType": {
+					"type": "dropdown",
+					"left": 495,
+					"top": 382,
+					"width": 200,
+					"height": 24,
+					"events": [
+						"onLoad",
+						"onDataChange"
+					],
+					"method": "ObjectMethods/envelopeWindowsType.4dm",
+					"dataSourceTypeHint": "object",
+					"right": 695,
+					"dataSource": ""
+				},
+				"treatUndeliveredMail": {
+					"type": "checkbox",
+					"text": "Gestion électronique PND",
+					"top": 341,
+					"left": 20,
+					"width": 200,
+					"height": 25,
+					"events": [
+						"onClick"
+					],
+					"dataSource": "Form:C1466.treat_undelivered_mail",
+					"sizingY": "fixed"
+				},
+				"recommendedShipping": {
+					"type": "checkbox",
+					"text": "Envoi en recommandé",
+					"top": 341,
+					"left": 253,
+					"width": 200,
+					"height": 25,
+					"events": [
+						"onClick"
+					],
+					"dataSource": "Form:C1466.recommendedShipping",
+					"sizingY": "fixed",
+					"method": "ObjectMethods/recommendedShipping.4dm"
+				},
+				"acknowledgementOfReceipt": {
+					"type": "checkbox",
+					"text": "Avis de réception",
+					"top": 341,
+					"left": 495,
+					"width": 200,
+					"height": 25,
+					"events": [
+						"onClick"
+					],
+					"dataSource": "Form:C1466.acknowledgement_of_receipt",
+					"sizingY": "fixed",
+					"enterable": true,
+					"focusable": true,
+					"visibility": "hidden"
 				}
 			},
 			"entryOrder": [
@@ -407,16 +583,27 @@
 				"senderAdressLine3",
 				"senderAdressLine5",
 				"senderAdressLine6",
-				"Bouton"
+				"Bouton",
+				"senderPrintAdress",
+				"notificationEmail",
+				"duplexPrinting",
+				"colorPrinting",
+				"postageType",
+				"Zone de saisie1",
+				"envelopeWindowsType",
+				"treatUndeliveredMail",
+				"recommendedShipping",
+				"acknowledgementOfReceipt"
 			]
 		}
 	],
-	"geometryStamp": 106,
+	"geometryStamp": 177,
 	"editor": {
 		"activeView": "View 1",
 		"defaultView": "View 1",
 		"views": {
 			"View 1": {}
 		}
-	}
+	},
+	"method": "method.4dm"
 }

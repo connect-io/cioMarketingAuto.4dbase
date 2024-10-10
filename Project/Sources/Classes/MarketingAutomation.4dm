@@ -218,6 +218,7 @@ Gestion depuis la méthode formulaire "cronos" des scénarios des personnes
 Historique
 29/01/21 - Rémy Scanu <remy@connect-io.fr> - Ajout entête
 -----------------------------------------------------------------------------*/
+	var $property_t : Text
 	var $numOrdre_el : Integer
 	var $continue_b; $saut_b; $sautEffectue_b; $finScenario_b : Boolean
 	var $table_o; $enregistrement_o; $caScenarioEvent_o; $scene_o; $personne_o; $eMail_o; $config_o; $conditionAction_o; $conditionSaut_o; $scene_cs; $retour_o; \
@@ -614,6 +615,14 @@ Historique
 						
 						If ($collection_c[0].expediteur#"Imprimante courante")
 							$courrier_o:=cmaToolGetClass("MACourrier").new(False:C215; New object:C1471("nom"; $collection_c[0].expediteur; "environnement"; "sandbox"))
+							
+							If ($collection_c[0].sendingDetail#Null:C1517)  // Ajout configuration envoi perso d'un prestataire pour l'instant seulement Maileva
+								
+								For each ($property_t; $collection_c[0].sendingDetail)
+									$courrier_o[$property_t]:=$collection_c[0].sendingDetail[$property_t]
+								End for each 
+								
+							End if 
 							
 							Case of 
 								: ($collection_c[0].expediteur="Maileva")

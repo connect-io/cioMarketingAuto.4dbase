@@ -82,8 +82,8 @@ Historique
 	
 	If (String:C10(This:C1470.prestataire.nom)="Maileva")
 		
-		For each ($propriete_t; This:C1470.prestataire.senderDetail)
-			This:C1470[$propriete_t]:=This:C1470.prestataire.senderDetail[$propriete_t]
+		For each ($propriete_t; This:C1470.prestataire.sendingDetailDefault)
+			This:C1470[$propriete_t]:=This:C1470.prestataire.sendingDetailDefault[$propriete_t]
 		End for each 
 		
 	End if 
@@ -115,7 +115,7 @@ Historique
 	$option_o.headers:=New object:C1471("Content-Type"; "application/x-www-form-urlencoded")
 	$option_o.body:="grant_type=password&client_id="+This:C1470.environnement.clientID+"&client_secret="+This:C1470.environnement.clientSecret+"&username="+This:C1470.environnement.username+"&password="+This:C1470.environnement.password
 	
-	If (This:C1470.environnement.urlAPI="@sandbox@")
+	If (This:C1470.environnement.nom="sandbox")
 		$url_t:=This:C1470.prestataire.requestList.query("lib = :1"; "getToken")[0].urlSandbox
 	Else 
 		$url_t:=This:C1470.prestataire.requestList.query("lib = :1"; "getToken")[0].url
@@ -130,7 +130,7 @@ Historique
 		This:C1470.token:=$result_o.body
 	End if 
 	
-Function request($lib_t : Text; $body_v : Variant)->$result_o : Object
+Function request($type_t : Text; $lib_t : Text; $body_v : Variant)->$result_o : Object
 /*------------------------------------------------------------------------------
 Fonction : APIMaileva.request()
 	
@@ -194,7 +194,7 @@ Historique
 	End if 
 	
 	$option_o.headers.Authorization:="Bearer "+String:C10(This:C1470.token.access_token)
-	$url_t:=This:C1470.environnement.urlAPI+$requestElement_o.url
+	$url_t:=This:C1470.environnement.urlAPI.query("type = :1"; $type_t)[0].url+$requestElement_o.url
 	
 	Case of 
 		: (Value type:C1509($body_v)=Is object:K8:27)

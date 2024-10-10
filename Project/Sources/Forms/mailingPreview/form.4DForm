@@ -1223,7 +1223,7 @@
 						"onClick"
 					],
 					"dataSourceTypeHint": "boolean",
-					"dataSource": "Form:C1466.Courrier.printColor",
+					"dataSource": "Form:C1466.Courrier.color_printing",
 					"right": 590,
 					"method": "ObjectMethods/printColor.4dm"
 				},

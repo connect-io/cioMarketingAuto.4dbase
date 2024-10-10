@@ -90,6 +90,7 @@ If (Form event code:C388=On Data Change:K2:15)
 		End if 
 		
 		OBJECT SET ENTERABLE:C238(*; "expediteurList"; True:C214)
+		OBJECT SET ENABLED:C1123(*; "configEnvoiCourrier"; (Lowercase:C14(Form:C1466.sceneTypeSelected)="courrier") & (expediteurList_at{expediteurList_at}="Maileva"))
 	Else 
 		versionList_at:=0
 		Form:C1466.modeleDetail:=""

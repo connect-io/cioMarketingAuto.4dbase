@@ -344,7 +344,7 @@ Historique
 	End for 
 	
 Function sendMailing($configPreCharge_o : Object) : Object
-	var $canalEnvoi_t; $corps_t; $mime_t; $propriete_t; $retour_t; $strategy_t; $attchmentPath_t : Text
+	var $canalEnvoi_t; $corps_t; $mime_t; $propriete_t; $retour_t; $strategy_t; $attchmentPath_t; $type_t : Text
 	var $i_el : Integer
 	var $erreur_b; $printSetting_b; $notifScenario_b; $npai_b : Boolean
 	var $date_d : Date
@@ -575,26 +575,47 @@ Function sendMailing($configPreCharge_o : Object) : Object
 							End if 
 							
 						: ($config_o.CourrierConfig.prestataire.nom="Maileva")
+							$type_t:="simple"
+							
+							If ($config_o.CourrierConfig.recommendedShipping=True:C214)
+								$type_t:="recommended"
+							End if 
+							
 							// Création de l'envoi avec information de l'expéditeur
 							$body_o:=New object:C1471
 							$body_o.name:=(String:C10($config_o.CourrierConfig.sendingName)="") ? "Envoi "+Substring:C12(Generate UUID:C1066; 1; 5) : String:C10($config_o.CourrierConfig.sendingName)
 							$body_o.custom_id:=String:C10($config_o.CourrierConfig.custom_id)
 							$body_o.custom_data:=String:C10($config_o.CourrierConfig.custom_data)
-							$body_o.duplex_printing:=Bool:C1537($config_o.CourrierConfig.duplexPrinting)
-							$body_o.color_printing:=Bool:C1537($config_o.CourrierConfig.printColor)
-							$body_o.notification_email:=This:C1470.eMail
 							
-							$body_o.print_sender_address:=Bool:C1537($config_o.CourrierConfig.senderPrintAdress)
 							$body_o.sender_address_line_1:=String:C10($config_o.CourrierConfig.sender_address_line_1)
 							$body_o.sender_address_line_2:=String:C10($config_o.CourrierConfig.sender_address_line_2)
 							$body_o.sender_address_line_3:=String:C10($config_o.CourrierConfig.sender_address_line_3)
 							$body_o.sender_address_line_4:=String:C10($config_o.CourrierConfig.sender_address_line_4)
 							$body_o.sender_address_line_5:=String:C10($config_o.CourrierConfig.sender_address_line_5)
 							$body_o.sender_address_line_6:=String:C10($config_o.CourrierConfig.sender_address_line_6)
-							$body_o.postage_type:=(String:C10($config_o.CourrierConfig.postage_type)="") ? "ECONOMIC" : String:C10($config_o.CourrierConfig.postage_type)
-							
 							$body_o.sender_country_code:=(String:C10($config_o.CourrierConfig.sender_country_code)="") ? "FR" : String:C10($config_o.CourrierConfig.sender_country_code)
-							$retour_o:=$config_o.CourrierConfig.request("sendingNew"; $body_o)
+							
+							$body_o.print_sender_address:=Bool:C1537($config_o.CourrierConfig.print_sender_address)
+							
+							$body_o.duplex_printing:=Bool:C1537($config_o.CourrierConfig.duplex_printing)
+							$body_o.color_printing:=Bool:C1537($config_o.CourrierConfig.color_printing)
+							$body_o.treat_undelivered_mail:=Bool:C1537($config_o.CourrierConfig.treat_undelivered_mail)
+							
+							If ($config_o.CourrierConfig.recommendedShipping=True:C214)
+								$body_o.acknowledgement_of_receipt:=Bool:C1537($config_o.CourrierConfig.acknowledgement_of_receipt)
+							End if 
+							
+							$body_o.notification_email:=(String:C10($config_o.CourrierConfig.notification_email)="") ? "direction@regiedescreances.com" : String:C10($config_o.CourrierConfig.notification_email)
+							
+							If ($config_o.CourrierConfig.recommendedShipping=True:C214)
+								$body_o.postage_type:=(String:C10($config_o.CourrierConfig.postage_type)="") ? "FAST" : String:C10($config_o.CourrierConfig.postage_type)
+							Else 
+								$body_o.postage_type:=(String:C10($config_o.CourrierConfig.postage_type)="") ? "ECONOMIC" : String:C10($config_o.CourrierConfig.postage_type)
+							End if 
+							
+							$body_o.envelope_windows_type:=(String:C10($config_o.CourrierConfig.envelope_windows_type)="") ? "SIMPLE" : String:C10($config_o.CourrierConfig.envelope_windows_type)
+							$retour_o:=$config_o.CourrierConfig.request($type_t; "sendingNew"; $body_o)
+							
 							$erreur_b:=($retour_o.messageError#Null:C1517)
 							
 							If ($erreur_b=True:C214)
@@ -618,7 +639,7 @@ Function sendMailing($configPreCharge_o : Object) : Object
 								$body_o.address_line_6:=This:C1470.codePostal+" "+This:C1470.ville  // Ligne d'adresse n°6 (Code postal et ville)
 								
 								$body_o.country_code:="FR"
-								$retour_o:=$config_o.CourrierConfig.request("recepientAdd"; $body_o)
+								$retour_o:=$config_o.CourrierConfig.request($type_t; "recepientAdd"; $body_o)
 								$erreur_b:=($retour_o.messageError#Null:C1517)
 								
 								If ($erreur_b=True:C214)
@@ -645,7 +666,7 @@ Function sendMailing($configPreCharge_o : Object) : Object
 								$body_o.file:=$file_f
 								$body_o.metadata:=New object:C1471("priority"; 1; "name"; $file_f.fullName; "shrink"; True:C214)
 								
-								$retour_o:=$config_o.CourrierConfig.request("setDocument"; $body_o)
+								$retour_o:=$config_o.CourrierConfig.request($type_t; "setDocument"; $body_o)
 								$erreur_b:=($retour_o.messageError#Null:C1517)
 								
 								If ($erreur_b=True:C214)
@@ -661,7 +682,7 @@ Function sendMailing($configPreCharge_o : Object) : Object
 								$body_o:=New object:C1471
 								$body_o.modifyURL:=New object:C1471("sendingPK"; $extraDetail_o.sendingInformation.id)
 								
-								$retour_o:=$config_o.CourrierConfig.request("sendingSubmit"; $body_o)
+								$retour_o:=$config_o.CourrierConfig.request($type_t; "sendingSubmit"; $body_o)
 								$erreur_b:=($retour_o.messageError#Null:C1517)
 								
 								If ($erreur_b=True:C214)

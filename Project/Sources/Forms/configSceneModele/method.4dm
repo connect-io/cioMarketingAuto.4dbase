@@ -25,6 +25,7 @@ If (Form event code:C388=On Load:K2:1)
 	OBJECT SET VISIBLE:C603(*; "smsMarketing"; False:C215)
 	OBJECT SET VISIBLE:C603(*; "notifEmail"; False:C215)
 	OBJECT SET VISIBLE:C603(*; "configNotifEmail"; False:C215)
+	OBJECT SET VISIBLE:C603(*; "configEnvoiCourrier"; False:C215)
 	
 	Case of 
 		: (Lowercase:C14(Form:C1466.sceneTypeSelected)="email")
@@ -60,8 +61,10 @@ If (Form event code:C388=On Load:K2:1)
 			OBJECT SET VISIBLE:C603(*; "modeleCCEmail"; False:C215)
 			OBJECT SET VISIBLE:C603(*; "notifEmail"; True:C214)
 			OBJECT SET VISIBLE:C603(*; "configNotifEmail"; True:C214)
+			OBJECT SET VISIBLE:C603(*; "configEnvoiCourrier"; True:C214)
 			
 			OBJECT SET ENABLED:C1123(*; "configNotifEmail"; False:C215)
+			OBJECT SET ENABLED:C1123(*; "configEnvoiCourrier"; False:C215)
 			
 			If (cmaStorage.courrier#Null:C1517)
 				COLLECTION TO ARRAY:C1562(cmaStorage.courrier.config.prestataire; expediteurList_at; "nom")
