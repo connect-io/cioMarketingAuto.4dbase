@@ -25,8 +25,11 @@ Case of
 			
 		End if 
 		
+		$elementSelected_o.sendingDetail.prestataire:=New object:C1471("nom"; expediteurList_at{expediteurList_at})
 		cwToolWindowsForm("config"+expediteurList_at{expediteurList_at}+"Sending"; "center"; $elementSelected_o.sendingDetail)
+		
 		OB REMOVE:C1226($elementSelected_o.sendingDetail; "delaiCourrier")
+		OB REMOVE:C1226($elementSelected_o.sendingDetail; "prestataire")
 	: (Form event code:C388=On Mouse Move:K2:35)
 		SET CURSOR:C469(9000)
 End case 

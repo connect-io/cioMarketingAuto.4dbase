@@ -1078,8 +1078,8 @@
 				"useCurrentPrinter": {
 					"type": "checkbox",
 					"text": "Utiliser imprimante courante",
-					"top": 539,
-					"left": 380,
+					"top": 560,
+					"left": 20,
 					"width": 210,
 					"height": 24,
 					"events": [
@@ -1087,7 +1087,7 @@
 					],
 					"dataSourceTypeHint": "boolean",
 					"dataSource": "",
-					"right": 590,
+					"right": 230,
 					"method": "ObjectMethods/useCurrentPrinter.4dm"
 				},
 				"Zone de saisie": {
@@ -1215,8 +1215,8 @@
 				"printColor": {
 					"type": "checkbox",
 					"text": "Impression couleur",
-					"top": 576,
-					"left": 380,
+					"top": 560,
+					"left": 241,
 					"width": 210,
 					"height": 24,
 					"events": [
@@ -1224,48 +1224,8 @@
 					],
 					"dataSourceTypeHint": "boolean",
 					"dataSource": "Form:C1466.Courrier.color_printing",
-					"right": 590,
+					"right": 451,
 					"method": "ObjectMethods/printColor.4dm"
-				},
-				"Texte18": {
-					"type": "text",
-					"text": "Type d'envoi",
-					"top": 561,
-					"left": 20,
-					"width": 85,
-					"height": 16,
-					"fontFamily": "Arial",
-					"fontSize": 14
-				},
-				"typeEnvoiCourrier": {
-					"type": "dropdown",
-					"left": 130,
-					"top": 557,
-					"width": 200,
-					"height": 24,
-					"events": [
-						"onLoad",
-						"onDataChange"
-					],
-					"method": "ObjectMethods/typeEnvoiCourrier.4dm",
-					"dataSourceTypeHint": "object",
-					"right": 330,
-					"dataSource": "Form:C1466.Courrier.postage_type"
-				},
-				"Zone de saisie1": {
-					"type": "input",
-					"left": 192,
-					"top": 583,
-					"width": 138,
-					"height": 17,
-					"enterable": false,
-					"focusable": false,
-					"fill": "transparent",
-					"borderStyle": "none",
-					"dataSource": "Form:C1466.delaiCourrier",
-					"fontWeight": "bold",
-					"stroke": "#ff0000",
-					"textAlign": "right"
 				},
 				"configSend": {
 					"type": "button",
@@ -1287,7 +1247,7 @@
 			}
 		}
 	],
-	"geometryStamp": 1108,
+	"geometryStamp": 1114,
 	"editor": {
 		"activeView": "View 1",
 		"defaultView": "View 1",

@@ -1,7 +1,7 @@
 var $index_el : Integer
 var $prestataire_c : Collection
 
-$prestataire_c:=Storage:C1525.courrier.config.prestataire.query("nom = :1"; expediteurList_at{expediteurList_at})
+$prestataire_c:=Storage:C1525.courrier.config.prestataire.query("nom = :1"; String:C10(Form:C1466.prestataire.nom))
 
 Case of 
 	: (Form event code:C388=On Load:K2:1)

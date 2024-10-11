@@ -1,6 +1,6 @@
 Case of 
 	: (Form event code:C388=On Clicked:K2:4)
-		OBJECT SET ENABLED:C1123(*; "acknowledgementOfReceipt"; Bool:C1537(Form:C1466.recommendedShipping))
+		OBJECT SET VISIBLE:C603(*; "acknowledgementOfReceipt"; Bool:C1537(Form:C1466.recommendedShipping))
 		
 		If (Bool:C1537(Form:C1466.recommendedShipping)=False:C215)
 			Form:C1466.acknowledgement_of_receipt:=False:C215
