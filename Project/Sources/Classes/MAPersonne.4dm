@@ -839,7 +839,7 @@ Historique
 26/01/21 - Grégory Fromain <gregory@connect-io.fr> - Ajout entête
 ------------------------------------------------------------------------------*/
 	var $continue_b : Boolean
-	var $table_o; $enregistrement_o; $autreTable_o; $caScenarioEvents_o; $caScenarioEvent_o; $scene_cs; $caScenarioPersonne_o : Object
+	var $table_o; $enregistrement_o; $autreTable_o; $caScenarioEvents_o; $caScenarioEvent_o; $scene_cs; $caScenarioPersonne_o; $statut_o : Object
 	
 	ASSERT:C1129(This:C1470.personne#Null:C1517; "Impossible d'utiliser la fonction updateCaMarketingStatistic sans une personne de définie.")
 	
@@ -886,6 +886,12 @@ Historique
 					
 				: (String:C10($detail_o.eventNumber)="10")
 					$enregistrement_o.lastBounce:=$detail_o.eventTs
+					
+					// Gestion du bounce qui peut avoir un traitement particulier suivant la base
+					If (OB Is defined:C1231(This:C1470.personne; "manageBounce")=True:C214)
+						This:C1470.personne.manageBounce()
+					End if 
+					
 			End case 
 			
 			// On doit chercher si pour cette personne le mailing de la scène qui a déclenché cet évènement doit déclencher quelque chose (saut de scène par exemple)
@@ -909,7 +915,7 @@ Historique
 						
 						// On force le timeStamp du prochainCheck à maintenant pour voir si cet évènement déclenchera un saut de scène par exemple
 						$caScenarioPersonne_o.tsProchainCheck:=cmaTimestamp(Current date:C33; Current time:C178)
-						$caScenarioPersonne_o.save()
+						$statut_o:=$caScenarioPersonne_o.save()
 					End if 
 					
 				End for each 
@@ -946,9 +952,9 @@ Historique
 		: ($provenance_el=1)  // On souhaite mettre à jour manuellement les stats de mailjet
 			
 			If ($retour_o.success=True:C214)
-				ALERT:C41("Les dernières stats de mailjet on bien été mis à jour dans la fiche de "+This:C1470.nom+" "+This:C1470.prenom)
+				ALERT:C41("Les dernières stats de mailjet on bien été mis à jour dans la fiche de "+This:C1470.nom+" "+This:C1470.prenom+" (ID : "+This:C1470.UID+")")
 			Else 
-				ALERT:C41("Impossible de mettre à jour la table marketing dans la fiche de "+This:C1470.nom+" "+This:C1470.prenom)
+				ALERT:C41("Impossible de mettre à jour la table marketing dans la fiche de "+This:C1470.nom+" "+This:C1470.prenom+" (ID : "+This:C1470.UID+")")
 			End if 
 			
 		: ($provenance_el=2)  // On souhaite mettre à jour un des event (opened, clicked ou bounce)
@@ -964,7 +970,7 @@ Historique
 						$event_t:="Bounce"
 				End case 
 				
-				ALERT:C41("Impossible de mettre à jour la table marketing pour l'event "+$event_t+" dans la fiche de "+This:C1470.nom+" "+This:C1470.prenom)
+				ALERT:C41("Impossible de mettre à jour la table marketing pour l'event "+$event_t+" dans la fiche de "+This:C1470.nom+" "+This:C1470.prenom+" (ID : "+This:C1470.UID+")")
 			End if 
 			
 	End case 
