@@ -25,7 +25,7 @@
 					"type": "rectangle",
 					"top": 40,
 					"left": 0,
-					"width": 1360,
+					"width": 1510,
 					"height": 576,
 					"stroke": "transparent"
 				},
@@ -33,13 +33,13 @@
 					"type": "rectangle",
 					"top": 0,
 					"left": 0,
-					"width": 1361,
+					"width": 1510,
 					"height": 40,
 					"sizingX": "grow",
 					"stroke": "transparent",
 					"class": "accentBackColor3",
 					"fill": "#19294F",
-					"right": 1361
+					"right": 1510
 				},
 				"Texte": {
 					"type": "text",
@@ -75,7 +75,7 @@
 					"type": "button",
 					"text": "Voir la fiche de la personne",
 					"top": 486,
-					"left": 360,
+					"left": 510,
 					"width": 250,
 					"height": 30,
 					"events": [
@@ -90,7 +90,7 @@
 					"type": "button",
 					"text": "Supprimer le scénario en cours",
 					"top": 574,
-					"left": 47,
+					"left": 122,
 					"width": 270,
 					"height": 30,
 					"events": [
@@ -103,7 +103,7 @@
 				},
 				"personneDetail": {
 					"type": "input",
-					"left": 360,
+					"left": 510,
 					"top": 100,
 					"width": 250,
 					"height": 170,
@@ -118,7 +118,7 @@
 				},
 				"personneDetailListeScenario": {
 					"type": "listbox",
-					"left": 645,
+					"left": 795,
 					"top": 100,
 					"width": 220,
 					"height": 368,
@@ -163,7 +163,7 @@
 					"type": "button",
 					"text": "Annuler",
 					"top": 530,
-					"left": 360,
+					"left": 510,
 					"width": 120,
 					"height": 30,
 					"events": [
@@ -178,7 +178,7 @@
 					"type": "button",
 					"text": "Valider",
 					"top": 530,
-					"left": 490,
+					"left": 640,
 					"width": 120,
 					"height": 30,
 					"events": [
@@ -191,7 +191,7 @@
 				},
 				"personneDetailMarketing": {
 					"type": "input",
-					"left": 360,
+					"left": 510,
 					"top": 297,
 					"width": 250,
 					"height": 170,
@@ -206,7 +206,7 @@
 				},
 				"personneDetailListeScene": {
 					"type": "listbox",
-					"left": 885,
+					"left": 1035,
 					"top": 100,
 					"width": 220,
 					"height": 368,
@@ -290,10 +290,11 @@
 					"type": "line",
 					"top": 51,
 					"left": 25,
-					"width": 300,
+					"width": 450,
 					"height": 1,
 					"startPoint": "topLeft",
-					"stroke": "#C9C9C9"
+					"stroke": "#C9C9C9",
+					"right": 475
 				},
 				"Ligne6": {
 					"type": "line",
@@ -363,7 +364,7 @@
 				},
 				"personneDetailListeSceneEvent": {
 					"type": "listbox",
-					"left": 1125,
+					"left": 1275,
 					"top": 100,
 					"width": 220,
 					"height": 184,
@@ -418,7 +419,7 @@
 				},
 				"personneDetailLogSceneEvent": {
 					"type": "input",
-					"left": 1125,
+					"left": 1275,
 					"top": 304,
 					"width": 205,
 					"height": 164,
@@ -436,7 +437,7 @@
 					"type": "listbox",
 					"left": 25,
 					"top": 100,
-					"width": 315,
+					"width": 465,
 					"height": 455,
 					"events": [
 						"onLoad",
@@ -474,15 +475,29 @@
 						},
 						{
 							"header": {
-								"name": "Entête5",
+								"name": "Entête8",
 								"text": "Prénom"
 							},
 							"name": "Prenom",
 							"footer": {
-								"name": "Pied5"
+								"name": "Pied8"
 							},
 							"width": 150,
 							"dataSource": "This:C1470.prenom",
+							"alternateFill": "#E1F2FC",
+							"enterable": false
+						},
+						{
+							"header": {
+								"name": "Entête5",
+								"text": "Prénom"
+							},
+							"name": "EMail",
+							"footer": {
+								"name": "Pied5"
+							},
+							"width": 150,
+							"dataSource": "This:C1470.eMail",
 							"alternateFill": "#E1F2FC",
 							"enterable": false
 						},
@@ -501,11 +516,60 @@
 							"alternateFill": "#E1F2FC"
 						}
 					]
+				},
+				"Ligne2": {
+					"type": "line",
+					"top": 52,
+					"left": 474,
+					"width": 1,
+					"height": 48,
+					"stroke": "#C9C9C9",
+					"startPoint": "topLeft"
+				},
+				"Texte2": {
+					"type": "text",
+					"text": "Email",
+					"top": 58,
+					"left": 325,
+					"width": 150,
+					"height": 16,
+					"textAlign": "center",
+					"fontWeight": "bold",
+					"stroke": "#21759B"
+				},
+				"filtreEmail": {
+					"type": "input",
+					"left": 334,
+					"top": 79,
+					"width": 135,
+					"height": 17,
+					"dataSource": "Form:C1466.filtreEMail",
+					"placeholder": "test@gmail.com",
+					"events": []
+				},
+				"sortEmail": {
+					"type": "input",
+					"left": 452,
+					"top": 58,
+					"width": 16,
+					"height": 16,
+					"dataSourceTypeHint": "picture",
+					"dataSource": "Form:C1466.imageSortEMail",
+					"enterable": false,
+					"contextMenu": "none",
+					"pictureFormat": "proportionalCenter",
+					"fill": "transparent",
+					"borderStyle": "none",
+					"events": [
+						"onClick",
+						"onMouseMove"
+					],
+					"method": "ObjectMethods/sortEmail.4dm"
 				}
 			}
 		}
 	],
-	"geometryStamp": 497,
+	"geometryStamp": 538,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",

@@ -147,7 +147,7 @@ Historique
 	
 	var entitySelection_o : Object
 	
-	$column_c:=New collection:C1472("nom"; "prenom"; "UID")
+	$column_c:=New collection:C1472("nom"; "prenom"; "eMail"; "UID")
 	
 	If ($formScenario_o.donnee.scenarioDetail#Null:C1517)
 		
