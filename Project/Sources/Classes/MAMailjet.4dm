@@ -83,7 +83,6 @@ Function AnalysisMessageEvent
 							$heureArrivedAt_h:=Time:C179($arrivedAt_t)
 							
 							$tsEvent_el:=cmaTimestamp($dateArrivedAt_d; $heureArrivedAt_h)-cwToolHourSummerWinter($dateArrivedAt_d)
-							
 							$5->push(New object:C1471("email"; $email_t; "idContact"; $contactID_r; "tsEvent"; $tsEvent_el; "messageID"; $messageID_at{$j_el}))
 						End if 
 						

@@ -50,6 +50,8 @@ Case of
 					
 					If ($retour_o.success=True:C214)
 						ALERT:C41("La scène a bien été sauvegardée")
+					Else 
+						ALERT:C41("La scène n'a pas pu être sauvegardée, veuillez recommencer.")
 					End if 
 					
 					// On rafraîchi les entités

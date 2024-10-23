@@ -6,7 +6,9 @@ Case of
 		If (Form:C1466.ScenarioCurrentElement#Null:C1517)
 			$retour_o:=Form:C1466.scenarioDetail.save()
 			
-			If ($retour_o.success=False:C215)
+			If ($retour_o.success=True:C214)
+				ALERT:C41("Le scénario a bien été sauvegardé")
+			Else 
 				ALERT:C41("Le scénario n'a pas pu être sauvegardé, veuillez recommencer.")
 			End if 
 			

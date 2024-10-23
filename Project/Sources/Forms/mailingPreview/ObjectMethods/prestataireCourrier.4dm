@@ -22,7 +22,12 @@ Case of
 		
 		If (OBJECT Get pointer:C1124(Object current:K67:2)->currentValue="Maileva")
 			Form:C1466.Courrier.getTokenAPIMaileva()
-			OBJECT SET ENABLED:C1123(*; "configSend"; True:C214)
+			OBJECT SET ENABLED:C1123(*; "configSend"; (Form:C1466.Courrier.token.access_token#Null:C1517))
+			
+			If (Form:C1466.Courrier.token.access_token=Null:C1517)
+				ALERT:C41("Le token pour pouvoir envoyer un courrier avec Maileva n'a pas pu se généré, veuillez vérifier les paramètres API (clientID ou clientSecret ou username ou password) dans le fichier de configuration")
+			End if 
+			
 		End if 
 		
 End case 

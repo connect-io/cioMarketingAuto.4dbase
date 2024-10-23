@@ -7,7 +7,6 @@ If (Form:C1466.sceneDetail.conditionSaut.elements=Null:C1517)  // Il n'y a pas e
 	$ajout_b:=True:C214
 Else 
 	$collection_c:=Form:C1466.sceneDetail.conditionSaut.elements.query("titre = :1"; conditionSautList_at{conditionSautList_at})
-	
 	$ajout_b:=($collection_c.length=0)
 End if 
 

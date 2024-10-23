@@ -632,13 +632,16 @@
 					"hideFocusRing": true,
 					"dragging": "none",
 					"dropping": "custom",
-					"events": [],
+					"events": [
+						"onDataChange"
+					],
 					"fontWeight": "normal",
 					"dataSourceTypeHint": "text",
 					"textAlign": "left",
 					"right": 1014,
 					"sizingX": "fixed",
-					"sizingY": "move"
+					"sizingY": "move",
+					"method": "ObjectMethods/contextData.4dm"
 				},
 				"Line7": {
 					"type": "line",
@@ -1241,13 +1244,13 @@
 					"class": "clickable",
 					"style": "roundedBevel",
 					"method": "ObjectMethods/configSend.4dm",
-					"sizingX": "move",
-					"sizingY": "move"
+					"sizingX": "fixed",
+					"sizingY": "fixed"
 				}
 			}
 		}
 	],
-	"geometryStamp": 1114,
+	"geometryStamp": 1116,
 	"editor": {
 		"activeView": "View 1",
 		"defaultView": "View 1",
