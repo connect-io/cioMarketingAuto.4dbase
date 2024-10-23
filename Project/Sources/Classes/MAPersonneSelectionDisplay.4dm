@@ -25,10 +25,19 @@ Historique
 27/01/21 - RémyScanu remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
 	var $propriete_t; $proprieteToFilter_t; $type_t : Text
+	var $companyName_b : Boolean
 	var $verif_o; $passerelle_o : Object
 	
 	$collectionToFilter_v:=Form:C1466.personneCollectionInit
 	$verif_o:=cwToolProprieteExisteDansObjet(Form:C1466; New collection:C1472("filtre@"); -1)
+	
+	If (Form:C1466.donnee.scenarioDetail#Null:C1517)
+		
+		If (Form:C1466.donnee.scenarioDetail.configuration#Null:C1517)
+			$companyName_b:=Form:C1466.donnee.scenarioDetail.configuration.companyNameInPersonList
+		End if 
+		
+	End if 
 	
 	If (Bool:C1537($verif_o["filtre@"].exist)=True:C214)
 		$passerelle_o:=Storage:C1525.automation.config.passerelle.query("tableComposant = :1"; "Personne")[0]
@@ -36,6 +45,10 @@ Historique
 		For each ($propriete_t; $verif_o["filtre@"].propriete)
 			$proprieteToFilter_t:=Replace string:C233($propriete_t; "filtre"; "")
 			$proprieteToFilter_t:=cmaToolMinuscFirstChar($proprieteToFilter_t)
+			
+			If ($proprieteToFilter_t="nom") & ($companyName_b=True:C214)
+				$proprieteToFilter_t:="nomCompagnie"
+			End if 
 			
 			$type_t:=$passerelle_o.champ.query("lib = :1"; $proprieteToFilter_t)[0].type
 			
@@ -131,9 +144,9 @@ Historique
 	Else 
 		
 		If (Form:C1466.MAPersonneSelection#Null:C1517)
-			$collectionOrdered_v:=Form:C1466.MAPersonneSelection.personneCollection.orderBy("UID")  // Aucune colonne n'a de tri on tri par défaut par UID
+			$collectionOrdered_v:=Form:C1466.MAPersonneSelection.personneCollection.orderBy(Storage:C1525.automation.formule.getFieldName(Storage:C1525.automation.passerelle.champ; "UID"))  // Aucune colonne n'a de tri on tri par défaut par UID
 		Else 
-			$collectionOrdered_v:=Form:C1466.personneCollection.orderBy("UID")  // Aucune colonne n'a de tri on tri par défaut par UID
+			$collectionOrdered_v:=Form:C1466.personneCollection.orderBy(Storage:C1525.automation.formule.getFieldName(Storage:C1525.automation.passerelle.champ; "UID"))  // Aucune colonne n'a de tri on tri par défaut par UID
 		End if 
 		
 	End if 
