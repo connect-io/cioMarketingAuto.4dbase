@@ -12,7 +12,6 @@ Class constructor
 	
 	If ($fichierConfig_o.exists=True:C214)
 		This:C1470.config:=JSON Parse:C1218($fichierConfig_o.getText())
-		
 		This:C1470.config.domainRequest:="https://"+This:C1470.config.smtpKeyPublic+":"+This:C1470.config.smtpKeySecret+"@api.mailjet.com/"+This:C1470.config.smtpVersion
 	Else 
 		ALERT:C41("Impossible d'intialiser le composant cioMailjet")
@@ -63,7 +62,6 @@ Function AnalysisMessageEvent
 				This:C1470.getMessageID($resultatHttp_t; ->$messageID_at)
 				
 				$mailStatut_o:=JSON Parse:C1218($resultatHttp_t)
-				
 				OB GET ARRAY:C1229($mailStatut_o; "Data"; $dataStat_ao)
 				
 				If (Size of array:C274($dataStat_ao)>0)
@@ -423,7 +421,7 @@ Function getMessageHistoryDetail($messageID_t : Text)->$messageHistoryDetail_t :
 						: (String:C10($messageDetail_o.Comment)="@5.7.0@")
 							$messageHistoryDetail_t:="État de sécurité non défini ou autre"
 						: (String:C10($messageDetail_o.Comment)="@5.7.1@")
-							$messageHistoryDetail_t:="Livraison non autorisée, message refusé"
+							$messageHistoryDetail_t:="Adresse du destinataire rejetée : Accès refusé"
 						: (String:C10($messageDetail_o.Comment)="@5.7.2@")
 							$messageHistoryDetail_t:="Résolution de la liste de diffusion interdite"
 						: (String:C10($messageDetail_o.Comment)="@5.7.3@")
