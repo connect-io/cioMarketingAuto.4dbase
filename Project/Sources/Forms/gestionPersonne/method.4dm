@@ -6,6 +6,7 @@ Case of
 		Form:C1466.imageSortNom:=Storage:C1525.automation.image["sort"]
 		Form:C1466.imageSortPrenom:=Storage:C1525.automation.image["sort"]
 		Form:C1466.imageSortEMail:=Storage:C1525.automation.image["sort"]
+		Form:C1466.imageSortNomComplet:=Storage:C1525.automation.image["sort"]
 		
 		If (Form:C1466.entree=Null:C1517)  // Affichage directement du formulaire sans passer par le formulaire de gestion des scénarios
 			Form:C1466.entree:=3

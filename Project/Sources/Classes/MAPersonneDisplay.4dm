@@ -147,7 +147,7 @@ Historique
 	
 	var entitySelection_o : Object
 	
-	$column_c:=New collection:C1472("nom"; "prenom"; "eMail"; "UID")
+	$column_c:=New collection:C1472("nom"; "prenom"; "eMail"; "nomComplet"; "UID")
 	
 	If ($formScenario_o.donnee.scenarioDetail#Null:C1517)
 		
@@ -166,7 +166,6 @@ Historique
 			If ($formScenario_o.donnee.scenarioPersonnePossibleEntity#Null:C1517)  // On souhait voir les personnes possiblement applicable à un scénario
 				//$class_o.fromEntitySelection($1.donnee.scenarioPersonnePossibleEntity)
 				$table_o:=$formScenario_o.donnee.scenarioPersonnePossibleEntity
-				
 				$continue_b:=True:C214
 			End if 
 			
@@ -191,7 +190,6 @@ Historique
 			If ($formScenario_o.donnee.scenarioPersonneEnCoursEntity#Null:C1517)  // On souhait voir les personnes où le scénario est déjà appliqué
 				//$class_o.fromEntitySelection($1.donnee.scenarioPersonneEnCoursEntity)
 				$table_o:=$formScenario_o.donnee.scenarioPersonneEnCoursEntity
-				
 				$continue_b:=True:C214
 			End if 
 			
@@ -203,10 +201,12 @@ Historique
 			If ($formScenario_o.donnee.scenePersonneEnCoursEntity#Null:C1517)  // On souhait voir les personnes où la scène est en cours d'éxécution
 				//$class_o.fromEntitySelection($1.donnee.scenePersonneEnCoursEntity)
 				$table_o:=$formScenario_o.donnee.scenePersonneEnCoursEntity
-				
 				$continue_b:=True:C214
 			End if 
 			
+		: ($formScenario_o.entree=5)  // Affichage des scénarios d'une sélection particulière de personne (Sans passer par Gestion du scénario)
+			$table_o:=$formScenario_o.entitySelection.copy()
+			$continue_b:=True:C214
 	End case 
 	
 	If ($continue_b=True:C214)

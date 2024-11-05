@@ -25,21 +25,22 @@
 					"type": "rectangle",
 					"top": 40,
 					"left": 0,
-					"width": 1510,
+					"width": 1615,
 					"height": 576,
-					"stroke": "transparent"
+					"stroke": "transparent",
+					"right": 1615
 				},
 				"Rectangle3": {
 					"type": "rectangle",
 					"top": 0,
 					"left": 0,
-					"width": 1510,
+					"width": 1615,
 					"height": 40,
 					"sizingX": "grow",
 					"stroke": "transparent",
 					"class": "accentBackColor3",
 					"fill": "#19294F",
-					"right": 1510
+					"right": 1615
 				},
 				"Texte": {
 					"type": "text",
@@ -75,8 +76,8 @@
 					"type": "button",
 					"text": "Voir la fiche de la personne",
 					"top": 486,
-					"left": 510,
-					"width": 250,
+					"left": 660,
+					"width": 215,
 					"height": 30,
 					"events": [
 						"onClick",
@@ -90,7 +91,7 @@
 					"type": "button",
 					"text": "Supprimer le scénario en cours",
 					"top": 574,
-					"left": 122,
+					"left": 25,
 					"width": 270,
 					"height": 30,
 					"events": [
@@ -103,9 +104,9 @@
 				},
 				"personneDetail": {
 					"type": "input",
-					"left": 510,
+					"left": 660,
 					"top": 100,
-					"width": 250,
+					"width": 200,
 					"height": 170,
 					"enterable": false,
 					"focusable": false,
@@ -118,7 +119,7 @@
 				},
 				"personneDetailListeScenario": {
 					"type": "listbox",
-					"left": 795,
+					"left": 895,
 					"top": 100,
 					"width": 220,
 					"height": 368,
@@ -163,8 +164,8 @@
 					"type": "button",
 					"text": "Annuler",
 					"top": 530,
-					"left": 510,
-					"width": 120,
+					"left": 660,
+					"width": 100,
 					"height": 30,
 					"events": [
 						"onClick",
@@ -178,8 +179,8 @@
 					"type": "button",
 					"text": "Valider",
 					"top": 530,
-					"left": 640,
-					"width": 120,
+					"left": 770,
+					"width": 105,
 					"height": 30,
 					"events": [
 						"onClick",
@@ -187,13 +188,14 @@
 					],
 					"method": "ObjectMethods/Bouton4.4dm",
 					"class": "clickable",
-					"style": "roundedBevel"
+					"style": "roundedBevel",
+					"right": 875
 				},
 				"personneDetailMarketing": {
 					"type": "input",
-					"left": 510,
+					"left": 660,
 					"top": 297,
-					"width": 250,
+					"width": 200,
 					"height": 170,
 					"enterable": false,
 					"focusable": false,
@@ -206,7 +208,7 @@
 				},
 				"personneDetailListeScene": {
 					"type": "listbox",
-					"left": 1035,
+					"left": 1135,
 					"top": 100,
 					"width": 220,
 					"height": 368,
@@ -290,11 +292,11 @@
 					"type": "line",
 					"top": 51,
 					"left": 25,
-					"width": 450,
+					"width": 600,
 					"height": 1,
 					"startPoint": "topLeft",
 					"stroke": "#C9C9C9",
-					"right": 475
+					"right": 625
 				},
 				"Ligne6": {
 					"type": "line",
@@ -364,7 +366,7 @@
 				},
 				"personneDetailListeSceneEvent": {
 					"type": "listbox",
-					"left": 1275,
+					"left": 1375,
 					"top": 100,
 					"width": 220,
 					"height": 184,
@@ -419,8 +421,8 @@
 				},
 				"personneDetailLogSceneEvent": {
 					"type": "input",
-					"left": 1275,
-					"top": 304,
+					"left": 1375,
+					"top": 303,
 					"width": 205,
 					"height": 164,
 					"enterable": false,
@@ -431,13 +433,13 @@
 					"fontSize": 14,
 					"fontWeight": "bold",
 					"fill": "transparent",
-					"bottom": 468
+					"bottom": 467
 				},
 				"listePersonne": {
 					"type": "listbox",
 					"left": 25,
 					"top": 100,
-					"width": 465,
+					"width": 615,
 					"height": 455,
 					"events": [
 						"onLoad",
@@ -475,15 +477,29 @@
 						},
 						{
 							"header": {
-								"name": "Entête8",
+								"name": "Entête9",
 								"text": "Prénom"
 							},
 							"name": "Prenom",
 							"footer": {
-								"name": "Pied8"
+								"name": "Pied9"
 							},
 							"width": 150,
 							"dataSource": "This:C1470.prenom",
+							"alternateFill": "#E1F2FC",
+							"enterable": false
+						},
+						{
+							"header": {
+								"name": "Entête8",
+								"text": "Prénom"
+							},
+							"name": "NomComplet",
+							"footer": {
+								"name": "Pied8"
+							},
+							"width": 150,
+							"dataSource": "This:C1470.nomComplet",
 							"alternateFill": "#E1F2FC",
 							"enterable": false
 						},
@@ -530,7 +546,7 @@
 					"type": "text",
 					"text": "Email",
 					"top": 58,
-					"left": 325,
+					"left": 475,
 					"width": 150,
 					"height": 16,
 					"textAlign": "center",
@@ -539,7 +555,7 @@
 				},
 				"filtreEmail": {
 					"type": "input",
-					"left": 334,
+					"left": 484,
 					"top": 79,
 					"width": 135,
 					"height": 17,
@@ -549,7 +565,7 @@
 				},
 				"sortEmail": {
 					"type": "input",
-					"left": 452,
+					"left": 602,
 					"top": 58,
 					"width": 16,
 					"height": 16,
@@ -565,11 +581,60 @@
 						"onMouseMove"
 					],
 					"method": "ObjectMethods/sortEmail.4dm"
+				},
+				"Ligne3": {
+					"type": "line",
+					"top": 52,
+					"left": 624,
+					"width": 1,
+					"height": 48,
+					"stroke": "#C9C9C9",
+					"startPoint": "topLeft"
+				},
+				"Texte3": {
+					"type": "text",
+					"text": "Nom complet",
+					"top": 58,
+					"left": 325,
+					"width": 150,
+					"height": 16,
+					"textAlign": "center",
+					"fontWeight": "bold",
+					"stroke": "#21759B"
+				},
+				"filtreNomComplet": {
+					"type": "input",
+					"left": 334,
+					"top": 79,
+					"width": 135,
+					"height": 17,
+					"dataSource": "Form:C1466.filtreNomComplet",
+					"placeholder": "Jean",
+					"events": []
+				},
+				"sortNomComplet": {
+					"type": "input",
+					"left": 452,
+					"top": 58,
+					"width": 16,
+					"height": 16,
+					"dataSourceTypeHint": "picture",
+					"dataSource": "Form:C1466.imageSortNomComplet",
+					"enterable": false,
+					"contextMenu": "none",
+					"pictureFormat": "proportionalCenter",
+					"fill": "transparent",
+					"borderStyle": "none",
+					"events": [
+						"onClick",
+						"onMouseMove"
+					],
+					"method": "ObjectMethods/sortNomComplet.4dm"
 				}
 			}
 		}
 	],
-	"geometryStamp": 538,
+	"geometryStamp": 610,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",
