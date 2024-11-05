@@ -866,16 +866,16 @@ Historique
 			$retour_o:=$enregistrement_o.save()
 			
 			// Il faut également mettre à jour les autres champs
-			This:C1470.mailjetGetDetailStat(This:C1470.eMail; "3"; "4"; "7"; "8"; "10")
+			This:C1470.mailjetGetDetailStat(This:C1470.eMail; "3"; "4"; "7"; "8"; "9"; "10")
 		: ($provenance_el=2)  // On souhaite mettre à jour un des event (opened, clicked, unsubscribe ou bounce)
 			$scene_cs:=cmaToolGetClass("MAScene").new()
 			
 			Case of 
-				: (String:C10($detail_o.eventNumber)="3")
+				: (String:C10($detail_o.eventNumber)="3")  // Mail ouvert
 					$enregistrement_o.lastOpened:=$detail_o.eventTs
-				: (String:C10($detail_o.eventNumber)="4")
+				: (String:C10($detail_o.eventNumber)="4")  // Mail cliqué
 					$enregistrement_o.lastClicked:=$detail_o.eventTs
-				: (String:C10($detail_o.eventNumber)="7")
+				: (String:C10($detail_o.eventNumber)="7")  // Demande de désabonnement
 					$enregistrement_o.lastUnsubscribe:=$detail_o.eventTs
 					$enregistrement_o.desabonementMail:=True:C214
 					
@@ -884,7 +884,7 @@ Historique
 						This:C1470.personne.manageUnsubscribe()
 					End if 
 					
-				: (String:C10($detail_o.eventNumber)="10")
+				: (String:C10($detail_o.eventNumber)="8") | (String:C10($detail_o.eventNumber)="9") | (String:C10($detail_o.eventNumber)="10")  // Mail bloqué, softbounce ou bounce
 					$enregistrement_o.lastBounce:=$detail_o.eventTs
 					
 					// Gestion du bounce qui peut avoir un traitement particulier suivant la base
