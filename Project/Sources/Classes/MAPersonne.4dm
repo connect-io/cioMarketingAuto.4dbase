@@ -881,7 +881,7 @@ Historique
 					
 					// Gestion du désabonnement qui peut avoir un traitement particulier suivant la base
 					If (OB Is defined:C1231(This:C1470.personne; "manageUnsubscribe")=True:C214)
-						This:C1470.personne.manageUnsubscribe()
+						This:C1470.personne.manageUnsubscribe($detail_o)
 					End if 
 					
 				: (String:C10($detail_o.eventNumber)="8") | (String:C10($detail_o.eventNumber)="9") | (String:C10($detail_o.eventNumber)="10")  // Mail bloqué, softbounce ou bounce
@@ -889,7 +889,7 @@ Historique
 					
 					// Gestion du bounce qui peut avoir un traitement particulier suivant la base
 					If (OB Is defined:C1231(This:C1470.personne; "manageBounce")=True:C214)
-						This:C1470.personne.manageBounce()
+						This:C1470.personne.manageBounce($detail_o)
 					End if 
 					
 			End case 
