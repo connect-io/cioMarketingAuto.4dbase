@@ -26,7 +26,7 @@
 				"Bouton": {
 					"type": "button",
 					"text": "Valider",
-					"top": 165,
+					"top": 236,
 					"left": 38,
 					"width": 202,
 					"height": 30,
@@ -63,7 +63,7 @@
 				"Texte5": {
 					"type": "text",
 					"text": "Utiliser le nom de la compagnie :",
-					"top": 82,
+					"top": 83,
 					"left": 14,
 					"width": 220,
 					"height": 25,
@@ -72,7 +72,7 @@
 				"imageCompanyName": {
 					"type": "input",
 					"left": 14,
-					"top": 109,
+					"top": 110,
 					"width": 32,
 					"height": 32,
 					"dataSourceTypeHint": "picture",
@@ -87,11 +87,39 @@
 						"onMouseMove"
 					],
 					"method": "ObjectMethods/imageCompanyName.4dm"
+				},
+				"Texte1": {
+					"type": "text",
+					"text": "Affectation multiple :",
+					"top": 157,
+					"left": 14,
+					"width": 220,
+					"height": 25,
+					"fontWeight": "bold"
+				},
+				"imageMultipleAffectation": {
+					"type": "input",
+					"left": 14,
+					"top": 184,
+					"width": 32,
+					"height": 32,
+					"dataSourceTypeHint": "picture",
+					"dataSource": "Form:C1466.imageMultipleAffectation",
+					"enterable": false,
+					"contextMenu": "none",
+					"pictureFormat": "proportionalCenter",
+					"fill": "transparent",
+					"borderStyle": "none",
+					"events": [
+						"onClick",
+						"onMouseMove"
+					],
+					"method": "ObjectMethods/imageMultipleAffectation.4dm"
 				}
 			}
 		}
 	],
-	"geometryStamp": 225,
+	"geometryStamp": 249,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",
