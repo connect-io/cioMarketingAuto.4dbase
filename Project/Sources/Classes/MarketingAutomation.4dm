@@ -462,7 +462,7 @@ Historique
 								
 								Case of 
 									: ($collection_c[0].externalReference#Null:C1517)
-										$parameter_es:=ds:C1482[$collection_c[0].externalReference.table].query($collection_c[0].externalReference.field+" = :1"; $collection_c[0].externalReference.value)
+										$parameter_es:=ds:C1482[$collection_c[0].externalReference.table].get($collection_c[0].externalReference.ID)
 										
 										If ($parameter_es.length>=1)
 											$document_o:=WP New:C1317($parameter_es.first().value_b)
@@ -507,7 +507,7 @@ Historique
 								
 								Case of 
 									: ($collection_c[0].externalReference#Null:C1517)
-										$parameter_es:=ds:C1482[$collection_c[0].externalReference.table].query($collection_c[0].externalReference.field+" = :1"; $collection_c[0].externalReference.value)
+										$parameter_es:=ds:C1482[$collection_c[0].externalReference.table].get($collection_c[0].externalReference.ID)
 										
 										If ($parameter_es.length>=1)
 											$document_o:=WP New:C1317($parameter_es.first().value_b)
@@ -545,7 +545,7 @@ Historique
 							
 							Case of 
 								: ($collection_c[0].externalReference#Null:C1517)
-									$parameter_es:=ds:C1482[$collection_c[0].externalReference.table].query($collection_c[0].externalReference.field+" = :1"; $collection_c[0].externalReference.value)
+									$parameter_es:=ds:C1482[$collection_c[0].externalReference.table].get($collection_c[0].externalReference.ID)
 									
 									If ($parameter_es.length>=1)
 										$document_o:=WP New:C1317($parameter_es.first().value_b)

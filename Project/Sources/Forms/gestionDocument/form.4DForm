@@ -249,7 +249,8 @@
 					"method": "ObjectMethods/importHTML5.4dm",
 					"loopBackToFirstFrame": true,
 					"switchBackWhenReleased": true,
-					"useLastFrameAsDisabled": true
+					"useLastFrameAsDisabled": true,
+					"sizingX": "move"
 				},
 				"Texte11": {
 					"type": "text",
@@ -260,7 +261,8 @@
 					"height": 15,
 					"fontFamily": "Arial",
 					"fontSize": 14,
-					"fontWeight": "normal"
+					"fontWeight": "normal",
+					"sizingX": "move"
 				},
 				"Rectangle1": {
 					"type": "rectangle",
@@ -272,7 +274,8 @@
 					"borderRadius": 10,
 					"right": 1071,
 					"bottom": 240,
-					"stroke": "#C9C9C9"
+					"stroke": "#C9C9C9",
+					"sizingX": "move"
 				},
 				"importHTML1": {
 					"type": "pictureButton",
@@ -288,7 +291,8 @@
 					"method": "ObjectMethods/importHTML1.4dm",
 					"loopBackToFirstFrame": true,
 					"switchBackWhenReleased": true,
-					"useLastFrameAsDisabled": true
+					"useLastFrameAsDisabled": true,
+					"sizingX": "move"
 				},
 				"importHTML2": {
 					"type": "pictureButton",
@@ -304,7 +308,8 @@
 					"method": "ObjectMethods/importHTML2.4dm",
 					"loopBackToFirstFrame": true,
 					"switchBackWhenReleased": true,
-					"useLastFrameAsDisabled": true
+					"useLastFrameAsDisabled": true,
+					"sizingX": "move"
 				},
 				"Texte2": {
 					"type": "text",
@@ -315,7 +320,8 @@
 					"height": 16,
 					"fontFamily": "Arial",
 					"fontSize": 18,
-					"fontWeight": "bold"
+					"fontWeight": "bold",
+					"sizingX": "move"
 				},
 				"Texte6": {
 					"type": "text",
@@ -357,7 +363,8 @@
 					"borderRadius": 10,
 					"right": 1071,
 					"bottom": 363,
-					"stroke": "#C9C9C9"
+					"stroke": "#C9C9C9",
+					"sizingX": "move"
 				},
 				"Texte7": {
 					"type": "text",
@@ -368,7 +375,8 @@
 					"height": 16,
 					"fontFamily": "Arial",
 					"fontSize": 18,
-					"fontWeight": "bold"
+					"fontWeight": "bold",
+					"sizingX": "move"
 				},
 				"externalReference": {
 					"type": "input",
@@ -386,7 +394,8 @@
 					"visibility": "hidden",
 					"fontWeight": "bold",
 					"stroke": "#ff0000",
-					"textAlign": "automatic"
+					"textAlign": "automatic",
+					"sizingX": "move"
 				},
 				"sceneDetailVersionDeleteExternalReference": {
 					"type": "pictureButton",
@@ -403,12 +412,13 @@
 					"loopBackToFirstFrame": true,
 					"switchBackWhenReleased": true,
 					"useLastFrameAsDisabled": true,
-					"visibility": "hidden"
+					"visibility": "hidden",
+					"sizingX": "move"
 				}
 			}
 		}
 	],
-	"geometryStamp": 473,
+	"geometryStamp": 485,
 	"method": "method.4dm",
 	"editor": {
 		"groups": {

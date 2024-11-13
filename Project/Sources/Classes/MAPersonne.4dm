@@ -404,7 +404,7 @@ Function sendMailing($configPreCharge_o : Object) : Object
 			End if 
 			
 			If ($config_o.externalReference#Null:C1517)
-				$parameter_es:=ds:C1482[$config_o.externalReference.table].query($config_o.externalReference.field+" = :1"; $config_o.externalReference.value)
+				$parameter_es:=ds:C1482[$config_o.externalReference.table].get($config_o.externalReference.ID)
 				
 				If ($parameter_es.length>0)
 					
@@ -795,7 +795,7 @@ Function sendMailing($configPreCharge_o : Object) : Object
 				
 				Case of 
 					: ($config_o.notif.externalReference#Null:C1517)
-						$parameter_es:=ds:C1482[$config_o.notif.externalReference.table].query($config_o.notif.externalReference.field+" = :1"; $config_o.notif.externalReference.value)
+						$parameter_es:=ds:C1482[$config_o.notif.externalReference.table].get($config_o.notif.externalReference.ID)
 						
 						If ($parameter_es.length>=1)
 							$document_o:=WP New:C1317($parameter_es.first().value_b)
@@ -966,7 +966,7 @@ Historique
 						$event_t:="Opened"
 					: (String:C10($detail_o.eventNumber)="4")
 						$event_t:="Clicked"
-					: (String:C10($detail_o.eventNumber)="10")
+					: (String:C10($detail_o.eventNumber)="8") | (String:C10($detail_o.eventNumber)="9") | (String:C10($detail_o.eventNumber)="10")
 						$event_t:="Bounce"
 				End case 
 				

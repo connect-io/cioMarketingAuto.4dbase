@@ -25,15 +25,16 @@ Case of
 				$version_o:=Form:C1466.donnee.sceneDetail.paramAction.modele[Lowercase:C14(Form:C1466.donnee.sceneTypeSelected)].version.query("titre = :1"; Form:C1466.donnee.sceneVersionSelected)[0]
 				
 				If ($version_o.externalReference#Null:C1517)
-					$parameter_es:=ds:C1482[$version_o.externalReference.table].query($version_o.externalReference.field+" = :1"; $version_o.externalReference.value)
+					$parameter_es:=ds:C1482[$version_o.externalReference.table].get($version_o.externalReference.ID)
 					WParea:=WP New:C1317($parameter_es.first().value_b)
 					
 					Form:C1466.externalReference:=OB Copy:C1225($version_o.externalReference)
+					Form:C1466.externalReference.value:=$parameter_es.first()[Form:C1466.externalReference.field]
 					
 					OBJECT SET VISIBLE:C603(*; "externalReference"; True:C214)
 					OBJECT SET VISIBLE:C603(*; "sceneDetailVersionDeleteExternalReference"; True:C214)
 					
-					OBJECT SET VALUE:C1742("externalReference"; "Le document 4D write Pro pointe  actuellement sur la table « "+String:C10(Form:C1466.externalReference.table)+" » et dont le nom est « "+String:C10(Form:C1466.externalReference.value)+" »")
+					OBJECT SET VALUE:C1742("externalReference"; "Le document 4D write Pro pointe  actuellement sur la table « "+String:C10(Form:C1466.externalReference.table)+" » et dont le nom est « "+String:C10($parameter_es.first()[Form:C1466.externalReference.field])+" »")
 				Else 
 					WParea:=WP New:C1317($version_o.contenu4WP)
 				End if 
@@ -49,7 +50,7 @@ Case of
 				OBJECT SET COORDINATES:C1248(*; "Rectangle"; 27; 53; 915; 117)
 				
 				If (Form:C1466.donnee.notif.externalReference#Null:C1517)
-					$parameter_es:=ds:C1482[Form:C1466.donnee.notif.externalReference.table].query(Form:C1466.donnee.notif.externalReference.field+" = :1"; Form:C1466.donnee.notif.externalReference.value)
+					$parameter_es:=ds:C1482[Form:C1466.donnee.notif.externalReference.table].get(Form:C1466.donnee.notif.externalReference.ID)
 					WParea:=WP New:C1317($parameter_es.first().value_b)
 					
 					Form:C1466.externalReference:=OB Copy:C1225(Form:C1466.donnee.notif.externalReference)
@@ -57,7 +58,7 @@ Case of
 					OBJECT SET VISIBLE:C603(*; "externalReference"; True:C214)
 					OBJECT SET VISIBLE:C603(*; "sceneDetailVersionDeleteExternalReference"; True:C214)
 					
-					OBJECT SET VALUE:C1742("externalReference"; "Le document 4D write Pro pointe  actuellement sur la table « "+String:C10(Form:C1466.externalReference.table)+" » et dont le nom est « "+String:C10(Form:C1466.externalReference.value)+" »")
+					OBJECT SET VALUE:C1742("externalReference"; "Le document 4D write Pro pointe  actuellement sur la table « "+String:C10(Form:C1466.externalReference.table)+" » et dont le nom est « "+String:C10($parameter_es.first()[Form:C1466.donnee.notif.externalReference.field])+" »")
 				Else 
 					WParea:=WP New:C1317(Form:C1466.donnee.notif.contenu4WP)
 				End if 
