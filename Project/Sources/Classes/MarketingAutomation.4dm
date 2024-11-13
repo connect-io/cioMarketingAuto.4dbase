@@ -614,7 +614,7 @@ Historique
 						End if 
 						
 						If ($collection_c[0].expediteur#"Imprimante courante")
-							$courrier_o:=cmaToolGetClass("MACourrier").new(False:C215; New object:C1471("nom"; $collection_c[0].expediteur; "environnement"; "sandbox"))
+							$courrier_o:=cmaToolGetClass("MACourrier").new(False:C215; New object:C1471("nom"; $collection_c[0].expediteur; "environnement"; "production"))
 							
 							If ($collection_c[0].sendingDetail#Null:C1517)  // Ajout configuration envoi perso d'un prestataire pour l'instant seulement Maileva
 								

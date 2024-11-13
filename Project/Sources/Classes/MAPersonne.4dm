@@ -687,6 +687,8 @@ Function sendMailing($configPreCharge_o : Object) : Object
 								
 								If ($erreur_b=True:C214)
 									$retour_t:="Erreur lors de la soumission de l'envoi "+$extraDetail_o.sendingInformation.id+" chez Maileva, détail de l'erreur : "+$retour_o.messageError
+								Else 
+									$extraDetail_o.soumissionInformation:=$retour_o
 								End if 
 								
 							End if 
@@ -873,11 +875,14 @@ Historique
 			Case of 
 				: (String:C10($detail_o.eventNumber)="3")  // Mail ouvert
 					$enregistrement_o.lastOpened:=$detail_o.eventTs
+					$retour_o:=$enregistrement_o.save()
 				: (String:C10($detail_o.eventNumber)="4")  // Mail cliqué
 					$enregistrement_o.lastClicked:=$detail_o.eventTs
+					$retour_o:=$enregistrement_o.save()
 				: (String:C10($detail_o.eventNumber)="7")  // Demande de désabonnement
 					$enregistrement_o.lastUnsubscribe:=$detail_o.eventTs
 					$enregistrement_o.desabonementMail:=True:C214
+					$retour_o:=$enregistrement_o.save()
 					
 					// Gestion du désabonnement qui peut avoir un traitement particulier suivant la base
 					If (OB Is defined:C1231(This:C1470.personne; "manageUnsubscribe")=True:C214)
@@ -886,6 +891,7 @@ Historique
 					
 				: (String:C10($detail_o.eventNumber)="8") | (String:C10($detail_o.eventNumber)="9") | (String:C10($detail_o.eventNumber)="10")  // Mail bloqué, softbounce ou bounce
 					$enregistrement_o.lastBounce:=$detail_o.eventTs
+					$retour_o:=$enregistrement_o.save()
 					
 					// Gestion du bounce qui peut avoir un traitement particulier suivant la base
 					If (OB Is defined:C1231(This:C1470.personne; "manageBounce")=True:C214)
@@ -893,6 +899,8 @@ Historique
 					End if 
 					
 			End case 
+			
+			$enregistrement_o.reload()
 			
 			// On doit chercher si pour cette personne le mailing de la scène qui a déclenché cet évènement doit déclencher quelque chose (saut de scène par exemple)
 			$autreTable_o:=This:C1470.personne.AllCaPersonneScenario.query("actif = :1"; True:C214)
@@ -942,6 +950,7 @@ Historique
 				$enregistrement_o.historique.detail[$enregistrement_o.historique.detail.length-1].uuid:=$detail_o.uuid
 			End if 
 			
+			$retour_o:=$enregistrement_o.save()
 	End case 
 	
 	If ($provenance_el#1)  // On sauvegarde juste avant inutile de refaire cela

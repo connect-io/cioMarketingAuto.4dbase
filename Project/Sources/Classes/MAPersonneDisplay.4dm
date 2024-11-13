@@ -209,6 +209,10 @@ Historique
 			$continue_b:=True:C214
 	End case 
 	
+	If ($table_o=Null:C1517)
+		$table_o:=ds:C1482[Storage:C1525.automation.passerelle.tableHote].newSelection()
+	End if 
+	
 	If ($continue_b=True:C214)
 		//$class_o.toCollectionAndExtractField(Créer collection("UID"; "sexe"; "nom"; "prenom"; "codePostal"; "ville"; "eMail"; "telFixe"; "telMobile"))
 		

@@ -96,7 +96,7 @@ Function searchPersonToScenario($provenance_el : Integer)
 				$condition_o:=This:C1470.scenarioDetail.condition
 				
 				If ($provenance_el=2)  // Application d'un scénario à des personnes
-					// On est obligé de sauver le scénartio sinon on n'aura pas les nouveaux enregistrements de la table [CaPersonneScenario]
+					// On est obligé de sauver le scénario sinon on n'aura pas les nouveaux enregistrements de la table [CaPersonneScenario]
 					This:C1470.scenarioDetail.save()
 					
 					$statut_o:=This:C1470.scenarioDetail.reload()
@@ -491,16 +491,19 @@ Function newScene($nom_t : Text; $action_t : Text)->$return_b : Boolean
 	$return_b:=$retour_o.success
 	
 Function updateStringSceneForm($provenance_el : Integer)
-	This:C1470.scenePersonneEnCoursEntity:=ds:C1482[Storage:C1525.automation.passerelle.tableHote].newSelection()
+	var $personne_o; $personneB_o : Object
+	
+	$personne_o:=ds:C1482[Storage:C1525.automation.passerelle.tableHote].newSelection()
 	
 	Case of 
 		: ($provenance_el=1)  // Gestion du scénario (et donc de la scène)
 			
 			If (Num:C11(This:C1470.sceneDetail.AllCaScenarioEvent.length)>0)  // Il y a eu des logs pour cette scène
-				This:C1470.scenePersonneEnCoursEntity:=This:C1470.sceneDetail.AllCaScenarioEvent.OneCaPersonneScenario.OnePersonne
-			Else 
-				This:C1470.scenePersonneEnCoursEntity:=This:C1470.sceneDetail.OneCaScenario.AllCaPersonneScenario.OnePersonne
+				$personne_o:=This:C1470.sceneDetail.AllCaScenarioEvent.OneCaPersonneScenario.OnePersonne
 			End if 
+			
+			$personneB_o:=This:C1470.sceneDetail.OneCaScenario.AllCaPersonneScenario.OnePersonne
+			$personne_o:=$personne_o.or($personneB_o)
 			
 			If (This:C1470.sceneDetail.tsAttente=0)
 				This:C1470.sceneSuivanteDelai:="0"
@@ -528,6 +531,7 @@ Function updateStringSceneForm($provenance_el : Integer)
 			
 	End case 
 	
+	This:C1470.scenePersonneEnCoursEntity:=$personne_o.copy()
 	This:C1470.scenePersonneEnCours:="Appliqué à "+String:C10(This:C1470.scenePersonneEnCoursEntity.length)+" personne(s)."
 	
 Function loadImageSceneActionCondition
