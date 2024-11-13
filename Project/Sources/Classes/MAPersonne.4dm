@@ -354,7 +354,7 @@ Function sendMailing($configPreCharge_o : Object) : Object
 	var $file_f : 4D:C1709.File
 	
 	var $formule_f : Object
-	var $parameter_es : Object
+	var $parameter_e; $parameter_es : Object
 	
 	ASSERT:C1129(This:C1470.personne#Null:C1517; "Impossible d'utiliser la fonction sendMailing sans une personne de définie.")
 	$param_o:=New object:C1471
@@ -404,12 +404,12 @@ Function sendMailing($configPreCharge_o : Object) : Object
 			End if 
 			
 			If ($config_o.externalReference#Null:C1517)
-				$parameter_es:=ds:C1482[$config_o.externalReference.table].get($config_o.externalReference.ID)
+				$parameter_e:=ds:C1482[$config_o.externalReference.table].get($config_o.externalReference.ID)
 				
-				If ($parameter_es.length>0)
+				If ($parameter_e#Null:C1517)
 					
-					If ($parameter_es[0].formula#"")
-						$formule_f:=Formula from string:C1601($parameter_es[0].formula)
+					If ($parameter_e.formula#"")
+						$formule_f:=Formula from string:C1601($parameter_e.formula)
 						
 						Case of 
 							: ($config_o.externalReference.situation#Null:C1517)  // Concerne un scénario
@@ -795,10 +795,10 @@ Function sendMailing($configPreCharge_o : Object) : Object
 				
 				Case of 
 					: ($config_o.notif.externalReference#Null:C1517)
-						$parameter_es:=ds:C1482[$config_o.notif.externalReference.table].get($config_o.notif.externalReference.ID)
+						$parameter_e:=ds:C1482[$config_o.notif.externalReference.table].get($config_o.notif.externalReference.ID)
 						
-						If ($parameter_es.length>=1)
-							$document_o:=WP New:C1317($parameter_es.first().value_b)
+						If ($parameter_e#Null:C1517)
+							$document_o:=WP New:C1317($parameter_e.value_b)
 						End if 
 						
 					: ($config_o.notif.contenu4WP#Null:C1517)

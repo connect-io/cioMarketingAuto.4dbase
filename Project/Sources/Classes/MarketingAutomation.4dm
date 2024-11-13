@@ -225,7 +225,7 @@ Historique
 		$autreTable_o; $autreEnregistrement_o; $caPersonneMarketing_o; $document_o; $sms_o; $courrier_o; $retourB_o; $notif_o : Object
 	var $collection_c : Collection
 	
-	var $parameter_es : Object
+	var $parameter_e; $parameter_es : Object
 	
 	ASSERT:C1129(This:C1470.cronosImage#Null:C1517; "Impossible d'utiliser la fonction cronosAction sans avoir lancer la fonction loadCronos avant")
 	
@@ -462,10 +462,10 @@ Historique
 								
 								Case of 
 									: ($collection_c[0].externalReference#Null:C1517)
-										$parameter_es:=ds:C1482[$collection_c[0].externalReference.table].get($collection_c[0].externalReference.ID)
+										$parameter_e:=ds:C1482[$collection_c[0].externalReference.table].get($collection_c[0].externalReference.ID)
 										
-										If ($parameter_es.length>=1)
-											$document_o:=WP New:C1317($parameter_es.first().value_b)
+										If ($parameter_e#Null:C1517)
+											$document_o:=WP New:C1317($parameter_e.value_b)
 										Else 
 											$scene_cs.addScenarioEvent("Autre"; $enregistrement_o.ID; 0; "Le document Write Pro "+$collection_c[0].externalReference.value+" n'a pas pu être trouvé dans la base de données cliente pour la version active email")
 											$continue_b:=False:C215
@@ -507,10 +507,10 @@ Historique
 								
 								Case of 
 									: ($collection_c[0].externalReference#Null:C1517)
-										$parameter_es:=ds:C1482[$collection_c[0].externalReference.table].get($collection_c[0].externalReference.ID)
+										$parameter_e:=ds:C1482[$collection_c[0].externalReference.table].get($collection_c[0].externalReference.ID)
 										
-										If ($parameter_es.length>=1)
-											$document_o:=WP New:C1317($parameter_es.first().value_b)
+										If ($parameter_e#Null:C1517)
+											$document_o:=WP New:C1317($parameter_e.value_b)
 										Else 
 											$scene_cs.addScenarioEvent("Autre"; $enregistrement_o.ID; 0; "Le document Write Pro "+$collection_c[0].externalReference.value+" n'a pas pu être trouvé dans la base de données cliente pour la version active sms")
 											$continue_b:=False:C215
@@ -545,10 +545,10 @@ Historique
 							
 							Case of 
 								: ($collection_c[0].externalReference#Null:C1517)
-									$parameter_es:=ds:C1482[$collection_c[0].externalReference.table].get($collection_c[0].externalReference.ID)
+									$parameter_e:=ds:C1482[$collection_c[0].externalReference.table].get($collection_c[0].externalReference.ID)
 									
-									If ($parameter_es.length>=1)
-										$document_o:=WP New:C1317($parameter_es.first().value_b)
+									If ($parameter_e#Null:C1517)
+										$document_o:=WP New:C1317($parameter_e.value_b)
 									Else 
 										$scene_cs.addScenarioEvent("Autre"; $enregistrement_o.ID; 0; "Le document Write Pro "+$collection_c[0].externalReference.value+" n'a pas pu être trouvé dans la base de données cliente pour la version active sms")
 										$continue_b:=False:C215
