@@ -28,8 +28,8 @@ On vient lier la personne à un scénario
 Historique
 27/06/24 - Grégory Fromain <gregory@connect-io.fr> - Relecture de code
 ------------------------------------------------------------------------------*/
-	var $scenario_o; $caPersonneMarketing_o : Object
-	var $caPersonneScenario_o : Object
+	var $i_el : Integer
+	var $scenario_o; $caPersonneMarketing_o; $caPersonneScenario_o : Object
 	
 	ASSERT:C1129(This:C1470.personne#Null:C1517; "Impossible d'utiliser la fonction addScenario sans une personne de définie.")
 	
@@ -49,8 +49,8 @@ Historique
 		
 		If ($externalReference_t#"")
 			
-			For ($i; 1; $caPersonneScenario_o.OneCaScenario.AllCaScene.length)
-				$caPersonneScenario_o.situation.detail.push(New object:C1471("scene"; $i; "externalReference"; $externalReference_t))
+			For ($i_el; 1; $caPersonneScenario_o.OneCaScenario.AllCaScene.length)
+				$caPersonneScenario_o.situation.detail.push(New object:C1471("scene"; $i_el; "externalReference"; $externalReference_t))
 			End for 
 			
 		End if 
@@ -783,6 +783,7 @@ Function sendMailing($configPreCharge_o : Object) : Object
 		$param_o.externalReference:=New object:C1471("value"; $retour_t)
 	End if 
 	
+	WP FREEZE FORMULAS:C1708($param_o.contenu4WP)
 	This:C1470.updateCaMarketingStatistic(3; $param_o)
 	
 	If ($erreur_b=False:C215) & ($canalEnvoi_t="Courrier") & (Bool:C1537($config_o.notifEmail)=True:C214)  // L'utilisateur souhaite notifier par email de l'envoi d'un courrier avec le courrier en pièce-jointe
