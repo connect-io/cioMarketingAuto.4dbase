@@ -7,7 +7,6 @@ Case of
 			$selectList_el:=selectList_at
 			
 			cwToolWindowsForm("configSceneModele"; "center"; Form:C1466)
-			
 			CLEAR VARIABLE:C89(selectList_at)
 			
 			APPEND TO ARRAY:C911(selectList_at; "Email")
