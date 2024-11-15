@@ -631,8 +631,18 @@ Function sendMailing($configPreCharge_o : Object) : Object
 								$body_o.custom_id:=""
 								$body_o.custom_data:=This:C1470.personne.getKey()
 								
-								$body_o.address_line_1:=""  // Ligne d'adresse n°1 (Société)
-								$body_o.address_line_2:=This:C1470.prenom+" "+This:C1470.nom  // Ligne d'adresse n°2 (Civilité, Prénom, Nom)
+								If (This:C1470.prenom="") | (This:C1470.nom="")
+									$body_o.address_line_1:=This:C1470.nomComplet  // Ligne d'adresse n°1 (Société)
+								Else 
+									$body_o.address_line_1:=""  // Ligne d'adresse n°1 (Société)
+								End if 
+								
+								If ($body_o.address_line_1="")
+									$body_o.address_line_2:=This:C1470.prenom+" "+This:C1470.nom  // Ligne d'adresse n°2 (Civilité, Prénom, Nom)
+								Else 
+									$body_o.address_line_2:=""  // Ligne d'adresse n°2 (Civilité, Prénom, Nom)
+								End if 
+								
 								$body_o.address_line_3:=This:C1470.adresseComplement  // Ligne d'adresse n°3 (Résidence, Bâtiement ...)
 								$body_o.address_line_4:=This:C1470.adresse  // Ligne d'adresse n°4 (N° et libellé de la voie)
 								$body_o.address_line_5:=""  // Ligne d'adresse n°5 (Lieu dit, BP...)
@@ -644,6 +654,11 @@ Function sendMailing($configPreCharge_o : Object) : Object
 								
 								If ($erreur_b=True:C214)
 									$retour_t:="Erreur lors de l'ajout d'un destinataire à l'envoi "+$extraDetail_o.sendingInformation.id+" chez Maileva, détail de l'erreur : "+$retour_o.messageError
+									
+									If ($retour_o.body#Null:C1517) && ($retour_o.body.errors#Null:C1517)
+										$retour_t:=$retour_t+Char:C90(Carriage return:K15:38)+$retour_o.body.errors
+									End if 
+									
 								Else 
 									$extraDetail_o.recipientInformation:=$retour_o
 								End if 
@@ -931,7 +946,6 @@ Historique
 			End if 
 			
 		: ($provenance_el=3)  // On souhaite mettre à jour l'historique des mailings envoyés à la personne
-			
 			$enregistrement_o.historique.detail.push(New object:C1471(\
 				"eventTs"; cmaTimestamp(Current date:C33; Current time:C178); \
 				"eventUser"; ($detail_o.currentUser#Null:C1517) ? $detail_o.currentUser : Current user:C182; \
