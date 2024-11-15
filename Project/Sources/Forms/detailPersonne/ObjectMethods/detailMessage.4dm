@@ -1,15 +1,17 @@
+var $commentaire_t : Text
+var $colonne_i; $ligne_i : Integer
+var $class_o : Object
+
 Case of 
 	: (Form event code:C388=On Clicked:K2:4)
-		var $commentaire_t : Text
-		var $colonne_i; $ligne_i : Integer
-		var $class_o : Object
-		
 		LISTBOX GET CELL POSITION:C971(*; "List Box2"; $colonne_i; $ligne_i)
 		
 		If ($ligne_i>0)
 			
 			If (Form:C1466.envoiMailEnCours[$ligne_i-1].eventDetail.type#"Email")
-				ALERT:C41("Fonction uniquement disponible pour les mails")
+				SET TEXT TO PASTEBOARD:C523(JSON Stringify:C1217(Form:C1466.envoiMailEnCours[$ligne_i-1]))
+				ALERT:C41("Le contenu de l'historique a été fixé dans le presse-papier")
+				
 				return 
 			End if 
 			

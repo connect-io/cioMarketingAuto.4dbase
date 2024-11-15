@@ -947,10 +947,10 @@
 					"scrollbarHorizontal": "hidden",
 					"dataSource": "Form:C1466.envoiMailEnCours",
 					"listboxType": "collection",
-					"currentItemSource": "Form:C1466.ScenarioPossibleCurrentElement",
-					"currentItemPositionSource": "Form:C1466.ScenarioPossibleCurrentPosition",
-					"selectedItemsSource": "Form:C1466.ScenarioPossibleSelectedElement",
-					"selectionMode": "single",
+					"currentItemSource": "Form:C1466.HistoriqueMailingCurrentElement",
+					"currentItemPositionSource": "Form:C1466.HistoriqueMailingCurrentPosition",
+					"selectedItemsSource": "Form:C1466.HistoriqueMailingSelectedElement",
+					"selectionMode": "multiple",
 					"headerHeight": "24px",
 					"horizontalLineStroke": "transparent",
 					"verticalLineStroke": "transparent",
@@ -1041,11 +1041,27 @@
 					"loopBackToFirstFrame": true,
 					"switchBackWhenReleased": true,
 					"useLastFrameAsDisabled": true
+				},
+				"trashHistoriqueMailing": {
+					"type": "pictureButton",
+					"left": 806,
+					"top": 235,
+					"width": 23,
+					"height": 23,
+					"events": [
+						"onClick",
+						"onMouseMove"
+					],
+					"picture": "/RESOURCES/Images/trash.png",
+					"method": "ObjectMethods/trashHistoriqueMailing.4dm",
+					"loopBackToFirstFrame": true,
+					"switchBackWhenReleased": true,
+					"useLastFrameAsDisabled": true
 				}
 			}
 		}
 	],
-	"geometryStamp": 974,
+	"geometryStamp": 977,
 	"editor": {
 		"activeView": "View 1",
 		"defaultView": "View 1",

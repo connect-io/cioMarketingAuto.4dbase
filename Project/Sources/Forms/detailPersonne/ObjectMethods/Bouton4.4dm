@@ -1,5 +1,7 @@
 var $propriete_t; $fieldName_t : Text
+var $eventTs_el : Integer
 var $class_o; $table_o; $statut_o : Object
+var $historiqueMailing_c : Collection
 
 Case of 
 	: (Form event code:C388=On Clicked:K2:4)
@@ -31,6 +33,11 @@ Case of
 		End case 
 		
 		$table_o.rang:=Num:C11(Form:C1466.rang)
+		
+		If (Bool:C1537(Form:C1466.updateHistoriqueDetail)=True:C214)
+			$table_o.historique.detail:=Form:C1466.envoiMailEnCours.copy()
+		End if 
+		
 		$statut_o:=$table_o.save()
 		
 		ACCEPT:C269
