@@ -26,7 +26,7 @@
 				"Bouton": {
 					"type": "button",
 					"text": "Valider",
-					"top": 236,
+					"top": 295,
 					"left": 38,
 					"width": 202,
 					"height": 30,
@@ -115,11 +115,32 @@
 						"onMouseMove"
 					],
 					"method": "ObjectMethods/imageMultipleAffectation.4dm"
+				},
+				"Texte2": {
+					"type": "text",
+					"text": "Data context :",
+					"top": 226,
+					"left": 14,
+					"width": 220,
+					"height": 25,
+					"fontWeight": "bold"
+				},
+				"modeleObjetEmail": {
+					"type": "input",
+					"left": 14,
+					"top": 254,
+					"width": 250,
+					"height": 20,
+					"dataSource": "Form:C1466.scenarioDetail.configuration.dataContext",
+					"enterable": false,
+					"events": [
+						"onDataChange"
+					]
 				}
 			}
 		}
 	],
-	"geometryStamp": 249,
+	"geometryStamp": 271,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",

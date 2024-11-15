@@ -292,28 +292,48 @@ Function searchPersonToScenario($provenance_el : Integer)
 	This:C1470.scenarioPersonnePossibleEntity:=$personne_o
 	This:C1470.scenarioPersonneEnCoursEntity:=$personneAEnlever_o
 	
-Function applyScenarioToPerson
+Function applyScenarioToPerson($dataContext_t : Text)
+	var $propriete_t : Text
+	var $i_el : Integer
 	var $enregistrement_o; $caPersonneScenario_o; $retour_o : Object
+	var $context_c : Collection
+	var $valueDataContext_v : Variant
+	
+	var $person_cs : cs:C1710.MAPersonne
+	
+	$valueDataContext_v:=$dataContext_t
+	$person_cs:=cs:C1710.MAPersonne.new()
 	
 	If (This:C1470.scenarioSelectionPossiblePersonne#Null:C1517)
 		
 		For each ($enregistrement_o; This:C1470.scenarioSelectionPossiblePersonne)
-			$caPersonneScenario_o:=ds:C1482["CaPersonneScenario"].new()
+			$person_cs.loadByPrimaryKey($enregistrement_o.getKey())
 			
-			$caPersonneScenario_o.personneID:=$enregistrement_o.getKey()
-			$caPersonneScenario_o.scenarioID:=This:C1470.scenarioDetail.getKey()
+			If ($person_cs.personne#Null:C1517)
+				
+				If ($dataContext_t="This@")
+					$context_c:=Split string:C1554($dataContext_t; ".")
+					$valueDataContext_v:=$person_cs.personne
+					
+					For each ($propriete_t; $context_c)
+						
+						If ($i_el=0)
+							$i_el+=1
+							continue
+						End if 
+						
+						If ($valueDataContext_v[$propriete_t]#Null:C1517)
+							$valueDataContext_v:=$valueDataContext_v[$propriete_t]
+						End if 
+						
+						$i_el+=1
+					End for each 
+					
+				End if 
+				
+				$person_cs.addScenario(This:C1470.scenarioDetail.nom; $valueDataContext_v)
+			End if 
 			
-			$caPersonneScenario_o.actif:=This:C1470.scenarioDetail.actif
-			
-			// Modifié par : Rémy Scanu (19/05/2021)
-			// Je commente ça pour le moment...
-			//Si ($caPersonneScenario_o.actif=Vrai)
-			//$table_o:=$enregistrement_o.AllCaPersonneScenario.query("actif = :1"; Vrai)
-			
-			//$caPersonneScenario_o.actif:=($table_o.length=0)
-			//Fin de si 
-			
-			$retour_o:=$caPersonneScenario_o.save()
 		End for each 
 		
 		This:C1470.updateStringScenarioForm(2)  // On met à jour les deux variables qui indiquent les différentes applications possibles et en cours pour le scénario X
