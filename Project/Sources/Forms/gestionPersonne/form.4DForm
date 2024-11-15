@@ -630,11 +630,27 @@
 						"onMouseMove"
 					],
 					"method": "ObjectMethods/sortNomComplet.4dm"
+				},
+				"personneDetailVoirStatutEnvoi": {
+					"type": "button",
+					"text": "Détail de l'envoi",
+					"top": 486,
+					"left": 1375,
+					"width": 215,
+					"height": 30,
+					"events": [
+						"onClick",
+						"onMouseMove"
+					],
+					"method": "ObjectMethods/personneDetailVoirStatutEnvoi.4dm",
+					"class": "clickable",
+					"style": "roundedBevel",
+					"visibility": "hidden"
 				}
 			}
 		}
 	],
-	"geometryStamp": 610,
+	"geometryStamp": 615,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",
