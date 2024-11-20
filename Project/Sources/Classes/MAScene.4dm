@@ -31,7 +31,7 @@ Historique
 	
 	$caScenarioEvent_o.personneScenarioID:=$personneScenarioID_v
 	$caScenarioEvent_o.sceneID:=This:C1470.scene.ID
-	$caScenarioEvent_o.tsCreation:=cmaTimestamp(Current date:C33; Current time:C178)
+	$caScenarioEvent_o.tsCreation:=cs:C1710.MATimeStamp.me.get(Current date:C33; Current time:C178)
 	
 	Case of 
 		: ($action_t="Attente")
@@ -566,7 +566,7 @@ Historique
 								
 								If ($conditionAction_o.paramExtra[$autreCollection_c[0]].value>0)  // Un intervalle de temps a été indiqué
 									
-									If (cmaTimestamp(Current date:C33; Current time:C178)<($collection_c[0].eventTs+$conditionAction_o.paramExtra[$autreCollection_c[0]].value))  // Les conditions sont réunis pour faire un saut de scène mais le délai indiqué dans la condition d'action n'a pas encore été dépassée
+									If (cs:C1710.MATimeStamp.me.get(Current date:C33; Current time:C178)<($collection_c[0].eventTs+$conditionAction_o.paramExtra[$autreCollection_c[0]].value))  // Les conditions sont réunis pour faire un saut de scène mais le délai indiqué dans la condition d'action n'a pas encore été dépassée
 										CLEAR VARIABLE:C89($continue_b)
 									End if 
 									
@@ -815,7 +815,7 @@ Historique
 									$continue_b:=Not:C34(($autreEnregistrement_o.lastOpened>$collection_c[0].eventTs) | ($autreEnregistrement_o.lastClicked>$collection_c[0].eventTs))
 							End case 
 							
-							If ($continue_b=True:C214) & (cmaTimestamp(Current date:C33; Current time:C178)<($collection_c[0].eventTs+$conditionSaut_o.paramExtra[$autreCollection_c[0]].value))  // Les conditions sont réunis pour faire un saut de scène mais le délai indiqué dans la condition de saut n'a pas encore été dépassée
+							If ($continue_b=True:C214) & (cs:C1710.MATimeStamp.me.get(Current date:C33; Current time:C178)<($collection_c[0].eventTs+$conditionSaut_o.paramExtra[$autreCollection_c[0]].value))  // Les conditions sont réunis pour faire un saut de scène mais le délai indiqué dans la condition de saut n'a pas encore été dépassée
 								CLEAR VARIABLE:C89($continue_b)
 							End if 
 							
@@ -1107,7 +1107,7 @@ Historique
 	
 	If ($collection_c.length=1)
 		$modeleActif_t:="• Titre du modèle actif : "+$collection_c[0].titre+Char:C90(Line feed:K15:40)
-		$modeleActif_t:=$modeleActif_t+"• Dernière modification fait le "+cmaTimestampLire("date"; $collection_c[0].modifierLe)+" par "+$collection_c[0].modifierPar
+		$modeleActif_t:=$modeleActif_t+"• Dernière modification fait le "+cs:C1710.MATimeStamp.me.read("date"; $collection_c[0].modifierLe)+" par "+$collection_c[0].modifierPar
 	Else 
 		$modeleActif_t:="• Aucun modèle actif de défini"
 	End if 

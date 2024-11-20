@@ -94,19 +94,19 @@ Historique
 					$personne_o.resumeMarketing:=$personne_o.resumeMarketing+"Dernière(s) activité(s) des mails envoyés :"+Char:C90(Line feed:K15:40)
 					
 					If ($table_o.lastOpened#0)
-						$personne_o.resumeMarketing:=$personne_o.resumeMarketing+"• Dernier mail ouvert : "+cmaTimestampLire("date"; $table_o.lastOpened)+Char:C90(Line feed:K15:40)
+						$personne_o.resumeMarketing:=$personne_o.resumeMarketing+"• Dernier mail ouvert : "+cs:C1710.MATimeStamp.me.read("date"; $table_o.lastOpened)+Char:C90(Line feed:K15:40)
 					Else 
 						$personne_o.resumeMarketing:=$personne_o.resumeMarketing+"• Aucun email ouvert"+Char:C90(Line feed:K15:40)
 					End if 
 					
 					If ($table_o.lastClicked#0)
-						$personne_o.resumeMarketing:=$personne_o.resumeMarketing+"• Dernier mail cliqué : "+cmaTimestampLire("date"; $table_o.lastClicked)+Char:C90(Line feed:K15:40)
+						$personne_o.resumeMarketing:=$personne_o.resumeMarketing+"• Dernier mail cliqué : "+cs:C1710.MATimeStamp.me.read("date"; $table_o.lastClicked)+Char:C90(Line feed:K15:40)
 					Else 
 						$personne_o.resumeMarketing:=$personne_o.resumeMarketing+"• Aucun email cliqué"+Char:C90(Line feed:K15:40)
 					End if 
 					
 					If ($table_o.lastBounce#0)
-						$personne_o.resumeMarketing:=$personne_o.resumeMarketing+"• Email détecté en bounce le : "+cmaTimestampLire("date"; $table_o.lastBounce)+Char:C90(Line feed:K15:40)
+						$personne_o.resumeMarketing:=$personne_o.resumeMarketing+"• Email détecté en bounce le : "+cs:C1710.MATimeStamp.me.read("date"; $table_o.lastBounce)+Char:C90(Line feed:K15:40)
 					Else 
 						$personne_o.resumeMarketing:=$personne_o.resumeMarketing+"• Aucun bounce"+Char:C90(Line feed:K15:40)
 					End if 

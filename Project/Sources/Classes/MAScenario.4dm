@@ -139,7 +139,7 @@ Function searchPersonToScenario($provenance_el : Integer)
 				: ($cleValeur_o.key="dateDebutMailClique")
 					
 					If ($cleValeur_o.value#!00-00-00!)
-						$ts_el:=cmaTimestamp($cleValeur_o.value; ?00:00:00?)
+						$ts_el:=cs:C1710.MATimeStamp.me.get($cleValeur_o.value; ?00:00:00?)
 						
 						$table_o:=ds:C1482["CaPersonneMarketing"].query("lastClicked # :1 AND lastClicked >= :2"; 0; $ts_el).OnePersonne
 						$personne_o:=$personne_o.and($table_o)
@@ -148,7 +148,7 @@ Function searchPersonToScenario($provenance_el : Integer)
 				: ($cleValeur_o.key="dateFinMailClique")
 					
 					If ($cleValeur_o.value#!00-00-00!)
-						$ts_el:=cmaTimestamp($cleValeur_o.value; ?23:59:59?)
+						$ts_el:=cs:C1710.MATimeStamp.me.get($cleValeur_o.value; ?23:59:59?)
 						
 						$table_o:=ds:C1482["CaPersonneMarketing"].query("lastClicked # :1 AND lastClicked <= :2"; 0; $ts_el).OnePersonne
 						$personne_o:=$personne_o.and($table_o)
@@ -157,7 +157,7 @@ Function searchPersonToScenario($provenance_el : Integer)
 				: ($cleValeur_o.key="dateDebutMailOuvert")
 					
 					If ($cleValeur_o.value#!00-00-00!)
-						$ts_el:=cmaTimestamp($cleValeur_o.value; ?00:00:00?)
+						$ts_el:=cs:C1710.MATimeStamp.me.get($cleValeur_o.value; ?00:00:00?)
 						
 						$table_o:=ds:C1482["CaPersonneMarketing"].query("lastOpened # :1 AND lastOpened >= :2"; 0; $ts_el).OnePersonne
 						$personne_o:=$personne_o.and($table_o)
@@ -166,7 +166,7 @@ Function searchPersonToScenario($provenance_el : Integer)
 				: ($cleValeur_o.key="dateFinMailOuvert")
 					
 					If ($cleValeur_o.value#!00-00-00!)
-						$ts_el:=cmaTimestamp($cleValeur_o.value; ?23:59:59?)
+						$ts_el:=cs:C1710.MATimeStamp.me.get($cleValeur_o.value; ?23:59:59?)
 						
 						$table_o:=ds:C1482["CaPersonneMarketing"].query("lastOpened # :1 AND lastOpened <= :2"; 0; $ts_el).OnePersonne
 						$personne_o:=$personne_o.and($table_o)

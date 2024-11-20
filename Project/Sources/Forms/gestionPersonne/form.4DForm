@@ -415,7 +415,7 @@
 								"name": "Pied7"
 							},
 							"width": 105,
-							"dataSource": "\"Le \"+cmaTimestampLire(\"date\"; This:C1470.tsCreation)+\"\\rà \"+cmaTimestampLire(\"heure\"; This:C1470.tsCreation)"
+							"dataSource": "\"Le \"+cs:C1710.MATimeStamp.me.read(\"date\"; This:C1470.tsCreation)+\"\\rà \"+cs:C1710.MATimeStamp.me.read(\"heure\"; This:C1470.tsCreation)"
 						}
 					]
 				},

@@ -1,4 +1,4 @@
-If (Form event code:C388=Sur chargement:K2:1)
+If (Form event code:C388=On Load:K2:1)
 	var $table_o : Object
 	
 	Form:C1466.updateCaMarketingStatistic(4)  // Je génère à la volée l'enregistrement dans la table [CaMarketing]
@@ -20,25 +20,25 @@ If (Form event code:C388=Sur chargement:K2:1)
 			Form:C1466.resumeMarketing:="• Rang : ambassadeur"
 	End case 
 	
-	Form:C1466.resumeMarketing:=Form:C1466.resumeMarketing+Char:C90(Retour à la ligne:K15:40)
-	Form:C1466.resumeMarketing:=Form:C1466.resumeMarketing+"Dernière(s) activité(s) des mails envoyés :"+Char:C90(Retour à la ligne:K15:40)
+	Form:C1466.resumeMarketing:=Form:C1466.resumeMarketing+Char:C90(Line feed:K15:40)
+	Form:C1466.resumeMarketing:=Form:C1466.resumeMarketing+"Dernière(s) activité(s) des mails envoyés :"+Char:C90(Line feed:K15:40)
 	
 	If ($table_o.lastOpened#0)
-		Form:C1466.resumeMarketing:=Form:C1466.resumeMarketing+"• Dernier mail ouvert : "+cmaTimestampLire("date"; $table_o.lastOpened)+Char:C90(Retour à la ligne:K15:40)
+		Form:C1466.resumeMarketing:=Form:C1466.resumeMarketing+"• Dernier mail ouvert : "+cs:C1710.MATimeStamp.me.read("date"; $table_o.lastOpened)+Char:C90(Line feed:K15:40)
 	Else 
-		Form:C1466.resumeMarketing:=Form:C1466.resumeMarketing+"• Aucun email ouvert"+Char:C90(Retour à la ligne:K15:40)
+		Form:C1466.resumeMarketing:=Form:C1466.resumeMarketing+"• Aucun email ouvert"+Char:C90(Line feed:K15:40)
 	End if 
 	
 	If ($table_o.lastClicked#0)
-		Form:C1466.resumeMarketing:=Form:C1466.resumeMarketing+"• Dernier mail cliqué : "+cmaTimestampLire("date"; $table_o.lastClicked)+Char:C90(Retour à la ligne:K15:40)
+		Form:C1466.resumeMarketing:=Form:C1466.resumeMarketing+"• Dernier mail cliqué : "+cs:C1710.MATimeStamp.me.read("date"; $table_o.lastClicked)+Char:C90(Line feed:K15:40)
 	Else 
-		Form:C1466.resumeMarketing:=Form:C1466.resumeMarketing+"• Aucun email cliqué"+Char:C90(Retour à la ligne:K15:40)
+		Form:C1466.resumeMarketing:=Form:C1466.resumeMarketing+"• Aucun email cliqué"+Char:C90(Line feed:K15:40)
 	End if 
 	
 	If ($table_o.lastBounce#0)
-		Form:C1466.resumeMarketing:=Form:C1466.resumeMarketing+"• Email détecté en bounce le : "+cmaTimestampLire("date"; $table_o.lastBounce)+Char:C90(Retour à la ligne:K15:40)
+		Form:C1466.resumeMarketing:=Form:C1466.resumeMarketing+"• Email détecté en bounce le : "+cs:C1710.MATimeStamp.me.read("date"; $table_o.lastBounce)+Char:C90(Line feed:K15:40)
 	Else 
-		Form:C1466.resumeMarketing:=Form:C1466.resumeMarketing+"• Aucun bounce"+Char:C90(Retour à la ligne:K15:40)
+		Form:C1466.resumeMarketing:=Form:C1466.resumeMarketing+"• Aucun bounce"+Char:C90(Line feed:K15:40)
 	End if 
 	
 	If ($table_o.desabonementMail=True:C214)

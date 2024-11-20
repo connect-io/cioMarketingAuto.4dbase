@@ -123,7 +123,7 @@ Historique
 	
 	ASSERT:C1129(This:C1470.cronosImage#Null:C1517; "Impossible d'utiliser la fonction cronosAction sans avoir lancer la fonction loadCronos avant")
 	
-	$ts_el:=cmaTimestamp(Current date:C33; Current time:C178)
+	$ts_el:=cs:C1710.MATimeStamp.me.get(Current date:C33; Current time:C178)
 	
 	Case of 
 		: (This:C1470.cronosMessage="Vérification si une tâche doit être effectuée...")
@@ -232,7 +232,7 @@ Historique
 	ASSERT:C1129(This:C1470.cronosImage#Null:C1517; "Impossible d'utiliser la fonction cronosAction sans avoir lancer la fonction loadCronos avant")
 	
 	// On recherche toutes les personnes qui ont un scénario actif et dont le prochain check est dépassé
-	$table_o:=ds:C1482["CaPersonneScenario"].query("actif = :1 AND tsProchainCheck <= :2"; True:C214; cmaTimestamp(Current date:C33; Current time:C178))
+	$table_o:=ds:C1482["CaPersonneScenario"].query("actif = :1 AND tsProchainCheck <= :2"; True:C214; cs:C1710.MATimeStamp.me.get(Current date:C33; Current time:C178))
 	
 	$scene_cs:=cmaToolGetClass("MAScene").new()
 	$MAEMail_cs:=cmaToolGetClass("MAEMail").new("Support")
@@ -261,7 +261,7 @@ Historique
 				Case of 
 					: ($caScenarioEvent_o.etat="En cours")
 						$caScenarioEvent_o.etat:="Terminé"
-						$caScenarioEvent_o.tsMiseAJour:=cmaTimestamp(Current date:C33; Current time:C178)
+						$caScenarioEvent_o.tsMiseAJour:=cs:C1710.MATimeStamp.me.get(Current date:C33; Current time:C178)
 						
 						$retour_o:=$caScenarioEvent_o.save()
 						
@@ -372,7 +372,7 @@ Historique
 						
 						For each ($autreEnregistrement_o; $autreTable_o)
 							$autreEnregistrement_o.etat:="Terminé"
-							$autreEnregistrement_o.tsMiseAJour:=cmaTimestamp(Current date:C33; Current time:C178)
+							$autreEnregistrement_o.tsMiseAJour:=cs:C1710.MATimeStamp.me.get(Current date:C33; Current time:C178)
 							
 							$retour_o:=$autreEnregistrement_o.save()
 						End for each 
@@ -387,7 +387,7 @@ Historique
 					$retour_o:=$enregistrement_o.save()
 					
 					// Et je mets à jour mon log avec le bon timeStamp cette fois-ci
-					$caScenarioEvent_o.tsMiseAJour:=cmaTimestamp(Current date:C33; Current time:C178)
+					$caScenarioEvent_o.tsMiseAJour:=cs:C1710.MATimeStamp.me.get(Current date:C33; Current time:C178)
 					$retour_o:=$caScenarioEvent_o.save()
 				End if 
 				
@@ -687,7 +687,7 @@ Historique
 				If ($scene_o.action="Changement de scénario") | ($scene_o.action="Fin du scénario")
 					$enregistrement_o.tsProchainCheck:=0
 				Else 
-					$enregistrement_o.tsProchainCheck:=cmaTimestamp(Current date:C33; Current time:C178)+$scene_o.tsAttente
+					$enregistrement_o.tsProchainCheck:=cs:C1710.MATimeStamp.me.get(Current date:C33; Current time:C178)+$scene_o.tsAttente
 				End if 
 				
 				$retour_o:=$enregistrement_o.save()

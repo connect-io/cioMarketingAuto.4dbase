@@ -23,7 +23,7 @@ Case of
 							$version_o.externalReference:=OB Copy:C1225(Form:C1466.externalReference)
 						End if 
 						
-						$version_o.modifierLe:=cmaTimestamp-cwToolHourSummerWinter(Current date:C33)
+						$version_o.modifierLe:=cs:C1710.MATimeStamp.me.get-cwToolHourSummerWinter(Current date:C33)
 						$version_o.modifierPar:=Current user:C182
 						
 						$statut_o:=Form:C1466.donnee.sceneDetail.save()

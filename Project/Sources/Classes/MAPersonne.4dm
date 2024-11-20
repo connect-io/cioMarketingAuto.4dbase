@@ -321,10 +321,10 @@ Historique
 	$personne_o:=cmaToolGetClass("MAPersonne").new()
 	
 	For ($i_el; 2; Count parameters:C259)
-		$class_o.getMessageEvent(${$i_el}; 0; cmaTimestamp(Current date:C33; Current time:C178); ->$mailjet_o)
+		$class_o.getMessageEvent(${$i_el}; 0; cs:C1710.MATimeStamp.me.get(Current date:C33; Current time:C178); ->$mailjet_o)
 		
 		If ($mailjet_o.errorHttp=Null:C1517)
-			$class_o.AnalysisMessageEvent($mailjet_o; ${$i_el}; 0; cmaTimestamp(Current date:C33; Current time:C178); ->$mailjetDetail_c)
+			$class_o.AnalysisMessageEvent($mailjet_o; ${$i_el}; 0; cs:C1710.MATimeStamp.me.get(Current date:C33; Current time:C178); ->$mailjetDetail_c)
 		End if 
 		
 		If ($1#"")
@@ -878,6 +878,7 @@ Historique
 		$caPersonneMarketing_e.personneID:=This:C1470.UID
 		$caPersonneMarketing_e.rang:=1  // 1 pour Suspect
 		$caPersonneMarketing_e.historique:=New object:C1471("detail"; New collection:C1472)
+		$retour_o:=$caPersonneMarketing_e.save()
 	Else 
 		$caPersonneMarketing_e:=$caPersonneMarketing_es.first()
 		$caPersonneMarketing_e.reload()
@@ -945,7 +946,7 @@ Historique
 						End case 
 						
 						// On force le timeStamp du prochainCheck à maintenant pour voir si cet évènement déclenchera un saut de scène par exemple
-						$caScenarioPersonne_o.tsProchainCheck:=cmaTimestamp(Current date:C33; Current time:C178)
+						$caScenarioPersonne_o.tsProchainCheck:=cs:C1710.MATimeStamp.me.get(Current date:C33; Current time:C178)
 						$statut_o:=$caScenarioPersonne_o.save()
 					End if 
 					
@@ -955,7 +956,7 @@ Historique
 			
 		: ($provenance_el=3)  // On souhaite mettre à jour l'historique des mailings envoyés à la personne
 			$caPersonneMarketing_e.historique.detail.push(New object:C1471(\
-				"eventTs"; cmaTimestamp(Current date:C33; Current time:C178); \
+				"eventTs"; cs:C1710.MATimeStamp.me.get(Current date:C33; Current time:C178); \
 				"eventUser"; ($detail_o.currentUser#Null:C1517) ? $detail_o.currentUser : Current user:C182; \
 				"eventDetail"; New object:C1471("type"; String:C10($detail_o.type); \
 				"nomDocument"; String:C10($detail_o.nomDocument); \

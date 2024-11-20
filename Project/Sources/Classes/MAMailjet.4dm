@@ -80,7 +80,7 @@ Function AnalysisMessageEvent
 							$dateArrivedAt_d:=Date:C102($arrivedAt_t)
 							$heureArrivedAt_h:=Time:C179($arrivedAt_t)
 							
-							$tsEvent_el:=cmaTimestamp($dateArrivedAt_d; $heureArrivedAt_h)-cwToolHourSummerWinter($dateArrivedAt_d)
+							$tsEvent_el:=cs:C1710.MATimeStamp.me.get($dateArrivedAt_d; $heureArrivedAt_h)-cwToolHourSummerWinter($dateArrivedAt_d)
 							$5->push(New object:C1471("email"; $email_t; "idContact"; $contactID_r; "tsEvent"; $tsEvent_el; "messageID"; $messageID_at{$j_el}))
 						End if 
 						
@@ -122,7 +122,7 @@ Function getHistoryRequestFile
 	If ($fichier_o.exists=False:C215)
 		
 		If ($fichier_o.create()=True:C214)
-			$config_o.lastRequest:=cmaTimestamp(Current date:C33; Current time:C178)-604800  // Par défaut on met que la dernière requête a eu lieu il y a 7 jours
+			$config_o.lastRequest:=cs:C1710.MATimeStamp.me.get(Current date:C33; Current time:C178)-604800  // Par défaut on met que la dernière requête a eu lieu il y a 7 jours
 			
 			$fichier_o.setText(JSON Stringify:C1217($config_o; *); 2)
 		End if 
@@ -274,7 +274,7 @@ Function getMessageID
 					If (Value type:C1509($2->)=Is collection:K8:32)
 						$detail_o:=JSON Parse:C1218($chaineObjet_t)
 						
-						$2->push(New object:C1471("arrivedAt"; cmaTimestamp(Date:C102($detail_o.ArrivedAt); Time:C179($detail_o.ArrivedAt)); "messageID"; ""))
+						$2->push(New object:C1471("arrivedAt"; cs:C1710.MATimeStamp.me.get(Date:C102($detail_o.ArrivedAt); Time:C179($detail_o.ArrivedAt)); "messageID"; ""))
 					End if 
 					
 					$positionID_el:=Position:C15("\"ID\" :"; $chaineObjet_t)
@@ -440,7 +440,7 @@ Function getMessageHistoryDetail($messageID_t : Text)->$messageHistoryDetail_t :
 					
 					$i_el:=Size of array:C274($dataDetail_ao)
 				Else 
-					$messageHistoryDetail_t:=$messageHistoryDetail_t+"Action : "+$messageDetail_o.EventType+", le "+cmaTimestampLire("date"; $messageDetail_o.EventAt)+" à "+cmaTimestampLire("heure"; $messageDetail_o.EventAt)
+					$messageHistoryDetail_t:=$messageHistoryDetail_t+"Action : "+$messageDetail_o.EventType+", le "+cs:C1710.MATimeStamp.me.read("date"; $messageDetail_o.EventAt)+" à "+cs:C1710.MATimeStamp.me.read("heure"; $messageDetail_o.EventAt)
 					
 					If ($i_el<Size of array:C274($dataDetail_ao))
 						$messageHistoryDetail_t:=$messageHistoryDetail_t+Char:C90(Line feed:K15:40)

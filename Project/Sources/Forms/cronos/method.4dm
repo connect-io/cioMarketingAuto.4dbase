@@ -18,7 +18,7 @@ Case of
 				Form:C1466.cronosMailjetClass.getHistoryRequestContent()
 				
 				$tsFrom_el:=Form:C1466.cronosMailjetClass.historyRequestContent.lastRequest
-				$tsTo_el:=cmaTimestamp(Current date:C33; ?23:59:59?)-cwToolHourSummerWinter(Current date:C33)
+				$tsTo_el:=cs:C1710.MATimeStamp.me.get(Current date:C33; ?23:59:59?)-cwToolHourSummerWinter(Current date:C33)
 				
 				$prochaineVerif_el:=3600
 				
@@ -28,7 +28,7 @@ Case of
 				
 				Form:C1466.cronosUpdateCaMarketing($tsFrom_el; $tsTo_el; "3"; "4"; "7"; "8"; "9"; "10")
 				
-				$lastRequest_o:=New object:C1471("lastRequest"; cmaTimestamp(Current date:C33; Current time:C178)-cwToolHourSummerWinter(Current date:C33))
+				$lastRequest_o:=New object:C1471("lastRequest"; cs:C1710.MATimeStamp.me.get(Current date:C33; Current time:C178)-cwToolHourSummerWinter(Current date:C33))
 				
 				If (Form:C1466.cronosMailjetClass.historyRequestContent.prochaineVerif#Null:C1517)
 					$lastRequest_o.prochaineVerif:=$prochaineVerif_el
@@ -37,7 +37,7 @@ Case of
 				Form:C1466.cronosMailjetClass.setHistoryRequestContent(JSON Stringify:C1217($lastRequest_o; *))
 				
 				Form:C1466.cronosMessage:=""
-				Form:C1466.cronosVerifMailjet:=cmaTimestamp(Current date:C33; Current time:C178)+$prochaineVerif_el  // On incrémente d'1 heure par défaut sinon le temps défini par l'utilisateur
+				Form:C1466.cronosVerifMailjet:=cs:C1710.MATimeStamp.me.get(Current date:C33; Current time:C178)+$prochaineVerif_el  // On incrémente d'1 heure par défaut sinon le temps défini par l'utilisateur
 			: (Form:C1466.cronosMessage="Gestion des scénarios...")
 				
 				If (Storage:C1525.automation.config.activity=Null:C1517)
@@ -60,12 +60,12 @@ Case of
 				OBJECT SET VISIBLE:C603(*; "inactivity"; Not:C34($continue_b))
 				
 				Form:C1466.cronosMessage:=""
-				Form:C1466.cronosVerifScenario:=cmaTimestamp(Current date:C33; Current time:C178)+120  // On incrémente de 2 min
+				Form:C1466.cronosVerifScenario:=cs:C1710.MATimeStamp.me.get(Current date:C33; Current time:C178)+120  // On incrémente de 2 min
 			: (Form:C1466.cronosMessage="Gestion des process automatiques personnalisés journalier...")
 				Formula from string:C1601("_cmaGestionCronos(1)").call()
 				
 				Form:C1466.cronosMessage:=""
-				Form:C1466.cronosVerifProcessAuto:=cmaTimestamp(Current date:C33+1; ?00:00:00?)  // On incrémente de 24h
+				Form:C1466.cronosVerifProcessAuto:=cs:C1710.MATimeStamp.me.get(Current date:C33+1; ?00:00:00?)  // On incrémente de 24h
 			Else 
 				Form:C1466.cronosMessageDisplay()
 		End case 
