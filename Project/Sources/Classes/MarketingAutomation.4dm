@@ -198,6 +198,7 @@ Historique
 					$class_o.loadByField("eMail"; "="; $mailjetDetail_o.email)  // Initialisation de l'entité de la table [Personne] du client
 					
 					If ($class_o.personne#Null:C1517)  // On met à jour la table marketing avec les infos de mailjet
+						$class_o.personne.reload()
 						$class_o.updateCaMarketingStatistic(2; New object:C1471("eventNumber"; ${$i_el}; "eventTs"; Num:C11($mailjetDetail_o.tsEvent); "messageID"; String:C10($mailjetDetail_o.messageID); "num"; Num:C11(${$i_el})))
 					End if 
 					
@@ -226,12 +227,15 @@ Historique
 	var $collection_c : Collection
 	
 	var $parameter_e; $parameter_es : Object
+	var $MAEMail_cs : Object
 	
 	ASSERT:C1129(This:C1470.cronosImage#Null:C1517; "Impossible d'utiliser la fonction cronosAction sans avoir lancer la fonction loadCronos avant")
 	
 	// On recherche toutes les personnes qui ont un scénario actif et dont le prochain check est dépassé
 	$table_o:=ds:C1482["CaPersonneScenario"].query("actif = :1 AND tsProchainCheck <= :2"; True:C214; cmaTimestamp(Current date:C33; Current time:C178))
+	
 	$scene_cs:=cmaToolGetClass("MAScene").new()
+	$MAEMail_cs:=cmaToolGetClass("MAEMail").new("Support")
 	
 	For each ($enregistrement_o; $table_o)
 		Form:C1466.cronosMessage:="Gestion des scénarios..."+Char:C90(Line feed:K15:40)
@@ -663,6 +667,16 @@ Historique
 				
 				If ($retourB_o#Null:C1517)
 					$continue_b:=Bool:C1537($retourB_o.success)
+					
+					If ($continue_b=False:C215)
+						$MAEMail_cs.to:="remy@connect-io.fr"
+						
+						$MAEMail_cs.subject:="Problème fonction MarketingAutomation.cronosManageScenario()"
+						$MAEMail_cs.textBody:=String:C10($retourB_o.erreurDetail)
+						
+						$MAEMail_cs.send()
+					End if 
+					
 				End if 
 				
 			End if 

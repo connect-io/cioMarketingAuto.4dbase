@@ -24,11 +24,11 @@ $error_o:=New object:C1471(\
 "ligne"; Error Line; \
 "code"; Error)
 
-$eMail_o:=cs:C1710.MAEMail.new("No reply")
+$eMail_o:=cs:C1710.MAEMail.new("Support")
 
 $eMail_o.subject:="Erreur envoi email"
 
-$eMail_o.to:=$eMail_o.from
+$eMail_o.to:="remy@connect-io.fr"
 $eMail_o.textBody:="Détail de l'erreur : "+$error_o.libelle
 
 $eMail_o.send()

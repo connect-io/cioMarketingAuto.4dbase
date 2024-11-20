@@ -656,7 +656,10 @@ Function sendMailing($configPreCharge_o : Object) : Object
 									$retour_t:="Erreur lors de l'ajout d'un destinataire à l'envoi "+$extraDetail_o.sendingInformation.id+" chez Maileva, détail de l'erreur : "+$retour_o.messageError
 									
 									If ($retour_o.body#Null:C1517) && ($retour_o.body.errors#Null:C1517)
-										$retour_t:=$retour_t+Char:C90(Carriage return:K15:38)+$retour_o.body.errors
+										$retour_t:=$retour_t+Char:C90(Carriage return:K15:38)+JSON Stringify:C1217($retour_o.body.errors; *)
+										$retour_t:=$retour_t+Char:C90(Carriage return:K15:38)+Char:C90(Carriage return:K15:38)
+										
+										$retour_t:=$retour_t+"Contenu du body de la requête : "+JSON Stringify:C1217($body_o; *)
 									End if 
 									
 								Else 
@@ -857,21 +860,27 @@ Historique
 26/01/21 - Grégory Fromain <gregory@connect-io.fr> - Ajout entête
 ------------------------------------------------------------------------------*/
 	var $continue_b : Boolean
-	var $table_o; $enregistrement_o; $autreTable_o; $caScenarioEvents_o; $caScenarioEvent_o; $scene_cs; $caScenarioPersonne_o; $statut_o : Object
+	var $autreTable_o; $caScenarioEvents_o; $caScenarioEvent_o; $caScenarioPersonne_o; $statut_o : Object
+	
+	var $scene_cs; $MAEMail_cs : Object
+	
+	var $caPersonneMarketing_e : Object
+	var $caPersonneMarketing_es : Object
 	
 	ASSERT:C1129(This:C1470.personne#Null:C1517; "Impossible d'utiliser la fonction updateCaMarketingStatistic sans une personne de définie.")
 	
 	// On pensera à mettre à jour les informations marketing.
-	$table_o:=This:C1470.personne.AllCaPersonneMarketing
+	$caPersonneMarketing_es:=This:C1470.personne.AllCaPersonneMarketing
 	
-	If ($table_o.length=0)
-		$enregistrement_o:=ds:C1482["CaPersonneMarketing"].new()
+	If ($caPersonneMarketing_es.length=0)
+		$caPersonneMarketing_e:=ds:C1482["CaPersonneMarketing"].new()
 		
-		$enregistrement_o.personneID:=This:C1470.UID
-		$enregistrement_o.rang:=1  // 1 pour Suspect
-		$enregistrement_o.historique:=New object:C1471("detail"; New collection:C1472)
+		$caPersonneMarketing_e.personneID:=This:C1470.UID
+		$caPersonneMarketing_e.rang:=1  // 1 pour Suspect
+		$caPersonneMarketing_e.historique:=New object:C1471("detail"; New collection:C1472)
 	Else 
-		$enregistrement_o:=$table_o.first()
+		$caPersonneMarketing_e:=$caPersonneMarketing_es.first()
+		$caPersonneMarketing_e.reload()
 	End if 
 	
 	Case of 
@@ -880,8 +889,8 @@ Historique
 			This:C1470.mailjetGetStat()
 			
 			// Mise à jour des stats de mailjet (besoin d'éxécuter avant mailjetGetStat() pour fonctionner correctement)
-			$enregistrement_o.mailjetInfo:=This:C1470.statMailjet
-			$retour_o:=$enregistrement_o.save()
+			$caPersonneMarketing_e.mailjetInfo:=This:C1470.statMailjet
+			$retour_o:=$caPersonneMarketing_e.save()
 			
 			// Il faut également mettre à jour les autres champs
 			This:C1470.mailjetGetDetailStat(This:C1470.eMail; "3"; "4"; "7"; "8"; "9"; "10")
@@ -890,15 +899,15 @@ Historique
 			
 			Case of 
 				: (String:C10($detail_o.eventNumber)="3")  // Mail ouvert
-					$enregistrement_o.lastOpened:=$detail_o.eventTs
-					$retour_o:=$enregistrement_o.save()
+					$caPersonneMarketing_e.lastOpened:=$detail_o.eventTs
+					$retour_o:=$caPersonneMarketing_e.save()
 				: (String:C10($detail_o.eventNumber)="4")  // Mail cliqué
-					$enregistrement_o.lastClicked:=$detail_o.eventTs
-					$retour_o:=$enregistrement_o.save()
+					$caPersonneMarketing_e.lastClicked:=$detail_o.eventTs
+					$retour_o:=$caPersonneMarketing_e.save()
 				: (String:C10($detail_o.eventNumber)="7")  // Demande de désabonnement
-					$enregistrement_o.lastUnsubscribe:=$detail_o.eventTs
-					$enregistrement_o.desabonementMail:=True:C214
-					$retour_o:=$enregistrement_o.save()
+					$caPersonneMarketing_e.lastUnsubscribe:=$detail_o.eventTs
+					$caPersonneMarketing_e.desabonementMail:=True:C214
+					$retour_o:=$caPersonneMarketing_e.save()
 					
 					// Gestion du désabonnement qui peut avoir un traitement particulier suivant la base
 					If (OB Is defined:C1231(This:C1470.personne; "manageUnsubscribe")=True:C214)
@@ -906,8 +915,8 @@ Historique
 					End if 
 					
 				: (String:C10($detail_o.eventNumber)="8") | (String:C10($detail_o.eventNumber)="9") | (String:C10($detail_o.eventNumber)="10")  // Mail bloqué, softbounce ou bounce
-					$enregistrement_o.lastBounce:=$detail_o.eventTs
-					$retour_o:=$enregistrement_o.save()
+					$caPersonneMarketing_e.lastBounce:=$detail_o.eventTs
+					$retour_o:=$caPersonneMarketing_e.save()
 					
 					// Gestion du bounce qui peut avoir un traitement particulier suivant la base
 					If (OB Is defined:C1231(This:C1470.personne; "manageBounce")=True:C214)
@@ -915,8 +924,6 @@ Historique
 					End if 
 					
 			End case 
-			
-			$enregistrement_o.reload()
 			
 			// On doit chercher si pour cette personne le mailing de la scène qui a déclenché cet évènement doit déclencher quelque chose (saut de scène par exemple)
 			$autreTable_o:=This:C1470.personne.AllCaPersonneScenario.query("actif = :1"; True:C214)
@@ -947,7 +954,7 @@ Historique
 			End if 
 			
 		: ($provenance_el=3)  // On souhaite mettre à jour l'historique des mailings envoyés à la personne
-			$enregistrement_o.historique.detail.push(New object:C1471(\
+			$caPersonneMarketing_e.historique.detail.push(New object:C1471(\
 				"eventTs"; cmaTimestamp(Current date:C33; Current time:C178); \
 				"eventUser"; ($detail_o.currentUser#Null:C1517) ? $detail_o.currentUser : Current user:C182; \
 				"eventDetail"; New object:C1471("type"; String:C10($detail_o.type); \
@@ -962,15 +969,11 @@ Historique
 				"messageID"; "")))
 			
 			If ($detail_o.uuid#Null:C1517)
-				$enregistrement_o.historique.detail[$enregistrement_o.historique.detail.length-1].uuid:=$detail_o.uuid
+				$caPersonneMarketing_e.historique.detail[$caPersonneMarketing_e.historique.detail.length-1].uuid:=$detail_o.uuid
 			End if 
 			
-			$retour_o:=$enregistrement_o.save()
+			$retour_o:=$caPersonneMarketing_e.save()
 	End case 
-	
-	If ($provenance_el#1)  // On sauvegarde juste avant inutile de refaire cela
-		$retour_o:=$enregistrement_o.save()
-	End if 
 	
 	Case of 
 		: ($provenance_el=1)  // On souhaite mettre à jour manuellement les stats de mailjet
@@ -978,12 +981,13 @@ Historique
 			If ($retour_o.success=True:C214)
 				ALERT:C41("Les dernières stats de mailjet on bien été mis à jour dans la fiche de "+This:C1470.nom+" "+This:C1470.prenom+" (ID : "+This:C1470.UID+")")
 			Else 
-				ALERT:C41("Impossible de mettre à jour la table marketing dans la fiche de "+This:C1470.nom+" "+This:C1470.prenom+" (ID : "+This:C1470.UID+")")
+				ALERT:C41("Impossible de mettre à jour la table marketing dans la fiche de "+This:C1470.nomComplet+" (ID : "+This:C1470.UID+")")
 			End if 
 			
 		: ($provenance_el=2)  // On souhaite mettre à jour un des event (opened, clicked ou bounce)
 			
 			If ($retour_o.success=False:C215)
+				$MAEMail_cs:=cmaToolGetClass("MAEMail").new("Support")
 				
 				Case of 
 					: (String:C10($detail_o.eventNumber)="3")
@@ -994,7 +998,12 @@ Historique
 						$event_t:="Bounce"
 				End case 
 				
-				ALERT:C41("Impossible de mettre à jour la table marketing pour l'event "+$event_t+" dans la fiche de "+This:C1470.nom+" "+This:C1470.prenom+" (ID : "+This:C1470.UID+")")
+				$MAEMail_cs.to:="remy@connect-io.fr"
+				
+				$MAEMail_cs.subject:="Problème mise à jour table [CaPersonneMarketing]"
+				$MAEMail_cs.textBody:="Impossible de mettre à jour la table marketing pour l'event "+$event_t+" dans la fiche de "+This:C1470.nomComplet+" (ID : "+This:C1470.UID+")"
+				
+				$MAEMail_cs.send()
 			End if 
 			
 	End case 
