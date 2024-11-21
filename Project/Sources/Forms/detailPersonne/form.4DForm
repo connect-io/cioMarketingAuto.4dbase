@@ -986,7 +986,7 @@
 							},
 							"alternateFill": "#E1F2FC",
 							"width": 197,
-							"dataSource": "\"Le \"+cs:C1710.MATimeStamp.me.read(\"date\"; This:C1470.eventTs)+\" à \"+cs:C1710.MATimeStamp.me.read(\"heure\"; This:C1470.eventTs)",
+							"dataSource": "\"Le \"+cs:C1710.MATimeStamp.me.read(\"date\"; This:C1470.eventTs)+\" à \"+cs:C1710.MATimeStamp.me.read(\"hour\"; This:C1470.eventTs)",
 							"enterable": false,
 							"wordwrap": "none",
 							"truncateMode": "withEllipsis"

@@ -440,7 +440,7 @@ Function getMessageHistoryDetail($messageID_t : Text)->$messageHistoryDetail_t :
 					
 					$i_el:=Size of array:C274($dataDetail_ao)
 				Else 
-					$messageHistoryDetail_t:=$messageHistoryDetail_t+"Action : "+$messageDetail_o.EventType+", le "+cs:C1710.MATimeStamp.me.read("date"; $messageDetail_o.EventAt)+" à "+cs:C1710.MATimeStamp.me.read("heure"; $messageDetail_o.EventAt)
+					$messageHistoryDetail_t:=$messageHistoryDetail_t+"Action : "+$messageDetail_o.EventType+", le "+cs:C1710.MATimeStamp.me.read("date"; $messageDetail_o.EventAt)+" à "+cs:C1710.MATimeStamp.me.read("hour"; $messageDetail_o.EventAt)
 					
 					If ($i_el<Size of array:C274($dataDetail_ao))
 						$messageHistoryDetail_t:=$messageHistoryDetail_t+Char:C90(Line feed:K15:40)
