@@ -57,6 +57,27 @@ Case of
 	: ($date_machine>=!2024-10-27!) & ($date_machine<!2025-03-30!)
 		$heure_hiver:=True:C214
 		$heure_ete:=False:C215
+	: ($date>=!2025-03-30!) & ($date<!2025-10-26!)
+		$heure_hiver:=False:C215
+		$heure_ete:=True:C214
+	: ($date>=!2025-10-26!) & ($date<!2026-03-29!)
+		$heure_hiver:=True:C214
+		$heure_ete:=False:C215
+	: ($date>=!2026-03-29!) & ($date<!2026-10-25!)
+		$heure_hiver:=False:C215
+		$heure_ete:=True:C214
+	: ($date>=!2026-10-25!) & ($date<!2027-03-28!)
+		$heure_hiver:=True:C214
+		$heure_ete:=False:C215
+	: ($date>=!2027-03-28!) & ($date<!2027-10-31!)
+		$heure_hiver:=False:C215
+		$heure_ete:=True:C214
+	: ($date>=!2027-10-31!) & ($date<!2028-03-26!)
+		$heure_hiver:=True:C214
+		$heure_ete:=False:C215
+	: ($date>=!2028-03-26!) & ($date<!2028-10-29!)
+		$heure_hiver:=False:C215
+		$heure_ete:=True:C214
 End case 
 
 // Il faut se placer dans le référentiel de la machine pour ajouter ou enlever 1h exprimé en secondes

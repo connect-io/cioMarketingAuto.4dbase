@@ -684,11 +684,16 @@ Historique
 			If ($continue_b=True:C214)  // Ajout du log
 				$scene_cs.addScenarioEvent($scene_o.action; $enregistrement_o.ID; 0; "")
 				
-				If ($scene_o.action="Changement de scénario") | ($scene_o.action="Fin du scénario")
-					$enregistrement_o.tsProchainCheck:=0
-				Else 
-					$enregistrement_o.tsProchainCheck:=cs:C1710.MATimeStamp.me.get(Current date:C33; Current time:C178)+$scene_o.tsAttente
-				End if 
+				Case of 
+					: ($scene_o.action="Changement de scénario") | ($scene_o.action="Fin du scénario")
+						$enregistrement_o.tsProchainCheck:=0
+					: ($scene_o.tsAttente<86400)  // Si la prochaine scène est dans moins d'1 jour
+						$enregistrement_o.tsProchainCheck:=cs:C1710.MATimeStamp.me.get(Current date:C33; Current time:C178)+$scene_o.tsAttente
+					: (Storage:C1525.automation.config.reminderTime=Null:C1517)  // Si pas d'heure de relance renseignée dans le fichier de configuration on met les relances à 9h00
+						$enregistrement_o.tsProchainCheck:=cs:C1710.MATimeStamp.me.get(Current date:C33; ?09:00:00?)+$scene_o.tsAttente
+					Else 
+						$enregistrement_o.tsProchainCheck:=cs:C1710.MATimeStamp.me.get(Current date:C33; Time:C179(Storage:C1525.automation.config.reminderTime))+$scene_o.tsAttente
+				End case 
 				
 				$retour_o:=$enregistrement_o.save()
 				
