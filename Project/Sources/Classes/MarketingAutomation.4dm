@@ -681,6 +681,7 @@ Historique
 				
 			End if 
 			
+			
 			If ($continue_b=True:C214)  // Ajout du log
 				$scene_cs.addScenarioEvent($scene_o.action; $enregistrement_o.ID; 0; "")
 				
