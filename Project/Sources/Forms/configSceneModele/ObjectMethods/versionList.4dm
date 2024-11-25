@@ -42,7 +42,7 @@ If (Form event code:C388=On Data Change:K2:15)
 						OK:=1
 					End if 
 					
-					Form:C1466.sceneDetail.paramAction.modele[Lowercase:C14(Form:C1466.sceneTypeSelected)].version.push(New object:C1471("titre"; $titre_t; "actif"; (OK=1); "contenu4WP"; WP New:C1317; "creerPar"; Current user:C182; "creerLe"; cs:C1710.MATimeStamp.me.get; "modifierPar"; Current user:C182; "modifierLe"; cs:C1710.MATimeStamp.me.get))
+					Form:C1466.sceneDetail.paramAction.modele[Lowercase:C14(Form:C1466.sceneTypeSelected)].version.push(New object:C1471("titre"; $titre_t; "actif"; (OK=1); "contenu4WP"; WP New:C1317; "creerPar"; Current user:C182; "creerLe"; cs:C1710.MATimeStamp.me.get(); "modifierPar"; Current user:C182; "modifierLe"; cs:C1710.MATimeStamp.me.get()))
 				Else 
 					ALERT:C41("Une version porte déjà ce nom, merci d'en choisir un différent")
 				End if 
@@ -59,8 +59,8 @@ If (Form event code:C388=On Data Change:K2:15)
 		$elementSelected_o:=Form:C1466.sceneDetail.paramAction.modele[Lowercase:C14(Form:C1466.sceneTypeSelected)].version.query("titre = :1"; $titre_t)[0]
 		
 		Form:C1466.modeleDetail:="• Titre : "+$elementSelected_o.titre+Char:C90(Line feed:K15:40)
-		Form:C1466.modeleDetail:=Form:C1466.modeleDetail+"• Créer le "+cs:C1710.MATimeStamp.me.read("date"; $elementSelected_o.creerLe)+" par "+$elementSelected_o.creerPar+Char:C90(Line feed:K15:40)
-		Form:C1466.modeleDetail:=Form:C1466.modeleDetail+"• Dernière modification fait le "+cs:C1710.MATimeStamp.me.read("date"; $elementSelected_o.modifierLe)+" par "+$elementSelected_o.modifierPar
+		Form:C1466.modeleDetail:=Form:C1466.modeleDetail+"• Créer le "+cs:C1710.MATimeStamp.me.read("date"; Num:C11($elementSelected_o.creerLe))+" par "+$elementSelected_o.creerPar+Char:C90(Line feed:K15:40)
+		Form:C1466.modeleDetail:=Form:C1466.modeleDetail+"• Dernière modification fait le "+cs:C1710.MATimeStamp.me.read("date"; Num:C11($elementSelected_o.modifierLe))+" par "+$elementSelected_o.modifierPar
 		
 		If ($elementSelected_o.actif=True:C214)
 			Form:C1466.imageModeleActif:=Storage:C1525.automation.image["toggle-on"]

@@ -1,5 +1,5 @@
 Case of 
-	: (Form event code:C388=Sur chargement:K2:1)
+	: (Form event code:C388=On Load:K2:1)
 		var $pos_el : Integer
 		var $table_o : Object
 		var $collection_c : Collection
@@ -21,7 +21,6 @@ Case of
 		End if 
 		
 		conditionSautList_at{0}:="Sélection d'une condition de saut"
-		
 		OBJECT SET ENABLED:C1123(sceneSaut_at; False:C215)
 		
 		$table_o:=Form:C1466.sceneDetail.OneCaScenario.AllCaScene.query("ID # :1"; Form:C1466.sceneDetail.ID)
