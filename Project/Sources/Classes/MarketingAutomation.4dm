@@ -689,7 +689,7 @@ Historique
 				Case of 
 					: ($scene_o.action="Changement de scénario") | ($scene_o.action="Fin du scénario")
 						$enregistrement_o.tsProchainCheck:=0
-					: ($scene_o.OneCaScenario.configuration.type="Rendez-vous")  // Cas particulier pour un scénario de type rendez-vous
+					: (String:C10($scene_o.OneCaScenario.configuration.type)="Rendez-vous")  // Cas particulier pour un scénario de type rendez-vous
 						
 						While ($continue_b=True:C214)
 							CLEAR VARIABLE:C89($continue_b)
