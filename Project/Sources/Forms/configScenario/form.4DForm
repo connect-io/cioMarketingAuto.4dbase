@@ -26,8 +26,8 @@
 				"Bouton": {
 					"type": "button",
 					"text": "Valider",
-					"top": 295,
-					"left": 38,
+					"top": 235,
+					"left": 176,
 					"width": 202,
 					"height": 30,
 					"events": [
@@ -91,16 +91,16 @@
 				"Texte1": {
 					"type": "text",
 					"text": "Affectation multiple :",
-					"top": 157,
-					"left": 14,
+					"top": 83,
+					"left": 290,
 					"width": 220,
 					"height": 25,
 					"fontWeight": "bold"
 				},
 				"imageMultipleAffectation": {
 					"type": "input",
-					"left": 14,
-					"top": 184,
+					"left": 290,
+					"top": 110,
 					"width": 32,
 					"height": 32,
 					"dataSourceTypeHint": "picture",
@@ -119,7 +119,7 @@
 				"Texte2": {
 					"type": "text",
 					"text": "Data context :",
-					"top": 226,
+					"top": 161,
 					"left": 14,
 					"width": 220,
 					"height": 25,
@@ -128,7 +128,7 @@
 				"modeleObjetEmail": {
 					"type": "input",
 					"left": 14,
-					"top": 254,
+					"top": 189,
 					"width": 250,
 					"height": 20,
 					"dataSource": "Form:C1466.scenarioDetail.configuration.dataContext",
@@ -136,11 +136,34 @@
 					"events": [
 						"onDataChange"
 					]
+				},
+				"typeScenario": {
+					"type": "dropdown",
+					"left": 290,
+					"top": 48,
+					"width": 251,
+					"height": 20,
+					"events": [
+						"onLoad",
+						"onDataChange"
+					],
+					"dataSource": "",
+					"method": "ObjectMethods/typeScenario.4dm",
+					"dataSourceTypeHint": "object"
+				},
+				"Texte3": {
+					"type": "text",
+					"text": "Type de scénario :",
+					"top": 20,
+					"left": 290,
+					"width": 172,
+					"height": 25,
+					"fontWeight": "bold"
 				}
 			}
 		}
 	],
-	"geometryStamp": 271,
+	"geometryStamp": 293,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",

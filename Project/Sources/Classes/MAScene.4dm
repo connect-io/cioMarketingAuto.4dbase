@@ -339,7 +339,6 @@ Historique
 						
 						If (Num:C11($conditionSaut_o.varName[$pos_el])#($scene_o.conditionSaut.elements.indexOf($conditionSaut_o)+1))
 							$stop_b:=True:C214
-							
 							$indiceError_el:=$scene_o.conditionSaut.elements.indexOf($conditionSaut_o)
 						End if 
 						
@@ -1107,7 +1106,7 @@ Historique
 	
 	If ($collection_c.length=1)
 		$modeleActif_t:="• Titre du modèle actif : "+$collection_c[0].titre+Char:C90(Line feed:K15:40)
-		$modeleActif_t:=$modeleActif_t+"• Dernière modification fait le "+cs:C1710.MATimeStamp.me.read("date"; $collection_c[0].modifierLe)+" par "+$collection_c[0].modifierPar
+		$modeleActif_t:=$modeleActif_t+"• Dernière modification fait le "+cs:C1710.MATimeStamp.me.read("date"; Num:C11($collection_c[0].modifierLe))+" par "+$collection_c[0].modifierPar
 	Else 
 		$modeleActif_t:="• Aucun modèle actif de défini"
 	End if 

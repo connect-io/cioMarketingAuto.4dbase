@@ -219,12 +219,14 @@ Gestion depuis la méthode formulaire "cronos" des scénarios des personnes
 Historique
 29/01/21 - Rémy Scanu <remy@connect-io.fr> - Ajout entête
 -----------------------------------------------------------------------------*/
-	var $property_t : Text
-	var $numOrdre_el : Integer
+	var $property_t; $indication_t : Text
+	var $numOrdre_el; $pos_el : Integer
 	var $continue_b; $saut_b; $sautEffectue_b; $finScenario_b : Boolean
-	var $table_o; $enregistrement_o; $caScenarioEvent_o; $scene_o; $personne_o; $eMail_o; $config_o; $conditionAction_o; $conditionSaut_o; $scene_cs; $retour_o; \
-		$autreTable_o; $autreEnregistrement_o; $caPersonneMarketing_o; $document_o; $sms_o; $courrier_o; $retourB_o; $notif_o : Object
-	var $collection_c : Collection
+	var $dateRendezVous_d : Date
+	var $heureRendezVous_h : Time
+	var $table_o; $enregistrement_o; $caScenarioEvent_o; $scene_o; $sceneSuivante_o; $personne_o; $eMail_o; $config_o; $conditionAction_o; $conditionSaut_o; $scene_cs; $retour_o; \
+		$autreTable_o; $autreEnregistrement_o; $caPersonneMarketing_o; $document_o; $sms_o; $courrier_o; $retourB_o; $notif_o; $rendezVous_o : Object
+	var $collection_c; $detail_c; $champDate_c; $champHeure_c : Collection
 	
 	var $parameter_e; $parameter_es : Object
 	var $MAEMail_cs : Object
@@ -687,6 +689,77 @@ Historique
 				Case of 
 					: ($scene_o.action="Changement de scénario") | ($scene_o.action="Fin du scénario")
 						$enregistrement_o.tsProchainCheck:=0
+					: ($scene_o.OneCaScenario.configuration.type="Rendez-vous")  // Cas particulier pour un scénario de type rendez-vous
+						
+						While ($continue_b=True:C214)
+							CLEAR VARIABLE:C89($continue_b)
+							
+							Case of 
+								: ($scene_o.OneCaSceneSuivante#Null:C1517)  // Il y a une scéne suivante
+									$sceneSuivante_o:=$scene_o.OneCaSceneSuivante
+									$pos_el:=Position:C15("("; $sceneSuivante_o.nom)
+									
+									If ($pos_el>0) & (Storage:C1525.automation.config.appointment#Null:C1517)
+										$indication_t:=Substring:C12($sceneSuivante_o.nom; $pos_el+1)
+										$indication_t:=Substring:C12($indication_t; Position:C15(")"; $indication_t)-1)
+										
+										$detail_c:=$enregistrement_o.situation.detail.query("scene = :1"; $scene_o.numOrdre)
+										
+										If ($detail_c.length=1)
+											$rendezVous_o:=ds:C1482[Storage:C1525.automation.config.appointment.tableHote].get($detail_c[0].externalReference)
+											
+											If ($rendezVous_o#Null:C1517)
+												$champDate_c:=Storage:C1525.automation.config.appointment.champ.query("date = :1"; True:C214)
+												$champHeure_c:=Storage:C1525.automation.config.appointment.champ.query("heure = :1"; True:C214)
+												
+												If ($champDate_c.length=1) & ($champHeure_c.length=1)  // Il y a une configuration pour le champ date et heure dans le fichier de configuration
+													
+													If ($champDate_c[0].type="int")  // Champ de type TS
+														$dateRendezVous_d:=Date:C102(cs:C1710.MATimeStamp.me.read("date"; $rendezVous_o[$champDate_c[0].nom]))
+													Else 
+														$dateRendezVous_d:=Date:C102($rendezVous_o[$champDate_c[0].nom])
+													End if 
+													
+													If ($champDate_c[0].type="int")  // Champ de type TS
+														$heureRendezVous_h:=Time:C179(cs:C1710.MATimeStamp.me.read("hour"; $rendezVous_o[$champDate_c[0].nom]))
+													Else 
+														$heureRendezVous_h:=Time:C179(String:C10($rendezVous_o[$champDate_c[0].nom]))
+													End if 
+													
+												End if 
+												
+												Case of 
+													: ($indication_t="J-@")  // Indication de jour
+														
+														If ($dateRendezVous_d-Num:C11($indication_t)>Current date:C33)  // S'il y a plus d'un jour avant le prochain rendez-vous
+															$enregistrement_o.tsProchainCheck:=cs:C1710.MATimeStamp.me.get($dateRendezVous_d-Num:C11($indication_t); ?09:00:00?)
+														Else   // Le rendez-vous est dans moins d'1 jour impossible d'envoyer la confirmation de rendez-vous de la scène suivante
+															// On clot l'évenement de la scène qui vient de se jouer
+															$scene_cs.addScenarioEvent("Autre"; $enregistrement_o.ID; 0; "Le délai avant le rendez-vous du "+String:C10($dateRendezVous_d)+" est trop court")
+															
+															// On simule que la scène suivante s'est jouée
+															$scene_cs.loadByPrimaryKey($sceneSuivante_o.ID)
+															$scene_cs.addScenarioEvent($sceneSuivante_o.action; $enregistrement_o.ID; 0; "")
+															
+															// On fait de la scène suivante, la scène courante pour voir si la scène S+2 (si elle existe) doit aussi subir des événements
+															$scene_o:=$sceneSuivante_o
+															$continue_b:=True:C214
+														End if 
+														
+													: ($indication_t="H-@")  // Indication d'heure
+														$enregistrement_o.tsProchainCheck:=cs:C1710.MATimeStamp.me.get($dateRendezVous_d; Time:C179($heureRendezVous_h-(3600*Num:C11($indication_t))))
+												End case 
+												
+											End if 
+											
+										End if 
+										
+									End if 
+									
+							End case 
+							
+						End while 
+						
 					: ($scene_o.tsAttente<86400)  // Si la prochaine scène est dans moins d'1 jour
 						$enregistrement_o.tsProchainCheck:=cs:C1710.MATimeStamp.me.get(Current date:C33; Current time:C178)+$scene_o.tsAttente
 					: (Storage:C1525.automation.config.reminderTime=Null:C1517)  // Si pas d'heure de relance renseignée dans le fichier de configuration on met les relances à 9h00
