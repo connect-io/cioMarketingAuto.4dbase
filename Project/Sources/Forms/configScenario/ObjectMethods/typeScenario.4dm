@@ -4,6 +4,12 @@ Case of
 		OBJECT Get pointer:C1124(Object current:K67:2)->values:=New collection:C1472("Standard"; "Rappel"; "Rendez-vous")
 		OBJECT Get pointer:C1124(Object current:K67:2)->currentValue:="Sélection d'un type du scénario"
 		OBJECT Get pointer:C1124(Object current:K67:2)->index:=-1
+		
+		If (String:C10(Form:C1466.scenarioDetail.configuration.type)#"") && (OBJECT Get pointer:C1124(Object current:K67:2)->values.indexOf(Form:C1466.scenarioDetail.configuration.type)#-1)
+			OBJECT Get pointer:C1124(Object current:K67:2)->currentValue:=String:C10(Form:C1466.scenarioDetail.configuration.type)
+			OBJECT Get pointer:C1124(Object current:K67:2)->index:=OBJECT Get pointer:C1124(Object current:K67:2)->values.indexOf(Form:C1466.scenarioDetail.configuration.type)
+		End if 
+		
 	: (Form event code:C388=On Data Change:K2:15)
 		Form:C1466.scenarioDetail.configuration.type:=OBJECT Get pointer:C1124(Object current:K67:2)->currentValue
 End case 

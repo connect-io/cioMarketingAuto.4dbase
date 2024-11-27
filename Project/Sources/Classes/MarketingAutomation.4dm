@@ -689,7 +689,7 @@ Historique
 				Case of 
 					: ($scene_o.action="Changement de scénario") | ($scene_o.action="Fin du scénario")
 						$enregistrement_o.tsProchainCheck:=0
-					: (String:C10($scene_o.OneCaScenario.configuration.type)="Rendez-vous")  // Cas particulier pour un scénario de type rendez-vous
+					: (String:C10($scene_o.OneCaScenario.configuration.type)="Rendez-vous") | (String:C10($scene_o.OneCaScenario.configuration.type)="Rappel")  // Cas particulier pour un scénario de type rendez-vous ou rappel
 						
 						While ($continue_b=True:C214)
 							CLEAR VARIABLE:C89($continue_b)
@@ -701,7 +701,7 @@ Historique
 									
 									If ($pos_el>0) & (Storage:C1525.automation.config.appointment#Null:C1517)
 										$indication_t:=Substring:C12($sceneSuivante_o.nom; $pos_el+1)
-										$indication_t:=Substring:C12($indication_t; Position:C15(")"; $indication_t)-1)
+										$indication_t:=Substring:C12($indication_t; 1; Position:C15(")"; $indication_t)-1)
 										
 										$detail_c:=$enregistrement_o.situation.detail.query("scene = :1"; $scene_o.numOrdre)
 										
@@ -710,7 +710,7 @@ Historique
 											
 											If ($rendezVous_o#Null:C1517)
 												$champDate_c:=Storage:C1525.automation.config.appointment.champ.query("date = :1"; True:C214)
-												$champHeure_c:=Storage:C1525.automation.config.appointment.champ.query("heure = :1"; True:C214)
+												$champHeure_c:=Storage:C1525.automation.config.appointment.champ.query("time = :1"; True:C214)
 												
 												If ($champDate_c.length=1) & ($champHeure_c.length=1)  // Il y a une configuration pour le champ date et heure dans le fichier de configuration
 													
@@ -731,11 +731,16 @@ Historique
 												Case of 
 													: ($indication_t="J-@")  // Indication de jour
 														
-														If ($dateRendezVous_d-Num:C11($indication_t)>Current date:C33)  // S'il y a plus d'un jour avant le prochain rendez-vous
-															$enregistrement_o.tsProchainCheck:=cs:C1710.MATimeStamp.me.get($dateRendezVous_d-Num:C11($indication_t); ?09:00:00?)
-														Else   // Le rendez-vous est dans moins d'1 jour impossible d'envoyer la confirmation de rendez-vous de la scène suivante
+														If ($dateRendezVous_d-Abs:C99(Num:C11($indication_t))>Current date:C33)  // S'il y a plus d'un jour avant le prochain rendez-vous ou rappel
+															$enregistrement_o.tsProchainCheck:=cs:C1710.MATimeStamp.me.get($dateRendezVous_d-Abs:C99(Num:C11($indication_t)); ?09:00:00?)
+														Else   // Le rendez-vous ou rappel est dans moins d'1 jour impossible d'envoyer la confirmation de rendez-vous de la scène suivante
 															// On clot l'évenement de la scène qui vient de se jouer
-															$scene_cs.addScenarioEvent("Autre"; $enregistrement_o.ID; 0; "Le délai avant le rendez-vous du "+String:C10($dateRendezVous_d)+" est trop court")
+															
+															If (String:C10($scene_o.OneCaScenario.configuration.type)="Rendez-vous")
+																$scene_cs.addScenarioEvent("Autre"; $enregistrement_o.ID; 0; "Le délai avant le rendez-vous du "+String:C10($dateRendezVous_d)+" est trop court")
+															Else 
+																$scene_cs.addScenarioEvent("Autre"; $enregistrement_o.ID; 0; "Le délai avant le rappel du "+String:C10($dateRendezVous_d)+" est trop court")
+															End if 
 															
 															// On simule que la scène suivante s'est jouée
 															$scene_cs.loadByPrimaryKey($sceneSuivante_o.ID)
@@ -747,7 +752,7 @@ Historique
 														End if 
 														
 													: ($indication_t="H-@")  // Indication d'heure
-														$enregistrement_o.tsProchainCheck:=cs:C1710.MATimeStamp.me.get($dateRendezVous_d; Time:C179($heureRendezVous_h-(3600*Num:C11($indication_t))))
+														$enregistrement_o.tsProchainCheck:=cs:C1710.MATimeStamp.me.get($dateRendezVous_d; Time:C179($heureRendezVous_h-(3600*Abs:C99(Num:C11($indication_t)))))
 												End case 
 												
 											End if 

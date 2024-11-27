@@ -18,13 +18,13 @@ Case of
 					Case of 
 						: ($supprAll_b=True:C214)
 							
-							For each ($personne_o; Form:C1466.personneCollection) Until ($suppr_b=False:C215)
+							For each ($personne_o; Form:C1466.personneCollection)
 								$suppr_b:=Form:C1466.donnee.deleteScenarioToPerson($personne_o.getKey(); Form:C1466.donnee.scenarioDetail.getKey())
 							End for each 
 							
 						: (Form:C1466.PersonneCurrentElement#Null:C1517)
 							
-							For each ($personne_o; Form:C1466.PersonneSelectedElement) Until ($suppr_b=False:C215)
+							For each ($personne_o; Form:C1466.PersonneSelectedElement)
 								$suppr_b:=Form:C1466.donnee.deleteScenarioToPerson($personne_o.getKey(); Form:C1466.donnee.scenarioDetail.getKey())
 							End for each 
 							

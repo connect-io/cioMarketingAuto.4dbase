@@ -1,11 +1,14 @@
+var $table_o : Object
+
 If (Form event code:C388=On Clicked:K2:4) & (Form:C1466.ScenarioPersonneCurrentElement#Null:C1517)
-	C_OBJECT:C1216($table_o)
+	$table_o:=Form:C1466.ScenarioPersonneCurrentElement  // Gestion du scènario de la personne sélectionné
 	
-	$table_o:=Form:C1466.ScenarioPersonneCurrentElement  // Gestion du scènario sélectionné
-	Form:C1466.scene:=$table_o.AllCaScene.orderBy("numOrdre asc")  // Gestion des scènes du scénario sélectionné
+	Form:C1466.scene:=$table_o.OneCaScenario.AllCaScene.orderBy("numOrdre asc")  // Gestion des scènes du scénario de la personne sélectionné
+	Form:C1466.prochainCheck:="Prochain passage le "+cs:C1710.MATimeStamp.me.read("date"; $table_o.tsProchainCheck)+" à "+cs:C1710.MATimeStamp.me.read("hour"; $table_o.tsProchainCheck)
 	
 	OBJECT SET ENABLED:C1123(*; "personneDetailListeScene"; True:C214)
 Else 
+	Form:C1466.prochainCheck:=Null:C1517
 	
 	If (Form:C1466.scene#Null:C1517)
 		Form:C1466.scene:=Null:C1517

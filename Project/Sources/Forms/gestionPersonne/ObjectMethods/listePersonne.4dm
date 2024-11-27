@@ -1,11 +1,11 @@
-If (Form event code:C388=Sur clic:K2:4) & (Form:C1466.PersonneCurrentElement#Null:C1517)
+If (Form event code:C388=On Clicked:K2:4) & (Form:C1466.PersonneCurrentElement#Null:C1517)
 	Form:C1466.personneDetail:=Form:C1466.PersonneSelectedElement[0].toObject()
 	
 	For each ($element_t; New collection:C1472("nom"; "prenom"; "UID"; "sexe"; "codePostal"; "ville"; "eMail"; "telFixe"; "telMobile"))
 		Form:C1466.personneDetail[$element_t]:=Form:C1466.personneDetail[Storage:C1525.automation.formule.getFieldName(Storage:C1525.automation.passerelle.champ; $element_t)]
 	End for each 
 	
-	Form:C1466.personneDetail.modeSelection:=LISTBOX Get property:C917(*; "listePersonne"; lk mode de sélection:K53:35)
+	Form:C1466.personneDetail.modeSelection:=LISTBOX Get property:C917(*; "listePersonne"; lk selection mode:K53:35)
 	
 	If (Num:C11(Form:C1466.PersonneSelectedElement.length)>1)
 		Form:C1466.personneDetail.multiSelection:=True:C214
@@ -39,10 +39,11 @@ Else
 	If (Num:C11(Form:C1466.entree)#2)  // Différent de gestion du scénario (Personne en cours)
 		OBJECT SET ENABLED:C1123(*; "supprimerScenarioEnCours"; False:C215)  // Désactivation du bouton pour supprimer le scénario en cours tant qu'il n'y a pas de personne sélectionné
 	Else 
-		LISTBOX SET PROPERTY:C1440(*; "listePersonne"; lk mode de sélection:K53:35; lk multilignes:K53:59)
+		LISTBOX SET PROPERTY:C1440(*; "listePersonne"; lk selection mode:K53:35; lk multiple:K53:59)
 	End if 
 	
 End if 
 
+Form:C1466.prochainCheck:=Null:C1517
 Form:C1466.scene:=Null:C1517  // Dans tous les cas je dois réinitialiser mon entitySelection des scènes
 Form:C1466.scenarioEvent:=Null:C1517  // Dans tous les cas je dois réinitialiser mon entitySelection des logs des scènes

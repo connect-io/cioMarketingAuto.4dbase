@@ -150,7 +150,7 @@
 							},
 							"name": "NomScenario",
 							"width": 205,
-							"dataSource": "This:C1470.nom",
+							"dataSource": "This:C1470.OneCaScenario.nom",
 							"footer": {
 								"name": "Pied3"
 							},
@@ -646,11 +646,27 @@
 					"class": "clickable",
 					"style": "roundedBevel",
 					"visibility": "hidden"
+				},
+				"Zone de saisie1": {
+					"type": "input",
+					"left": 895,
+					"top": 490,
+					"width": 215,
+					"height": 65,
+					"bottom": 555,
+					"dataSource": "Form:C1466.prochainCheck",
+					"enterable": false,
+					"focusable": false,
+					"fontTheme": "normal",
+					"fontSize": 14,
+					"fontWeight": "bold",
+					"fill": "transparent",
+					"borderStyle": "none"
 				}
 			}
 		}
 	],
-	"geometryStamp": 615,
+	"geometryStamp": 621,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",

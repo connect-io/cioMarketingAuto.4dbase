@@ -17,7 +17,7 @@ Historique
 	$class_o:=cs:C1710.MarketingAutomation.new()  // Instanciation de la class
 	$class_o.loadPasserelle("Personne")
 	
-Function updateScenarioListToPerson()->$scenario_es : Object
+Function updateScenarioListToPerson()->$caPersonnesScenario_es : Object
 /* -----------------------------------------------------------------------------
 Fonction : MAPersonneDisplay.updateScenarioListToPerson
 	
@@ -28,13 +28,13 @@ Historique
 -----------------------------------------------------------------------------*/
 	var $class_o : Object
 	
-	$scenario_es:=ds:C1482["CaScenario"].newSelection()
+	$caPersonnesScenario_es:=ds:C1482["CaPersonneScenario"].newSelection()
 	
 	$class_o:=cmaToolGetClass("MAPersonne").new()
 	$class_o.loadByPrimaryKey(Form:C1466.personneDetail.UID)
 	
 	If ($class_o.personne#Null:C1517)
-		$scenario_es:=$class_o.personne.AllCaPersonneScenario.OneCaScenario
+		$caPersonnesScenario_es:=$class_o.personne.AllCaPersonneScenario
 	End if 
 	
 Function updateStringPersonneForm($personne_o : Object)
