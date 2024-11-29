@@ -671,10 +671,11 @@ Historique
 					$continue_b:=Bool:C1537($retourB_o.success)
 					
 					If ($continue_b=False:C215)
-						$MAEMail_cs.to:="remy@connect-io.fr"
+						$MAEMail_cs.to:=Storage:C1525.automation.config.support.eMail
 						
-						$MAEMail_cs.subject:="Problème fonction MarketingAutomation.cronosManageScenario()"
-						$MAEMail_cs.textBody:=String:C10($retourB_o.erreurDetail)
+						$MAEMail_cs.subject:="CioMarketingAutomation - Erreur action "+$scene_o.action+" dans fonction MarketingAutomation.cronosManageScenario()"
+						$MAEMail_cs.textBody:="Un problème a été détecté lors de l'éxécution de la scène "+String:C10($scene_o.numOrdre)+" dans le scénario "+$scene_o.OneCaScenario.nom+\
+							" pour l'enregistrement [CaPersonneScenario] avec l'ID "+$enregistrement_o.ID+" : "+String:C10($retourB_o.erreurDetail)
 						
 						$MAEMail_cs.send()
 					End if 

@@ -179,7 +179,30 @@ Function loadByField($fieldName_t : Text; $signComparaison_t : Text; $value_v : 
 				$table_o:=Formula from string:C1601($field_c[0].directAccess).call(This:C1470)
 				
 				If ($table_o.length>0)
-					This:C1470.personne:=$table_o[0][$field_c[0].valueReturn]
+					
+					Case of 
+						: (String:C10($field_c[0].valueReturn)#"")
+							$lien_c:=Split string:C1554($field_c[0].valueReturn; ".")
+							
+							If ($lien_c.length>0)
+								
+								For each ($lien_t; $lien_c)
+									
+									If ($lien_t#"") & ($table_o[$lien_t]#Null:C1517)
+										$table_o:=$table_o[$lien_t]
+									End if 
+									
+								End for each 
+								
+							End if 
+							
+							If ($table_o.getDataClass().getInfo().name=This:C1470.passerelle.tableHote)
+								This:C1470.personne:=$table_o[0]
+							End if 
+							
+						: ($table_o.getDataClass().getInfo().name=This:C1470.passerelle.tableHote)
+							This:C1470.personne:=$table_o[0]
+					End case 
 					
 					// Modifié par : Scanu Rémy (08/12/2022)
 					// Pour certaines raisons il peut arriver que le lien avec une table [Enfant] soit cassée...
@@ -882,6 +905,12 @@ Historique
 	Else 
 		$caPersonneMarketing_e:=$caPersonneMarketing_es.first()
 		$caPersonneMarketing_e.reload()
+		
+		If ($caPersonneMarketing_e.historique=Null:C1517)
+			$caPersonneMarketing_e.historique:=New object:C1471("detail"; New collection:C1472)
+			$retour_o:=$caPersonneMarketing_e.save()
+		End if 
+		
 	End if 
 	
 	Case of 
@@ -999,14 +1028,19 @@ Historique
 						$event_t:="Bounce"
 				End case 
 				
-				$MAEMail_cs.to:="remy@connect-io.fr"
+				$MAEMail_cs.to:=Storage:C1525.automation.config.support.eMail
 				
-				$MAEMail_cs.subject:="Problème mise à jour table [CaPersonneMarketing]"
+				$MAEMail_cs.subject:="CioMarketingAutomation - Erreur mise à jour table [CaPersonneMarketing]"
 				$MAEMail_cs.textBody:="Impossible de mettre à jour la table marketing pour l'event "+$event_t+" dans la fiche de "+This:C1470.nomComplet+" (ID : "+This:C1470.UID+")"
 				
 				$MAEMail_cs.send()
 			End if 
 			
 	End case 
+	
+	If ($provenance_el=0)
+		$isOk_b:=True:C214
+		return 
+	End if 
 	
 	$isOk_b:=$retour_o.success

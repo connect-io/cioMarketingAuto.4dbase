@@ -26,9 +26,9 @@ $error_o:=New object:C1471(\
 
 $eMail_o:=cs:C1710.MAEMail.new("Support")
 
-$eMail_o.subject:="Erreur envoi email"
+$eMail_o.subject:="CioMarketingAutomation - Erreur envoi email"
 
-$eMail_o.to:="remy@connect-io.fr"
+$eMail_o.to:=Storage:C1525.automation.config.support.eMail
 $eMail_o.textBody:="Détail de l'erreur : "+$error_o.libelle
 
 $eMail_o.send()

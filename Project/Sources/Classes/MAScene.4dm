@@ -24,6 +24,7 @@ Historique
 19/05/21 - Rémy Scanu <remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
 	var $caScenarioEvent_o; $statut_o : Object
+	var $MAEMail_cs : Object
 	
 	ASSERT:C1129(This:C1470.scene#Null:C1517; "Impossible d'utiliser la fonction addScenarioEvent sans une scène de définie.")
 	
@@ -83,6 +84,21 @@ Historique
 			$caScenarioEvent_o.etat:="Terminé"
 			$caScenarioEvent_o.information:=$information_t
 	End case 
+	
+	If ($information_t#"")
+		$caScenarioEvent_o.information:=$caScenarioEvent_o.information+Char:C90(Carriage return:K15:38)+$information_t
+	End if 
+	
+	If ($action_t="Erreur@")
+		$MAEMail_cs:=cmaToolGetClass("MAEMail").new("Support")
+		$MAEMail_cs.to:=Storage:C1525.automation.config.support.eMail
+		
+		$MAEMail_cs.subject:="CioMarketingAutomation - Erreur déroulement scénario d'une personne"
+		$MAEMail_cs.textBody:="Un problème a été détecté lors de l'éxécution de la scène "+String:C10(This:C1470.scene.numOrdre)+" dans le scénario "+This:C1470.scene.OneCaScenario.nom+\
+			" pour l'enregistrement [CaPersonneScenario] avec l'ID "+$personneScenarioID_v+" : "+$action_t+", "+$caScenarioEvent_o.information
+		
+		$MAEMail_cs.send()
+	End if 
 	
 	$statut_o:=$caScenarioEvent_o.save()
 	
