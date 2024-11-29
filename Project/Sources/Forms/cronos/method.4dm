@@ -27,7 +27,6 @@ Case of
 				End if 
 				
 				Form:C1466.cronosUpdateCaMarketing($tsFrom_el; $tsTo_el; "3"; "4"; "7"; "8"; "9"; "10")
-				
 				$lastRequest_o:=New object:C1471("lastRequest"; cs:C1710.MATimeStamp.me.get(Current date:C33; Current time:C178))
 				
 				If (Form:C1466.cronosMailjetClass.historyRequestContent.prochaineVerif#Null:C1517)

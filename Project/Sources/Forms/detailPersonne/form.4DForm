@@ -640,10 +640,10 @@
 				},
 				"Texte13": {
 					"type": "text",
-					"text": "Scénario(s) en cours :",
+					"text": "Scénario(s) de la personne :",
 					"top": 340,
 					"left": 149,
-					"width": 150,
+					"width": 200,
 					"height": 16,
 					"fontWeight": "bold",
 					"class": "cuLabel"
@@ -1061,7 +1061,7 @@
 			}
 		}
 	],
-	"geometryStamp": 977,
+	"geometryStamp": 980,
 	"editor": {
 		"activeView": "View 1",
 		"defaultView": "View 1",

@@ -35,8 +35,9 @@ Function loadByField
 	var $2 : Text  // Signe de la recherche
 	var $3 : Variant  // Valeur à rechercher
 	
+	var $lien_t : Text
 	var $table_o : Object
-	var $field_c : Collection
+	var $field_c; $lien_c : Collection
 	
 	$field_c:=This:C1470.passerelle.champ.query("lib = :1"; $1)
 	
@@ -62,7 +63,31 @@ Function loadByField
 				$table_o:=Formula from string:C1601($field_c[0].directAccess).call(This:C1470)
 				
 				If ($table_o.length>0)
-					This:C1470.personneSelection:=$table_o[$field_c[0].valueReturn]
+					
+					Case of 
+						: (String:C10($field_c[0].valueReturn)#"")
+							$lien_c:=Split string:C1554($field_c[0].valueReturn; ".")
+							
+							If ($lien_c.length>0)
+								
+								For each ($lien_t; $lien_c)
+									
+									If ($lien_t#"") & ($table_o[$lien_t]#Null:C1517)
+										$table_o:=$table_o[$lien_t]
+									End if 
+									
+								End for each 
+								
+							End if 
+							
+							If ($table_o.getDataClass().getInfo().name=This:C1470.passerelle.tableHote)
+								This:C1470.personneSelection:=$table_o
+							End if 
+							
+						: ($table_o.getDataClass().getInfo().name=This:C1470.passerelle.tableHote)
+							This:C1470.personneSelection:=$table_o
+					End case 
+					
 				End if 
 				
 				OB REMOVE:C1226(This:C1470; "childFieldValue")
