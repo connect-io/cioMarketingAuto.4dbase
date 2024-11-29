@@ -17,8 +17,13 @@ Case of
 				End if 
 				
 				$statut_o:=$enregistrement_o.save()
-				$enregistrement_o.reload()
 				
+				// Gestion du statut d'activité qui peut avoir un traitement particulier suivant la base
+				If (OB Is defined:C1231($enregistrement_o; "manageActif")=True:C214)
+					$enregistrement_o.manageActif()
+				End if 
+				
+				$enregistrement_o.reload()
 				Form:C1466.scenarioEnCours:=Form:C1466.personne.AllCaPersonneScenario
 			End if 
 			
