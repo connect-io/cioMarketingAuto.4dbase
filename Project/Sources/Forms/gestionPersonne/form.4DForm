@@ -141,22 +141,40 @@
 					"verticalLineStroke": "transparent",
 					"alternateFill": "#E1F2FC",
 					"fill": "#F5FBFF",
+					"metaSource": "This:C1470.listBoxMetaInfo()",
 					"columns": [
 						{
 							"header": {
-								"text": "Liste des scénarios de la personne",
+								"text": "Scénario(s) de la personne",
+								"name": "Entête10",
+								"stroke": "#21759B"
+							},
+							"name": "NomScenario2",
+							"width": 165,
+							"dataSource": "This:C1470.OneCaScenario.nom",
+							"footer": {
+								"name": "Pied10"
+							},
+							"textAlign": "automatic",
+							"verticalAlign": "middle",
+							"enterable": false
+						},
+						{
+							"header": {
+								"text": "Statut",
 								"name": "Entête3",
 								"stroke": "#21759B"
 							},
 							"name": "NomScenario",
-							"width": 205,
-							"dataSource": "This:C1470.OneCaScenario.nom",
+							"width": 40,
+							"dataSource": "This:C1470.actif",
 							"footer": {
 								"name": "Pied3"
 							},
 							"textAlign": "automatic",
 							"verticalAlign": "middle",
-							"enterable": false
+							"enterable": false,
+							"dataSourceTypeHint": "boolean"
 						}
 					]
 				},
@@ -662,11 +680,26 @@
 					"fontWeight": "bold",
 					"fill": "transparent",
 					"borderStyle": "none"
+				},
+				"statutCaPersonneScenario": {
+					"type": "button",
+					"text": "Changer le statut",
+					"top": 525,
+					"left": 895,
+					"width": 215,
+					"height": 30,
+					"events": [
+						"onClick",
+						"onMouseMove"
+					],
+					"method": "ObjectMethods/statutCaPersonneScenario.4dm",
+					"class": "clickable",
+					"style": "roundedBevel"
 				}
 			}
 		}
 	],
-	"geometryStamp": 621,
+	"geometryStamp": 630,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",
