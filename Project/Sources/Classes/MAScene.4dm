@@ -89,7 +89,9 @@ Historique
 		$caScenarioEvent_o.information:=$caScenarioEvent_o.information+Char:C90(Carriage return:K15:38)+$information_t
 	End if 
 	
-	If ($action_t="Erreur@")
+	$statut_o:=$caScenarioEvent_o.save()
+	
+	If ($action_t="Erreur@") | ($action_t="Autre")
 		$MAEMail_cs:=cmaToolGetClass("MAEMail").new("Support")
 		$MAEMail_cs.to:=Storage:C1525.automation.config.support.eMail
 		
@@ -99,8 +101,6 @@ Historique
 		
 		$MAEMail_cs.send()
 	End if 
-	
-	$statut_o:=$caScenarioEvent_o.save()
 	
 Function loadByPrimaryKey($sceneID_i : Integer)->$isOk_b : Boolean
 /* -----------------------------------------------------------------------------

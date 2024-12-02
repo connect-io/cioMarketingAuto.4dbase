@@ -291,7 +291,6 @@ Historique
 									$finScenario_b:=True:C214
 								Else   // L'utilisateur a oublié de programmer une scène suivante
 									CLEAR VARIABLE:C89($scene_o)
-									
 									$numOrdre_el:=$caScenarioEvent_o.OneCaScene.numOrdre
 									
 									// On recherche une scène jusqu'à trouver la bonne
@@ -314,7 +313,17 @@ Historique
 				End case 
 				
 			Else   // Ce n'est pas normal de se retrouver dans ce cas-là, mais on va faire en sorte que lors du prochain passage cette personne n'y soit plus.
-				$finScenario_b:=True:C214
+				// On va essayer de jouer la scène suivante, si elle existe
+				$caScenarioEvent_o:=$enregistrement_o.AllCaScenarioEvent.orderBy("tsCreation desc")
+				$caScenarioEvent_o:=$caScenarioEvent_o.first()
+				
+				If ($caScenarioEvent_o.OneCaScene.OneCaSceneSuivante#Null:C1517)  // S'il y a une scène suivante
+					$scene_o:=$caScenarioEvent_o.OneCaScene.OneCaSceneSuivante
+				Else   // Pas de scène, la dernière scène du scénario n'a pas pu se jouer fin du spectacle evacuation de la salle...
+					$finScenario_b:=True:C214
+				End if 
+				
+				
 			End if 
 			
 		End if 
@@ -498,7 +507,6 @@ Historique
 						
 					Else   // Dans ce cas là, soit le mail n'est pas bon, soit il est en demande de désabonnement ou soit il est en bounce
 						$scene_cs.addScenarioEvent("Erreur email"; $enregistrement_o.ID; 0; "")
-						$finScenario_b:=True:C214
 					End if 
 					
 				: ($scene_o.action="Envoi SMS")  // Si l'action de la scène est l'impression d'un document, on doit faire des vérifications de base
@@ -539,7 +547,6 @@ Historique
 						
 					Else   // Dans ce cas le téléphone mobile n'est pas bon
 						$scene_cs.addScenarioEvent("Erreur téléphone mobile"; $enregistrement_o.ID; 0; "")
-						$finScenario_b:=True:C214
 					End if 
 					
 				: ($scene_o.action="Imprimer document")  // Si l'action de la scène est l'impression d'un document, on doit faire des vérifications de base
