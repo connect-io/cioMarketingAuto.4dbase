@@ -62,7 +62,7 @@ Historique
 	
 	Case of 
 		: (Num:C11($personne_o.modeSelection)=1) | (Num:C11($personne_o.modeSelection)=2) & (Bool:C1537($personne_o.multiSelection)=False:C215)  // Sélection unique OU Sélection multi-lignes mais qu'une seule ligne sélectionnée
-			$personne_o.resume:=Choose:C955($civilite_t#""; $civilite_t+" "; "")+String:C10($personne_o.nom)+" "+String:C10($personne_o.prenom)+", habite à "+String:C10($personne_o.ville)+" ("+String:C10($personne_o.codePostal)+")."+Char:C90(Line feed:K15:40)
+			$personne_o.resume:=Choose:C955($civilite_t#""; $civilite_t+" "; "")+Choose:C955(String:C10($personne_o.nomComplet)#""; String:C10($personne_o.nomComplet); String:C10($personne_o.nom)+" "+String:C10($personne_o.prenom))+", habite à "+String:C10($personne_o.ville)+" ("+String:C10($personne_o.codePostal)+")."+Char:C90(Line feed:K15:40)
 			
 			$personne_o.resume:=$personne_o.resume+"• Adresse email : "+String:C10($personne_o.eMail)+Char:C90(Line feed:K15:40)
 			$personne_o.resume:=$personne_o.resume+"• Téléphone fixe : "+String:C10($personne_o.telFixe)+Char:C90(Line feed:K15:40)
@@ -170,6 +170,7 @@ Historique
 			End if 
 			
 			OBJECT SET ENABLED:C1123(*; "supprimerScenarioEnCours"; False:C215)
+			OBJECT SET ENABLED:C1123(*; "changeStatutPersonneScenario"; False:C215)
 			
 			If ($formScenario_o.donnee.scenarioSelectionPossiblePersonne#Null:C1517) & ($formScenario_o.personne#Null:C1517)
 				

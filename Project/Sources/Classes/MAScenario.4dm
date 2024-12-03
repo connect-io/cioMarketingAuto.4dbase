@@ -173,8 +173,6 @@ Function searchPersonToScenario($provenance_el : Integer)
 					End if 
 					
 				: ($cleValeur_o.key="email")
-					// Instanciation de la class
-					$class_o:=cmaToolGetClass("MAPersonneSelection").new()
 					$class_o.loadByField("eMail"; "#"; "")
 					
 					// Modifié par : Rémy Scanu (10/05/2021)
@@ -233,10 +231,30 @@ Function searchPersonToScenario($provenance_el : Integer)
 				: ($cleValeur_o.key="mailingMarketing")
 					
 					If ($cleValeur_o.value#Null:C1517)  // Si dans les conditions, l'utisateur souhaite ajouter un critère sur le booléen mailing Marketing présent dans la table [Personnes] du client
-						$lib_t:=Storage:C1525.automation.formule.getFieldName(Storage:C1525.automation.passerelle.champ; "mailingMarketing")
-						$table_o:=ds:C1482[Storage:C1525.automation.passerelle.tableHote].query($lib_t+" = :1"; $cleValeur_o.value)
+						// Instanciation de la class
+						$class_o.loadByField("mailingMarketing"; "="; True:C214)
 						
-						$personne_o:=$personne_o.and($table_o)
+						// Modifié par : Rémy Scanu (10/05/2021)
+						If (This:C1470.personneSelection#Null:C1517)
+							$class_o.personneSelection:=This:C1470.personneSelection.and($class_o.personneSelection)
+						End if 
+						
+						If ($class_o.personneSelection.length>0)  // Des personnes de ma sélection sont bien en mailing marketing
+							
+							If ($cleValeur_o.value=True:C214)  // Si dans les conditions, l'utisateur souhaite uniquement les personnes en mailing marketing
+								$personne_o:=$personne_o.and($class_o.personneSelection)
+							Else 
+								$personne_o:=$personne_o.minus($class_o.personneSelection)
+							End if 
+							
+						Else 
+							
+							If ($cleValeur_o.value=True:C214)  // Si dans les conditions, l'utisateur souhaite uniquement les personnes en mailing marketing
+								$personne_o:=ds:C1482[Storage:C1525.automation.passerelle.tableHote].newSelection()
+							End if 
+							
+						End if 
+						
 					End if 
 					
 				: ($cleValeur_o.key="sansIBAN")
@@ -255,7 +273,6 @@ Function searchPersonToScenario($provenance_el : Integer)
 					
 				: ($cleValeur_o.key="telMobile")
 					// Instanciation de la class
-					$class_o:=cmaToolGetClass("MAPersonneSelection").new()
 					$class_o.loadByField("telMobile"; "#"; "")
 					
 					// Modifié par : Rémy Scanu (10/05/2021)

@@ -15,6 +15,38 @@ Historique
 27/01/21 - Rémy Scanu remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
 	
+Function listBoxMetaInfo($personne_o; $scenario_o : Object; $personneSel_es; $personneCurrentID_t)->$status_o : Object
+/*------------------------------------------------------------------------------
+Fonction : CaPersonneScenarioEntity.listBoxMetaInfo
+	
+Gestion des couleurs dans la liste
+	
+Historique
+29/11/24 - Rémy Scanu <remy@connect-io.fr> - Création
+------------------------------------------------------------------------------*/
+	var $inactif_b : Boolean
+	var $caPersonnesScenario_es : Object
+	
+	$status_o:=New object:C1471()
+	$caPersonnesScenario_es:=$personne_o.AllCaPersonneScenario.query("scenarioID = :1"; $scenario_o.getKey())
+	
+	If ($caPersonnesScenario_es.length=1)
+		$inactif_b:=Not:C34($caPersonnesScenario_es.first().actif)
+	End if 
+	
+	Case of 
+		: ($personneSel_es#Null:C1517) && ($personneSel_es.length>0) && ($personneSel_es.contains($personne_o))
+			$status_o.fill:="blue"
+			$status_o.stroke:="white"
+		: ($personne_o.getKey()=$personneCurrentID_t)
+			$status_o.fill:="blue"
+			$status_o.stroke:="white"
+		: ($inactif_b=True:C214)
+			$status_o.stroke:="Red"
+		Else 
+			$status_o.stroke:="green"
+	End case 
+	
 Function manageFilter()->$collectionFiltered_v : Variant
 /*-----------------------------------------------------------------------------
 Fonction : MAPersonneSelection.manageFilter
@@ -96,6 +128,10 @@ Historique
 		$proprieteToOrder_t:=Replace string:C233($propriete_t; "imageSort"; "")
 		$proprieteToOrder_t:=cmaToolMinuscFirstChar($proprieteToOrder_t)
 		
+		If (Storage:C1525.automation.formule.getFieldName(Storage:C1525.automation.passerelle.champ; $proprieteToOrder_t)#"@(@)@")
+			$proprieteToOrder_t:=Storage:C1525.automation.formule.getFieldName(Storage:C1525.automation.passerelle.champ; $proprieteToOrder_t)
+		End if 
+		
 		Case of 
 			: (Picture size:C356(Form:C1466[$propriete_t])=Picture size:C356(Storage:C1525.automation.image["sort"]))
 				
@@ -167,8 +203,7 @@ Historique
 	$class_o:=cmaToolGetClass("MAPersonne").new()
 	$class_o.loadByPrimaryKey(Form:C1466.PersonneCurrentElement.UID)
 	
-	// S'il y a eu une mise à jour il faut modifier l'entité dans la liste
-	If (Form:C1466.MAPersonneSelection#Null:C1517)
+	If (Form:C1466.MAPersonneSelection#Null:C1517)  // S'il y a eu une mise à jour il faut modifier l'entité dans la liste
 		$collection_c:=OB Keys:C1719(Form:C1466.MAPersonneSelection.personneCollection[Form:C1466.PersonneCurrentPosition-1])
 		
 		For each ($propriete_t; $collection_c)
