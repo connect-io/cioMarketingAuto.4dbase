@@ -478,6 +478,8 @@
 					"verticalLineStroke": "#C9C9C9",
 					"showHeaders": false,
 					"fill": "#F5FBFF",
+					"hideSystemHighlight": true,
+					"metaSource": "Form:C1466.personneSelectionDisplayClass.listBoxMetaInfo(This:C1470; Form:C1466.donnee.scenarioDetail; Form:C1466.PersonneSelectedElement; Form:C1466.PersonneCurrentElement.ID)",
 					"columns": [
 						{
 							"header": {
@@ -695,11 +697,57 @@
 					"method": "ObjectMethods/statutCaPersonneScenario.4dm",
 					"class": "clickable",
 					"style": "roundedBevel"
+				},
+				"changeStatutPersonneScenario": {
+					"type": "button",
+					"text": "Changer le statut",
+					"top": 574,
+					"left": 410,
+					"width": 215,
+					"height": 30,
+					"events": [
+						"onClick",
+						"onMouseMove"
+					],
+					"method": "ObjectMethods/changeStatutPersonneScenario.4dm",
+					"class": "clickable",
+					"style": "roundedBevel"
+				},
+				"imageStatutScenario": {
+					"type": "input",
+					"left": 660,
+					"top": 50,
+					"width": 32,
+					"height": 32,
+					"dataSourceTypeHint": "picture",
+					"dataSource": "Form:C1466.imageStatutScenario",
+					"enterable": false,
+					"contextMenu": "none",
+					"pictureFormat": "proportionalCenter",
+					"fill": "transparent",
+					"borderStyle": "none",
+					"events": [
+						"onLoad",
+						"onClick",
+						"onMouseMove"
+					],
+					"method": "ObjectMethods/imageStatutScenario.4dm"
+				},
+				"Texte4": {
+					"type": "text",
+					"text": "Statut scénario",
+					"top": 58,
+					"left": 704,
+					"width": 150,
+					"height": 16,
+					"textAlign": "center",
+					"fontWeight": "bold",
+					"stroke": "#21759B"
 				}
 			}
 		}
 	],
-	"geometryStamp": 630,
+	"geometryStamp": 640,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",
