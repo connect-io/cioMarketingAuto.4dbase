@@ -30,11 +30,18 @@ If (Application type:C494#4D Remote mode:K5:5)
 	If ($1=True:C214)
 		
 		If (Application type:C494=4D Local mode:K5:1) | (Application type:C494=4D Volume desktop:K5:2)
-			CONFIRM:C162("Voulez-vous démarrer cronos (cioMarketingAutomation) ?"; "Oui"; "Non")
 			
-			If (OK=1)
-				$0.loadCronos()
+			$reponse_t:=Request:C163("Voulez-vous démarrer le composant marketing auto ?"+Char:C90(Carriage return:K15:38)+" Si oui merci d'écrire 'Cronos'")
+			
+			If (ok=0)
+				return 
 			End if 
+			
+			If ($reponse_t#"Cronos")
+				return 
+			End if 
+			
+			$0.loadCronos()
 			
 		Else 
 			$0.loadCronos()
