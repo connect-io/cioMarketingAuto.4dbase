@@ -40,6 +40,11 @@ Historique
 				Storage:C1525.automation.image:=OB Copy:C1225(This:C1470.image; ck shared:K85:29; Storage:C1525.automation)
 			End use 
 			
+			Use (Storage:C1525.automation.config)
+				Storage:C1525.automation.compteurAlerte:=New shared object:C1526
+			End use 
+			
+			This:C1470.reloadCompteurAlert()
 			This:C1470.loadPasserelle("Personne")
 			
 			// Chargement des conditions d'action et de saut pour les scènes d'un scénario
@@ -221,7 +226,7 @@ Historique
 -----------------------------------------------------------------------------*/
 	var $property_t; $indication_t : Text
 	var $numOrdre_el; $pos_el : Integer
-	var $continue_b; $saut_b; $sautEffectue_b; $finScenario_b : Boolean
+	var $continue_b; $saut_b; $sautEffectue_b; $finScenario_b; $stop_b : Boolean
 	var $dateRendezVous_d : Date
 	var $heureRendezVous_h : Time
 	var $table_o; $enregistrement_o; $caScenarioEvent_o; $scene_o; $sceneSuivante_o; $personne_o; $eMail_o; $config_o; $conditionAction_o; $conditionSaut_o; $scene_cs; $retour_o; \
@@ -239,9 +244,24 @@ Historique
 	$scene_cs:=cmaToolGetClass("MAScene").new()
 	$MAEMail_cs:=cmaToolGetClass("MAEMail").new("Support")
 	
-	For each ($enregistrement_o; $table_o)
+	For each ($enregistrement_o; $table_o) Until ($stop_b=True:C214)
 		Form:C1466.cronosMessage:="Gestion des scénarios..."+Char:C90(Line feed:K15:40)
 		Form:C1466.cronosMessage:=Form:C1466.cronosMessage+"Envoi de l'email automatique "+String:C10($enregistrement_o.indexOf($table_o)+1)+" / "+String:C10($table_o.length)
+		
+		// Mise en place de garde-fou
+		If (Storage:C1525.automation.compteurAlerte.courrier>=Storage:C1525.automation.config.conditionStopCronosManageScenario.courrier) | \
+			(Storage:C1525.automation.compteurAlerte.recommande>=Storage:C1525.automation.config.conditionStopCronosManageScenario.recommande) | \
+			(Storage:C1525.automation.compteurAlerte.mail>=Storage:C1525.automation.config.conditionStopCronosManageScenario.mail) | \
+			(Storage:C1525.automation.compteurAlerte.sms>=Storage:C1525.automation.config.conditionStopCronosManageScenario.sms)
+			$MAEMail_cs.to:=Storage:C1525.automation.config.support.eMail
+			
+			$MAEMail_cs.subject:="CioMarketingAutomation - Erreur alerte compteur dans fonction MarketingAutomation.cronosManageScenario()"
+			$MAEMail_cs.textBody:="Un des compteurs a été dépassé aujourd'hui, aucun autre mailing ne partira aujourd'hui"
+			$MAEMail_cs.send()
+			
+			$stop_b:=True:C214
+			continue
+		End if 
 		
 		$caScenarioEvent_o:=$enregistrement_o.AllCaScenarioEvent
 		
@@ -606,6 +626,10 @@ Historique
 							$config_o.externalReference.situation:=OB Copy:C1225($enregistrement_o.situation)
 						End if 
 						
+						Use (Storage:C1525.automation.compteurAlerte)
+							Storage:C1525.automation.compteurAlerte.mail+=1
+						End use 
+						
 						$retourB_o:=$personne_o.sendMailing($config_o)
 					: ($scene_o.action="Envoi SMS")  // L'action de la scène est l'envoi d'un SMS
 						$sms_o:=cmaToolGetClass("MASms").new(False:C215; New object:C1471("nom"; $collection_c[0].expediteur))
@@ -617,6 +641,10 @@ Historique
 							$config_o.externalReference.scene:=$scene_o.numOrdre
 							$config_o.externalReference.situation:=OB Copy:C1225($enregistrement_o.situation)
 						End if 
+						
+						Use (Storage:C1525.automation.compteurAlerte)
+							Storage:C1525.automation.compteurAlerte.sms+=1
+						End use 
 						
 						$retourB_o:=$personne_o.sendMailing($config_o)
 					: ($scene_o.action="Imprimer document")  // L'action de la scène est l'impression d'un document
@@ -662,6 +690,28 @@ Historique
 							
 							If ($courrier_o#Null:C1517)
 								$config_o.CourrierConfig:=$courrier_o
+							End if 
+							
+						End if 
+						
+						If ($config_o.CourrierConfig#Null:C1517)
+							
+							If ($collection_c[0].expediteur="Maileva")
+								
+								If (Bool:C1537($collection_c[0].sendingDetail.recommendedShipping)=True:C214)
+									
+									Use (Storage:C1525.automation.compteurAlerte)
+										Storage:C1525.automation.compteurAlerte.recommande+=1
+									End use 
+									
+								Else 
+									
+									Use (Storage:C1525.automation.compteurAlerte)
+										Storage:C1525.automation.compteurAlerte.courrier+=1
+									End use 
+									
+								End if 
+								
 							End if 
 							
 						End if 
@@ -941,3 +991,20 @@ Historique
 		End use 
 		
 	End if 
+	
+Function reloadCompteurAlert()
+/* -----------------------------------------------------------------------------
+Fonction : MarketingAutomation.reloadCompteurAlert
+	
+Remet à 0 des compteurs
+	
+Historique
+03/11/24 - Rémy Scanu <remy@connect-io.fr> - Création
+-----------------------------------------------------------------------------*/
+	
+	Use (Storage:C1525.automation.compteurAlerte)
+		Storage:C1525.automation.compteurAlerte.courrier:=0
+		Storage:C1525.automation.compteurAlerte.recommande:=0
+		Storage:C1525.automation.compteurAlerte.mail:=0
+		Storage:C1525.automation.compteurAlerte.sms:=0
+	End use 

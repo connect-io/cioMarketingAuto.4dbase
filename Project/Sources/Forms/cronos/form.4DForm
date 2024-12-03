@@ -48,7 +48,9 @@
 					"width": 147,
 					"height": 16,
 					"fontWeight": "bold",
-					"textDecoration": "underline"
+					"textDecoration": "underline",
+					"fontFamily": "Arial",
+					"fontSize": 13
 				},
 				"Form.cronosMessage": {
 					"type": "input",
@@ -78,7 +80,9 @@
 					],
 					"method": "ObjectMethods/Bouton.4dm",
 					"class": "clickable",
-					"style": "roundedBevel"
+					"style": "roundedBevel",
+					"fontFamily": "Arial",
+					"fontSize": 13
 				},
 				"inactivity": {
 					"type": "pictureButton",
@@ -96,11 +100,133 @@
 					"switchBackWhenReleased": true,
 					"useLastFrameAsDisabled": true,
 					"visibility": "hidden"
+				},
+				"Texte1": {
+					"type": "text",
+					"text": "Statistique du jour",
+					"top": 212,
+					"left": 10,
+					"width": 147,
+					"height": 16,
+					"fontWeight": "bold",
+					"textDecoration": "underline",
+					"fontFamily": "Arial",
+					"fontSize": 13
+				},
+				"Texte2": {
+					"type": "text",
+					"text": "Courrier :",
+					"top": 237,
+					"left": 10,
+					"width": 65,
+					"height": 16,
+					"fontWeight": "bold",
+					"textDecoration": "none",
+					"fontFamily": "Arial",
+					"fontSize": 13
+				},
+				"Texte3": {
+					"type": "text",
+					"text": "Recommandé :",
+					"top": 237,
+					"left": 102,
+					"width": 95,
+					"height": 16,
+					"fontWeight": "bold",
+					"textDecoration": "none",
+					"fontFamily": "Arial",
+					"fontSize": 13
+				},
+				"courrierAlerte": {
+					"type": "input",
+					"left": 74,
+					"top": 237,
+					"width": 25,
+					"height": 16,
+					"dataSource": "Storage:C1525.automation.compteurAlerte.courrier",
+					"enterable": false,
+					"contextMenu": "none",
+					"focusable": false,
+					"fill": "transparent",
+					"borderStyle": "none",
+					"fontFamily": "Arial",
+					"fontSize": 12
+				},
+				"recommandeAlerte": {
+					"type": "input",
+					"left": 197,
+					"top": 237,
+					"width": 33,
+					"height": 16,
+					"dataSource": "Storage:C1525.automation.compteurAlerte.recommande",
+					"enterable": false,
+					"contextMenu": "none",
+					"focusable": false,
+					"fill": "transparent",
+					"borderStyle": "none",
+					"fontFamily": "Arial",
+					"fontSize": 12,
+					"right": 230
+				},
+				"Texte4": {
+					"type": "text",
+					"text": "SMS :",
+					"top": 259,
+					"left": 10,
+					"width": 65,
+					"height": 16,
+					"fontWeight": "bold",
+					"textDecoration": "none",
+					"fontFamily": "Arial",
+					"fontSize": 13
+				},
+				"Texte5": {
+					"type": "text",
+					"text": "Mail :",
+					"top": 259,
+					"left": 102,
+					"width": 95,
+					"height": 16,
+					"fontWeight": "bold",
+					"textDecoration": "none",
+					"fontFamily": "Arial",
+					"fontSize": 13
+				},
+				"smsAlerte": {
+					"type": "input",
+					"left": 74,
+					"top": 259,
+					"width": 25,
+					"height": 16,
+					"dataSource": "Storage:C1525.automation.compteurAlerte.sms",
+					"enterable": false,
+					"contextMenu": "none",
+					"focusable": false,
+					"fill": "transparent",
+					"borderStyle": "none",
+					"fontFamily": "Arial",
+					"fontSize": 12
+				},
+				"mailAlerte": {
+					"type": "input",
+					"left": 197,
+					"top": 259,
+					"width": 33,
+					"height": 16,
+					"dataSource": "Storage:C1525.automation.compteurAlerte.mail",
+					"enterable": false,
+					"contextMenu": "none",
+					"focusable": false,
+					"fill": "transparent",
+					"borderStyle": "none",
+					"fontFamily": "Arial",
+					"fontSize": 12,
+					"right": 230
 				}
 			}
 		}
 	],
-	"geometryStamp": 73,
+	"geometryStamp": 139,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",

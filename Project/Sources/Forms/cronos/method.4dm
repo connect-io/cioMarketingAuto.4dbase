@@ -5,6 +5,7 @@ var $activityToday_c : Collection
 
 Case of 
 	: (Form event code:C388=On Load:K2:1)
+		Form:C1466.dateDemarrage:=Current date:C33
 		SET TIMER:C645(60)
 	: (Form event code:C388=On Timer:K2:25)
 		
@@ -61,6 +62,11 @@ Case of
 				Form:C1466.cronosMessage:=""
 				Form:C1466.cronosVerifScenario:=cs:C1710.MATimeStamp.me.get(Current date:C33; Current time:C178)+120  // On incrémente de 2 min
 			: (Form:C1466.cronosMessage="Gestion des process automatiques personnalisés journalier...")
+				
+				If (Form:C1466.dateDemarrage<Current date:C33)  // On ne réinitialise pas les compteurs le jour où on démarre cronos
+					Form:C1466.reloadCompteurAlert()
+				End if 
+				
 				Formula from string:C1601("_cmaGestionCronos(1)").call()
 				
 				Form:C1466.cronosMessage:=""
