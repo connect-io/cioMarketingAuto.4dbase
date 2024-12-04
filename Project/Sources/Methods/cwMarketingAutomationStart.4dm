@@ -31,6 +31,11 @@ If (Application type:C494#4D Remote mode:K5:5)
 		
 		If (Application type:C494=4D Local mode:K5:1) | (Application type:C494=4D Volume desktop:K5:2)
 			
+			If (String:C10(Storage:C1525.automation.config.nomMachine)#"") && (Get system info:C1571.machineName=String:C10(Storage:C1525.automation.config.nomMachine))  // Un contrôle sur le nom de la machine est présent sur le fichier de config
+				$0.loadCronos()
+				return 
+			End if 
+			
 			$reponse_t:=Request:C163("Voulez-vous démarrer le composant marketing auto ?"+Char:C90(Carriage return:K15:38)+" Si oui merci d'écrire 'Cronos'")
 			
 			If (ok=0)
@@ -42,7 +47,6 @@ If (Application type:C494#4D Remote mode:K5:5)
 			End if 
 			
 			$0.loadCronos()
-			
 		Else 
 			$0.loadCronos()
 		End if 
