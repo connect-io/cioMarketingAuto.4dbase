@@ -24,10 +24,8 @@ Historique
 19/05/21 - Rémy Scanu <remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
 	var $caScenarioEvent_o; $statut_o : Object
-	var $MAEMail_cs : Object
 	
 	ASSERT:C1129(This:C1470.scene#Null:C1517; "Impossible d'utiliser la fonction addScenarioEvent sans une scène de définie.")
-	
 	$caScenarioEvent_o:=ds:C1482["CaScenarioEvent"].new()
 	
 	$caScenarioEvent_o.personneScenarioID:=$personneScenarioID_v
@@ -92,14 +90,8 @@ Historique
 	$statut_o:=$caScenarioEvent_o.save()
 	
 	If ($action_t="Erreur@") | ($action_t="Autre")
-		$MAEMail_cs:=cmaToolGetClass("MAEMail").new("Support")
-		$MAEMail_cs.to:=Storage:C1525.automation.config.support.eMail
-		
-		$MAEMail_cs.subject:="CioMarketingAutomation - Erreur déroulement scénario d'une personne"
-		$MAEMail_cs.textBody:="Un problème a été détecté lors de l'éxécution de la scène "+String:C10(This:C1470.scene.numOrdre)+" dans le scénario "+This:C1470.scene.OneCaScenario.nom+\
-			" pour l'enregistrement [CaPersonneScenario] avec l'ID "+$personneScenarioID_v+" : "+$action_t+", "+$caScenarioEvent_o.information
-		
-		$MAEMail_cs.send()
+		cmaToolSendMessage({type: "mail"; role: "support"; expediteur: "Support"; subject: "CioMarketingAutomation - Erreur déroulement scénario d'une personne"; message: "Un problème a été détecté lors de l'éxécution de la scène "+String:C10(This:C1470.scene.numOrdre)+" dans le scénario "+This:C1470.scene.OneCaScenario.nom+\
+			" pour l'enregistrement [CaPersonneScenario] avec l'ID "+$personneScenarioID_v+" : "+$action_t+", "+$caScenarioEvent_o.information})
 	End if 
 	
 Function loadByPrimaryKey($sceneID_i : Integer)->$isOk_b : Boolean
@@ -1025,7 +1017,7 @@ Fonction : MAScene.manageNumOrdre
 Permet de contrôler si le numéro d'ordre renseigné est admissible ou pas
 	
 Historique
-01/05/21 - Rémy Scanu remy@connect-io.fr> - Création
+01/05/21 - Rémy Scanu <remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
 	var $table_o; $enregistrement_o; $return_o; $statut_o : Object
 	

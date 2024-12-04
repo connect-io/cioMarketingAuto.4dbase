@@ -5,7 +5,7 @@ Méthode : cmaToolGetClass
 Renvoie une class vers la base hôte.
 
 Historique
-05/03/21 - Rémy Scanu remy@connect-io.fr> - Création
+05/03/21 - Rémy Scanu <remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
 var $1 : Text  // Nom de la classe à renvoyer.
 var $0 : Object  // Objet de la class

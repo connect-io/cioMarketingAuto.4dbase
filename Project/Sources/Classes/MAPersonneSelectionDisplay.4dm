@@ -12,7 +12,7 @@ Fonction : MAPersonneSelectionDisplay.constructor
 Instanciation de la class MAPersonneSelectionDisplay pour le marketing automotion
 	
 Historique
-27/01/21 - Rémy Scanu remy@connect-io.fr> - Création
+27/01/21 - Rémy Scanu <remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
 	
 Function listBoxMetaInfo($personne_o; $scenario_o : Object; $personneSel_es; $personneCurrentID_t)->$status_o : Object

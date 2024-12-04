@@ -10,7 +10,6 @@ Historique
 -----------------------------------------------------------------------------*/
 // Déclarations
 var $error_o : Object
-var $eMail_o : cs:C1710.MAEMail
 
 ARRAY LONGINT:C221($code_ai; 0)
 ARRAY TEXT:C222($composantInterne_at; 0)
@@ -24,11 +23,4 @@ $error_o:=New object:C1471(\
 "ligne"; Error Line; \
 "code"; Error)
 
-$eMail_o:=cs:C1710.MAEMail.new("Support")
-
-$eMail_o.subject:="CioMarketingAutomation - Erreur envoi email"
-
-$eMail_o.to:=Storage:C1525.automation.config.support.eMail
-$eMail_o.textBody:="Détail de l'erreur : "+$error_o.libelle
-
-$eMail_o.send()
+cmaToolSendMessage({type: "mail"; role: "support"; expediteur: "Support"; subject: "CioMarketingAutomation - Erreur envoi email"; message: "Détail de l'erreur : "+$error_o.libelle})

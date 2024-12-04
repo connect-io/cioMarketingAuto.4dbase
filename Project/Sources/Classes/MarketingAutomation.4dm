@@ -234,7 +234,6 @@ Historique
 	var $collection_c; $detail_c; $champDate_c; $champHeure_c : Collection
 	
 	var $parameter_e; $parameter_es : Object
-	var $MAEMail_cs : Object
 	
 	ASSERT:C1129(This:C1470.cronosImage#Null:C1517; "Impossible d'utiliser la fonction cronosAction sans avoir lancer la fonction loadCronos avant")
 	
@@ -242,7 +241,6 @@ Historique
 	$table_o:=ds:C1482["CaPersonneScenario"].query("actif = :1 AND tsProchainCheck <= :2"; True:C214; cs:C1710.MATimeStamp.me.get(Current date:C33; Current time:C178))
 	
 	$scene_cs:=cmaToolGetClass("MAScene").new()
-	$MAEMail_cs:=cmaToolGetClass("MAEMail").new("Support")
 	
 	For each ($enregistrement_o; $table_o) Until ($stop_b=True:C214)
 		Form:C1466.cronosMessage:="Gestion des scénarios..."+Char:C90(Line feed:K15:40)
@@ -253,11 +251,11 @@ Historique
 			(Storage:C1525.automation.compteurAlerte.recommande>=Storage:C1525.automation.config.conditionStopCronosManageScenario.recommande) | \
 			(Storage:C1525.automation.compteurAlerte.mail>=Storage:C1525.automation.config.conditionStopCronosManageScenario.mail) | \
 			(Storage:C1525.automation.compteurAlerte.sms>=Storage:C1525.automation.config.conditionStopCronosManageScenario.sms)
-			$MAEMail_cs.to:=Storage:C1525.automation.config.support.eMail
+			cmaToolSendMessage({type: "mail"; role: "admin"; expediteur: "Support"; subject: "CioMarketingAutomation - Erreur alerte compteur dans fonction MarketingAutomation.cronosManageScenario()"; message: "Un des compteurs a été dépassé aujourd'hui."+\
+				" Voici les dernières statistiques d'envois : "+Char:C90(Carriage return:K15:38)+JSON Stringify:C1217(Storage:C1525.automation.compteurAlerte; *)})
+			cmaToolSendMessage({type: "sms"; role: "admin"; prestataire: "SMSBOX"; message: "CioMarketingAutomation - Compteur alerte dépassé sur machine "+Storage:C1525.automation.config.nomMachine})
 			
-			$MAEMail_cs.subject:="CioMarketingAutomation - Erreur alerte compteur dans fonction MarketingAutomation.cronosManageScenario()"
-			$MAEMail_cs.textBody:="Un des compteurs a été dépassé aujourd'hui, aucun autre mailing ne partira aujourd'hui"
-			$MAEMail_cs.send()
+			ASSERT:C1129(False:C215; "Envoi de mailing bloqué")
 			
 			$stop_b:=True:C214
 			continue
@@ -728,13 +726,8 @@ Historique
 					$continue_b:=Bool:C1537($retourB_o.success)
 					
 					If ($continue_b=False:C215)
-						$MAEMail_cs.to:=Storage:C1525.automation.config.support.eMail
-						
-						$MAEMail_cs.subject:="CioMarketingAutomation - Erreur action "+$scene_o.action+" dans fonction MarketingAutomation.cronosManageScenario()"
-						$MAEMail_cs.textBody:="Un problème a été détecté lors de l'éxécution de la scène "+String:C10($scene_o.numOrdre)+" dans le scénario "+$scene_o.OneCaScenario.nom+\
-							" pour l'enregistrement [CaPersonneScenario] avec l'ID "+$enregistrement_o.ID+" : "+String:C10($retourB_o.erreurDetail)
-						
-						$MAEMail_cs.send()
+						cmaToolSendMessage({type: "mail"; role: "support"; expediteur: "Support"; subject: "CioMarketingAutomation - Erreur action "+$scene_o.action+" dans fonction MarketingAutomation.cronosManageScenario()"; message: "Un problème a été détecté lors de l'éxécution de la scène "+String:C10($scene_o.numOrdre)+" dans le scénario "+$scene_o.OneCaScenario.nom+\
+							" pour l'enregistrement [CaPersonneScenario] avec l'ID "+$enregistrement_o.ID+" : "+String:C10($retourB_o.erreurDetail)})
 					End if 
 					
 				End if 

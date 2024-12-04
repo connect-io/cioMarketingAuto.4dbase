@@ -96,7 +96,7 @@ Obtenir un token pour faire des requêtes à Maileva au format JWT
 Dans l'entête HTTP pour utiliser l'API il faut mettre : $option_o.headers.Authorization:="Bearer "+String(This.token)
 	
 Historique
-06/09/24 - Rémy Scanu remy@connect-io.fr> - Création
+06/09/24 - Rémy Scanu <remy@connect-io.fr> - Création
 ------------------------------------------------------------------------------*/
 	var $url_t; $parameter_t : Text
 	var $body_b : Blob
@@ -137,7 +137,7 @@ Fonction : APIMaileva.request()
 Fait une requête simple
 	
 Historique
-18/06/24 - Rémy Scanu remy@connect-io.fr> - Création
+18/06/24 - Rémy Scanu <remy@connect-io.fr> - Création
 ------------------------------------------------------------------------------*/
 	var $property_t; $url_t; $boundary_t : Text
 	var $body_b : Blob

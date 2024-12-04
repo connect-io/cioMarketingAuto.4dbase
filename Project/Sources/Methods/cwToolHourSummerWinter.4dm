@@ -5,7 +5,7 @@ Méthode : c(io)w(eb)ToolHourSummerWinter
 Permet de savoir s'il faut rajouter ou enlever 1h suivant l'heure d'hiver ou d'été de la machine
 
 Historique
-13/07/20 - Rémy Scanu remy@connect-io.fr> - Création
+13/07/20 - Rémy Scanu <remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
 var $1 : Date
 var $0 : Integer

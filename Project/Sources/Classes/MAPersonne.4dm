@@ -885,7 +885,7 @@ Historique
 	var $continue_b : Boolean
 	var $autreTable_o; $caScenarioEvents_o; $caScenarioEvent_o; $caScenarioPersonne_o; $statut_o : Object
 	
-	var $scene_cs; $MAEMail_cs : Object
+	var $scene_cs : Object
 	
 	var $caPersonneMarketing_e : Object
 	var $caPersonneMarketing_es : Object
@@ -1017,7 +1017,6 @@ Historique
 		: ($provenance_el=2)  // On souhaite mettre à jour un des event (opened, clicked ou bounce)
 			
 			If ($retour_o.success=False:C215)
-				$MAEMail_cs:=cmaToolGetClass("MAEMail").new("Support")
 				
 				Case of 
 					: (String:C10($detail_o.eventNumber)="3")
@@ -1028,12 +1027,7 @@ Historique
 						$event_t:="Bounce"
 				End case 
 				
-				$MAEMail_cs.to:=Storage:C1525.automation.config.support.eMail
-				
-				$MAEMail_cs.subject:="CioMarketingAutomation - Erreur mise à jour table [CaPersonneMarketing]"
-				$MAEMail_cs.textBody:="Impossible de mettre à jour la table marketing pour l'event "+$event_t+" dans la fiche de "+This:C1470.nomComplet+" (ID : "+This:C1470.UID+")"
-				
-				$MAEMail_cs.send()
+				cmaToolSendMessage({type: "mail"; role: "support"; expediteur: "Support"; subject: "CioMarketingAutomation - Erreur mise à jour table [CaPersonneMarketing]"; message: "Impossible de mettre à jour la table marketing pour l'event "+$event_t+" dans la fiche de "+This:C1470.nomComplet+" (ID : "+This:C1470.UID+")"})
 			End if 
 			
 	End case 
