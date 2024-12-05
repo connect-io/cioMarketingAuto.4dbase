@@ -218,6 +218,7 @@
 					"horizontalLineStroke": "transparent",
 					"verticalLineStroke": "transparent",
 					"alternateFill": "#E1F2FC",
+					"showFooters": true,
 					"columns": [
 						{
 							"header": {
@@ -847,26 +848,11 @@
 					"fontSize": 18,
 					"stroke": "#FFFFFF",
 					"textAlign": "left"
-				},
-				"Zone de saisie": {
-					"type": "input",
-					"left": 364,
-					"top": 9,
-					"width": 212,
-					"height": 22,
-					"dataSource": "\"Résultat (\"+String:C10(Form:C1466.scenario.length)+\")\"",
-					"fontSize": 18,
-					"fill": "transparent",
-					"borderStyle": "none",
-					"stroke": "#FFFFFF",
-					"enterable": false,
-					"focusable": false,
-					"contextMenu": "automatic"
 				}
 			}
 		}
 	],
-	"geometryStamp": 856,
+	"geometryStamp": 857,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",

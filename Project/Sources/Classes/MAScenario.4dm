@@ -55,11 +55,10 @@ Function loadScenarioDisplay($scenarioID_t : Text)
 		This:C1470.loadAllScenario()
 	Else 
 		This:C1470.loadByPrimaryKey($scenarioID_t)
-		
 		This:C1470.disabledCreateDeleteScenarioButton:=True:C214
 	End if 
 	
-	cwToolWindowsForm("gestionScenario"; New object:C1471("ecartHautEcran"; 30; "ecartBasEcran"; 90); This:C1470)
+	cwToolWindowsForm("gestionScenario"; "center"; This:C1470)
 	
 Function loadByPrimaryKey($id_t : Text)
 	

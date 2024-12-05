@@ -369,10 +369,10 @@ Historique
 Function sendMailing($configPreCharge_o : Object) : Object
 	var $canalEnvoi_t; $corps_t; $mime_t; $propriete_t; $retour_t; $strategy_t; $attchmentPath_t; $type_t : Text
 	var $i_el : Integer
-	var $erreur_b; $printSetting_b; $notifScenario_b; $npai_b : Boolean
+	var $erreur_b; $printSetting_b; $npai_b : Boolean
 	var $date_d : Date
 	var $time_t : Time
-	var $class_o; $config_o; $mime_o; $statut_o; $wpVar_o; $fichier_o; $signature_o; $document_o; $entity_e; $param_o; $body_o; $externalReference_o; $retour_o; $extraDetail_o : Object
+	var $class_o; $config_o; $mime_o; $statut_o; $wpVar_o; $fichier_o; $signature_o; $document_o; $entity_e; $param_o; $body_o; $externalReference_o; $retour_o; $extraDetail_o; $pieceJointe_o : Object
 	var $transporter_c; $detail_c; $context_c; $collection_c : Collection
 	var $file_f : 4D:C1709.File
 	
@@ -426,7 +426,7 @@ Function sendMailing($configPreCharge_o : Object) : Object
 				$document_o:=WP New:C1317($config_o.contenu4WP)
 			End if 
 			
-			If ($config_o.externalReference#Null:C1517)
+			If ($config_o.externalReference#Null:C1517) && ($config_o.externalReference.table#Null:C1517)
 				$parameter_e:=ds:C1482[$config_o.externalReference.table].get($config_o.externalReference.ID)
 				
 				If ($parameter_e#Null:C1517)
@@ -523,6 +523,49 @@ Function sendMailing($configPreCharge_o : Object) : Object
 						End if 
 						
 						$config_o.eMailConfig.to:=This:C1470.eMail
+						
+						If (Bool:C1537($config_o.pieceJointeEmail)=True:C214)  // L'utilisateur souhaite attacher une pièce-jointe
+							
+							If ($config_o.pieceJointe.contenu4WP#Null:C1517) || ($config_o.pieceJointe.externalReference#Null:C1517)
+								$folder_f:=Folder:C1567(fk resources folder:K87:11; *).folder("TEMP")
+								
+								If ($folder_f.exists=False:C215)
+									$folder_f.create()
+								End if 
+								
+								$file_f:=$folder_f.file(Generate UUID:C1066+".pdf")
+								
+								Case of 
+									: ($config_o.pieceJointe.externalReference#Null:C1517)
+										$parameter_e:=ds:C1482[$config_o.pieceJointe.externalReference.table].get($config_o.pieceJointe.externalReference.ID)
+										
+										If ($parameter_e#Null:C1517)
+											$pieceJointe_o:=WP New:C1317($parameter_e.value_b)
+											
+											If ($parameter_e.formula#"")
+												$formule_f:=Formula from string:C1601($parameter_e.formula)
+												
+												Case of 
+													: ($config_o.externalReference.situation#Null:C1517)  // Concerne un scénario, On prend le même dataContext que l'email
+														$detail_c:=$config_o.externalReference.situation.detail.query("scene = :1"; $config_o.externalReference.scene)
+														WP SET DATA CONTEXT:C1786($pieceJointe_o; $formule_f.call({value: $detail_c[0].externalReference}))
+												End case 
+												
+											End if 
+											
+										End if 
+										
+									: ($config_o.pieceJointe.contenu4WP#Null:C1517)
+										$pieceJointe_o:=$config_o.pieceJointe.contenu4WP
+								End case 
+								
+								WP COMPUTE FORMULAS:C1707($pieceJointe_o)
+								WP EXPORT DOCUMENT:C1337($pieceJointe_o; $file_f.platformPath; wk pdf:K81:315)
+								
+								$config_o.eMailConfig.attachmentsPath_c.push($file_f.platformPath)
+							End if 
+							
+						End if 
 						
 						ON ERR CALL:C155("outilsCatchErrorSendMail")
 						

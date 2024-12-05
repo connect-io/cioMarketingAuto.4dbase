@@ -249,11 +249,41 @@
 					],
 					"method": "ObjectMethods/configEnvoiCourrier.4dm",
 					"class": "clickable"
+				},
+				"pieceJointeEmail": {
+					"type": "checkbox",
+					"text": "PJ Email",
+					"top": 110,
+					"left": 274,
+					"width": 90,
+					"height": 20,
+					"events": [
+						"onClick"
+					],
+					"dataSourceTypeHint": "boolean",
+					"dataSource": "Form:C1466.pieceJointeEmail",
+					"method": "ObjectMethods/pieceJointeEmail.4dm"
+				},
+				"configPieceJointeEmail": {
+					"type": "pictureButton",
+					"left": 274,
+					"top": 130,
+					"width": 20,
+					"height": 20,
+					"events": [
+						"onClick",
+						"onMouseMove"
+					],
+					"picture": "/RESOURCES/Images/logo-wp.png",
+					"method": "ObjectMethods/configPieceJointeEmail.4dm",
+					"loopBackToFirstFrame": true,
+					"switchBackWhenReleased": true,
+					"useLastFrameAsDisabled": true
 				}
 			}
 		}
 	],
-	"geometryStamp": 498,
+	"geometryStamp": 527,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",

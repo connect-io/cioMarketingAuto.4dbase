@@ -230,7 +230,7 @@ Historique
 	var $dateRendezVous_d : Date
 	var $heureRendezVous_h : Time
 	var $table_o; $enregistrement_o; $caScenarioEvent_o; $scene_o; $sceneSuivante_o; $personne_o; $eMail_o; $config_o; $conditionAction_o; $conditionSaut_o; $scene_cs; $retour_o; \
-		$autreTable_o; $autreEnregistrement_o; $caPersonneMarketing_o; $document_o; $sms_o; $courrier_o; $retourB_o; $notif_o; $rendezVous_o : Object
+		$autreTable_o; $autreEnregistrement_o; $caPersonneMarketing_o; $document_o; $sms_o; $courrier_o; $retourB_o; $notif_o; $pieceJointe_o; $rendezVous_o : Object
 	var $collection_c; $detail_c; $champDate_c; $champHeure_c : Collection
 	
 	var $parameter_e; $parameter_es : Object
@@ -340,7 +340,6 @@ Historique
 				Else   // Pas de scène, la dernière scène du scénario n'a pas pu se jouer fin du spectacle evacuation de la salle...
 					$finScenario_b:=True:C214
 				End if 
-				
 				
 			End if 
 			
@@ -608,6 +607,12 @@ Historique
 				Case of 
 					: ($scene_o.action="Attente")  // L'action de la scène est juste une attente d'un certains délai... on créé donc le log
 					: ($scene_o.action="Envoi email")  // L'action de la scène est l'envoi d'un email
+						$pieceJointe_o:=New object:C1471
+						
+						If ($collection_c[0].pieceJointe#Null:C1517)
+							$pieceJointe_o:=$collection_c[0].pieceJointe
+						End if 
+						
 						$eMail_o:=cmaToolGetClass("MAEMail").new($collection_c[0].expediteur)
 						$eMail_o.subject:=$collection_c[0].subject
 						
@@ -615,10 +620,14 @@ Historique
 							$eMail_o.bcc:=String:C10($collection_c[0].cc)
 						End if 
 						
-						$config_o:=New object:C1471("success"; True:C214; "type"; "Email"; "eMailConfig"; $eMail_o; "contenu4WP"; $document_o; "expediteur"; $collection_c[0].expediteur)
+						$config_o:=New object:C1471("success"; True:C214; "type"; "Email"; "eMailConfig"; $eMail_o; "contenu4WP"; $document_o; "expediteur"; $collection_c[0].expediteur; "pieceJointeEmail"; Bool:C1537($collection_c[0].pieceJointeEmail); "pieceJointe"; $pieceJointe_o)
 						
-						If ($collection_c[0].externalReference#Null:C1517)
-							$config_o.externalReference:=OB Copy:C1225($collection_c[0].externalReference)
+						If ($collection_c[0].externalReference#Null:C1517) | ($pieceJointe_o.externalReference#Null:C1517)
+							$config_o.externalReference:=New object:C1471
+							
+							If ($collection_c[0].externalReference#Null:C1517)
+								$config_o.externalReference:=OB Copy:C1225($collection_c[0].externalReference)
+							End if 
 							
 							$config_o.externalReference.scene:=$scene_o.numOrdre
 							$config_o.externalReference.situation:=OB Copy:C1225($enregistrement_o.situation)
@@ -679,8 +688,12 @@ Historique
 						If ($continue_b=True:C214)
 							$config_o:=New object:C1471("success"; True:C214; "type"; "Courrier"; "contenu4WP"; $document_o; "notifEmail"; Bool:C1537($collection_c[0].notifEmail); "notif"; $notif_o)
 							
-							If ($collection_c[0].externalReference#Null:C1517)
-								$config_o.externalReference:=OB Copy:C1225($collection_c[0].externalReference)
+							If ($collection_c[0].externalReference#Null:C1517) | ($notif_o.externalReference#Null:C1517)
+								$config_o.externalReference:=New object:C1471
+								
+								If ($collection_c[0].externalReference#Null:C1517)
+									$config_o.externalReference:=OB Copy:C1225($collection_c[0].externalReference)
+								End if 
 								
 								$config_o.externalReference.scene:=$scene_o.numOrdre
 								$config_o.externalReference.situation:=OB Copy:C1225($enregistrement_o.situation)

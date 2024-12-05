@@ -75,6 +75,9 @@ If (Form event code:C388=On Data Change:K2:15)
 				
 				OBJECT SET ENTERABLE:C238(*; "modeleObjetEmail"; True:C214)
 				OBJECT SET ENTERABLE:C238(*; "modeleCCEmail"; True:C214)
+				
+				Form:C1466.pieceJointeEmail:=Bool:C1537($elementSelected_o.pieceJointeEmail)
+				OBJECT SET ENABLED:C1123(*; "configPieceJointeEmail"; Form:C1466.pieceJointeEmail)
 			: (Lowercase:C14(Form:C1466.sceneTypeSelected)="sms")
 				Form:C1466.smsMarketing:=Bool:C1537($elementSelected_o.smsMarketing)
 			: (Lowercase:C14(Form:C1466.sceneTypeSelected)="courrier")
@@ -102,6 +105,7 @@ If (Form event code:C388=On Data Change:K2:15)
 		OBJECT SET ENTERABLE:C238(*; "modeleCCEmail"; False:C215)
 		
 		Form:C1466.smsMarketing:=False:C215
+		Form:C1466.pieceJointeEmail:=False:C215
 		Form:C1466.notifEmail:=False:C215
 	End if 
 	
