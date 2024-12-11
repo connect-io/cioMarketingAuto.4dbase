@@ -521,7 +521,8 @@ Function newScene($nom_t : Text; $action_t : Text)->$return_b : Boolean
 	End if 
 	
 	$caScene_o.numOrdre:=(This:C1470.scenarioDetail.AllCaScene.length)+1
-	$caScene_o.paramAction:=New object:C1471("modele"; New object:C1471("email"; New object:C1471("version"; New collection:C1472); "sms"; New object:C1471("version"; New collection:C1472); "courrier"; New object:C1471("version"; New collection:C1472)))
+	$caScene_o.paramAction:=New object:C1471("modele"; New object:C1471("email"; New object:C1471("version"; New collection:C1472); "sms"; New object:C1471("version"; New collection:C1472); "courrier"; New object:C1471("version"; New collection:C1472)); \
+		"formule"; New object:C1471("detail"; ""; "contexte"; "Aucun"))
 	
 	$caScene_o.conditionAction:=New object:C1471()
 	$caScene_o.conditionSaut:=New object:C1471()
@@ -530,9 +531,51 @@ Function newScene($nom_t : Text; $action_t : Text)->$return_b : Boolean
 	
 	If ($retour_o.success=True:C214)
 		This:C1470.sceneDetail:=$caScene_o
+		
+		// Il faut mettre à jour tous les enregistrements de la table [CaPersonneScenario] au cas où il y a une external référence déjà en place
+		This:C1470.updataCaPersonneScenarioRecordExternalReference(This:C1470.sceneDetail.scenarioID)
 	End if 
 	
 	$return_b:=$retour_o.success
+	
+Function updataCaPersonneScenarioRecordExternalReference($scenarioID_t : Text)
+	var $externalReference_t : Text
+	var $i_el; $length_el; $moduloProgress_el; $j_el : Integer
+	var $retour_o : Object
+	
+	var $caPersonneScenario_e : Object
+	var $caPersonneScenario_es : Object
+	
+	$caPersonneScenario_es:=ds:C1482["CaPersonneScenario"].query("scenarioID = :1"; $scenarioID_t)
+	
+	$length_el:=$caPersonneScenario_es.length
+	$moduloProgress_el:=Round:C94($length_el/5; 0)
+	
+	cmaProgressBar(0; "Initialisation"; True:C214)
+	
+	For each ($caPersonneScenario_e; $caPersonneScenario_es)
+		
+		If ($j_el%$moduloProgress_el=0)
+			cmaProgressBar(($j_el/$length_el); "Mise à jour des enregistrements en cours..."; True:C214)
+		End if 
+		
+		If ($caPersonneScenario_e.situation.detail.length>0)
+			$externalReference_t:=$caPersonneScenario_e.situation.detail[0].externalReference
+			This:C1470.scenarioDetail.reload()
+			
+			$caPersonneScenario_e.situation:=New object:C1471("detail"; New collection:C1472)
+			
+			For ($i_el; 1; This:C1470.scenarioDetail.AllCaScene.length)
+				$caPersonneScenario_e.situation.detail.push(New object:C1471("scene"; $i_el; "externalReference"; $externalReference_t))
+			End for 
+			
+			$retour_o:=$caPersonneScenario_e.save()
+		End if 
+		
+		$j_el+=1
+	End for each 
+	
+	cmaProgressBar(1; "arrêt")
 	
 Function updateStringSceneForm($provenance_el : Integer)
 	var $personne_o; $personneB_o : Object
