@@ -69,6 +69,9 @@ Historique
 		: ($action_t="Erreur téléphone mobile")
 			$caScenarioEvent_o.etat:="Terminé"
 			$caScenarioEvent_o.information:="Le téléphone mobile renseigné n'est pas au bon format"
+		: ($action_t="Erreur formule")
+			$caScenarioEvent_o.etat:="Terminé"
+			$caScenarioEvent_o.information:="La formule dans la scène n'est pas renseignée"
 		: ($action_t="Désabonnement") | ($action_t="Bounce")
 			$caScenarioEvent_o.etat:="Terminé"
 			

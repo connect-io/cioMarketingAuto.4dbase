@@ -232,6 +232,7 @@ Historique
 	var $table_o; $enregistrement_o; $caScenarioEvent_o; $scene_o; $sceneSuivante_o; $personne_o; $eMail_o; $config_o; $conditionAction_o; $conditionSaut_o; $scene_cs; $retour_o; \
 		$autreTable_o; $autreEnregistrement_o; $caPersonneMarketing_o; $document_o; $sms_o; $courrier_o; $retourB_o; $notif_o; $pieceJointe_o; $rendezVous_o : Object
 	var $collection_c; $detail_c; $champDate_c; $champHeure_c : Collection
+	var $state_v : Variant
 	
 	var $parameter_e; $parameter_es : Object
 	
@@ -460,6 +461,13 @@ Historique
 			
 			Case of 
 				: ($continue_b=False:C215)
+				: ($scene_o.action="Exécuter une formule")  // Si l'action de la scène est l'exécution d'une formule, on doit faire des vérifications de base
+					$continue_b:=(String:C10($scene_o.paramAction.formule.detail)#"")
+					
+					If ($continue_b=False:C215)
+						$scene_cs.addScenarioEvent("Erreur formule"; $enregistrement_o.ID; 0; "")
+					End if 
+					
 				: ($scene_o.action="Envoi email")  // Si l'action de la scène est l'envoi d'un email, on doit faire des vérifications de base
 					$continue_b:=(String:C10($personne_o.eMail)#"") & (cmaToolRegexValidate(1; String:C10($personne_o.eMail))=True:C214)  // Si la personne possède bien un email et qu'il est valide
 					
@@ -606,6 +614,19 @@ Historique
 				
 				Case of 
 					: ($scene_o.action="Attente")  // L'action de la scène est juste une attente d'un certains délai... on créé donc le log
+					: ($scene_o.action="Exécuter une formule")  // L'action de la scène est l'exécution d'une formule
+						$config_o:=New object:C1471()
+						
+						If ($scene_o.paramAction.formule.contexte="External référence du champ [CaPersonneScenario]situation.detail")
+							$detail_c:=$enregistrement_o.situation.detail.query("scene = :1"; $scene_o.numOrdre)
+							
+							If ($detail_c.length=1)
+								$config_o.externalReference:=$detail_c[0].externalReference
+							End if 
+							
+							$state_v:=Formula from string:C1601($scene_o.paramAction.formule.detail).call($config_o)
+						End if 
+						
 					: ($scene_o.action="Envoi email")  // L'action de la scène est l'envoi d'un email
 						$pieceJointe_o:=New object:C1471
 						
