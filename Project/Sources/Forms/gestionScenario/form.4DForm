@@ -23,19 +23,19 @@
 					"type": "rectangle",
 					"top": 0,
 					"left": 0,
-					"width": 951,
+					"width": 980,
 					"height": 40,
 					"sizingX": "grow",
 					"stroke": "transparent",
 					"class": "accentBackColor3",
 					"fill": "#19294F",
-					"right": 951
+					"right": 980
 				},
 				"Rectangle2": {
 					"type": "rectangle",
 					"top": 40,
 					"left": 0,
-					"width": 951,
+					"width": 980,
 					"height": 649,
 					"stroke": "transparent"
 				}
@@ -46,7 +46,7 @@
 				"Rectangle1": {
 					"type": "rectangle",
 					"top": 58,
-					"left": 718,
+					"left": 748,
 					"width": 214,
 					"height": 578,
 					"fill": "transparent",
@@ -109,7 +109,7 @@
 					"type": "button",
 					"text": "Sauvegarder la scène",
 					"top": 646,
-					"left": 762,
+					"left": 792,
 					"width": 170,
 					"height": 30,
 					"events": [
@@ -347,7 +347,7 @@
 					"type": "listbox",
 					"left": 465,
 					"top": 58,
-					"width": 215,
+					"width": 245,
 					"height": 520,
 					"events": [
 						"onLoad",
@@ -382,9 +382,9 @@
 								"variableCalculation": "count",
 								"numberFormat": "##0 ligne.s"
 							},
-							"maxWidth": 200,
-							"width": 200,
-							"dataSource": "This:C1470.nom",
+							"maxWidth": 230,
+							"width": 230,
+							"dataSource": "\"Nom : \"+This:C1470.nom+\"\\rAction : \"+This:C1470.getActionEmoji()",
 							"textAlign": "center",
 							"enterable": false,
 							"wordwrap": "normal",
@@ -428,7 +428,7 @@
 					"type": "text",
 					"text": "Information sur la scène séléctionnée.",
 					"top": 63,
-					"left": 724,
+					"left": 754,
 					"width": 195,
 					"height": 31,
 					"borderStyle": "none",
@@ -436,7 +436,7 @@
 				},
 				"sceneDetailNom": {
 					"type": "input",
-					"left": 728,
+					"left": 758,
 					"top": 125,
 					"width": 195,
 					"height": 17,
@@ -453,7 +453,7 @@
 					"type": "text",
 					"text": "Nom",
 					"top": 102,
-					"left": 728,
+					"left": 758,
 					"width": 195,
 					"height": 16
 				},
@@ -461,7 +461,7 @@
 					"type": "text",
 					"text": "Action",
 					"top": 152,
-					"left": 728,
+					"left": 758,
 					"width": 195,
 					"height": 16
 				},
@@ -469,7 +469,7 @@
 					"type": "text",
 					"text": "Condition d'action",
 					"top": 488,
-					"left": 728,
+					"left": 758,
 					"width": 195,
 					"height": 16,
 					"visibility": "visible"
@@ -478,7 +478,7 @@
 					"type": "button",
 					"text": "Définir les conditions d'action",
 					"top": 511,
-					"left": 728,
+					"left": 758,
 					"width": 195,
 					"height": 25,
 					"events": [
@@ -494,7 +494,7 @@
 					"type": "text",
 					"text": "Condition de saut",
 					"top": 546,
-					"left": 728,
+					"left": 758,
 					"width": 195,
 					"height": 16,
 					"visibility": "visible"
@@ -503,7 +503,7 @@
 					"type": "button",
 					"text": "Définir les conditions de saut",
 					"top": 569,
-					"left": 728,
+					"left": 758,
 					"width": 195,
 					"height": 25,
 					"events": [
@@ -517,7 +517,7 @@
 				},
 				"sceneDetailPersonneEnCoursChaine": {
 					"type": "input",
-					"left": 726,
+					"left": 756,
 					"top": 607,
 					"width": 156,
 					"height": 14,
@@ -533,7 +533,7 @@
 					"type": "button",
 					"text": "Voir",
 					"top": 604,
-					"left": 888,
+					"left": 918,
 					"width": 36,
 					"height": 23,
 					"events": [
@@ -573,7 +573,7 @@
 					"type": "text",
 					"text": "Paramètre de la scène",
 					"top": 430,
-					"left": 728,
+					"left": 758,
 					"width": 195,
 					"height": 16
 				},
@@ -581,7 +581,7 @@
 					"type": "button",
 					"text": "Définir les paramètres",
 					"top": 453,
-					"left": 728,
+					"left": 758,
 					"width": 195,
 					"height": 25,
 					"events": [
@@ -596,13 +596,13 @@
 					"type": "text",
 					"text": "Scène suivante",
 					"top": 278,
-					"left": 728,
+					"left": 758,
 					"width": 195,
 					"height": 16
 				},
 				"sceneDetailSceneSuivanteDelai": {
 					"type": "input",
-					"left": 730,
+					"left": 760,
 					"top": 305,
 					"width": 61,
 					"height": 17,
@@ -613,7 +613,7 @@
 				},
 				"sceneDetailDelaiUp": {
 					"type": "pictureButton",
-					"left": 806,
+					"left": 836,
 					"top": 300,
 					"width": 13,
 					"height": 13,
@@ -629,7 +629,7 @@
 				},
 				"sceneDetailDelaiDown": {
 					"type": "pictureButton",
-					"left": 806,
+					"left": 836,
 					"top": 314,
 					"width": 13,
 					"height": 13,
@@ -645,7 +645,7 @@
 				},
 				"sceneDetailSceneSuivanteDelaiEchelle": {
 					"type": "input",
-					"left": 827,
+					"left": 857,
 					"top": 305,
 					"width": 69,
 					"height": 17,
@@ -656,7 +656,7 @@
 				},
 				"sceneDetailDelaiChangeEchelle": {
 					"type": "pictureButton",
-					"left": 906,
+					"left": 936,
 					"top": 305,
 					"width": 17,
 					"height": 17,
@@ -693,13 +693,13 @@
 					"type": "text",
 					"text": "Numéro d'ordre",
 					"top": 210,
-					"left": 728,
+					"left": 758,
 					"width": 195,
 					"height": 16
 				},
 				"sceneDetailNumOrdre": {
 					"type": "ruler",
-					"left": 728,
+					"left": 758,
 					"top": 233,
 					"width": 195,
 					"height": 28,
@@ -716,7 +716,7 @@
 				},
 				"sceneDetailSceneSuivanteID": {
 					"type": "dropdown",
-					"left": 728,
+					"left": 758,
 					"top": 337,
 					"width": 163,
 					"height": 25,
@@ -728,7 +728,7 @@
 				},
 				"sceneDetailAction": {
 					"type": "dropdown",
-					"left": 728,
+					"left": 758,
 					"top": 175,
 					"width": 195,
 					"height": 25,
@@ -756,7 +756,7 @@
 				},
 				"sceneDetailDeleteSceneSuivante": {
 					"type": "pictureButton",
-					"left": 898,
+					"left": 928,
 					"top": 337,
 					"width": 25,
 					"height": 25,
@@ -806,13 +806,13 @@
 					"type": "text",
 					"text": "Scénario suivant",
 					"top": 372,
-					"left": 728,
+					"left": 758,
 					"width": 195,
 					"height": 16
 				},
 				"sceneDetailScenarioSuivant": {
 					"type": "dropdown",
-					"left": 728,
+					"left": 758,
 					"top": 395,
 					"width": 163,
 					"height": 25,
@@ -824,7 +824,7 @@
 				},
 				"sceneDetailDeleteScenarioSuivant": {
 					"type": "pictureButton",
-					"left": 898,
+					"left": 928,
 					"top": 395,
 					"width": 25,
 					"height": 25,
@@ -852,7 +852,7 @@
 			}
 		}
 	],
-	"geometryStamp": 857,
+	"geometryStamp": 871,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",

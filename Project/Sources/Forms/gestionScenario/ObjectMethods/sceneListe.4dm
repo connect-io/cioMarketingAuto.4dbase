@@ -1,5 +1,5 @@
 var $pos_el : Integer
-var $table_o : Object
+var $table_o; $retour_o : Object
 var $collection_c : Collection
 
 ARRAY TEXT:C222(sceneSuivante_at; 0)
@@ -36,7 +36,7 @@ If (Form event code:C388=On Clicked:K2:4) & (Form:C1466.SceneCurrentElement#Null
 		sceneSuivante_at{0}:="Sélection de la scène suivante"
 	End if 
 	
-	cmaToolAddToArray(->sceneAction_at; "Attente"; "Envoi email"; "Envoi SMS"; "Imprimer document"; "Changement de scénario"; "Fin du scénario")
+	cmaToolAddToArray(->sceneAction_at; "Attente"; "Envoi email"; "Envoi SMS"; "Imprimer document"; "Exécuter une formule"; "Changement de scénario"; "Fin du scénario")
 	
 	If (Form:C1466.sceneDetail.action#"")
 		$pos_el:=Find in array:C230(sceneAction_at; Form:C1466.sceneDetail.action)
@@ -62,7 +62,7 @@ If (Form event code:C388=On Clicked:K2:4) & (Form:C1466.SceneCurrentElement#Null
 			scenarioSuivantID_at:=$pos_el
 			scenarioSuivantID_at{0}:=scenarioSuivantID_at{$pos_el}
 		Else   // ID scénario suivant inconnue...
-			TRACE:C157
+			ASSERT:C1129(True:C214; "ID du scénario suivant inconnue...")
 		End if 
 		
 	Else 
@@ -70,7 +70,6 @@ If (Form event code:C388=On Clicked:K2:4) & (Form:C1466.SceneCurrentElement#Null
 	End if 
 	
 	Form:C1466.updateStringSceneForm(1)
-	
 	OBJECT SET ENABLED:C1123(*; "sceneDetail@"; True:C214)
 	
 	// Si l'action de la scène est le changement de scénario, on ne peut pas éditer les infos pour mettre une scène suivante
