@@ -21,6 +21,9 @@ Case of
 			
 			Form:C1466.scene:=Form:C1466.scenarioDetail.AllCaScene.orderBy("numOrdre asc")
 			Form:C1466.sceneDetail:=Null:C1517
+			
+			// Il faut mettre à jour tous les enregistrements de la table [CaPersonneScenario] au cas où il y a une external référence déjà en place
+			Form:C1466.updataCaPersonneScenarioRecordExternalReference(Form:C1466.scenarioDetail.getKey())
 		End if 
 		
 	: (Form event code:C388=On Mouse Move:K2:35)
