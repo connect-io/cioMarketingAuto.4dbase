@@ -551,31 +551,34 @@ Function updataCaPersonneScenarioRecordExternalReference($scenarioID_t : Text)
 	$length_el:=$caPersonneScenario_es.length
 	$moduloProgress_el:=Round:C94($length_el/5; 0)
 	
-	cmaProgressBar(0; "Initialisation"; True:C214)
-	
-	For each ($caPersonneScenario_e; $caPersonneScenario_es)
+	If ($caPersonneScenario_es.length>0)
+		cmaProgressBar(0; "Initialisation"; True:C214)
 		
-		If ($j_el%$moduloProgress_el=0)
-			cmaProgressBar(($j_el/$length_el); "Mise à jour des enregistrements en cours..."; True:C214)
-		End if 
+		For each ($caPersonneScenario_e; $caPersonneScenario_es)
+			
+			If ($j_el%$moduloProgress_el=0)
+				cmaProgressBar(($j_el/$length_el); "Mise à jour des enregistrements en cours..."; True:C214)
+			End if 
+			
+			If ($caPersonneScenario_e.situation.detail.length>0)
+				$externalReference_t:=$caPersonneScenario_e.situation.detail[0].externalReference
+				This:C1470.scenarioDetail.reload()
+				
+				$caPersonneScenario_e.situation:=New object:C1471("detail"; New collection:C1472)
+				
+				For ($i_el; 1; This:C1470.scenarioDetail.AllCaScene.length)
+					$caPersonneScenario_e.situation.detail.push(New object:C1471("scene"; $i_el; "externalReference"; $externalReference_t))
+				End for 
+				
+				$retour_o:=$caPersonneScenario_e.save()
+			End if 
+			
+			$j_el+=1
+		End for each 
 		
-		If ($caPersonneScenario_e.situation.detail.length>0)
-			$externalReference_t:=$caPersonneScenario_e.situation.detail[0].externalReference
-			This:C1470.scenarioDetail.reload()
-			
-			$caPersonneScenario_e.situation:=New object:C1471("detail"; New collection:C1472)
-			
-			For ($i_el; 1; This:C1470.scenarioDetail.AllCaScene.length)
-				$caPersonneScenario_e.situation.detail.push(New object:C1471("scene"; $i_el; "externalReference"; $externalReference_t))
-			End for 
-			
-			$retour_o:=$caPersonneScenario_e.save()
-		End if 
-		
-		$j_el+=1
-	End for each 
-	
-	cmaProgressBar(1; "arrêt")
+		DELAY PROCESS:C323(Current process:C322; 120)
+		cmaProgressBar(1; "arrêt")
+	End if 
 	
 Function updateStringSceneForm($provenance_el : Integer)
 	var $personne_o; $personneB_o : Object
