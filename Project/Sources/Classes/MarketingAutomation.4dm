@@ -762,6 +762,9 @@ Historique
 					If ($continue_b=False:C215)
 						cmaToolSendMessage({type: "mail"; role: "support"; expediteur: "Support"; subject: "CioMarketingAutomation - Erreur action "+$scene_o.action+" dans fonction MarketingAutomation.cronosManageScenario()"; message: "Un problème a été détecté lors de l'éxécution de la scène "+String:C10($scene_o.numOrdre)+" dans le scénario "+$scene_o.OneCaScenario.nom+\
 							" pour l'enregistrement [CaPersonneScenario] avec l'ID "+$enregistrement_o.ID+" : "+String:C10($retourB_o.erreurDetail)})
+						
+						// On reprogramme l'exécution de la scène scène 1 jour après et pas toutes les 2 min comme actuellement histoire d'avoir le temps d'analyser le problème...
+						$enregistrement_o.tsProchainCheck:=cs:C1710.MATimeStamp.me.get(Current date:C33; Current time:C178)+86400
 					End if 
 					
 				End if 
