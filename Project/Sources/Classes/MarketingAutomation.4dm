@@ -264,87 +264,90 @@ Historique
 		
 		$caScenarioEvent_o:=$enregistrement_o.AllCaScenarioEvent
 		
-		If ($caScenarioEvent_o.length=0)  // Il n'y a pas encore de scène exécutée
-			$scene_o:=ds:C1482["CaScene"].query("scenarioID is :1 AND numOrdre = :2"; $enregistrement_o.scenarioID; 1)
-			
-			If ($scene_o.length=1)  // On a trouvé la première scène
-				$scene_o:=$scene_o.first()
-			Else   // Impossible de trouver la scène donc de la jouer...
-				CLEAR VARIABLE:C89($scene_o)
-			End if 
-			
-		Else   // S'il y a des logs pour le scénario de la personne, on va regarder parmis ceux-ci ceux qui ne sont pas terminés
-			$caScenarioEvent_o:=$caScenarioEvent_o.query("etat # :1"; "Terminé").orderBy("tsCreation desc")
-			
-			If ($caScenarioEvent_o.length>0)  // La dernière scène n'a pas pu se finir
-				$caScenarioEvent_o:=$caScenarioEvent_o.first()
+		Case of 
+			: ($enregistrement_o.OneCaScenario=Null:C1517) || ($enregistrement_o.OneCaScenario.actif=False:C215)  // Si le scénario n'existe plus ou n'est plus actif on arrête tout
+				$finScenario_b:=True:C214
+			: ($caScenarioEvent_o.length=0)  // Il n'y a pas encore de scène exécutée
+				$scene_o:=ds:C1482["CaScene"].query("scenarioID is :1 AND numOrdre = :2"; $enregistrement_o.scenarioID; 1)
 				
-				Case of 
-					: ($caScenarioEvent_o.etat="En cours")
-						$caScenarioEvent_o.etat:="Terminé"
-						$caScenarioEvent_o.tsMiseAJour:=cs:C1710.MATimeStamp.me.get(Current date:C33; Current time:C178)
-						
-						$retour_o:=$caScenarioEvent_o.save()
-						
-						Case of 
-							: ($caScenarioEvent_o.OneCaScene.sceneSuivanteID#0)  // On cherche la scène suivante
-								// On remonte du log à la scène puis à la scène suivante
-								$scene_o:=$caScenarioEvent_o.OneCaScene.OneCaSceneSuivante
-							: ($caScenarioEvent_o.OneCaScene.scenarioSuivantID#"00000000000000000000000000000000")  // On cherche le scénario suivant
-								// On remonte du log à la scène puis au scénario suivant puis à toutes les scènes
-								$scene_o:=$caScenarioEvent_o.OneCaScene.scenarioSuivantID.AllCaSceneScenarioSuivant.query("numOrdre = :1"; 1)
-								
-								If ($scene_o.length=1)  // On a trouvé la première scène
-									$scene_o:=$scene_o.first()
-								Else   // Impossible de trouver la scène donc de la jouer...
-									CLEAR VARIABLE:C89($scene_o)
-								End if 
-								
-							Else   // S'il n'y en a pas on regarde les deux différents cas
-								
-								If ($caScenarioEvent_o.OneCaScene.numOrdre=$caScenarioEvent_o.OneCaScene.OneCaScenario.AllCaScene.length)  // C'est la dernière scène du scénario et il manque la scène de fin, dommage pour le spectacle...
-									$scene_cs.loadByPrimaryKey($caScenarioEvent_o.OneCaScene.ID)
-									
-									// Ajout du log
-									$scene_cs.addScenarioEvent("Fin du scénario"; $enregistrement_o.ID; 0; "")
-									$finScenario_b:=True:C214
-								Else   // L'utilisateur a oublié de programmer une scène suivante
-									CLEAR VARIABLE:C89($scene_o)
-									$numOrdre_el:=$caScenarioEvent_o.OneCaScene.numOrdre
-									
-									// On recherche une scène jusqu'à trouver la bonne
-									Repeat 
-										$numOrdre_el:=$numOrdre_el+1
-										$scene_o:=$caScenarioEvent_o.OneCaScene.OneCaScenario.AllCaScene.query("numOrdre = :1"; $numOrdre_el)
-										
-										If ($scene_o.length=1)  // On a trouvé la bonne scène
-											$scene_o:=$scene_o.first()
-										End if 
-										
-									Until ($scene_o#Null:C1517) | ($numOrdre_el>100)
-									
-								End if 
-								
-						End case 
-						
-					: ($caScenarioEvent_o.etat="Évènement mailjet")  // Un évènement mailjet a été détecté
-						$scene_o:=$caScenarioEvent_o.OneCaScene
-				End case 
-				
-			Else   // Ce n'est pas normal de se retrouver dans ce cas-là, mais on va faire en sorte que lors du prochain passage cette personne n'y soit plus.
-				// On va essayer de jouer la scène suivante, si elle existe
-				$caScenarioEvent_o:=$enregistrement_o.AllCaScenarioEvent.orderBy("tsCreation desc")
-				$caScenarioEvent_o:=$caScenarioEvent_o.first()
-				
-				If ($caScenarioEvent_o.OneCaScene.OneCaSceneSuivante#Null:C1517)  // S'il y a une scène suivante
-					$scene_o:=$caScenarioEvent_o.OneCaScene.OneCaSceneSuivante
-				Else   // Pas de scène, la dernière scène du scénario n'a pas pu se jouer fin du spectacle evacuation de la salle...
-					$finScenario_b:=True:C214
+				If ($scene_o.length=1)  // On a trouvé la première scène
+					$scene_o:=$scene_o.first()
+				Else   // Impossible de trouver la scène donc de la jouer...
+					CLEAR VARIABLE:C89($scene_o)
 				End if 
 				
-			End if 
-			
-		End if 
+			Else   // S'il y a des logs pour le scénario de la personne, on va regarder parmis ceux-ci ceux qui ne sont pas terminés
+				$caScenarioEvent_o:=$caScenarioEvent_o.query("etat # :1"; "Terminé").orderBy("tsCreation desc")
+				
+				If ($caScenarioEvent_o.length>0)  // La dernière scène n'a pas pu se finir
+					$caScenarioEvent_o:=$caScenarioEvent_o.first()
+					
+					Case of 
+						: ($caScenarioEvent_o.etat="En cours")
+							$caScenarioEvent_o.etat:="Terminé"
+							$caScenarioEvent_o.tsMiseAJour:=cs:C1710.MATimeStamp.me.get(Current date:C33; Current time:C178)
+							
+							$retour_o:=$caScenarioEvent_o.save()
+							
+							Case of 
+								: ($caScenarioEvent_o.OneCaScene.sceneSuivanteID#0)  // On cherche la scène suivante
+									// On remonte du log à la scène puis à la scène suivante
+									$scene_o:=$caScenarioEvent_o.OneCaScene.OneCaSceneSuivante
+								: ($caScenarioEvent_o.OneCaScene.scenarioSuivantID#"00000000000000000000000000000000")  // On cherche le scénario suivant
+									// On remonte du log à la scène puis au scénario suivant puis à toutes les scènes
+									$scene_o:=$caScenarioEvent_o.OneCaScene.scenarioSuivantID.AllCaSceneScenarioSuivant.query("numOrdre = :1"; 1)
+									
+									If ($scene_o.length=1)  // On a trouvé la première scène
+										$scene_o:=$scene_o.first()
+									Else   // Impossible de trouver la scène donc de la jouer...
+										CLEAR VARIABLE:C89($scene_o)
+									End if 
+									
+								Else   // S'il n'y en a pas on regarde les deux différents cas
+									
+									If ($caScenarioEvent_o.OneCaScene.numOrdre=$caScenarioEvent_o.OneCaScene.OneCaScenario.AllCaScene.length)  // C'est la dernière scène du scénario et il manque la scène de fin, dommage pour le spectacle...
+										$scene_cs.loadByPrimaryKey($caScenarioEvent_o.OneCaScene.ID)
+										
+										// Ajout du log
+										$scene_cs.addScenarioEvent("Fin du scénario"; $enregistrement_o.ID; 0; "")
+										$finScenario_b:=True:C214
+									Else   // L'utilisateur a oublié de programmer une scène suivante
+										CLEAR VARIABLE:C89($scene_o)
+										$numOrdre_el:=$caScenarioEvent_o.OneCaScene.numOrdre
+										
+										// On recherche une scène jusqu'à trouver la bonne
+										Repeat 
+											$numOrdre_el:=$numOrdre_el+1
+											$scene_o:=$caScenarioEvent_o.OneCaScene.OneCaScenario.AllCaScene.query("numOrdre = :1"; $numOrdre_el)
+											
+											If ($scene_o.length=1)  // On a trouvé la bonne scène
+												$scene_o:=$scene_o.first()
+											End if 
+											
+										Until ($scene_o#Null:C1517) | ($numOrdre_el>100)
+										
+									End if 
+									
+							End case 
+							
+						: ($caScenarioEvent_o.etat="Évènement mailjet")  // Un évènement mailjet a été détecté
+							$scene_o:=$caScenarioEvent_o.OneCaScene
+					End case 
+					
+				Else   // Ce n'est pas normal de se retrouver dans ce cas-là, mais on va faire en sorte que lors du prochain passage cette personne n'y soit plus.
+					// On va essayer de jouer la scène suivante, si elle existe
+					$caScenarioEvent_o:=$enregistrement_o.AllCaScenarioEvent.orderBy("tsCreation desc")
+					$caScenarioEvent_o:=$caScenarioEvent_o.first()
+					
+					If ($caScenarioEvent_o.OneCaScene.OneCaSceneSuivante#Null:C1517)  // S'il y a une scène suivante
+						$scene_o:=$caScenarioEvent_o.OneCaScene.OneCaSceneSuivante
+					Else   // Pas de scène, la dernière scène du scénario n'a pas pu se jouer fin du spectacle evacuation de la salle...
+						$finScenario_b:=True:C214
+					End if 
+					
+				End if 
+				
+		End case 
 		
 		If ($scene_o#Null:C1517)  // Je dois vérifier si la scène est exécutable
 			
@@ -872,7 +875,7 @@ Historique
 			
 		End if 
 		
-		If ($finScenario_b=True:C214)  // Pas de scène "Fin de scénario" OU problème dans l'adresse email OU Désabonnement/Bounce
+		If ($finScenario_b=True:C214)  // Pas de scène "Fin de scénario" OU problème dans l'adresse email OU Désabonnement/Bounce OU scénario supprimé / plus actif
 			$enregistrement_o.actif:=False:C215
 			$enregistrement_o.tsProchainCheck:=0
 			$retour_o:=$enregistrement_o.save()
