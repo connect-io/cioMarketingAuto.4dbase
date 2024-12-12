@@ -572,7 +572,7 @@ Function sendMailing($configPreCharge_o : Object) : Object
 						$statut_o:=$config_o.eMailConfig.send()
 						$retour_t:=String:C10($statut_o.statusText)
 						
-						$erreur_b:=($retour_t#"ok@")
+						$erreur_b:=($retour_t#"@ok@")
 						
 						If ($config_o.eMailConfig.attachmentsPath_c#Null:C1517) && ($config_o.eMailConfig.attachmentsPath_c.length>0)
 							
