@@ -19,7 +19,7 @@ Historique
 	// Chargement des éléments nécessaires au bon fonctionnement de la classe par rapport à la table [Personne] de la base hote.
 	This:C1470.passerelle:=OB Copy:C1225(Storage:C1525.automation.config.passerelle.query("tableComposant = :1"; "Personne")[0])
 	
-Function addScenario($scenarioName_t : Text; $externalReference_t : Text)->$retour_o : Object
+Function addScenario($scenarioName_t : Text; $externalReference_t : Text) : Object
 /*-----------------------------------------------------------------------------
 Fonction : MAPersonne.addScenario
 	
@@ -29,51 +29,42 @@ Historique
 27/06/24 - Grégory Fromain <gregory@connect-io.fr> - Relecture de code
 ------------------------------------------------------------------------------*/
 	var $i_el : Integer
-	var $scenario_o; $caPersonneMarketing_o; $caPersonneScenario_o : Object
+	
+	var $caScenario_e : Object
+	var $caScenario_es : Object
+	
+	var $caPersonneScenario_e : Object
 	
 	ASSERT:C1129(This:C1470.personne#Null:C1517; "Impossible d'utiliser la fonction addScenario sans une personne de définie.")
 	
 	This:C1470.personne.reload()
-	$scenario_o:=ds:C1482["CaScenario"].query("nom = :1"; $scenarioName_t)
+	$caScenario_es:=ds:C1482["CaScenario"].query("nom = :1"; $scenarioName_t)
 	
-	// On vient lier la personne à un scénario
-	If ($scenario_o.length>0)
-		$scenario_o:=$scenario_o.first()
-		$caPersonneScenario_o:=ds:C1482["CaPersonneScenario"].new()
+	If ($caScenario_es.length=0)
+		return {success: False:C215; statusText: "Le scénario "+$scenarioName_t+" n'a pas pu être trouvé dans la base de données"}
+	End if 
+	
+	This:C1470.updateCaMarketingStatistic(0; New object:C1471)
+	This:C1470.personne.reload()
+	
+	$caScenario_e:=$caScenario_es.first()
+	$caPersonneScenario_e:=ds:C1482["CaPersonneScenario"].new()
+	
+	$caPersonneScenario_e.personneID:=This:C1470.personne.getKey()
+	$caPersonneScenario_e.scenarioID:=$caScenario_e.getKey()
+	
+	$caPersonneScenario_e.actif:=$caScenario_e.actif
+	$caPersonneScenario_e.situation:=New object:C1471("detail"; New collection:C1472)
+	
+	If ($externalReference_t#"")
 		
-		$caPersonneScenario_o.personneID:=This:C1470.personne.getKey()
-		$caPersonneScenario_o.scenarioID:=$scenario_o.getKey()
-		
-		$caPersonneScenario_o.actif:=$scenario_o.actif
-		$caPersonneScenario_o.situation:=New object:C1471("detail"; New collection:C1472)
-		
-		If ($externalReference_t#"")
-			
-			For ($i_el; 1; $caPersonneScenario_o.OneCaScenario.AllCaScene.length)
-				$caPersonneScenario_o.situation.detail.push(New object:C1471("scene"; $i_el; "externalReference"; $externalReference_t))
-			End for 
-			
-		End if 
-		
-		$retour_o:=$caPersonneScenario_o.save()
-		
-		If ($retour_o.success=False:C215)
-			return $retour_o
-		End if 
+		For ($i_el; 1; $caPersonneScenario_e.OneCaScenario.AllCaScene.length)
+			$caPersonneScenario_e.situation.detail.push(New object:C1471("scene"; $i_el; "externalReference"; $externalReference_t))
+		End for 
 		
 	End if 
 	
-	If (This:C1470.personne.AllCaPersonneMarketing.length=0)
-		$caPersonneMarketing_o:=ds:C1482["CaPersonneMarketing"].new()
-		
-		$caPersonneMarketing_o.personneID:=This:C1470.personne.getKey()
-		$caPersonneMarketing_o.rang:=1  // 1 pour Suspect
-		$caPersonneMarketing_o.historique:=New object:C1471("detail"; New collection:C1472)
-		
-		$retour_o:=$caPersonneMarketing_o.save()
-	End if 
-	
-	return $retour_o
+	return $caPersonneScenario_e.save()
 	
 Function getFieldName($field_t : Text)->$fieldName_t : Text
 	var $field_c : Collection
