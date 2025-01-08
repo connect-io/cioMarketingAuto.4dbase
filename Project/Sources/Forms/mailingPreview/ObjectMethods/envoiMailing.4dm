@@ -102,16 +102,25 @@ Case of
 							Form:C1466.Sms.date:=Form:C1466.date
 							Form:C1466.Sms.time:=Form:C1466.time
 							
-							$config_o:=New object:C1471("success"; True:C214; "type"; "SMS"; "SMSConfig"; Form:C1466.Sms; "contenu4WP"; $document_o; "smsMarketing"; True:C214)
+							$config_o:=New object:C1471("success"; True:C214; "type"; "SMS"; "SMSConfig"; Form:C1466.Sms; "contenu4WP"; $document_o; "smsMarketing"; Bool:C1537(Form:C1466.smsMarketing))
 						: ($canalEnvoi_t="Courrier")
 							$config_o:=New object:C1471("success"; True:C214; "type"; "Courrier"; "CourrierConfig"; Form:C1466.Courrier; "contenu4WP"; $document_o; "displayPrintSetting"; False:C215)
+					End case 
+					
+					If (String:C10(Form:C1466.wpFormula)#"") & (String:C10(Form:C1466.contextValue)#"")
+						CONFIRM:C162("Voulez-vous inclure le contexte "+String:C10(Form:C1466.contextValue)+" dans l'envoi du mailing ?"; "Oui"; "Non")
+						
+						If (OK=1)
+							$parameter_es:=Form:C1466.modele.query("wording = :1"; OBJECT Get pointer:C1124(Object named:K67:5; "modele")->currentValue)
 							
-							If (Form:C1466.contextValue#Null:C1517)
-								$config_o.externalReference:=New object:C1471("table"; "Parameter"; "field"; "wording"; "value"; OBJECT Get pointer:C1124(Object named:K67:5; "modele")->currentValue)
+							If ($parameter_es.length>0)
+								$config_o.externalReference:=New object:C1471("table"; "Parameter"; "field"; "wording"; "value"; OBJECT Get pointer:C1124(Object named:K67:5; "modele")->currentValue; "ID"; $parameter_es.first().getKey())
 								$config_o.contextValue:=Form:C1466.contextValue
 							End if 
 							
-					End case 
+						End if 
+						
+					End if 
 					
 					$retour_o:=$person_cs.sendMailing($config_o)
 					$statut_b:=Bool:C1537($retour_o.success)

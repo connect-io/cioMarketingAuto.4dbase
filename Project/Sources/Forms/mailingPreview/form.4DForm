@@ -1050,6 +1050,23 @@
 					"class": "accentColor2",
 					"height": 1,
 					"right": 595
+				},
+				"Case à cocher": {
+					"type": "checkbox",
+					"text": "SMS à caractère commercial / marketing",
+					"top": 672,
+					"left": 19,
+					"width": 576,
+					"height": 16,
+					"events": [
+						"onClick"
+					],
+					"dataSourceTypeHint": "boolean",
+					"right": 595,
+					"fontFamily": "Arial",
+					"fontSize": 14,
+					"fontWeight": "bold",
+					"dataSource": "Form:C1466.smsMarketing"
 				}
 			}
 		},
@@ -1091,7 +1108,9 @@
 					"dataSourceTypeHint": "boolean",
 					"dataSource": "",
 					"right": 230,
-					"method": "ObjectMethods/useCurrentPrinter.4dm"
+					"method": "ObjectMethods/useCurrentPrinter.4dm",
+					"fontFamily": "Arial",
+					"fontSize": 14
 				},
 				"Zone de saisie": {
 					"type": "input",
@@ -1228,7 +1247,9 @@
 					"dataSourceTypeHint": "boolean",
 					"dataSource": "Form:C1466.Courrier.color_printing",
 					"right": 451,
-					"method": "ObjectMethods/printColor.4dm"
+					"method": "ObjectMethods/printColor.4dm",
+					"fontFamily": "Arial",
+					"fontSize": 14
 				},
 				"configSend": {
 					"type": "button",
@@ -1250,7 +1271,7 @@
 			}
 		}
 	],
-	"geometryStamp": 1116,
+	"geometryStamp": 1125,
 	"editor": {
 		"activeView": "View 1",
 		"defaultView": "View 1",
