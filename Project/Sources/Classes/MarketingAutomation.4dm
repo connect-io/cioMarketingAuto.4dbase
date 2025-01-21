@@ -640,6 +640,15 @@ Historique
 						$eMail_o:=cmaToolGetClass("MAEMail").new($collection_c[0].expediteur)
 						$eMail_o.subject:=$collection_c[0].subject
 						
+						If ($eMail_o.subject="@[externalReferenceID]@") && ($enregistrement_o.situation#Null:C1517) && ($enregistrement_o.situation.detail#Null:C1517) && ($enregistrement_o.situation.detail.length>0)
+							$detail_c:=$enregistrement_o.situation.detail.query("scene = :1"; $scene_o.numOrdre)
+							
+							If ($detail_c.length=1)
+								
+							End if 
+							
+						End if 
+						
 						If (String:C10($collection_c[0].cc)#"")
 							$eMail_o.bcc:=String:C10($collection_c[0].cc)
 						End if 
@@ -826,8 +835,8 @@ Historique
 														If ($dateRendezVous_d-Abs:C99(Num:C11($indication_t))>Current date:C33)  // S'il y a plus d'un jour avant le prochain rendez-vous ou rappel
 															$enregistrement_o.tsProchainCheck:=cs:C1710.MATimeStamp.me.get($dateRendezVous_d-Abs:C99(Num:C11($indication_t)); ?09:00:00?)
 														Else   // Le rendez-vous ou rappel est dans moins d'1 jour impossible d'envoyer la confirmation de rendez-vous de la scène suivante
-															// On clot l'évenement de la scène qui vient de se jouer
 															
+															// On clot l'évenement de la scène qui vient de se jouer
 															If (String:C10($scene_o.OneCaScenario.configuration.type)="Rendez-vous")
 																$scene_cs.addScenarioEvent("Autre"; $enregistrement_o.ID; 0; "Le délai avant le rendez-vous du "+String:C10($dateRendezVous_d)+" est trop court")
 															Else 
@@ -860,9 +869,27 @@ Historique
 					: ($scene_o.tsAttente<86400)  // Si la prochaine scène est dans moins d'1 jour
 						$enregistrement_o.tsProchainCheck:=cs:C1710.MATimeStamp.me.get(Current date:C33; Current time:C178)+$scene_o.tsAttente
 					: (Storage:C1525.automation.config.reminderTime=Null:C1517)  // Si pas d'heure de relance renseignée dans le fichier de configuration on met les relances à 9h00
-						$enregistrement_o.tsProchainCheck:=cs:C1710.MATimeStamp.me.get(Current date:C33; ?09:00:00?)+$scene_o.tsAttente
+						
+						Case of 
+							: (String:C10($scene_o.paramAction.echelleDelai)="mois(s)")
+								$enregistrement_o.tsProchainCheck:=cs:C1710.MATimeStamp.me.get(Add to date:C393(Current date:C33; 0; Round:C94($scene_o.tsAttente/(86400*30); 0); 0); ?09:00:00?)
+							: (String:C10($scene_o.paramAction.echelleDelai)="année(s)")
+								$enregistrement_o.tsProchainCheck:=cs:C1710.MATimeStamp.me.get(Add to date:C393(Current date:C33; Round:C94($scene_o.tsAttente/(86400*365); 0); 0; 0); ?09:00:00?)
+							Else 
+								$enregistrement_o.tsProchainCheck:=cs:C1710.MATimeStamp.me.get(Current date:C33; ?09:00:00?)+$scene_o.tsAttente
+						End case 
+						
 					Else 
-						$enregistrement_o.tsProchainCheck:=cs:C1710.MATimeStamp.me.get(Current date:C33; Time:C179(Storage:C1525.automation.config.reminderTime))+$scene_o.tsAttente
+						
+						Case of 
+							: (String:C10($scene_o.paramAction.echelleDelai)="mois(s)")
+								$enregistrement_o.tsProchainCheck:=cs:C1710.MATimeStamp.me.get(Add to date:C393(Current date:C33; 0; Round:C94($scene_o.tsAttente/(86400*30); 0); 0); Time:C179(Storage:C1525.automation.config.reminderTime))
+							: (String:C10($scene_o.paramAction.echelleDelai)="année(s)")
+								$enregistrement_o.tsProchainCheck:=cs:C1710.MATimeStamp.me.get(Add to date:C393(Current date:C33; Round:C94($scene_o.tsAttente/(86400*365); 0); 0; 0); Time:C179(Storage:C1525.automation.config.reminderTime))
+							Else 
+								$enregistrement_o.tsProchainCheck:=cs:C1710.MATimeStamp.me.get(Current date:C33; Time:C179(Storage:C1525.automation.config.reminderTime))+$scene_o.tsAttente
+						End case 
+						
 				End case 
 				
 				$retour_o:=$enregistrement_o.save()

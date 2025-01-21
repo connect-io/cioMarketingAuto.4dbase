@@ -521,7 +521,7 @@ Function newScene($nom_t : Text; $action_t : Text)->$return_b : Boolean
 	End if 
 	
 	$caScene_o.numOrdre:=(This:C1470.scenarioDetail.AllCaScene.length)+1
-	$caScene_o.paramAction:=New object:C1471("modele"; New object:C1471("email"; New object:C1471("version"; New collection:C1472); "sms"; New object:C1471("version"; New collection:C1472); "courrier"; New object:C1471("version"; New collection:C1472)); \
+	$caScene_o.paramAction:=New object:C1471("echelleDelai"; "minute(s)"; "modele"; New object:C1471("email"; New object:C1471("version"; New collection:C1472); "sms"; New object:C1471("version"; New collection:C1472); "courrier"; New object:C1471("version"; New collection:C1472)); \
 		"formule"; New object:C1471("detail"; ""; "contexte"; "Aucun"))
 	
 	$caScene_o.conditionAction:=New object:C1471()
