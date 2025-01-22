@@ -19,7 +19,7 @@ Historique
 	// Chargement des éléments nécessaires au bon fonctionnement de la classe par rapport à la table [Personne] de la base hote.
 	This:C1470.passerelle:=OB Copy:C1225(Storage:C1525.automation.config.passerelle.query("tableComposant = :1"; "Personne")[0])
 	
-Function addScenario($scenarioName_t : Text; $externalReference_t : Text) : Object
+Function addScenario($scenarioName_t : Text; $externalReference_t : Text; $date_d : Date; $time_t : Time) : Object
 /*-----------------------------------------------------------------------------
 Fonction : MAPersonne.addScenario
 	
@@ -29,6 +29,8 @@ Historique
 27/06/24 - Grégory Fromain <gregory@connect-io.fr> - Relecture de code
 ------------------------------------------------------------------------------*/
 	var $i_el : Integer
+	
+	var $state_o : Object
 	
 	var $caScenario_e : Object
 	var $caScenario_es : Object
@@ -56,6 +58,15 @@ Historique
 	$caPersonneScenario_e.actif:=$caScenario_e.actif
 	$caPersonneScenario_e.situation:=New object:C1471("detail"; New collection:C1472)
 	
+	Case of 
+		: ($date_d#!00-00-00!) & ($time_t#?00:00:00?)
+			$caPersonneScenario_e.tsProchainCheck:=cs:C1710.MATimeStamp.me.get($date_d; $time_t)
+		: ($date_d#!00-00-00!)
+			$caPersonneScenario_e.tsProchainCheck:=cs:C1710.MATimeStamp.me.get($date_d; ?09:00:00?)
+		: ($time_t#?00:00:00?)
+			$caPersonneScenario_e.tsProchainCheck:=cs:C1710.MATimeStamp.me.get(Current date:C33(*); $time_t)
+	End case 
+	
 	If ($externalReference_t#"")
 		
 		For ($i_el; 1; $caPersonneScenario_e.OneCaScenario.AllCaScene.length)
@@ -64,7 +75,10 @@ Historique
 		
 	End if 
 	
-	return $caPersonneScenario_e.save()
+	$state_o:=$caPersonneScenario_e.save()
+	$state_o.ID:=$caPersonneScenario_e.getKey()
+	
+	return $state_o
 	
 Function getFieldName($field_t : Text)->$fieldName_t : Text
 	var $field_c : Collection

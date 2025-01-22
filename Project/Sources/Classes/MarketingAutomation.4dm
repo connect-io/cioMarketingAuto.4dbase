@@ -239,7 +239,7 @@ Historique
 	ASSERT:C1129(This:C1470.cronosImage#Null:C1517; "Impossible d'utiliser la fonction cronosAction sans avoir lancer la fonction loadCronos avant")
 	
 	// On recherche toutes les personnes qui ont un scénario actif et dont le prochain check est dépassé
-	$table_o:=ds:C1482["CaPersonneScenario"].query("actif = :1 AND tsProchainCheck <= :2"; True:C214; cs:C1710.MATimeStamp.me.get(Current date:C33; Current time:C178))
+	$table_o:=ds:C1482["CaPersonneScenario"].query("actif = :1 AND tsProchainCheck <= :2"; True:C214; cs:C1710.MATimeStamp.me.get(Current date:C33(*); Current time:C178(*)))
 	
 	$scene_cs:=cmaToolGetClass("MAScene").new()
 	

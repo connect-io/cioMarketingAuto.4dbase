@@ -347,7 +347,7 @@ Function applyScenarioToPerson($dataContext_t : Text)
 					
 				End if 
 				
-				$person_cs.addScenario(This:C1470.scenarioDetail.nom; $valueDataContext_v)
+				$person_cs.addScenario(This:C1470.scenarioDetail.nom; $valueDataContext_v; !00-00-00!; ?00:00:00?)
 			End if 
 			
 		End for each 
