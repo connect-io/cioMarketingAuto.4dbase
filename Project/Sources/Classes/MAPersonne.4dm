@@ -858,6 +858,11 @@ Function sendMailing($configPreCharge_o : Object) : Object
 	End if 
 	
 	WP FREEZE FORMULAS:C1708($param_o.contenu4WP)
+	
+	If (Bool:C1537($config_o.sauvegardeWritePro)=False:C215)
+		$param_o.contenu4WP:=Null:C1517
+	End if 
+	
 	This:C1470.updateCaMarketingStatistic(3; $param_o)
 	
 	If ($erreur_b=False:C215) & ($canalEnvoi_t="Courrier") & (Bool:C1537($config_o.notifEmail)=True:C214)  // L'utilisateur souhaite notifier par email de l'envoi d'un courrier avec le courrier en pièce-jointe

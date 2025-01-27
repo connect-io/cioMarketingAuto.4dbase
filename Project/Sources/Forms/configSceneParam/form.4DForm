@@ -26,7 +26,7 @@
 				"Bouton1": {
 					"type": "button",
 					"text": "Valider",
-					"top": 379,
+					"top": 390,
 					"left": 34,
 					"width": 160,
 					"height": 30,
@@ -41,7 +41,7 @@
 				"Texte13": {
 					"type": "text",
 					"text": "Paramétrage des modèles :",
-					"top": 112,
+					"top": 123,
 					"left": 14,
 					"width": 188,
 					"height": 16,
@@ -50,7 +50,7 @@
 				"sceneDetailApercuModele": {
 					"type": "pictureButton",
 					"left": 194,
-					"top": 137,
+					"top": 148,
 					"width": 20,
 					"height": 25,
 					"events": [
@@ -67,9 +67,9 @@
 					"type": "text",
 					"text": "PARTIE MAILING",
 					"top": 29,
-					"left": 27,
+					"left": 41,
 					"width": 147,
-					"height": 21,
+					"height": 20,
 					"fontFamily": "Arial",
 					"fontSize": 18,
 					"fontWeight": "bold"
@@ -77,7 +77,7 @@
 				"gestionLayout": {
 					"type": "pictureButton",
 					"left": 14,
-					"top": 137,
+					"top": 148,
 					"width": 20,
 					"height": 25,
 					"events": [
@@ -93,7 +93,7 @@
 				"sceneDetailModeleActif": {
 					"type": "input",
 					"left": 43,
-					"top": 137,
+					"top": 148,
 					"width": 141,
 					"height": 25,
 					"dataSource": "Form:C1466.modeleActif",
@@ -108,7 +108,7 @@
 				"selectList": {
 					"type": "dropdown",
 					"left": 14,
-					"top": 72,
+					"top": 83,
 					"width": 200,
 					"height": 20,
 					"events": [
@@ -121,7 +121,7 @@
 				"sceneDetailFormule": {
 					"type": "input",
 					"left": 14,
-					"top": 193,
+					"top": 204,
 					"width": 185,
 					"height": 97,
 					"contextMenu": "automatic",
@@ -138,7 +138,7 @@
 				"Texte3": {
 					"type": "text",
 					"text": "Formule",
-					"top": 170,
+					"top": 181,
 					"left": 14,
 					"width": 200,
 					"height": 16
@@ -146,7 +146,7 @@
 				"Texte1": {
 					"type": "text",
 					"text": "Contexte de la formule",
-					"top": 305,
+					"top": 316,
 					"left": 14,
 					"width": 200,
 					"height": 16
@@ -154,7 +154,7 @@
 				"sceneDetailFormuleContexte": {
 					"type": "dropdown",
 					"left": 14,
-					"top": 330,
+					"top": 341,
 					"width": 200,
 					"height": 20,
 					"events": [
@@ -165,11 +165,38 @@
 					"method": "ObjectMethods/sceneDetailFormuleContexte.4dm",
 					"dataSourceTypeHint": "object",
 					"focusable": false
+				},
+				"Zone de saisie": {
+					"type": "input",
+					"left": 14,
+					"top": 59,
+					"width": 20,
+					"height": 20,
+					"dataSource": "Form:C1466.imageSauvegardeWritePro",
+					"dataSourceTypeHint": "picture",
+					"pictureFormat": "proportionalCenter",
+					"fill": "transparent",
+					"borderStyle": "none",
+					"method": "ObjectMethods/Zone de saisie.4dm",
+					"events": [
+						"onClick",
+						"onMouseMove"
+					]
+				},
+				"Texte2": {
+					"type": "text",
+					"text": "Sauvegarde Write Pro",
+					"top": 59,
+					"left": 43,
+					"width": 171,
+					"height": 16,
+					"right": 214,
+					"fontWeight": "bold"
 				}
 			}
 		}
 	],
-	"geometryStamp": 429,
+	"geometryStamp": 463,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",

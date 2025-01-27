@@ -653,7 +653,8 @@ Historique
 							$eMail_o.bcc:=String:C10($collection_c[0].cc)
 						End if 
 						
-						$config_o:=New object:C1471("success"; True:C214; "type"; "Email"; "eMailConfig"; $eMail_o; "contenu4WP"; $document_o; "expediteur"; $collection_c[0].expediteur; "pieceJointeEmail"; Bool:C1537($collection_c[0].pieceJointeEmail); "pieceJointe"; $pieceJointe_o)
+						$config_o:=New object:C1471("success"; True:C214; "type"; "Email"; "eMailConfig"; $eMail_o; "contenu4WP"; $document_o; "expediteur"; $collection_c[0].expediteur; "pieceJointeEmail"; Bool:C1537($collection_c[0].pieceJointeEmail); \
+							"pieceJointe"; $pieceJointe_o; "sauvegardeWritePro"; Bool:C1537($scene_o.paramAction.sauvegardeWritePro))
 						
 						If ($collection_c[0].externalReference#Null:C1517) | ($pieceJointe_o.externalReference#Null:C1517)
 							$config_o.externalReference:=New object:C1471
@@ -673,7 +674,7 @@ Historique
 						$retourB_o:=$personne_o.sendMailing($config_o)
 					: ($scene_o.action="Envoi SMS")  // L'action de la scène est l'envoi d'un SMS
 						$sms_o:=cmaToolGetClass("MASms").new(False:C215; New object:C1471("nom"; $collection_c[0].expediteur))
-						$config_o:=New object:C1471("success"; True:C214; "type"; "SMS"; "SMSConfig"; $sms_o; "contenu4WP"; $document_o; "smsMarketing"; Bool:C1537($collection_c[0].smsMarketing))
+						$config_o:=New object:C1471("success"; True:C214; "type"; "SMS"; "SMSConfig"; $sms_o; "contenu4WP"; $document_o; "smsMarketing"; Bool:C1537($collection_c[0].smsMarketing); "sauvegardeWritePro"; Bool:C1537($scene_o.paramAction.sauvegardeWritePro))
 						
 						If ($collection_c[0].externalReference#Null:C1517)
 							$config_o.externalReference:=OB Copy:C1225($collection_c[0].externalReference)
@@ -719,7 +720,7 @@ Historique
 						End if 
 						
 						If ($continue_b=True:C214)
-							$config_o:=New object:C1471("success"; True:C214; "type"; "Courrier"; "contenu4WP"; $document_o; "notifEmail"; Bool:C1537($collection_c[0].notifEmail); "notif"; $notif_o)
+							$config_o:=New object:C1471("success"; True:C214; "type"; "Courrier"; "contenu4WP"; $document_o; "notifEmail"; Bool:C1537($collection_c[0].notifEmail); "notif"; $notif_o; "sauvegardeWritePro"; Bool:C1537($scene_o.paramAction.sauvegardeWritePro))
 							
 							If ($collection_c[0].externalReference#Null:C1517) | ($notif_o.externalReference#Null:C1517)
 								$config_o.externalReference:=New object:C1471
