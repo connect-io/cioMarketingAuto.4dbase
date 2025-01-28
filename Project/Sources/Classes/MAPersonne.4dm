@@ -43,13 +43,21 @@ Historique
 	$caScenario_es:=ds:C1482["CaScenario"].query("nom = :1"; $scenarioName_t)
 	
 	If ($caScenario_es.length=0)
-		return {success: False:C215; statusText: "Le scénario "+$scenarioName_t+" n'a pas pu être trouvé dans la base de données"}
+		return {success: False:C215; statusText: "Le scénario "+$scenarioName_t+" n'a pas pu être trouvé dans la base de données."}
 	End if 
 	
 	This:C1470.updateCaMarketingStatistic(0; New object:C1471)
 	This:C1470.personne.reload()
 	
 	$caScenario_e:=$caScenario_es.first()
+	
+	Case of 
+		: (Bool:C1537($caScenario_e.condition.telMobile)=True:C214) & (String:C10(This:C1470.telMobile)="")
+			return {success: False:C215; statusText: "Le scénario "+$scenarioName_t+" ne peut pas être attribué car le téléphone mobile est manquant."}
+		: (Bool:C1537($caScenario_e.condition.eMail)=True:C214) & (String:C10(This:C1470.eMail)="")
+			return {success: False:C215; statusText: "Le scénario "+$scenarioName_t+" ne peut pas être attribué car l'eMail est manquant."}
+	End case 
+	
 	$caPersonneScenario_e:=ds:C1482["CaPersonneScenario"].new()
 	
 	$caPersonneScenario_e.personneID:=This:C1470.personne.getKey()
