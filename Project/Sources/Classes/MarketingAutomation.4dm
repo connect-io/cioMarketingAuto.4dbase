@@ -224,13 +224,13 @@ Gestion depuis la méthode formulaire "cronos" des scénarios des personnes
 Historique
 29/01/21 - Rémy Scanu <remy@connect-io.fr> - Ajout entête
 -----------------------------------------------------------------------------*/
-	var $property_t; $indication_t : Text
+	var $property_t; $indication_t; $externalReference_t : Text
 	var $numOrdre_el; $pos_el : Integer
 	var $continue_b; $saut_b; $sautEffectue_b; $finScenario_b; $stop_b : Boolean
 	var $dateRendezVous_d : Date
 	var $heureRendezVous_h : Time
 	var $table_o; $enregistrement_o; $caScenarioEvent_o; $scene_o; $sceneSuivante_o; $personne_o; $eMail_o; $config_o; $conditionAction_o; $conditionSaut_o; $scene_cs; $retour_o; \
-		$autreTable_o; $autreEnregistrement_o; $caPersonneMarketing_o; $document_o; $sms_o; $courrier_o; $retourB_o; $notif_o; $pieceJointe_o; $rendezVous_o : Object
+		$autreTable_o; $autreEnregistrement_o; $caPersonneMarketing_o; $document_o; $sms_o; $courrier_o; $retourB_o; $notif_o; $pieceJointe_o; $rendezVous_o; $state_o : Object
 	var $collection_c; $detail_c; $champDate_c; $champHeure_c : Collection
 	var $state_v : Variant
 	
@@ -607,7 +607,7 @@ Historique
 						
 					Else   // Il n'y a aucune version courrier créée pour cette scène là
 						$scene_cs.addScenarioEvent("Autre"; $enregistrement_o.ID; 0; "Version courrier de la scène manquante")
-						$continue_b:=False:C215
+						CLEAR VARIABLE:C89($continue_b)
 					End if 
 					
 			End case 
@@ -777,10 +777,17 @@ Historique
 							" pour l'enregistrement [CaPersonneScenario] avec l'ID "+$enregistrement_o.ID+" : "+String:C10($retourB_o.erreurDetail)})
 						
 						// La scène est exécutable en l'état mais n'a pas pu se jouer (comédien en grève peut être...) On reprogramme la séance 1 jour après et pas toutes les 2 min comme actuellement histoire d'avoir le temps de parler aux comédiens...
-						$enregistrement_o.tsProchainCheck:=cs:C1710.MATimeStamp.me.get(Current date:C33; Current time:C178)+86400
+						$enregistrement_o.tsProchainCheck:=cs:C1710.MATimeStamp.me.get(Add to date:C393(Current date:C33; 0; 0; 1); ?09:00:00?)
 						$retour_o:=$enregistrement_o.save()
 					End if 
 					
+				End if 
+				
+			Else   // On la reprogramme le lendemain pour laisser le temps au scénariste de faire les modifications adéquates...
+				
+				If ($scene_o.OneCaScenarioSuivant#Null:C1517) && ($scene_o.OneCaScenarioSuivant.action=$scene_o.action) && ($scene_o.OneCaScenarioSuivant.sceneSuivanteID=$scene_o.ID)  // Si la scène suivante a exactement la même action et que c'est une boucle sans fin
+					$enregistrement_o.tsProchainCheck:=cs:C1710.MATimeStamp.me.get(Add to date:C393(Current date:C33; 0; 0; 1); ?09:00:00?)
+					$retour_o:=$enregistrement_o.save()
 				End if 
 				
 			End if 
@@ -895,9 +902,27 @@ Historique
 				
 				$retour_o:=$enregistrement_o.save()
 				
-				If ($retour_o.success=False:C215)
-					// toDo
-				End if 
+				Case of 
+					: ($retour_o.success=False:C215)
+						// toDo
+					: ($scene_o.action="Changement de scénario")
+						
+						If ($scene_o.OneCaScenarioSuivant#Null:C1517)
+							$detail_c:=$enregistrement_o.situation.detail.query("scene = :1"; $scene_o.numOrdre)
+							
+							If ($detail_c.length=1)
+								$externalReference_t:=$detail_c[0].externalReference
+							End if 
+							
+							$state_o:=$personne_o.addScenario($scene_o.OneCaScenarioSuivant.nom; $externalReference_t; !00-00-00!; ?00:00:00?)
+							
+							If (Bool:C1537($state_o.success)=False:C215)
+								$scene_cs.addScenarioEvent("Autre"; $enregistrement_o.ID; 0; "Erreur affectation au scénario suivant "+$scene_o.OneCaScenarioSuivant.nom+Char:C90(Carriage return:K15:38)+String:C10($state_o.statusText))
+							End if 
+							
+						End if 
+						
+				End case 
 				
 			End if 
 			
@@ -906,10 +931,11 @@ Historique
 		If ($finScenario_b=True:C214)  // Pas de scène "Fin de scénario" OU problème dans l'adresse email OU Désabonnement/Bounce OU scénario supprimé / plus actif
 			$enregistrement_o.actif:=False:C215
 			$enregistrement_o.tsProchainCheck:=0
+			
 			$retour_o:=$enregistrement_o.save()
 		End if 
 		
-		cmaToolCleanVariable(->$finScenario_b; ->$scene_o; ->$continue_b; ->$retourB_o; ->$courrier_o)
+		cmaToolCleanVariable(->$finScenario_b; ->$scene_o; ->$continue_b; ->$retourB_o; ->$courrier_o; ->$externalReference_t)
 	End for each 
 	
 Function loadCronos
