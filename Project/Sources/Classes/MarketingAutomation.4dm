@@ -785,7 +785,7 @@ Historique
 				
 			Else   // On la reprogramme le lendemain pour laisser le temps au scénariste de faire les modifications adéquates...
 				
-				If ($scene_o.OneCaScenarioSuivant#Null:C1517) && ($scene_o.OneCaScenarioSuivant.action=$scene_o.action) && ($scene_o.OneCaScenarioSuivant.sceneSuivanteID=$scene_o.ID)  // Si la scène suivante a exactement la même action et que c'est une boucle sans fin
+				If ($scene_o.OneCaSceneSuivante#Null:C1517) && ($scene_o.OneCaSceneSuivante.action=$scene_o.action) && ($scene_o.OneCaSceneSuivante.sceneSuivanteID=$scene_o.ID)  // Si la scène suivante a exactement la même action et que c'est une boucle sans fin
 					$enregistrement_o.tsProchainCheck:=cs:C1710.MATimeStamp.me.get(Add to date:C393(Current date:C33; 0; 0; 1); ?09:00:00?)
 					$retour_o:=$enregistrement_o.save()
 				End if 
