@@ -279,11 +279,27 @@
 					"loopBackToFirstFrame": true,
 					"switchBackWhenReleased": true,
 					"useLastFrameAsDisabled": true
+				},
+				"configObjetEmail": {
+					"type": "pictureButton",
+					"left": 130,
+					"top": 80,
+					"width": 20,
+					"height": 20,
+					"events": [
+						"onClick",
+						"onMouseMove"
+					],
+					"picture": "/RESOURCES/Images/variable.png",
+					"method": "ObjectMethods/configObjetEmail.4dm",
+					"loopBackToFirstFrame": true,
+					"switchBackWhenReleased": true,
+					"useLastFrameAsDisabled": true
 				}
 			}
 		}
 	],
-	"geometryStamp": 527,
+	"geometryStamp": 532,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",
