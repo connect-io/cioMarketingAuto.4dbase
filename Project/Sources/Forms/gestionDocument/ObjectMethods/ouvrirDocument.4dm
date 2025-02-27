@@ -7,7 +7,7 @@ Case of
 		
 		If (OK=1)
 			$parameter_es:=ds:C1482["Parameter"].query("type = :1"; "courrier")
-			cwToolWindowsForm("selectValue"; "center"; New object:C1471("collection"; $parameter_es.toCollection(); "property"; "wording"; "selectSubTitle"; "Merci de sélectionner un document"; "title"; "Choix du document :"))
+			cwToolWindowsForm("selectValue"; "center"; New object:C1471("collection"; $parameter_es.orderBy("wording").toCollection(); "property"; "wording"; "selectSubTitle"; "Merci de sélectionner un document"; "title"; "Choix du document :"))
 			
 			If (selectValue_t#"")
 				$parameter_es:=$parameter_es.query("wording = :1"; selectValue_t)
