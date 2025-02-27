@@ -656,7 +656,7 @@ Function sendMailing($configPreCharge_o : Object) : Object
 						: ($config_o.CourrierConfig.prestataire.nom="Maileva")
 							$type_t:="simple"
 							
-							If ($config_o.CourrierConfig.recommendedShipping=True:C214)
+							If ($config_o.CourrierConfig.recommendedShipping=True:C214) & ((This:C1470.pays="France") | (This:C1470.pays=""))  // On envoit des recommandés que pour les personnes qui ont une adresse en France
 								$type_t:="recommended"
 							End if 
 							
@@ -680,13 +680,13 @@ Function sendMailing($configPreCharge_o : Object) : Object
 							$body_o.color_printing:=Bool:C1537($config_o.CourrierConfig.color_printing)
 							$body_o.treat_undelivered_mail:=Bool:C1537($config_o.CourrierConfig.treat_undelivered_mail)
 							
-							If ($config_o.CourrierConfig.recommendedShipping=True:C214)
+							If ($config_o.CourrierConfig.recommendedShipping=True:C214) & ((This:C1470.pays="France") | (This:C1470.pays=""))
 								$body_o.acknowledgement_of_receipt:=Bool:C1537($config_o.CourrierConfig.acknowledgement_of_receipt)
 							End if 
 							
 							$body_o.notification_email:=(String:C10($config_o.CourrierConfig.notification_email)="") ? "direction@regiedescreances.com" : String:C10($config_o.CourrierConfig.notification_email)
 							
-							If ($config_o.CourrierConfig.recommendedShipping=True:C214)
+							If ($config_o.CourrierConfig.recommendedShipping=True:C214) & ((This:C1470.pays="France") | (This:C1470.pays=""))
 								$body_o.postage_type:=(String:C10($config_o.CourrierConfig.postage_type)="") ? "FAST" : String:C10($config_o.CourrierConfig.postage_type)
 							Else 
 								$body_o.postage_type:=(String:C10($config_o.CourrierConfig.postage_type)="") ? "ECONOMIC" : String:C10($config_o.CourrierConfig.postage_type)
@@ -727,7 +727,12 @@ Function sendMailing($configPreCharge_o : Object) : Object
 								$body_o.address_line_5:=""  // Ligne d'adresse n°5 (Lieu dit, BP...)
 								$body_o.address_line_6:=This:C1470.codePostal+" "+This:C1470.ville  // Ligne d'adresse n°6 (Code postal et ville)
 								
-								$body_o.country_code:="FR"
+								If (This:C1470.isoCode="")
+									$body_o.country_code:="FR"
+								Else 
+									$body_o.country_code:=This:C1470.isoCode
+								End if 
+								
 								$retour_o:=$config_o.CourrierConfig.request($type_t; "recepientAdd"; $body_o)
 								$erreur_b:=($retour_o.messageError#Null:C1517)
 								
