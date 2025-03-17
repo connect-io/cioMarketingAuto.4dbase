@@ -54,7 +54,7 @@ Historique
 	Case of 
 		: (Bool:C1537($caScenario_e.condition.telMobile)=True:C214) & (String:C10(This:C1470.telMobile)="")
 			return {success: False:C215; statusText: "Le scénario "+$scenarioName_t+" ne peut pas être attribué car le téléphone mobile est manquant."}
-		: (Bool:C1537($caScenario_e.condition.eMail)=True:C214) & (String:C10(This:C1470.eMail)="")
+		: (Bool:C1537($caScenario_e.condition.email)=True:C214) & (String:C10(This:C1470.email)="")
 			return {success: False:C215; statusText: "Le scénario "+$scenarioName_t+" ne peut pas être attribué car l'eMail est manquant."}
 	End case 
 	
