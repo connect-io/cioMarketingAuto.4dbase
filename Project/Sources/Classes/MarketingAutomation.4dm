@@ -106,7 +106,6 @@ Historique
 			End if 
 			
 			This:C1470.cronosVerifTache:=False:C215
-			
 			DELAY PROCESS:C323(Current process:C322; 100)
 		: ($action_t="RAS")
 			This:C1470.cronosMessage:=""
@@ -143,15 +142,12 @@ Historique
 			This:C1470.cronosAction("RAS")
 		: (This:C1470.cronosMessage="") & ($ts_el>This:C1470.cronosVerifMailjet)
 			This:C1470.cronosImage:=This:C1470.image["cronosWork"]
-			
 			This:C1470.cronosMessage:="Récupération des données de mailjet en cours..."
 		: (This:C1470.cronosMessage="") & ($ts_el>This:C1470.cronosVerifScenario)
 			This:C1470.cronosImage:=This:C1470.image["cronosWork"]
-			
 			This:C1470.cronosMessage:="Gestion des scénarios..."
 		: (This:C1470.cronosMessage="") & ($ts_el>This:C1470.cronosVerifProcessAuto)
 			This:C1470.cronosImage:=This:C1470.image["cronosWork"]
-			
 			This:C1470.cronosMessage:="Gestion des process automatiques personnalisés journalier..."
 		: (This:C1470.cronosVerifTache=True:C214)
 			This:C1470.cronosImage:=This:C1470.image["cronosWork"]
@@ -159,7 +155,6 @@ Historique
 			This:C1470.cronosMessage:="Vérification si une tâche doit être effectuée..."
 		Else 
 			This:C1470.cronosImage:=This:C1470.image["cronosSleep"]
-			
 			This:C1470.cronosMessage:="RAS, prochaine vérification dans 10 secondes."
 	End case 
 	
