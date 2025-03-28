@@ -710,13 +710,13 @@ Function sendMailing($configPreCharge_o : Object) : Object
 								$body_o.custom_id:=""
 								$body_o.custom_data:=This:C1470.personne.getKey()
 								
-								If (This:C1470.prenom="") | (This:C1470.nom="")
-									$body_o.address_line_1:=This:C1470.nomComplet  // Ligne d'adresse n°1 (Société)
+								If (This:C1470.nomCompagnie#"")
+									$body_o.address_line_1:=This:C1470.nomCompagnie  // Ligne d'adresse n°1 (Société)
 								Else 
 									$body_o.address_line_1:=""  // Ligne d'adresse n°1 (Société)
 								End if 
 								
-								If ($body_o.address_line_1="")
+								If (This:C1470.nom#"")
 									$body_o.address_line_2:=This:C1470.prenom+" "+This:C1470.nom  // Ligne d'adresse n°2 (Civilité, Prénom, Nom)
 								Else 
 									$body_o.address_line_2:=""  // Ligne d'adresse n°2 (Civilité, Prénom, Nom)

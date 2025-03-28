@@ -1,43 +1,51 @@
+var $prestataire_t : Text
 var $tsFrom_el; $tsTo_el; $prochaineVerif_el : Integer
 var $continue_b : Boolean
-var $lastRequest_o : Object
+var $lastRequest_o; $prestataire_o : Object
 var $activityToday_c : Collection
 
 Case of 
 	: (Form event code:C388=On Load:K2:1)
 		Form:C1466.dateDemarrage:=Current date:C33
+		
+		For each ($prestataire_o; Form:C1466.statistiqueEmail)
+			Form:C1466["cronos"+$prestataire_o.prestataire+"Class"]:=cs:C1710["MA"+$prestataire_o.prestataire].new()
+		End for each 
+		
 		SET TIMER:C645(60)
 	: (Form event code:C388=On Timer:K2:25)
+		$prestataire_o:=Form:C1466.statistiqueEmail.query("actif = :1"; True:C214)[0]
+		$prestataire_t:=$prestataire_o.prestataire
 		
 		Case of 
-			: (Form:C1466.cronosMessage="Récupération des données de mailjet en cours...")
+			: (Form:C1466.cronosMessage=("Récupération des données de statistique d'email en cours..."))
 				
-				If (Form:C1466.cronosVerifMailjet=0)  // Première fois qu'on passe dans la boucle
-					Form:C1466.cronosMailjetClass.getHistoryRequestFile()
+				If (Form:C1466.cronosVerifStatistiqueEmail=0)  // Première fois qu'on passe dans la boucle
+					Form:C1466["cronos"+$prestataire_t+"Class"].getHistoryRequestFile()
 				End if 
 				
-				Form:C1466.cronosMailjetClass.getHistoryRequestContent()
+				Form:C1466["cronos"+$prestataire_t+"Class"].getHistoryRequestContent()
 				
-				$tsFrom_el:=Form:C1466.cronosMailjetClass.historyRequestContent.lastRequest
+				$tsFrom_el:=Form:C1466["cronos"+$prestataire_t+"Class"].historyRequestContent.lastRequest
 				$tsTo_el:=cs:C1710.MATimeStamp.me.get(Current date:C33; ?23:59:59?)
 				
 				$prochaineVerif_el:=3600
 				
-				If (Form:C1466.cronosMailjetClass.historyRequestContent.prochaineVerif#Null:C1517)
-					$prochaineVerif_el:=Form:C1466.cronosMailjetClass.historyRequestContent.prochaineVerif
+				If (Form:C1466["cronos"+$prestataire_t+"Class"].historyRequestContent.prochaineVerif#Null:C1517)
+					$prochaineVerif_el:=Form:C1466["cronos"+$prestataire_t+"Class"].historyRequestContent.prochaineVerif
 				End if 
 				
 				Form:C1466.cronosUpdateCaMarketing($tsFrom_el; $tsTo_el; "3"; "4"; "7"; "8"; "9"; "10")
-				$lastRequest_o:=New object:C1471("lastRequest"; cs:C1710.MATimeStamp.me.get(Current date:C33; Current time:C178))
+				$lastRequest_o:={lastRequest: cs:C1710.MATimeStamp.me.get(Current date:C33; Current time:C178)}
 				
-				If (Form:C1466.cronosMailjetClass.historyRequestContent.prochaineVerif#Null:C1517)
+				If (Form:C1466["cronos"+$prestataire_t+"Class"].historyRequestContent.prochaineVerif#Null:C1517)
 					$lastRequest_o.prochaineVerif:=$prochaineVerif_el
 				End if 
 				
-				Form:C1466.cronosMailjetClass.setHistoryRequestContent(JSON Stringify:C1217($lastRequest_o; *))
+				Form:C1466["cronos"+$prestataire_t+"Class"].setHistoryRequestContent(JSON Stringify:C1217($lastRequest_o; *))
 				
 				Form:C1466.cronosMessage:=""
-				Form:C1466.cronosVerifMailjet:=cs:C1710.MATimeStamp.me.get(Current date:C33; Current time:C178)+$prochaineVerif_el  // On incrémente d'1 heure par défaut sinon le temps défini par l'utilisateur
+				Form:C1466.cronosVerifStatistiqueEmail:=cs:C1710.MATimeStamp.me.get(Current date:C33; Current time:C178)+$prochaineVerif_el  // On incrémente d'1 heure par défaut sinon le temps défini par l'utilisateur
 			: (Form:C1466.cronosMessage="Gestion des scénarios...")
 				
 				If (Storage:C1525.automation.config.activity=Null:C1517)

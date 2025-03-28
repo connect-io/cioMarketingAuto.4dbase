@@ -43,7 +43,7 @@
 				"Texte": {
 					"type": "text",
 					"text": "Message de Cronos",
-					"top": 89,
+					"top": 202,
 					"left": 10,
 					"width": 147,
 					"height": 16,
@@ -55,7 +55,7 @@
 				"Form.cronosMessage": {
 					"type": "input",
 					"left": 10,
-					"top": 120,
+					"top": 233,
 					"width": 220,
 					"height": 81,
 					"dataSource": "Form:C1466.cronosMessage",
@@ -104,19 +104,20 @@
 				"Texte1": {
 					"type": "text",
 					"text": "Statistique du jour",
-					"top": 212,
+					"top": 325,
 					"left": 10,
-					"width": 147,
+					"width": 220,
 					"height": 16,
 					"fontWeight": "bold",
 					"textDecoration": "underline",
 					"fontFamily": "Arial",
-					"fontSize": 13
+					"fontSize": 13,
+					"right": 230
 				},
 				"Texte2": {
 					"type": "text",
 					"text": "Courrier :",
-					"top": 237,
+					"top": 350,
 					"left": 10,
 					"width": 65,
 					"height": 16,
@@ -128,7 +129,7 @@
 				"Texte3": {
 					"type": "text",
 					"text": "Recommandé :",
-					"top": 237,
+					"top": 350,
 					"left": 102,
 					"width": 95,
 					"height": 16,
@@ -140,7 +141,7 @@
 				"courrierAlerte": {
 					"type": "input",
 					"left": 74,
-					"top": 237,
+					"top": 350,
 					"width": 25,
 					"height": 16,
 					"dataSource": "Storage:C1525.automation.compteurAlerte.courrier",
@@ -155,7 +156,7 @@
 				"recommandeAlerte": {
 					"type": "input",
 					"left": 197,
-					"top": 237,
+					"top": 350,
 					"width": 33,
 					"height": 16,
 					"dataSource": "Storage:C1525.automation.compteurAlerte.recommande",
@@ -171,7 +172,7 @@
 				"Texte4": {
 					"type": "text",
 					"text": "SMS :",
-					"top": 259,
+					"top": 372,
 					"left": 10,
 					"width": 65,
 					"height": 16,
@@ -183,7 +184,7 @@
 				"Texte5": {
 					"type": "text",
 					"text": "Mail :",
-					"top": 259,
+					"top": 372,
 					"left": 102,
 					"width": 95,
 					"height": 16,
@@ -195,7 +196,7 @@
 				"smsAlerte": {
 					"type": "input",
 					"left": 74,
-					"top": 259,
+					"top": 372,
 					"width": 25,
 					"height": 16,
 					"dataSource": "Storage:C1525.automation.compteurAlerte.sms",
@@ -210,7 +211,7 @@
 				"mailAlerte": {
 					"type": "input",
 					"left": 197,
-					"top": 259,
+					"top": 372,
 					"width": 33,
 					"height": 16,
 					"dataSource": "Storage:C1525.automation.compteurAlerte.mail",
@@ -222,11 +223,38 @@
 					"fontFamily": "Arial",
 					"fontSize": 12,
 					"right": 230
+				},
+				"prestataireStatEMail": {
+					"type": "dropdown",
+					"left": 10,
+					"top": 163,
+					"width": 220,
+					"height": 24,
+					"events": [
+						"onLoad",
+						"onDataChange"
+					],
+					"right": 230,
+					"dataSourceTypeHint": "object",
+					"method": "ObjectMethods/prestataireStatEMail.4dm"
+				},
+				"Texte6": {
+					"type": "text",
+					"text": "Prestataire récupération\rstatistiques eMail",
+					"top": 117,
+					"left": 10,
+					"width": 220,
+					"height": 30,
+					"fontWeight": "bold",
+					"textDecoration": "underline",
+					"fontFamily": "Arial",
+					"fontSize": 13,
+					"right": 230
 				}
 			}
 		}
 	],
-	"geometryStamp": 139,
+	"geometryStamp": 181,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",

@@ -1,20 +1,18 @@
-Class constructor
-	C_TEXT:C284($1)
-	C_OBJECT:C1216($fichierConfig_o)
+Class constructor($path_t : Text)
+	var $fichierConfig_o : Object
 	
 	If (Count parameters:C259=0)
 		This:C1470.configChemin:=Get 4D folder:C485(Current resources folder:K5:16; *)+"cioMailjet"+Folder separator:K24:12+"config.json"
 	Else 
-		This:C1470.configChemin:=$1
+		This:C1470.configChemin:=$path_t
 	End if 
 	
 	$fichierConfig_o:=File:C1566(This:C1470.configChemin; fk platform path:K87:2)
+	ASSERT:C1129($fichierConfig_o.exists=True:C214; "Impossible de charger le fichier de configuration cioMailjet")
 	
 	If ($fichierConfig_o.exists=True:C214)
 		This:C1470.config:=JSON Parse:C1218($fichierConfig_o.getText())
 		This:C1470.config.domainRequest:="https://"+This:C1470.config.smtpKeyPublic+":"+This:C1470.config.smtpKeySecret+"@api.mailjet.com/"+This:C1470.config.smtpVersion
-	Else 
-		ALERT:C41("Impossible d'intialiser le composant cioMailjet")
 	End if 
 	
 Function AnalysisMessageEvent
@@ -49,8 +47,6 @@ Function AnalysisMessageEvent
 			
 			If ($i_el>1)  // Il y a plus de 1000 résultats
 				$offset_el:=(1000*$i_el)+1
-			Else 
-				$offset_el:=0
 			End if 
 			
 			// Je demande dans un second temps les 1000 premiers mails de mon laps de temps recherché (entre $3 et $4) -> un jour à la fois normalement
@@ -94,19 +90,23 @@ Function AnalysisMessageEvent
 		
 	End if 
 	
-Function getLabelSearch
-	var $1 : Text  // Numéro du label qu'on souhaite
+Function getContactInformation($email_t : Text)->$contact_o : Object
+	var $url_t; $resultatHttp_t : Text
 	
-	var $typeSearch_c : Collection
+	//Il faut encoder l'url... ou pas
+	$url_t:=This:C1470.config.domainRequest+"/REST/contact/"+$email_t
 	
-	$typeSearch_c:=This:C1470.config.typeSearch.query("number = :1"; $1)
+	//$result_b:=PHP Exécuter(""; "urlencode"; $urlEncode_t; $url_t)
 	
-	If ($typeSearch_c.length=1)
-		This:C1470.numberTypeSearch:=$typeSearch_c[0].number
-		This:C1470.labelTypeSearch:=$typeSearch_c[0].label
-	Else 
-		This:C1470.numberTypeSearch:=""
-		This:C1470.labelTypeSearch:=""
+	//Si ($result_b=Vrai)
+	//cwToolWebHttpRequest("GET"; $urlEncode_t; ""; ->$resultatHttp_t)
+	
+	//$contact_o:=JSON Parse($resultatHttp_t; *)
+	//Fin de si 
+	cwToolWebHttpRequest("GET"; $url_t; ""; ->$resultatHttp_t)
+	
+	If ($resultatHttp_t#"Error@")
+		$contact_o:=JSON Parse:C1218($resultatHttp_t; *)
 	End if 
 	
 Function getHistoryRequestFile
@@ -137,7 +137,33 @@ Function getHistoryRequestContent
 		This:C1470.historyRequestContent:=JSON Parse:C1218(This:C1470.historyRequest.getText())
 	End if 
 	
-Function getMessageEvent($statut_t : Text; $tsFrom_el : Integer; $tsTo_el : Integer; $mailjet_p : Pointer; $contactID_r : Real)
+Function getInformationDetail
+	var $0 : Collection
+	var $1 : Text
+	
+	var $mailjet_o : Object
+	
+	ARRAY TEXT:C222($messageID_at; 0)
+	
+	$0:=New collection:C1472
+	
+	$mailjet_o:=JSON Parse:C1218($1)
+	$0:=$mailjet_o.Data.extract("ContactID"; "contactID"; "SenderID"; "senderID"; "UUID"; "UUID")
+	
+	This:C1470.getMessageID($1; ->$messageID_at)
+	ARRAY TO COLLECTION:C1563($0; $messageID_at; "messageID")
+	
+Function getMessageDetail($messageID_t : Text)->$messageDetail_o : Object
+	var $resultatHttp_t : Text
+	
+	// Je demande dans un second temps les 1000 premiers mails de mon laps de temps recherché (entre $3 et $4) -> un jour à la fois normalement
+	cwToolWebHttpRequest("GET"; This:C1470.config.domainRequest+"/REST/message/"+$messageID_t+"?ShowContactAlt=true&ShowSubject=true"; ""; ->$resultatHttp_t)
+	
+	If ($resultatHttp_t#"") & ($resultatHttp_t#"Error@")
+		$messageDetail_o:=JSON Parse:C1218($resultatHttp_t)
+	End if 
+	
+Function getMessageEvent($statut_t : Text; $tsFrom_el : Integer; $tsTo_el : Integer; $statistiqueEmail_p : Pointer; $contactID_r : Real)
 	var $resultatHttp_t; $tsFrom_t; $tsTo_t; $contactID_t : Text
 	
 	$tsFrom_t:="&FromTS="+String:C10($tsFrom_el)
@@ -147,12 +173,13 @@ Function getMessageEvent($statut_t : Text; $tsFrom_el : Integer; $tsTo_el : Inte
 		$contactID_t:=String:C10($contactID_r)
 	End if 
 	
+	// Documentation : https://dev.mailjet.com/email/reference/messages#v3_get_message
 	cwToolWebHttpRequest("GET"; This:C1470.config.domainRequest+"/REST/message?MessageStatus="+$statut_t+"&countOnly=1"+$tsFrom_t+$tsTo_t+Choose:C955($contactID_t#""; "&Contact="+$contactID_t; ""); ""; ->$resultatHttp_t)
 	
 	If ($resultatHttp_t="{@}")
-		$mailjet_p->:=JSON Parse:C1218($resultatHttp_t)
+		$statistiqueEmail_p->:=JSON Parse:C1218($resultatHttp_t)
 	Else 
-		$mailjet_p->:=New object:C1471("errorHttp"; $resultatHttp_t)
+		$statistiqueEmail_p->:=New object:C1471("errorHttp"; $resultatHttp_t)
 	End if 
 	
 Function getMessageEventDetail($mailjet_o : Object; $messageEvent_t : Text; $tsFrom_el : Integer; $tsTo_el : Integer; $contactID_r : Real; $displayCompteur_b : Boolean)->$retour_o : Object
@@ -222,99 +249,6 @@ Function getMessageEventDetail($mailjet_o : Object; $messageEvent_t : Text; $tsF
 			
 		End if 
 		
-	End if 
-	
-Function getContactInformation($email_t : Text)->$contact_o : Object
-	var $url_t; $resultatHttp_t : Text
-	
-	//Il faut encoder l'url... ou pas
-	$url_t:=This:C1470.config.domainRequest+"/REST/contact/"+$email_t
-	
-	//$result_b:=PHP Exécuter(""; "urlencode"; $urlEncode_t; $url_t)
-	
-	//Si ($result_b=Vrai)
-	//cwToolWebHttpRequest("GET"; $urlEncode_t; ""; ->$resultatHttp_t)
-	
-	//$contact_o:=JSON Parse($resultatHttp_t; *)
-	//Fin de si 
-	cwToolWebHttpRequest("GET"; $url_t; ""; ->$resultatHttp_t)
-	
-	If ($resultatHttp_t#"Error@")
-		$contact_o:=JSON Parse:C1218($resultatHttp_t; *)
-	End if 
-	
-Function getMessageID
-	var $1 : Text  // Chaine à analyser
-	var $2 : Pointer  // Pointeur [tabeau texte || collection] qui contient les id des messages (Si collection contient également les timeStamp de ces messages là)
-	
-	var $demonteChaine_t; $chaineObjet_t; $messageID_t : Text
-	var $positionCrochet_el; $positionAccolade_el; $positionID_el; $positionVirgule_el : Integer
-	var $detail_o : Object
-	
-	// Petite galère qui fait bien chier, je vais devoir passer en revu ma chaine $resultatHTTP car l'ID du message est supérieur à la valeur autorisée par la commande JSON PARSE ±10.421e±10...
-	$demonteChaine_t:=$1
-	$positionCrochet_el:=Position:C15("["; $demonteChaine_t)
-	
-	If ($positionCrochet_el>0)
-		$demonteChaine_t:=Delete string:C232($demonteChaine_t; 1; $positionCrochet_el)
-		$positionCrochet_el:=Position:C15("]"; $demonteChaine_t)
-		
-		If ($positionCrochet_el>0)
-			$demonteChaine_t:=Substring:C12($demonteChaine_t; 1; $positionCrochet_el-1)
-			
-			// On devrait se retrouver avec une chaine comme ça : {...},{...},{...}
-			$positionAccolade_el:=Position:C15("}"; $demonteChaine_t)
-			
-			If ($positionAccolade_el>0)
-				
-				While ($positionAccolade_el>0)
-					$chaineObjet_t:=Substring:C12($demonteChaine_t; 1; $positionAccolade_el)
-					
-					// $chaineObjet_t devrait ressembler à une chaine comme ça : {...}
-					If (Value type:C1509($2->)=Is collection:K8:32)
-						$detail_o:=JSON Parse:C1218($chaineObjet_t)
-						
-						$2->push(New object:C1471("arrivedAt"; cs:C1710.MATimeStamp.me.get(Date:C102($detail_o.ArrivedAt); Time:C179($detail_o.ArrivedAt)); "messageID"; ""))
-					End if 
-					
-					$positionID_el:=Position:C15("\"ID\" :"; $chaineObjet_t)
-					
-					If ($positionID_el>0)
-						$chaineObjet_t:=Substring:C12($chaineObjet_t; $positionID_el+7)
-						$positionVirgule_el:=Position:C15(","; $chaineObjet_t)
-						
-						If ($positionVirgule_el>0)
-							$messageID_t:=Substring:C12($chaineObjet_t; 1; $positionVirgule_el-1)
-							
-							// Enfin on est arrivé au bout !
-							If (Value type:C1509($2->)=Is collection:K8:32)
-								$2->[$2->length-1].messageID:=$messageID_t
-							Else 
-								APPEND TO ARRAY:C911($2->; $messageID_t)
-							End if 
-							
-						End if 
-						
-					End if 
-					
-					$demonteChaine_t:=Delete string:C232($demonteChaine_t; 1; $positionAccolade_el+1)
-					$positionAccolade_el:=Position:C15("}"; $demonteChaine_t)
-				End while 
-				
-			End if 
-			
-		End if 
-		
-	End if 
-	
-Function getMessageDetail($messageID_t : Text)->$messageDetail_o : Object
-	var $resultatHttp_t : Text
-	
-	// Je demande dans un second temps les 1000 premiers mails de mon laps de temps recherché (entre $3 et $4) -> un jour à la fois normalement
-	cwToolWebHttpRequest("GET"; This:C1470.config.domainRequest+"/REST/message/"+$messageID_t+"?ShowContactAlt=true&ShowSubject=true"; ""; ->$resultatHttp_t)
-	
-	If ($resultatHttp_t#"") & ($resultatHttp_t#"Error@")
-		$messageDetail_o:=JSON Parse:C1218($resultatHttp_t)
 	End if 
 	
 Function getMessageHistoryDetail($messageID_t : Text)->$messageHistoryDetail_t : Text
@@ -454,21 +388,69 @@ Function getMessageHistoryDetail($messageID_t : Text)->$messageHistoryDetail_t :
 		$messageHistoryDetail_t:="Erreur réseau, vérifiez votre connexion internet"
 	End if 
 	
-Function getInformationDetail
-	var $0 : Collection
-	var $1 : Text
+Function getMessageID
+	var $1 : Text  // Chaine à analyser
+	var $2 : Pointer  // Pointeur [tabeau texte || collection] qui contient les id des messages (Si collection contient également les timeStamp de ces messages là)
 	
-	var $mailjet_o : Object
+	var $demonteChaine_t; $chaineObjet_t; $messageID_t : Text
+	var $positionCrochet_el; $positionAccolade_el; $positionID_el; $positionVirgule_el : Integer
+	var $detail_o : Object
 	
-	ARRAY TEXT:C222($messageID_at; 0)
+	// Petite galère qui fait bien chier, je vais devoir passer en revu ma chaine $resultatHTTP car l'ID du message est supérieur à la valeur autorisée par la commande JSON PARSE ±10.421e±10...
+	$demonteChaine_t:=$1
+	$positionCrochet_el:=Position:C15("["; $demonteChaine_t)
 	
-	$0:=New collection:C1472
-	
-	$mailjet_o:=JSON Parse:C1218($1)
-	$0:=$mailjet_o.Data.extract("ContactID"; "contactID"; "SenderID"; "senderID"; "UUID"; "UUID")
-	
-	This:C1470.getMessageID($1; ->$messageID_at)
-	ARRAY TO COLLECTION:C1563($0; $messageID_at; "messageID")
+	If ($positionCrochet_el>0)
+		$demonteChaine_t:=Delete string:C232($demonteChaine_t; 1; $positionCrochet_el)
+		$positionCrochet_el:=Position:C15("]"; $demonteChaine_t)
+		
+		If ($positionCrochet_el>0)
+			$demonteChaine_t:=Substring:C12($demonteChaine_t; 1; $positionCrochet_el-1)
+			
+			// On devrait se retrouver avec une chaine comme ça : {...},{...},{...}
+			$positionAccolade_el:=Position:C15("}"; $demonteChaine_t)
+			
+			If ($positionAccolade_el>0)
+				
+				While ($positionAccolade_el>0)
+					$chaineObjet_t:=Substring:C12($demonteChaine_t; 1; $positionAccolade_el)
+					
+					// $chaineObjet_t devrait ressembler à une chaine comme ça : {...}
+					If (Value type:C1509($2->)=Is collection:K8:32)
+						$detail_o:=JSON Parse:C1218($chaineObjet_t)
+						
+						$2->push(New object:C1471("arrivedAt"; cs:C1710.MATimeStamp.me.get(Date:C102($detail_o.ArrivedAt); Time:C179($detail_o.ArrivedAt)); "messageID"; ""))
+					End if 
+					
+					$positionID_el:=Position:C15("\"ID\" :"; $chaineObjet_t)
+					
+					If ($positionID_el>0)
+						$chaineObjet_t:=Substring:C12($chaineObjet_t; $positionID_el+7)
+						$positionVirgule_el:=Position:C15(","; $chaineObjet_t)
+						
+						If ($positionVirgule_el>0)
+							$messageID_t:=Substring:C12($chaineObjet_t; 1; $positionVirgule_el-1)
+							
+							// Enfin on est arrivé au bout !
+							If (Value type:C1509($2->)=Is collection:K8:32)
+								$2->[$2->length-1].messageID:=$messageID_t
+							Else 
+								APPEND TO ARRAY:C911($2->; $messageID_t)
+							End if 
+							
+						End if 
+						
+					End if 
+					
+					$demonteChaine_t:=Delete string:C232($demonteChaine_t; 1; $positionAccolade_el+1)
+					$positionAccolade_el:=Position:C15("}"; $demonteChaine_t)
+				End while 
+				
+			End if 
+			
+		End if 
+		
+	End if 
 	
 Function getStatistic
 	var $0 : Object  // Retour de mailjet
@@ -484,9 +466,14 @@ Function getStatistic
 		$0:=New object:C1471("errorHttp"; $resultatHttp_t)
 	End if 
 	
-Function setHistoryRequestContent
-	var $1 : Text
+Function getTypeSearch($num_t : Text)
+	var $typeSearch_c : Collection
+	
+	$typeSearch_c:=This:C1470.config.typeSearch.query("number = :1"; $num_t)
+	This:C1470.typeSearch:=OB Copy:C1225($typeSearch_c[0])
+	
+Function setHistoryRequestContent($content_t : Text)
 	
 	If (This:C1470.historyRequest#Null:C1517)
-		This:C1470.historyRequest.setText($1; "UTF-8")
+		This:C1470.historyRequest.setText($content_t; "UTF-8")
 	End if 

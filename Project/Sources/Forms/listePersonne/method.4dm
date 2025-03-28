@@ -1,5 +1,7 @@
-If (Form event code:C388=Sur chargement:K2:1)
+If (Form event code:C388=On Load:K2:1)
 	Form:C1466.loadAll()  // Chargement de toutes les entités de la table [Personne] de la base hôte
+	Form:C1466.entitySelection:=Form:C1466.entitySelection.slice(0; 500)
+	
 	Form:C1466.toCollectionAndExtractField(New collection:C1472("nom"; "prenom"; "eMail"; "telFixe"; "telMobile"; "codePostal"; "ville"; "dateNaissance"; "UID"))
 	
 	Form:C1466.personneCollectionInit:=Form:C1466.personneCollection.copy()
@@ -19,7 +21,7 @@ If (Form event code:C388=Sur chargement:K2:1)
 	Form:C1466.imageSortDateNaissance:=Storage:C1525.automation.image["sort"]
 End if 
 
-If (Form event code:C388=Sur données modifiées:K2:15)
+If (Form event code:C388=On Data Change:K2:15)
 	Form:C1466.personneCollection:=Form:C1466.personneSelectionDisplayClass.manageFilter()
 	Form:C1466.personneCollection:=Form:C1466.personneSelectionDisplayClass.manageSort("")
 End if 

@@ -99,7 +99,7 @@ Historique
 	ASSERT:C1129(This:C1470.cronosImage#Null:C1517; "Impossible d'utiliser la fonction cronosAction sans avoir lancer la fonction loadCronos avant")
 	
 	Case of 
-		: ($action_t="verifTache") | ($action_t="mailjetRecup") | ($action_t="gestionScenario") | ($action_t="gestionProcessAutomatique")
+		: ($action_t="verifTache") | ($action_t="statistiqueEmailRecup") | ($action_t="gestionScenario") | ($action_t="gestionProcessAutomatique")
 			
 			If ($action_t="verifTache")
 				This:C1470.cronosMessage:=""
@@ -132,17 +132,17 @@ Historique
 	Case of 
 		: (This:C1470.cronosMessage="Vérification si une tâche doit être effectuée...")
 			This:C1470.cronosAction("verifTache")
-		: (This:C1470.cronosMessage="Récupération des données de mailjet en cours...")
-			This:C1470.cronosAction("mailjetRecup")
+		: (This:C1470.cronosMessage="Récupération des données de statistique d'email en cours...")
+			This:C1470.cronosAction("statistiqueEmailRecup")
 		: (This:C1470.cronosMessage="Gestion des scénarios...")
 			This:C1470.cronosAction("gestionScenario")
 		: (This:C1470.cronosMessage="Gestion des process automatiques personnalisés journalier...")
 			This:C1470.cronosAction("gestionProcessAutomatique")
 		: (This:C1470.cronosMessage="RAS, prochaine vérification dans 10 secondes.")
 			This:C1470.cronosAction("RAS")
-		: (This:C1470.cronosMessage="") & ($ts_el>This:C1470.cronosVerifMailjet)
+		: (This:C1470.cronosMessage="") & ($ts_el>This:C1470.cronosVerifStatistiqueEmail)
 			This:C1470.cronosImage:=This:C1470.image["cronosWork"]
-			This:C1470.cronosMessage:="Récupération des données de mailjet en cours..."
+			This:C1470.cronosMessage:="Récupération des données de statistique d'email en cours..."
 		: (This:C1470.cronosMessage="") & ($ts_el>This:C1470.cronosVerifScenario)
 			This:C1470.cronosImage:=This:C1470.image["cronosWork"]
 			This:C1470.cronosMessage:="Gestion des scénarios..."
@@ -172,34 +172,34 @@ Historique
 	var ${3} : Text  // Numéro chez mailjet de l'eventMessage à mettre à jour exemple : 3 -> Opened, 4 -> Clicked etc.
 	
 	var $i_el : Integer
-	var $mailjet_o; $mailjetDetail_o; $class_o : Object
-	var $mailjetDetail_c : Collection
+	var $statistiqueEmail_o; $statistiqueEmailDetail_o; $prestataire_o : Object
+	var $statistiqueEmail_c : Collection
+	
+	var $MAPersonne_cs : cs:C1710.MAPersonne
 	
 	ASSERT:C1129(This:C1470.cronosImage#Null:C1517; "Impossible d'utiliser la fonction cronosAction sans avoir lancer la fonction loadCronos avant")
+	$MAPersonne_cs:=cs:C1710.MAPersonne.new()
 	
-	$mailjetDetail_c:=New collection:C1472
+	$prestataire_o:=This:C1470.statistiqueEmail.query("actif = :1"; True:C214)[0]
 	
-	// Instanciation de la class
-	$class_o:=cmaToolGetClass("MAPersonne").new()
-	
-	If (This:C1470.cronosMailjetClass#Null:C1517)
+	If (This:C1470["cronos"+$prestataire_o.prestataire+"Class"]#Null:C1517)
 		
 		For ($i_el; 3; Count parameters:C259)
-			This:C1470.cronosMailjetClass.getMessageEvent(${$i_el}; $1; $2; ->$mailjet_o)
+			This:C1470["cronos"+$prestataire_o.prestataire+"Class"].getMessageEvent(${$i_el}; $1; $2; ->$statistiqueEmail_o)
 			
-			If ($mailjet_o.errorHttp=Null:C1517)
-				This:C1470.cronosMailjetClass.AnalysisMessageEvent($mailjet_o; ${$i_el}; $1; $2; ->$mailjetDetail_c)
+			If ($statistiqueEmail_o.errorHttp=Null:C1517)
+				This:C1470["cronos"+$prestataire_o.prestataire+"Class"].AnalysisMessageEvent($statistiqueEmail_o; ${$i_el}; $1; $2; ->$statistiqueEmail_c)
 			End if 
 			
-			If ($mailjetDetail_c.length>0)
+			If ($statistiqueEmail_c.length>0)
 				
-				For each ($mailjetDetail_o; $mailjetDetail_c)
+				For each ($statistiqueEmailDetail_o; $statistiqueEmail_c)
 					// On vérifie que l'email trouvé est bien dans la base du client
-					$class_o.loadByField("eMail"; "="; $mailjetDetail_o.email)  // Initialisation de l'entité de la table [Personne] du client
+					$MAPersonne_cs.loadByField("eMail"; "="; $statistiqueEmailDetail_o.email)  // Initialisation de l'entité de la table [Personne] du client
 					
-					If ($class_o.personne#Null:C1517)  // On met à jour la table marketing avec les infos de mailjet
-						$class_o.personne.reload()
-						$class_o.updateCaMarketingStatistic(2; New object:C1471("eventNumber"; ${$i_el}; "eventTs"; Num:C11($mailjetDetail_o.tsEvent); "messageID"; String:C10($mailjetDetail_o.messageID); "num"; Num:C11(${$i_el})))
+					If ($MAPersonne_cs.personne#Null:C1517)  // On met à jour la table marketing avec les infos de mailjet
+						$MAPersonne_cs.personne.reload()
+						$MAPersonne_cs.updateCaMarketingStatistic(2; New object:C1471("eventNumber"; ${$i_el}; "eventTs"; Num:C11($statistiqueEmailDetail_o.tsEvent); "messageID"; String:C10($statistiqueEmailDetail_o.messageID); "num"; Num:C11(${$i_el})))
 					End if 
 					
 				End for each 
@@ -953,12 +953,12 @@ Historique
 		This:C1470.cronosStop:=False:C215
 		This:C1470.cronosVerifTache:=True:C214
 		
-		This:C1470.cronosVerifMailjet:=0
+		This:C1470.cronosVerifStatistiqueEmail:=0
 		This:C1470.cronosVerifScenario:=0
 		This:C1470.cronosVerifProcessAuto:=0
 		
-		This:C1470.cronosMailjetClass:=cmaToolGetClass("MAMailjet").new()
-		
+		// Gestion de récupérations des statistiques des emails envoyés
+		This:C1470.statistiqueEmail:=[{prestataire: "Mailjet"; actif: False:C215}; {prestataire: "Brevo"; actif: True:C214}]
 		$process_el:=New process:C317("cwCronosDisplay"; 0; "cronosMarketingAutomation"; This:C1470; *)
 	End if 
 	
