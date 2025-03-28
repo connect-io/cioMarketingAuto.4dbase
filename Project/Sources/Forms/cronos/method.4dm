@@ -36,7 +36,12 @@ Case of
 				End if 
 				
 				Form:C1466.cronosUpdateCaMarketing($tsFrom_el; $tsTo_el; "3"; "4"; "7"; "8"; "9"; "10")
-				$lastRequest_o:={lastRequest: cs:C1710.MATimeStamp.me.get(Current date:C33; Current time:C178)}
+				
+				If ($prochaineVerif_el>86400)
+					$lastRequest_o:={lastRequest: cs:C1710.MATimeStamp.me.get(Add to date:C393(Current date:C33; 0; 0; Round:C94($prochaineVerif_el/86400; 0)); ?00:00:01?)}
+				Else 
+					$lastRequest_o:={lastRequest: cs:C1710.MATimeStamp.me.get(Current date:C33; Current time:C178)}
+				End if 
 				
 				If (Form:C1466["cronos"+$prestataire_t+"Class"].historyRequestContent.prochaineVerif#Null:C1517)
 					$lastRequest_o.prochaineVerif:=$prochaineVerif_el
