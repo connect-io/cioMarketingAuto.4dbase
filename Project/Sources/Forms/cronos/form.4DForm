@@ -257,14 +257,14 @@
 					"top": 192,
 					"width": 220,
 					"height": 25,
-					"dataSource": "\"Prochaine vérification le \"+cs:C1710.MATimeStamp.me.read(\"date\"; Num:C11(Form:C1466.cronosVerifStatistiqueEmail))+\" à \"+cs:C1710.MATimeStamp.me.read(\"heure\"; Num:C11(Form:C1466.cronosVerifStatistiqueEmail))",
+					"dataSource": "\"Prochaine vérification le \"+cs:C1710.MATimeStamp.me.read(\"date\"; Num:C11(Form:C1466.cronosVerifStatistiqueEmail))+\" à \"+cs:C1710.MATimeStamp.me.read(\"hour\"; Num:C11(Form:C1466.cronosVerifStatistiqueEmail))",
 					"enterable": false,
 					"contextMenu": "none",
 					"focusable": false,
 					"fill": "transparent",
 					"borderStyle": "none",
 					"fontFamily": "Arial",
-					"fontSize": 9,
+					"fontSize": 10,
 					"fontWeight": "bold"
 				}
 			}
