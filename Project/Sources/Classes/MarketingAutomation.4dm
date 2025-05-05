@@ -788,7 +788,15 @@ Historique
 			End if 
 			
 			If ($continue_b=True:C214)  // Ajout du log
-				$scene_cs.addScenarioEvent($scene_o.action; $enregistrement_o.ID; 0; "")
+				
+				Case of 
+					: ($scene_o.action="Envoi email")
+						$scene_cs.addScenarioEvent($scene_o.action; $enregistrement_o.ID; 0; String:C10($personne_o.eMail))
+					: ($scene_o.action="Envoi SMS")
+						$scene_cs.addScenarioEvent($scene_o.action; $enregistrement_o.ID; 0; String:C10($personne_o.telMobile))
+					Else 
+						$scene_cs.addScenarioEvent($scene_o.action; $enregistrement_o.ID; 0; "")
+				End case 
 				
 				Case of 
 					: ($scene_o.action="Changement de scénario") | ($scene_o.action="Fin du scénario")
