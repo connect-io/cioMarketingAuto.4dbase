@@ -14,7 +14,7 @@ Class constructor($path_t : Text)
 		This:C1470.config:=JSON Parse:C1218($fichierConfig_o.getText())
 	End if 
 	
-Function AnalysisMessageEvent($statistiqueEmail_o : Object; $statut_t : Text; $tsFrom_el : Integer; $tsTo_el : Integer; $statistiqueEmail_p : Pointer)
+Function analysisMessageEvent($statistiqueEmail_o : Object; $statut_t : Text; $tsFrom_el : Integer; $tsTo_el : Integer; $statistiqueEmail_p : Pointer)
 	var $resultatHttp_t; $tsFrom_t; $tsTo_t : Text
 	var $i_el; $offset_el; $tsEvent_el; $total_el : Integer
 	var $resultatHttp_o; $mailStatut_o; $statut_o : Object
@@ -45,6 +45,11 @@ Function AnalysisMessageEvent($statistiqueEmail_o : Object; $statut_t : Text; $t
 				
 				For each ($event_o; $resultatHttp_o.events)
 					$tsEvent_el:=cs:C1710.MATimeStamp.me.get(Date:C102($event_o.date); Time:C179($event_o.date))-cwToolHourSummerWinter(Date:C102($event_o.date))
+					
+					If ($statistiqueEmail_p->query("email = :1"; $event_o.email).length=1)  // On a déjà traité le mail et on a le plus récent pour l'event recherché
+						continue
+					End if 
+					
 					$statistiqueEmail_p->push(New object:C1471("email"; $event_o.email; "idContact"; $event_o.email; "tsEvent"; $tsEvent_el; "messageID"; $event_o.messageId))
 				End for each 
 				

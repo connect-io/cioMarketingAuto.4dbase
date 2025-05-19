@@ -15,7 +15,7 @@ Class constructor($path_t : Text)
 		This:C1470.config.domainRequest:="https://"+This:C1470.config.smtpKeyPublic+":"+This:C1470.config.smtpKeySecret+"@api.mailjet.com/"+This:C1470.config.smtpVersion
 	End if 
 	
-Function AnalysisMessageEvent
+Function analysisMessageEvent
 	var $1 : Object  // Réponse mailjet de la function getMessageEvent
 	var $2 : Text  // Statut des emails qu'on souhaite avoir
 	var $3 : Integer  // TS début

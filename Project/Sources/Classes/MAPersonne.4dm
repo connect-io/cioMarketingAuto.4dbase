@@ -360,7 +360,7 @@ Historique
 		$class_o.getMessageEvent(${$i_el}; 0; cs:C1710.MATimeStamp.me.get(Current date:C33; Current time:C178); ->$mailjet_o)
 		
 		If ($mailjet_o.errorHttp=Null:C1517)
-			$class_o.AnalysisMessageEvent($mailjet_o; ${$i_el}; 0; cs:C1710.MATimeStamp.me.get(Current date:C33; Current time:C178); ->$mailjetDetail_c)
+			$class_o.analysisMessageEvent($mailjet_o; ${$i_el}; 0; cs:C1710.MATimeStamp.me.get(Current date:C33; Current time:C178); ->$mailjetDetail_c)
 		End if 
 		
 		If ($1#"")
@@ -949,7 +949,7 @@ Historique
 26/01/21 - Grégory Fromain <gregory@connect-io.fr> - Ajout entête
 ------------------------------------------------------------------------------*/
 	var $continue_b : Boolean
-	var $autreTable_o; $caScenarioEvents_o; $caScenarioEvent_o; $caScenarioPersonne_o; $statut_o : Object
+	var $autreTable_o; $caScenarioEvents_o; $caScenarioEventsB_o; $caScenarioEvent_o; $caScenarioPersonne_o; $statut_o : Object
 	
 	var $scene_cs : Object
 	
@@ -1025,7 +1025,7 @@ Historique
 			$autreTable_o:=This:C1470.personne.AllCaPersonneScenario.query("actif = :1"; True:C214)
 			
 			If ($autreTable_o.length>0)  // Il y a des scénarios actifs pour la personne
-				$caScenarioEvents_o:=$autreTable_o.AllCaScenarioEvent.query("etat # :1"; "Terminé")
+				$caScenarioEvents_o:=$autreTable_o.AllCaScenarioEvent.query("etat # :1 AND etat # :2"; "Terminé"; "Évènement mailjet")
 				
 				For each ($caScenarioEvent_o; $caScenarioEvents_o)
 					$continue_b:=$scene_cs.loadByPrimaryKey($caScenarioEvent_o.OneCaScene.ID)
@@ -1033,11 +1033,23 @@ Historique
 					If ($continue_b=True:C214)
 						$caScenarioPersonne_o:=$caScenarioEvent_o.OneCaPersonneScenario
 						
+						If (String:C10($detail_o.eventNumber)="3") | (String:C10($detail_o.eventNumber)="4")
+							$caScenarioEventsB_o:=$autreTable_o.AllCaScenarioEvent.query("etat = :1 AND messageID = :2"; "Évènement mailjet"; String:C10($detail_o.messageID))
+						End if 
+						
 						Case of 
 							: (String:C10($detail_o.eventNumber)="3")  // Si ouvert, on met à jour le log de la scène de la personne
-								$scene_cs.addScenarioEvent("Évènement mailjet, mail ouvert"; $caScenarioPersonne_o.ID; $caScenarioPersonne_o.tsProchainCheck; "")
+								
+								If ($caScenarioEventsB_o.length=0)  // Si on a pas déjà trouvé un log par rapport au même mail et au même évènement d'ouverture, on stocke le log
+									$scene_cs.addScenarioEvent("Évènement mailjet, mail ouvert"; $caScenarioPersonne_o.ID; $caScenarioPersonne_o.tsProchainCheck; String:C10($detail_o.messageID))
+								End if 
+								
 							: (String:C10($detail_o.eventNumber)="4")  // Si clic, on met à jour le log de la scène de la personne
-								$scene_cs.addScenarioEvent("Évènement mailjet, mail cliqué"; $caScenarioPersonne_o.ID; $caScenarioPersonne_o.tsProchainCheck; "")
+								
+								If ($caScenarioEventsB_o.length=0)  // Si on a pas déjà trouvé un log par rapport au même mail et au même évènement de clic, on stocke le log
+									$scene_cs.addScenarioEvent("Évènement mailjet, mail cliqué"; $caScenarioPersonne_o.ID; $caScenarioPersonne_o.tsProchainCheck; String:C10($detail_o.messageID))
+								End if 
+								
 							: (String:C10($detail_o.eventNumber)="8") | (String:C10($detail_o.eventNumber)="9") | (String:C10($detail_o.eventNumber)="10")  // Si cela concerne un mail en bounce, bloqué et/ou demande de désabonnement on arrête le scénario
 								
 								If ($caScenarioEvent_o.information="Envoi d'un email")  // Si le scénario concerne une scène qui est l'envoi d'un mail alors on arrête le scénario pour cette personne

@@ -55,6 +55,11 @@ Historique
 					$caScenarioEvent_o.information:="Mailing cliqué"
 			End case 
 			
+			If ($information_t#"")
+				$caScenarioEvent_o.messageID:=$information_t
+				$information_t:=""
+			End if 
+			
 			// Je mets au chaud le timeStamp du prochain Check initial pour le remettre ensuite
 			$caScenarioEvent_o.tsMiseAJour:=$tsProchainCheck_el
 		: ($action_t="Changement de scène")

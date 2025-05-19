@@ -188,10 +188,11 @@ Historique
 			This:C1470["cronos"+$prestataire_o.prestataire+"Class"].getMessageEvent(${$i_el}; $1; $2; ->$statistiqueEmail_o)
 			
 			If ($statistiqueEmail_o.errorHttp=Null:C1517)
-				This:C1470["cronos"+$prestataire_o.prestataire+"Class"].AnalysisMessageEvent($statistiqueEmail_o; ${$i_el}; $1; $2; ->$statistiqueEmail_c)
+				This:C1470["cronos"+$prestataire_o.prestataire+"Class"].analysisMessageEvent($statistiqueEmail_o; ${$i_el}; $1; $2; ->$statistiqueEmail_c)
 			End if 
 			
 			If ($statistiqueEmail_c.length>0)
+				$statistiqueEmail_c:=$statistiqueEmail_c.orderBy("tsEvent asc")
 				
 				For each ($statistiqueEmailDetail_o; $statistiqueEmail_c)
 					// On vérifie que l'email trouvé est bien dans la base du client
