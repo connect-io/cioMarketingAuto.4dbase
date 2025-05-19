@@ -1021,7 +1021,7 @@ Historique
 					
 			End case 
 			
-			// On doit chercher si pour cette personne le mailing de la scène qui a déclenché cet évènement doit déclencher quelque chose (saut de scène par exemple)
+			// On doit chercher si pour cette personne le mailing de la scène qui a déclenché cet évènement doit déclencher quelque chose (saut de scène par exemple) sauf pour évènement qui ne permettent / autorisent plus de relance (bounce, désabonnement, bloqué)
 			$autreTable_o:=This:C1470.personne.AllCaPersonneScenario.query("actif = :1"; True:C214)
 			
 			If ($autreTable_o.length>0)  // Il y a des scénarios actifs pour la personne
@@ -1038,6 +1038,15 @@ Historique
 								$scene_cs.addScenarioEvent("Évènement mailjet, mail ouvert"; $caScenarioPersonne_o.ID; $caScenarioPersonne_o.tsProchainCheck; "")
 							: (String:C10($detail_o.eventNumber)="4")  // Si clic, on met à jour le log de la scène de la personne
 								$scene_cs.addScenarioEvent("Évènement mailjet, mail cliqué"; $caScenarioPersonne_o.ID; $caScenarioPersonne_o.tsProchainCheck; "")
+							: (String:C10($detail_o.eventNumber)="8") | (String:C10($detail_o.eventNumber)="9") | (String:C10($detail_o.eventNumber)="10")  // Si cela concerne un mail en bounce, bloqué et/ou demande de désabonnement on arrête le scénario
+								
+								If ($caScenarioEvent_o.information="Envoi d'un email")  // Si le scénario concerne une scène qui est l'envoi d'un mail alors on arrête le scénario pour cette personne
+									$caScenarioEvent_o.etat:="Terminé"
+									$statut_o:=$caScenarioEvent_o.save()
+									
+									$scene_cs.addScenarioEvent("Fin du scénario"; $caScenarioPersonne_o.ID; 0; "Suite à l'évenement "+String:C10($detail_o.eventNumber))
+								End if 
+								
 						End case 
 						
 						// On force le timeStamp du prochainCheck à maintenant pour voir si cet évènement déclenchera un saut de scène par exemple
