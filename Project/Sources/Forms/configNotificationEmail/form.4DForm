@@ -115,11 +115,41 @@
 					"events": [
 						"onDataChange"
 					]
+				},
+				"pieceJointeEmail": {
+					"type": "checkbox",
+					"text": "PJ Email",
+					"top": 110,
+					"left": 274,
+					"width": 90,
+					"height": 20,
+					"events": [
+						"onClick"
+					],
+					"dataSourceTypeHint": "boolean",
+					"dataSource": "Form:C1466.notif.pieceJointeEmail",
+					"method": "ObjectMethods/pieceJointeEmail.4dm"
+				},
+				"configNotifPieceJointeEmail": {
+					"type": "pictureButton",
+					"left": 274,
+					"top": 130,
+					"width": 20,
+					"height": 20,
+					"events": [
+						"onClick",
+						"onMouseMove"
+					],
+					"picture": "/RESOURCES/Images/logo-wp.png",
+					"method": "ObjectMethods/configNotifPieceJointeEmail.4dm",
+					"loopBackToFirstFrame": true,
+					"switchBackWhenReleased": true,
+					"useLastFrameAsDisabled": true
 				}
 			}
 		}
 	],
-	"geometryStamp": 544,
+	"geometryStamp": 547,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",

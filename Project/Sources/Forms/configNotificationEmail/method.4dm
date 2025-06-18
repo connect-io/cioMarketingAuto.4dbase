@@ -18,4 +18,5 @@ If (Form event code:C388=On Load:K2:1)
 		
 	End if 
 	
+	OBJECT SET ENABLED:C1123(*; "configNotifPieceJointeEmail"; Bool:C1537(Form:C1466.notif.pieceJointeEmail))
 End if 
