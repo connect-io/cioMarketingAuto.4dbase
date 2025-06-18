@@ -414,11 +414,45 @@
 					"useLastFrameAsDisabled": true,
 					"visibility": "hidden",
 					"sizingX": "move"
+				},
+				"imageExecuterFormule": {
+					"type": "input",
+					"left": 903,
+					"top": 558,
+					"width": 32,
+					"height": 32,
+					"dataSourceTypeHint": "picture",
+					"dataSource": "Form:C1466.imageExecuterFormule",
+					"enterable": false,
+					"contextMenu": "none",
+					"pictureFormat": "proportionalCenter",
+					"fill": "transparent",
+					"borderStyle": "none",
+					"events": [
+						"onClick",
+						"onMouseMove"
+					],
+					"method": "ObjectMethods/imageExecuterFormule.4dm",
+					"sizingX": "move",
+					"visibility": "hidden"
+				},
+				"Texte8": {
+					"type": "text",
+					"text": "Exécuter une formule :",
+					"top": 539,
+					"left": 903,
+					"width": 168,
+					"height": 25,
+					"fontWeight": "bold",
+					"sizingX": "move",
+					"fontFamily": "Arial",
+					"fontSize": 13,
+					"visibility": "hidden"
 				}
 			}
 		}
 	],
-	"geometryStamp": 485,
+	"geometryStamp": 500,
 	"method": "method.4dm",
 	"editor": {
 		"groups": {

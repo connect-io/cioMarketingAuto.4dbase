@@ -89,6 +89,16 @@ Case of
 					WParea:=WP New:C1317(Form:C1466.donnee.pieceJointe.contenu4WP)
 				End if 
 				
+				OBJECT SET VISIBLE:C603(*; "Texte8"; True:C214)
+				OBJECT SET VISIBLE:C603(*; "imageExecuterFormule"; True:C214)
+				
+				Case of 
+					: (Bool:C1537(Form:C1466.donnee.pieceJointe.executerFormule)=True:C214)
+						Form:C1466.imageExecuterFormule:=Storage:C1525.automation.image["toggle-on"]
+					Else 
+						Form:C1466.imageExecuterFormule:=Storage:C1525.automation.image["toggle-off"]
+				End case 
+				
 		End case 
 		
 	: (Form event code:C388=On Close Box:K2:21)
