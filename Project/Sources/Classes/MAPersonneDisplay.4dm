@@ -233,5 +233,5 @@ Historique
 			
 		End for 
 		
-		$formScenario_o.personneCollection:=Form:C1466.personneCollectionInit.copy()
+		$formScenario_o.personneCollection:=Form:C1466.personneCollectionInit.copy().orderBy(Storage:C1525.automation.formule.getFieldName(Storage:C1525.automation.passerelle.champ; "UID"))
 	End if 

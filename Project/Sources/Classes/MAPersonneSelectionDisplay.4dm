@@ -15,7 +15,7 @@ Historique
 27/01/21 - Rémy Scanu <remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
 	
-Function listBoxMetaInfo($personne_o; $scenario_o : Object; $personneSel_es; $personneCurrentID_t)->$status_o : Object
+Function listBoxMetaInfo($personne_o : Object; $scenario_o : Object; $personneCurrentID_t : Variant)->$status_o : Object
 /*------------------------------------------------------------------------------
 Fonction : CaPersonneScenarioEntity.listBoxMetaInfo
 	
@@ -28,16 +28,13 @@ Historique
 	var $caPersonnesScenario_es : Object
 	
 	$status_o:=New object:C1471()
-	$caPersonnesScenario_es:=$personne_o.AllCaPersonneScenario.query("scenarioID = :1"; $scenario_o.getKey())
+	$caPersonnesScenario_es:=$personne_o.AllCaPersonneScenario.query("scenarioID = :1"; $scenario_o.ID)
 	
 	If ($caPersonnesScenario_es.length=1)
 		$inactif_b:=Not:C34($caPersonnesScenario_es.first().actif)
 	End if 
 	
 	Case of 
-		: ($personneSel_es#Null:C1517) && ($personneSel_es.length>0) && ($personneSel_es.contains($personne_o))
-			$status_o.fill:="blue"
-			$status_o.stroke:="white"
 		: ($personne_o.getKey()=$personneCurrentID_t)
 			$status_o.fill:="blue"
 			$status_o.stroke:="white"
@@ -115,21 +112,28 @@ Historique
 27/01/21 - RémyScanu remy@connect-io.fr> - Création
 -----------------------------------------------------------------------------*/
 	var $propriete_t; $proprieteToOrder_t; $allProprieteToOrder_t : Text
-	var $keepSort_b : Boolean
+	var $keepSort_b; $deleteLastSort_b : Boolean
 	var $verif_o : Object
+	var $sort_c : Collection
 	
 	If (Count parameters:C259=2)
 		$keepSort_b:=$sort_b
 	End if 
 	
 	$verif_o:=cwToolProprieteExisteDansObjet(Form:C1466; New collection:C1472("imageSort@"); -1)
+	$sort_c:=New collection:C1472
 	
 	For each ($propriete_t; $verif_o["imageSort@"].propriete)
 		$proprieteToOrder_t:=Replace string:C233($propriete_t; "imageSort"; "")
 		$proprieteToOrder_t:=cmaToolMinuscFirstChar($proprieteToOrder_t)
+		$deleteLastSort_b:=(Storage:C1525.automation.formule.getFieldName(Storage:C1525.automation.passerelle.champ; $proprieteToOrder_t)="@(@)@")  // Le champ fait référence à une fonction d'une entité on ne peut pas trier sur ce genre de chose
 		
-		If (Storage:C1525.automation.formule.getFieldName(Storage:C1525.automation.passerelle.champ; $proprieteToOrder_t)#"@(@)@")
+		If ($deleteLastSort_b=False:C215)
 			$proprieteToOrder_t:=Storage:C1525.automation.formule.getFieldName(Storage:C1525.automation.passerelle.champ; $proprieteToOrder_t)
+		End if 
+		
+		If ($objectClicked_t#"sortNomComplet") & ($propriete_t="imageSortNomComplet") && (Picture size:C356(Form:C1466[$propriete_t])=Picture size:C356(Storage:C1525.automation.image["sort"]))  // Cas particulier car la colonne "Nom" et "Nom complet" ont la même racine
+			continue
 		End if 
 		
 		Case of 
@@ -137,20 +141,20 @@ Historique
 				
 				If ($propriete_t=("@"+$objectClicked_t+"@")) & ($objectClicked_t#"") & ($keepSort_b=False:C215)  // La colonne a été cliqué et avait le statut du tri neutre on le passe à croissant
 					Form:C1466[$propriete_t]:=Storage:C1525.automation.image["sort-asc"]
-					$allProprieteToOrder_t:=$allProprieteToOrder_t+$proprieteToOrder_t+" asc"+","
+					$sort_c.push($proprieteToOrder_t+" asc")
 				End if 
 				
 				If (Picture size:C356(Form:C1466[$propriete_t])=Picture size:C356(Storage:C1525.automation.image["sort-desc"]))  // La colonne n'a pas été cliqué mais avait le statut du tri décroissant on le maitient
-					$allProprieteToOrder_t:=$allProprieteToOrder_t+$proprieteToOrder_t+" desc"+","
+					$sort_c.push($proprieteToOrder_t+" desc")
 				End if 
 				
 			: (Picture size:C356(Form:C1466[$propriete_t])=Picture size:C356(Storage:C1525.automation.image["sort-asc"]))
 				
 				If ($propriete_t=("@"+$objectClicked_t+"@")) & ($objectClicked_t#"") & ($keepSort_b=False:C215)  // La colonne a été cliqué et avait le statut du tri croissant on le passe à décroissant
 					Form:C1466[$propriete_t]:=Storage:C1525.automation.image["sort-desc"]
-					$allProprieteToOrder_t:=$allProprieteToOrder_t+$proprieteToOrder_t+" desc"+","
+					$sort_c.push($proprieteToOrder_t+" desc")
 				Else   // La colonne n'a pas été cliqué mais avait le statut du tri croissant on le maitient
-					$allProprieteToOrder_t:=$allProprieteToOrder_t+$proprieteToOrder_t+" asc"+","
+					$sort_c.push($proprieteToOrder_t+" asc")
 				End if 
 				
 			Else 
@@ -160,16 +164,20 @@ Historique
 				End if 
 				
 				If ((Picture size:C356(Form:C1466[$propriete_t])=Picture size:C356(Storage:C1525.automation.image["sort-desc"])))  // La colonne n'a pas été cliqué mais avait le statut du tri décroissant on le maitient
-					$allProprieteToOrder_t:=$allProprieteToOrder_t+$proprieteToOrder_t+" desc"+","
+					$sort_c.push($proprieteToOrder_t+" desc")
 				End if 
 				
 		End case 
 		
+		If ($deleteLastSort_b=True:C214) & ($sort_c.length>0)  // Le champ fait référence à une fonction d'une entité on ne peut pas trier sur ce genre de chose, on skip le tri pour ce champ
+			$sort_c:=$sort_c.remove($sort_c.length-1)  // On supprime le dernier élément
+		End if 
+		
+		CLEAR VARIABLE:C89($deleteLastSort_b)
 	End for each 
 	
-	If ($allProprieteToOrder_t#"")
-		$allProprieteToOrder_t:=Substring:C12($allProprieteToOrder_t; 0; Length:C16($allProprieteToOrder_t)-1)  // J'enlève le dernier ","
-		$allProprieteToOrder_t:=Replace string:C233($allProprieteToOrder_t; ","; ", ")
+	If ($sort_c.length>0)
+		$allProprieteToOrder_t:=$sort_c.join(","; ck ignore null or empty:K85:5)
 		
 		If (Form:C1466.MAPersonneSelection#Null:C1517)
 			$collectionOrdered_v:=Form:C1466.MAPersonneSelection.personneCollection.orderBy($allProprieteToOrder_t)
