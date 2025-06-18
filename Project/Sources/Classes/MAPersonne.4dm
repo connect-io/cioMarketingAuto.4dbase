@@ -382,11 +382,13 @@ Historique
 Function sendMailing($configPreCharge_o : Object) : Object
 	var $canalEnvoi_t; $corps_t; $mime_t; $propriete_t; $retour_t; $strategy_t; $attchmentPath_t; $type_t : Text
 	var $i_el : Integer
-	var $erreur_b; $printSetting_b; $npai_b : Boolean
+	var $erreur_b; $printSetting_b; $npai_b; $pieceJointeEmail_b : Boolean
 	var $date_d : Date
 	var $time_t : Time
 	var $class_o; $config_o; $mime_o; $statut_o; $wpVar_o; $fichier_o; $signature_o; $document_o; $entity_e; $param_o; $body_o; $externalReference_o; $retour_o; $extraDetail_o; $pieceJointe_o : Object
-	var $transporter_c; $detail_c; $context_c; $collection_c : Collection
+	var $transporter_c; $detail_c; $context_c; $collection_c; $pieceJointe_c : Collection
+	var $pieceJointe_v : Variant
+	
 	var $file_f : 4D:C1709.File
 	
 	var $formule_f : Object
@@ -572,10 +574,35 @@ Function sendMailing($configPreCharge_o : Object) : Object
 										$pieceJointe_o:=$config_o.pieceJointe.contenu4WP
 								End case 
 								
-								WP COMPUTE FORMULAS:C1707($pieceJointe_o)
-								WP EXPORT DOCUMENT:C1337($pieceJointe_o; $file_f.platformPath; wk pdf:K81:315)
+								If (Bool:C1537($config_o.pieceJointe.executerFormule)=True:C214)  // La / Les pièces jointes seront directement générée(s) depuis une formule
+									$pieceJointe_c:=New collection:C1472
+									
+									If (WP Get text:C1575($pieceJointe_o; wk expressions as value:K81:255)#"")
+										$formule_f:=Formula from string:C1601(WP Get text:C1575($pieceJointe_o; wk expressions as value:K81:255))
+										
+										If ($config_o.externalReference.situation#Null:C1517)  // Concerne un scénario, On prend le même dataContext que l'email
+											$detail_c:=$config_o.externalReference.situation.detail.query("scene = :1"; $config_o.externalReference.scene)
+											$pieceJointe_c:=$formule_f.call({value: $detail_c[0].externalReference})
+										Else 
+											$pieceJointe_c:=$formule_f.call()
+										End if 
+										
+									End if 
+									
+									For each ($pieceJointe_v; $pieceJointe_c)
+										$file_f:=$folder_f.file(Generate UUID:C1066+".pdf")
+										$file_f.setContent($pieceJointe_v)
+										
+										$config_o.eMailConfig.attachmentsPath_c.push($file_f.platformPath)
+									End for each 
+									
+								Else   // La pièce-jointe est un document 4D Write pro (simple ou avec une external référence)
+									WP COMPUTE FORMULAS:C1707($pieceJointe_o)
+									WP EXPORT DOCUMENT:C1337($pieceJointe_o; $file_f.platformPath; wk pdf:K81:315)
+									
+									$config_o.eMailConfig.attachmentsPath_c.push($file_f.platformPath)
+								End if 
 								
-								$config_o.eMailConfig.attachmentsPath_c.push($file_f.platformPath)
 							End if 
 							
 						End if 
@@ -924,12 +951,23 @@ Function sendMailing($configPreCharge_o : Object) : Object
 					$externalReference_o.situation:=OB Copy:C1225($config_o.externalReference.situation)
 				End if 
 				
+				$pieceJointeEmail_b:=Bool:C1537($config_o.notif.pieceJointeEmail)
+				
+				If ($config_o.notif.pieceJointe#Null:C1517)
+					$pieceJointe_o:=OB Copy:C1225($config_o.notif.pieceJointe)
+				End if 
+				
 				$config_o:=New object:C1471("success"; True:C214; "type"; "Email"; "eMailConfig"; $MAEmail_cs; "contenu4WP"; $document_o; "expediteur"; $config_o.notif.expediteur)
 				
 				If ($externalReference_o#Null:C1517)
 					$config_o.externalReference:=OB Copy:C1225($externalReference_o)
 				End if 
 				
+				If ($pieceJointe_o#Null:C1517)  // La notification est accompagné d'une ou plusieurs pièce-jointe
+					$config_o.pieceJointe:=OB Copy:C1225($pieceJointe_o)
+				End if 
+				
+				$config_o.pieceJointeEmail:=$pieceJointeEmail_b
 				$retour_o:=This:C1470.sendMailing($config_o)
 			End if 
 			
