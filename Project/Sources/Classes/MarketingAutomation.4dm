@@ -335,11 +335,14 @@ Historique
 					$caScenarioEvent_o:=$enregistrement_o.AllCaScenarioEvent.orderBy("tsCreation desc")
 					$caScenarioEvent_o:=$caScenarioEvent_o.first()
 					
-					If ($caScenarioEvent_o.OneCaScene.OneCaSceneSuivante#Null:C1517)  // S'il y a une scène suivante
-						$scene_o:=$caScenarioEvent_o.OneCaScene.OneCaSceneSuivante
-					Else   // Pas de scène, la dernière scène du scénario n'a pas pu se jouer fin du spectacle evacuation de la salle...
-						$finScenario_b:=True:C214
-					End if 
+					Case of 
+						: ($caScenarioEvent_o.information="Fin du scénario")  // Suite à un bounce / désabonnement / bloqué on a forcé la fin du scénario, on applique donc cette directive
+							$finScenario_b:=True:C214
+						: ($caScenarioEvent_o.OneCaScene.OneCaSceneSuivante#Null:C1517)  // S'il y a une scène suivante
+							$scene_o:=$caScenarioEvent_o.OneCaScene.OneCaSceneSuivante
+						Else   // Pas de scène, la dernière scène du scénario n'a pas pu se jouer fin du spectacle evacuation de la salle...
+							$finScenario_b:=True:C214
+					End case 
 					
 				End if 
 				
