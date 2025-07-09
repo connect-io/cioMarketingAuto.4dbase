@@ -468,6 +468,9 @@ Historique
 					
 					If ($continue_b=False:C215)
 						$scene_cs.addScenarioEvent("Erreur formule"; $enregistrement_o.ID; 0; "")
+						
+						$enregistrement_o.nbErreurExecution:=$enregistrement_o.nbErreurExecution+1
+						$retour_o:=$enregistrement_o.save()
 					End if 
 					
 				: ($scene_o.action="Envoi email")  // Si l'action de la scène est l'envoi d'un email, on doit faire des vérifications de base
@@ -534,6 +537,9 @@ Historique
 						
 					Else   // Dans ce cas là, soit le mail n'est pas bon, soit il est en demande de désabonnement ou soit il est en bounce
 						$scene_cs.addScenarioEvent("Erreur email"; $enregistrement_o.ID; 0; "")
+						
+						$enregistrement_o.nbErreurExecution:=$enregistrement_o.nbErreurExecution+1
+						$retour_o:=$enregistrement_o.save()
 					End if 
 					
 				: ($scene_o.action="Envoi SMS")  // Si l'action de la scène est l'impression d'un document, on doit faire des vérifications de base
@@ -574,6 +580,9 @@ Historique
 						
 					Else   // Dans ce cas le téléphone mobile n'est pas bon
 						$scene_cs.addScenarioEvent("Erreur téléphone mobile"; $enregistrement_o.ID; 0; "")
+						
+						$enregistrement_o.nbErreurExecution:=$enregistrement_o.nbErreurExecution+1
+						$retour_o:=$enregistrement_o.save()
 					End if 
 					
 				: ($scene_o.action="Imprimer document")  // Si l'action de la scène est l'impression d'un document, on doit faire des vérifications de base
@@ -784,7 +793,11 @@ Historique
 				
 			Else   // On la reprogramme le lendemain pour laisser le temps au scénariste de faire les modifications adéquates...
 				
-				If ($scene_o.OneCaSceneSuivante#Null:C1517) && ($scene_o.OneCaSceneSuivante.action=$scene_o.action) && ($scene_o.OneCaSceneSuivante.sceneSuivanteID=$scene_o.ID)  // Si la scène suivante a exactement la même action et que c'est une boucle sans fin
+				If ($scene_o.OneCaScenario.configuration.nbErreurMaxExecution#Null:C1517) && ($enregistrement_o.nbErreurExecution>Num:C11($scene_o.OneCaScenario.configuration.nbErreurMaxExecution))  // S'il y a un nombre max d'erreur d'exécution de scène ET qu'il est dépassé
+					$finScenario_b:=True:C214
+				End if 
+				
+				If ($finScenario_b=False:C215) && ($scene_o.OneCaSceneSuivante#Null:C1517) && ($scene_o.OneCaSceneSuivante.action=$scene_o.action) && ($scene_o.OneCaSceneSuivante.sceneSuivanteID=$scene_o.ID)  // Si la scène suivante a exactement la même action et que c'est une boucle sans fin
 					$enregistrement_o.tsProchainCheck:=cs:C1710.MATimeStamp.me.get(Add to date:C393(Current date:C33; 0; 0; 1); ?09:00:00?)
 					$retour_o:=$enregistrement_o.save()
 				End if 
@@ -935,7 +948,7 @@ Historique
 			
 		End if 
 		
-		If ($finScenario_b=True:C214)  // Pas de scène "Fin de scénario" OU problème dans l'adresse email OU Désabonnement/Bounce OU scénario supprimé / plus actif
+		If ($finScenario_b=True:C214)  // Pas de scène "Fin de scénario" OU problème dans l'adresse email OU Désabonnement/Bounce OU scénario supprimé / plus actif OU nombre d'erreur d'exécution dépassé
 			$enregistrement_o.actif:=False:C215
 			$enregistrement_o.tsProchainCheck:=0
 			

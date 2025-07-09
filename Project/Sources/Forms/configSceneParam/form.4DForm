@@ -26,8 +26,8 @@
 				"Bouton1": {
 					"type": "button",
 					"text": "Valider",
-					"top": 390,
-					"left": 34,
+					"top": 280,
+					"left": 147,
 					"width": 160,
 					"height": 30,
 					"events": [
@@ -40,17 +40,17 @@
 				},
 				"Texte13": {
 					"type": "text",
-					"text": "Paramétrage des modèles :",
-					"top": 123,
-					"left": 14,
-					"width": 188,
+					"text": "Paramétrage des modèles",
+					"top": 59,
+					"left": 240,
+					"width": 200,
 					"height": 16,
 					"fontWeight": "bold"
 				},
 				"sceneDetailApercuModele": {
 					"type": "pictureButton",
-					"left": 194,
-					"top": 148,
+					"left": 420,
+					"top": 84,
 					"width": 20,
 					"height": 25,
 					"events": [
@@ -67,7 +67,7 @@
 					"type": "text",
 					"text": "PARTIE MAILING",
 					"top": 29,
-					"left": 41,
+					"left": 154,
 					"width": 147,
 					"height": 20,
 					"fontFamily": "Arial",
@@ -76,8 +76,8 @@
 				},
 				"gestionLayout": {
 					"type": "pictureButton",
-					"left": 14,
-					"top": 148,
+					"left": 240,
+					"top": 84,
 					"width": 20,
 					"height": 25,
 					"events": [
@@ -92,8 +92,8 @@
 				},
 				"sceneDetailModeleActif": {
 					"type": "input",
-					"left": 43,
-					"top": 148,
+					"left": 269,
+					"top": 84,
 					"width": 141,
 					"height": 25,
 					"dataSource": "Form:C1466.modeleActif",
@@ -121,7 +121,7 @@
 				"sceneDetailFormule": {
 					"type": "input",
 					"left": 14,
-					"top": 204,
+					"top": 153,
 					"width": 185,
 					"height": 97,
 					"contextMenu": "automatic",
@@ -138,23 +138,25 @@
 				"Texte3": {
 					"type": "text",
 					"text": "Formule",
-					"top": 181,
+					"top": 130,
 					"left": 14,
 					"width": 200,
-					"height": 16
+					"height": 16,
+					"fontWeight": "bold"
 				},
 				"Texte1": {
 					"type": "text",
 					"text": "Contexte de la formule",
-					"top": 316,
-					"left": 14,
+					"top": 130,
+					"left": 240,
 					"width": 200,
-					"height": 16
+					"height": 16,
+					"fontWeight": "bold"
 				},
 				"sceneDetailFormuleContexte": {
 					"type": "dropdown",
-					"left": 14,
-					"top": 341,
+					"left": 240,
+					"top": 153,
 					"width": 200,
 					"height": 20,
 					"events": [
@@ -196,7 +198,7 @@
 			}
 		}
 	],
-	"geometryStamp": 463,
+	"geometryStamp": 496,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",

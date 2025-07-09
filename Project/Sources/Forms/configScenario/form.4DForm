@@ -42,7 +42,7 @@
 					"type": "dropdown",
 					"left": 14,
 					"top": 48,
-					"width": 251,
+					"width": 230,
 					"height": 20,
 					"events": [
 						"onLoad",
@@ -53,19 +53,19 @@
 				},
 				"Texte": {
 					"type": "text",
-					"text": "Choix du template :",
+					"text": "Choix du template",
 					"top": 20,
 					"left": 14,
-					"width": 172,
+					"width": 230,
 					"height": 25,
 					"fontWeight": "bold"
 				},
 				"Texte5": {
 					"type": "text",
-					"text": "Utiliser le nom de la compagnie :",
+					"text": "Utiliser le nom de la compagnie",
 					"top": 83,
 					"left": 14,
-					"width": 220,
+					"width": 230,
 					"height": 25,
 					"fontWeight": "bold"
 				},
@@ -90,10 +90,10 @@
 				},
 				"Texte1": {
 					"type": "text",
-					"text": "Affectation multiple :",
+					"text": "Affectation multiple",
 					"top": 83,
 					"left": 290,
-					"width": 220,
+					"width": 230,
 					"height": 25,
 					"fontWeight": "bold"
 				},
@@ -118,10 +118,10 @@
 				},
 				"Texte2": {
 					"type": "text",
-					"text": "Data context :",
+					"text": "Data context",
 					"top": 161,
 					"left": 14,
-					"width": 220,
+					"width": 230,
 					"height": 25,
 					"fontWeight": "bold"
 				},
@@ -129,7 +129,7 @@
 					"type": "input",
 					"left": 14,
 					"top": 189,
-					"width": 250,
+					"width": 230,
 					"height": 20,
 					"dataSource": "Form:C1466.scenarioDetail.configuration.dataContext",
 					"enterable": false,
@@ -141,7 +141,7 @@
 					"type": "dropdown",
 					"left": 290,
 					"top": 48,
-					"width": 251,
+					"width": 230,
 					"height": 20,
 					"events": [
 						"onLoad",
@@ -153,17 +153,41 @@
 				},
 				"Texte3": {
 					"type": "text",
-					"text": "Type de scénario :",
+					"text": "Type de scénario",
 					"top": 20,
 					"left": 290,
-					"width": 172,
+					"width": 230,
+					"height": 25,
+					"fontWeight": "bold"
+				},
+				"nbMaxErreurExecution": {
+					"type": "dropdown",
+					"left": 290,
+					"top": 189,
+					"width": 230,
+					"height": 20,
+					"events": [
+						"onLoad",
+						"onDataChange"
+					],
+					"dataSource": "",
+					"method": "ObjectMethods/nbMaxErreurExecution.4dm",
+					"dataSourceTypeHint": "object",
+					"numberFormat": ""
+				},
+				"Texte4": {
+					"type": "text",
+					"text": "Nb max d'erreur d'exécution",
+					"top": 161,
+					"left": 290,
+					"width": 230,
 					"height": 25,
 					"fontWeight": "bold"
 				}
 			}
 		}
 	],
-	"geometryStamp": 293,
+	"geometryStamp": 317,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",
