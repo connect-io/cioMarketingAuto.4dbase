@@ -478,7 +478,7 @@
 					"verticalLineStroke": "#C9C9C9",
 					"showHeaders": false,
 					"fill": "#F5FBFF",
-					"hideSystemHighlight": true,
+					"hideSystemHighlight": false,
 					"metaSource": "",
 					"columns": [
 						{

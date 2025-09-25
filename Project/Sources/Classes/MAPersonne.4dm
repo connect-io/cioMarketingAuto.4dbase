@@ -79,7 +79,7 @@ Historique
 		
 		For ($i_el; 1; $caPersonneScenario_e.OneCaScenario.AllCaScene.length)
 			$script_o.scene:=$i_el
-			$caPersonneScenario_e.situation.detail.push($script_o)
+			$caPersonneScenario_e.situation.detail.push(OB Copy:C1225($script_o))
 		End for 
 		
 	End if 
