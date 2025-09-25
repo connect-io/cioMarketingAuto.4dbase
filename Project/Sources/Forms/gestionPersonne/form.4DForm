@@ -479,7 +479,7 @@
 					"showHeaders": false,
 					"fill": "#F5FBFF",
 					"hideSystemHighlight": true,
-					"metaSource": "((Form:C1466.PersonneCurrentElement#Null:C1517) && (This:C1470.getKey()=Form:C1466.PersonneCurrentElement.getKey())) ? {fill: \"blue\"; stroke: \"white\"} : Form:C1466.personneSelectionDisplayClass.listBoxMetaInfo(This:C1470; Form:C1466.donnee.scenarioDetail.toObject(); Form:C1466.PersonneCurrentElement.ID)",
+					"metaSource": "",
 					"columns": [
 						{
 							"header": {

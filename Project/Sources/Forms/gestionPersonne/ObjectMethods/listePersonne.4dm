@@ -1,6 +1,8 @@
 var $accessField_t : Text
 var $value_v : Variant
 
+// Formule pour metaInfo : ((Form.PersonneCurrentElement#Null) && (This.getKey()=Form.PersonneCurrentElement.getKey())) ? {fill: "blue"; stroke: "white"} : Form.personneSelectionDisplayClass.listBoxMetaInfo(This; Form.donnee.scenarioDetail.toObject(); Form.PersonneCurrentElement.ID)
+
 If (Form event code:C388=On Clicked:K2:4) & (Form:C1466.PersonneCurrentElement#Null:C1517)
 	Form:C1466.personneDetail:=Form:C1466.PersonneSelectedElement[0].toObject()
 	

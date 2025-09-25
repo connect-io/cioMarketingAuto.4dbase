@@ -19,7 +19,7 @@ Historique
 	// Chargement des éléments nécessaires au bon fonctionnement de la classe par rapport à la table [Personne] de la base hote.
 	This:C1470.passerelle:=OB Copy:C1225(Storage:C1525.automation.config.passerelle.query("tableComposant = :1"; "Personne")[0])
 	
-Function addScenario($scenarioName_t : Text; $externalReference_t : Text; $date_d : Date; $time_t : Time) : Object
+Function addScenario($scenarioName_t : Text; $script_o : Object; $date_d : Date; $time_t : Time) : Object
 /*-----------------------------------------------------------------------------
 Fonction : MAPersonne.addScenario
 	
@@ -75,10 +75,11 @@ Historique
 			$caPersonneScenario_e.tsProchainCheck:=cs:C1710.MATimeStamp.me.get(Current date:C33(*); $time_t)
 	End case 
 	
-	If ($externalReference_t#"")
+	If ($script_o#Null:C1517)
 		
 		For ($i_el; 1; $caPersonneScenario_e.OneCaScenario.AllCaScene.length)
-			$caPersonneScenario_e.situation.detail.push(New object:C1471("scene"; $i_el; "externalReference"; $externalReference_t))
+			$script_o.scene:=$i_el
+			$caPersonneScenario_e.situation.detail.push($script_o)
 		End for 
 		
 	End if 
@@ -380,7 +381,7 @@ Historique
 	End for 
 	
 Function sendMailing($configPreCharge_o : Object) : Object
-	var $canalEnvoi_t; $corps_t; $mime_t; $propriete_t; $retour_t; $strategy_t; $attchmentPath_t; $type_t : Text
+	var $canalEnvoi_t; $corps_t; $mime_t; $propriete_t; $retour_t; $strategy_t; $attchmentPath_t; $type_t; $expediteur_t : Text
 	var $i_el : Integer
 	var $erreur_b; $printSetting_b; $npai_b; $pieceJointeEmail_b : Boolean
 	var $date_d : Date
@@ -395,7 +396,9 @@ Function sendMailing($configPreCharge_o : Object) : Object
 	var $parameter_e; $parameter_es : Object
 	
 	ASSERT:C1129(This:C1470.personne#Null:C1517; "Impossible d'utiliser la fonction sendMailing sans une personne de définie.")
+	
 	$param_o:=New object:C1471
+	$detail_c:=New collection:C1472
 	
 	If (Count parameters:C259=0)  // Le mailing ne part pas en automatique, on sélectionne le canal d'envoi
 		// Instanciation de la class
@@ -481,7 +484,7 @@ Function sendMailing($configPreCharge_o : Object) : Object
 								$detail_c:=New collection:C1472(New object:C1471("externalReference"; $config_o.contextValue))
 						End case 
 						
-						If ($detail_c.length>0)
+						If ($detail_c.length>0) && ($detail_c[0].externalReference#Null:C1517)
 							WP SET DATA CONTEXT:C1786($document_o; $formule_f.call({value: $detail_c[0].externalReference}))
 						End if 
 						
@@ -535,6 +538,12 @@ Function sendMailing($configPreCharge_o : Object) : Object
 							
 						Else 
 							$config_o.eMailConfig.htmlBody:=$corps_t
+						End if 
+						
+						// Modifié par : Rémy Scanu (25/09/2025)
+						// Permet de mettre dynamiquement un expediteur autre que celui par défaut sur les paramètres de la scène (Concerne un scénario)
+						If ($detail_c.length>0) && ($detail_c[0].expediteur#Null:C1517)
+							$config_o.eMailConfig.from:=$detail_c[0].expediteur
 						End if 
 						
 						$config_o.eMailConfig.to:=This:C1470.eMail
@@ -987,7 +996,7 @@ Historique
 26/01/21 - Grégory Fromain <gregory@connect-io.fr> - Ajout entête
 ------------------------------------------------------------------------------*/
 	var $continue_b : Boolean
-	var $autreTable_o; $caScenarioEvents_o; $caScenarioEventsB_o; $caScenarioEvent_o; $caScenarioPersonne_o; $statut_o : Object
+	var $autreTable_o; $caScenarioEvents_o; $caScenarioEventsB_o; $caScenarioEvent_o; $caScenarioPersonne_o; $statut_o; $retour_o : Object
 	
 	var $scene_cs : Object
 	
