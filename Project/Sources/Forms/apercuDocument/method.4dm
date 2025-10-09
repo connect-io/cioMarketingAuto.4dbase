@@ -25,7 +25,9 @@ If (Form event code:C388=On Load:K2:1)
 			OBJECT SET VISIBLE:C603(*; "WParea"; False:C215)
 		Else 
 			WParea:=$doc4WP_o
+			
 			OBJECT SET VISIBLE:C603(*; "Zone Web"; False:C215)
+			OBJECT SET ENTERABLE:C238(*; "WParea"; Bool:C1537(Form:C1466.enterable))
 		End if 
 		
 	End if 

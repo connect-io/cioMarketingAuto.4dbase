@@ -1,4 +1,4 @@
-﻿{
+{
 	"$4d": {
 		"version": "1",
 		"kind": "form"
@@ -73,7 +73,7 @@
 			}
 		}
 	],
-	"geometryStamp": 27,
+	"geometryStamp": 34,
 	"method": "method.4dm",
 	"editor": {
 		"activeView": "View 1",
