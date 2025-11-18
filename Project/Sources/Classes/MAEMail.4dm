@@ -25,8 +25,8 @@ Historique
 	
 	$server_o:=New object:C1471()
 	
-	// Vérifie que le nom du transporteur soit bien dans la config
-	$transporter_c:=cmaStorage.eMail.detail.transporter.query("name IS :1 AND type = :2"; $transporter_t; "smtp")
+	//Mark: Oauth
+	$transporter_c:=cmaStorage.eMail.detail.transporter.query("name IS :1 and type IS 'Oauth'"; $transporter_t)
 	
 	If ($transporter_c.length=1)
 		$server_o:=$transporter_c[0]
@@ -37,12 +37,30 @@ Historique
 		$server_o:=cmaToolObjectMerge($server_o; $parametre_o)
 	End if 
 	
-	If ($server_o#Null:C1517)
-		This:C1470.transporter:=SMTP New transporter:C1608($server_o)
-	Else 
-		ALERT:C41("Aucune occurence trouvé au sein du fichier JSON")
-		This:C1470.transporter:=New object:C1471()
+	This:C1470.Oauth:=cmaToolOauthMS($server_o)
+	
+	//Mark: Smtp
+	// Vérifie que le nom du transporteur soit bien dans la config
+	$transporter_c:=cmaStorage.eMail.detail.transporter.query("name IS :1 AND type = :2"; $transporter_t; "smtp")
+	
+	If ($transporter_c.length=1)
+		$server_o:=$transporter_c[0]
+		
+		// Il est possible de surcharger le transporteur.
+		If (Count parameters:C259=2)
+			$server_o:=cmaToolObjectMerge($server_o; $parametre_o)
+		End if 
+		
+		If ($server_o#Null:C1517)
+			This:C1470.transporter:=SMTP New transporter:C1608($server_o)
+		Else 
+			ALERT:C41("Aucune occurence trouvé au sein du fichier JSON")
+			This:C1470.transporter:=New object:C1471()
+		End if 
+		
 	End if 
+	
+	ASSERT:C1129((This:C1470.Oauth#Null:C1517) & (This:C1470.transporter#Null:C1517); "Le nom du transporteur indiqué ne correspond à aucun transporteur")
 	
 	// Initialisation des pieces jointes
 	This:C1470.attachmentsPath_c:=New collection:C1472()
@@ -81,7 +99,7 @@ Historique
 	
 	ASSERT:C1129(This:C1470.transporter#Null:C1517; "Impossible d'utiliser la fonction send sans avoir initialisé un transporter")
 	
-	If (This:C1470.transporter=Null:C1517)  // On vérifie que l'on a bien notre transporter
+	If (This:C1470.transporter=Null:C1517) & (This:C1470.Oauth=Null:C1517)  // On vérifie que l'on a bien notre transporter
 		$error_t:="Il n'y a pas de transporter d'initialisé."
 	End if 
 	
@@ -123,7 +141,12 @@ Historique
 	End if 
 	
 	If ($error_t="")  //Envoi du mail
-		$mailStatus_o:=This:C1470.transporter.send(This:C1470)
+		
+		If (This:C1470.Oauth#Null:C1517)
+			$mailStatus_o:=This:C1470.Oauth.mail.send(This:C1470)
+		Else 
+			$mailStatus_o:=This:C1470.transporter.send(This:C1470)
+		End if 
 		
 		If ($mailStatus_o.success=False:C215)  //Si l'envoie du mail = False
 			$error_t:="Une erreur est survenue lors de l'envoi de l'e-mail : "+$error_t+$mailStatus_o.statusText
