@@ -60,7 +60,7 @@ Historique
 		
 	End if 
 	
-	ASSERT:C1129((This:C1470.Oauth#Null:C1517) & (This:C1470.transporter#Null:C1517); "Le nom du transporteur indiqué ne correspond à aucun transporteur")
+	ASSERT:C1129((This:C1470.Oauth#Null:C1517) | (This:C1470.transporter#Null:C1517); "Le nom du transporteur indiqué ne correspond à aucun transporteur")
 	
 	// Initialisation des pieces jointes
 	This:C1470.attachmentsPath_c:=New collection:C1472()
@@ -96,8 +96,6 @@ Historique
 	var $error_t : Text  // Info concernant les erreurs
 	
 	$mailStatus_o:=New object:C1471("success"; False:C215)
-	
-	ASSERT:C1129(This:C1470.transporter#Null:C1517; "Impossible d'utiliser la fonction send sans avoir initialisé un transporter")
 	
 	If (This:C1470.transporter=Null:C1517) & (This:C1470.Oauth=Null:C1517)  // On vérifie que l'on a bien notre transporter
 		$error_t:="Il n'y a pas de transporter d'initialisé."

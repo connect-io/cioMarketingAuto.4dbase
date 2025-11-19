@@ -621,7 +621,9 @@ Function sendMailing($configPreCharge_o : Object) : Object
 						$statut_o:=$config_o.eMailConfig.send()
 						$retour_t:=String:C10($statut_o.statusText)
 						
-						$erreur_b:=($retour_t#"@ok@")
+						// Modifié par : Rémy Scanu (19/11/2025)
+						// Obliger de faire ça car l'Oauth ne nous retourne pas le même code erreur
+						$erreur_b:=($retour_t#"@ok@") & ($retour_t#"@202@")
 						
 						If ($config_o.eMailConfig.attachmentsPath_c#Null:C1517) && ($config_o.eMailConfig.attachmentsPath_c.length>0)
 							
