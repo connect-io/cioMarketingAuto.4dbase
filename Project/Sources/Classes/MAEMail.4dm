@@ -30,14 +30,14 @@ Historique
 	
 	If ($transporter_c.length=1)
 		$server_o:=$transporter_c[0]
+		
+		// Il est possible de surcharger le transporteur.
+		If (Count parameters:C259=2)
+			$server_o:=cmaToolObjectMerge($server_o; $parametre_o)
+		End if 
+		
+		This:C1470.Oauth:=cmaToolOauthMS($server_o)
 	End if 
-	
-	// Il est possible de surcharger le transporteur.
-	If (Count parameters:C259=2)
-		$server_o:=cmaToolObjectMerge($server_o; $parametre_o)
-	End if 
-	
-	This:C1470.Oauth:=cmaToolOauthMS($server_o)
 	
 	//Mark: Smtp
 	// Vérifie que le nom du transporteur soit bien dans la config
