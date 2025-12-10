@@ -26,7 +26,7 @@ Historique
 	$server_o:=New object:C1471()
 	
 	//Mark: Oauth
-	$transporter_c:=cmaStorage.eMail.detail.transporter.query("name IS :1 and type IS 'Oauth'"; $transporter_t)
+	$transporter_c:=cmaStorage.eMail.detail.transporter.query("name IS :1 and type = :2"; $transporter_t; "Oauth")
 	
 	If ($transporter_c.length=1)
 		$server_o:=$transporter_c[0]
@@ -105,7 +105,7 @@ Historique
 		$error_t:="Il manque le destinataire de votre e-mail. ($1.to)"
 	End if 
 	
-	If (String:C10(This:C1470.from)="")  // On vérifie que l'on a bien notre émetteur
+	If (This:C1470.transporter#Null:C1517) & (String:C10(This:C1470.from)="")  // On vérifie que l'on a bien notre émetteur
 		This:C1470.from:=This:C1470.transporter.user
 	End if 
 	
@@ -138,11 +138,11 @@ Historique
 		
 	End if 
 	
-	If ($error_t="")  //Envoi du mail
+	If ($error_t="")  // Envoi du mail
 		
-		If (This:C1470.Oauth#Null:C1517)
+		If (This:C1470.Oauth#Null:C1517)  // Envoi avec Oauth
 			$mailStatus_o:=This:C1470.Oauth.mail.send(This:C1470)
-		Else 
+		Else   // Envoi avec un smtp classique
 			$mailStatus_o:=This:C1470.transporter.send(This:C1470)
 		End if 
 		
