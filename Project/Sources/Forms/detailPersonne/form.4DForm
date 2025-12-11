@@ -1105,5 +1105,6 @@
 			"View 1": {}
 		}
 	},
-	"method": "method.4dm"
+	"method": "method.4dm",
+	"menuBar": "Barre #1"
 }

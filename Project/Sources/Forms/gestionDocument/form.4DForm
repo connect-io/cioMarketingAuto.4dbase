@@ -470,5 +470,6 @@
 		"views": {
 			"View 1": {}
 		}
-	}
+	},
+	"menuBar": "Barre #1"
 }
