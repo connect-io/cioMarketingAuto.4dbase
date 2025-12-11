@@ -22,6 +22,7 @@ Case of
 					return 
 				End if 
 				
+				Form:C1466.EMail:=cmaToolGetClass("MAEMail").new(OBJECT Get pointer:C1124(Object named:K67:5; "transporteur")->currentValue)
 			: ($canalEnvoi_t="SMS")
 				
 				If (OBJECT Get pointer:C1124(Object named:K67:5; "prestataireSMS")->index=-1)

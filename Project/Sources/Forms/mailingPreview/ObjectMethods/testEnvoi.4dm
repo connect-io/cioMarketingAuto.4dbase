@@ -3,9 +3,9 @@ var $fiche_o; $document_o; $mime_o; $signature_o; $statut_o : Object
 var $fichier_o : 4D:C1709.File
 
 Case of 
-	: (Form event code:C388=Sur clic:K2:4)
+	: (Form event code:C388=On Clicked:K2:4)
 		
-		If (OBJECT Get pointer:C1124(Objet nommé:K67:5; "transporteur")->index=-1)
+		If (OBJECT Get pointer:C1124(Object named:K67:5; "transporteur")->index=-1)
 			ALERT:C41("Merci de sélectionner un expéditeur.")
 			return 
 		End if 
@@ -32,6 +32,8 @@ Case of
 			return 
 		End if 
 		
+		Form:C1466.EMail:=cmaToolGetClass("MAEMail").new(OBJECT Get pointer:C1124(Object named:K67:5; "transporteur")->currentValue)
+		
 		Form:C1466.EMail.subject:=Form:C1466.subject
 		Form:C1466.EMail.to:=$email_t
 		
@@ -49,7 +51,7 @@ Case of
 		End if 
 		
 		If ($corps_t#"@<p@")
-			$fichier_o:=File:C1566(Get 4D folder:C485(Dossier Resources courant:K5:16; *)+"cioMarketingAutomation"+Séparateur dossier:K24:12+"scene"+Séparateur dossier:K24:12+"signatureEmail.4wp"; fk chemin plateforme:K87:2)
+			$fichier_o:=File:C1566(Get 4D folder:C485(Current resources folder:K5:16; *)+"cioMarketingAutomation"+Folder separator:K24:12+"scene"+Folder separator:K24:12+"signatureEmail.4wp"; fk platform path:K87:2)
 			
 			If ($fichier_o.exists=True:C214)
 				WP INSERT BREAK:C1413($document_o; wk paragraph break:K81:259; wk append:K81:179)
@@ -77,6 +79,6 @@ Case of
 		End if 
 		
 		ALERT:C41("L'email a bien été envoyé.")
-	: (Form event code:C388=Sur survol:K2:35)
+	: (Form event code:C388=On Mouse Move:K2:35)
 		SET CURSOR:C469(9000)
 End case 

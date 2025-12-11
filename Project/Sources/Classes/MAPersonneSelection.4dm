@@ -346,7 +346,13 @@ Historique
 			For each ($element_o; This:C1470.personneCollection)
 				
 				If ($element_o[$childElement_o.field]=Null:C1517)  // Il s'agit d'un champ d'une table [Enfant]
-					$autreCollection_c:=$childElement_o.collectionToExtract.query($childElement_o.fieldInRelation+" = :1"; $element_o[$childElement_o.fieldInRelation])
+					
+					Case of 
+						: (String:C10($childElement_o.fieldInRelation)#"")
+							$autreCollection_c:=$childElement_o.collectionToExtract.query($childElement_o.fieldInRelation+" = :1"; $element_o[$childElement_o.fieldInRelation])
+						: ($childElement_o.collectionToExtract.length=This:C1470.personneCollection.length) && ($childElement_o.collectionToExtract[This:C1470.personneCollection.indexOf($element_o)][$childElement_o.field]#Null:C1517)
+							$autreCollection_c:=New collection:C1472($childElement_o.collectionToExtract[This:C1470.personneCollection.indexOf($element_o)])
+					End case 
 					
 					Case of 
 						: ($autreCollection_c.length=1)
