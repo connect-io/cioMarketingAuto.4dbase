@@ -47,7 +47,7 @@ Case of
 			return 
 		End if 
 		
-		$length_el:=Form:C1466.PersonneSelectedElement.length
+		$length_el:=Form:C1466.MAPersonneSelection.personneCollection
 		$moduloProgress_el:=Round:C94($length_el/5; 0)
 		
 		$compteur_o:=New object:C1471("success"; 0; "fail"; 0)

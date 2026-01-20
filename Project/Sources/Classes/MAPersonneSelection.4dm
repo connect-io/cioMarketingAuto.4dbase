@@ -183,7 +183,7 @@ Historique
 							If ($corps_t#"")
 								// toDo charger enregistrement pour table [Personne] de la base hôte
 								
-								If ($corps_t#"@<body@")  // Nouvelle façon d'envoyer des emails
+								If ($corps_t#"@<p@")  // Nouvelle façon d'envoyer des emails
 									// Ajout de la signature
 									$fichier_o:=File:C1566(Get 4D folder:C485(Current resources folder:K5:16; *)+"cioMarketingAutomation"+Folder separator:K24:12+"scene"+Folder separator:K24:12+"signatureEmail.4wp"; fk platform path:K87:2)
 									
